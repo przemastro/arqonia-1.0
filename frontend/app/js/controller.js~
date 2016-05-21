@@ -1,0 +1,22 @@
+'use strict';
+/*definiujemy moduł 'objectControllers' zawierający kontrolki*/
+var objectControllers = angular.module('objectControllers', []);
+
+/*Pierwsza kontrolka związana z listą*/
+objectControllers.controller('ObjectListCtrl', ['$scope', 'Obj',
+  function($scope, Obj) {
+    $scope.object = Obj.query();
+    $scope.orderProp = 'name';
+  }]);
+
+/*Druga kontrolka związana z detalami*/
+objectControllers.controller('ObjectDetailCtrl', ['$scope', '$routeParams', 'Obj',
+  function($scope, $routeParams, Obj) {
+    $scope.object = Obj.get({objectId: $routeParams.objectId}, function(object) {
+      $scope.mainImageUrl = object.images[0];
+    });
+
+$scope.setImage = function(imageUrl) {
+      $scope.mainImageUrl = imageUrl;
+    };
+}]);

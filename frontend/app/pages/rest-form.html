@@ -1,0 +1,92 @@
+<body ng-controller = "restFormCtrl" ng-app = "testApp">
+<div ng-controller="submitFormCtrl">
+<table class="main">
+<tr>
+  <td style="width:60%;vertical-align: top">
+      <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+          <div class="form-group">
+              <label class="col-md-4 control-label">Name</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" required/>
+                  <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-4 control-label">Last Name</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="lastName" ng-model="lastName" ng-maxlength="10" required/>
+                  <div ng-messages="restForm.lastName.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-4 control-label">Date of birth</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="dateOfBirth" ng-model="dateOfBirth" ng-maxlength="10" required/>
+                  <div ng-messages="restForm.dateOfBirth.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-4 control-label">Address</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="address" ng-model="address" ng-maxlength="46" required/>
+                  <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-4 control-label">Gross annual income</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="grossIncome" ng-model="grossIncome" ng-maxlength="20" required/>
+                  <div ng-messages="restForm.grossIncome.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label class="col-md-4 control-label">Net annual income</label>
+              <div class="col-md-4">
+                  <input type="text" class="form-control" name="netIncome" ng-model="netIncome" />
+                  <div ng-messages="restForm.netIncome.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                      <div ng-message="required">This field is required</div>
+                      <div ng-message="maxlength">This field is too long</div>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <div class="col-md-3" style="padding-left:300px">
+                  <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+              </div>
+          </div>
+      </form>
+   </td>
+   <td style="vertical-align: top">
+      <table class="insideTab">
+          <tr>
+              <th style="width:60%;vertical-align: top">Name</th>
+              <th>Last Name</th>
+          </tr>
+          <tr ng-repeat="employee in company">
+              <td style="width:60%;vertical-align: top">{{employee.name}}</td>
+              <td>{{employee.lastName}}</td>
+              <td style="border-bottom: 0px"><input align="right" type="button" value="Remove" class="btn btn-primary" ng-click="removeRow($index)"/></td>
+          </tr>
+      </table>
+  </td>
+</tr>
+</table>
+
+</div>
+</body>
+</html>

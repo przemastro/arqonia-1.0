@@ -1,0 +1,118 @@
+
+<body ng-app = "testApp" ng-controller="tableListCtrl">
+<div ng-controller="tableCtrl">
+
+    <script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">New observation</h3>
+    </div>
+    <div class="modal-body">
+        <table class="main">
+            <tr>
+                <td style="width:60%;vertical-align: top">
+                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Name</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" required/>
+                                <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Last Name</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="lastName" ng-model="lastName" ng-maxlength="10" required/>
+                                <div ng-messages="restForm.lastName.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Date of birth</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="dateOfBirth" ng-model="dateOfBirth" ng-maxlength="10" required/>
+                                <div ng-messages="restForm.dateOfBirth.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Address</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="address" ng-model="address" ng-maxlength="46" required/>
+                                <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Gross annual income</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="grossIncome" ng-model="grossIncome" ng-maxlength="20" required/>
+                                <div ng-messages="restForm.grossIncome.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Net annual income</label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="netIncome" ng-model="netIncome" />
+                                <div ng-messages="restForm.netIncome.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                    <div ng-message="maxlength">This field is too long</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-3" style="padding-left:300px">
+                                <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            </table>
+    </div>
+    </script>
+    <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
+        <tr>
+            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="open()"/></td>
+            <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
+        </tr>
+        <tr>
+            <th>Star Name</th>
+            <th>Start Date</th>
+            <th style="width:20%">End Date</th>
+            <th>U Photometry</th>
+            <th>V Photometry</th>
+            <th>B Photometry</th>
+        </tr>
+        <tr ng-repeat="observation in displayedObservations">
+            <td>{{observation.name}}</td>
+            <td>{{observation.startDate}}</td>
+            <td>{{observation.endDate}}</td>
+            <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default customTrueFalse" ng-click="open()"/></td>
+            <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="open()"/></td>
+            <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="open()"/></td>
+            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click=""/></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeRow($index)"/></td>
+        </tr>
+        <tr>
+            <tfoot>
+            <td style="border-bottom: 0px" colspan="7" class="text-center">
+                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+            </td>
+            </tfoot>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

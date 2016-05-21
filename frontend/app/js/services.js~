@@ -1,0 +1,13 @@
+'use strict';
+
+var appServices = angular.module('appServices', ['ngResource']);
+
+appServices.factory('Obj', ['$resource',
+  function($resource){
+    /*return $resource('http://localhost\\:8000/app/objects/:objectId.json', {}, {*/
+    return $resource('http://localhost\\:5000/:objectId', {}, {
+      query: {method:'GET', params:{objectId:'todos'}, isArray:true}
+    /*query: {method:'GET', params:{objectId:'controller'}, isArray:true}*/
+    });
+  }]);
+

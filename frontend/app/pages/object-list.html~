@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2">
+      <!--Sidebar content-->
+
+        Search: <input ng-model="query">
+        Sort by:
+        <select ng-model="orderProp">
+          <option value="name">Alphabetical</option>
+          <option value="dateAdded">Date Added</option>
+        </select>
+
+    </div>
+    <div class="col-md-10">
+
+  <ul class="object"><!--niby pętla objektów w scopie | filtrowanie | sortowanie--> 
+    <li ng-repeat="object in objects  | filter:query | orderBy:orderProp" class="thumbnail">
+      <a href="#/objects/{{object.id}}" class="thumb"><img ng-src="{{object.imageUrl}}" alt="{{object.name}}"></a>
+      <a href="#/objects/{{object.id}}">{{object.name}}</a>
+      <p>{{object.snippet}}</p>
+      <!--<p>{{object.dateAdded | date:'yyyy-MM-dd HH:mm:ss Z'}}</p>-->
+    </li>
+  </ul>
+
+    </div>
+  </div>
+</div>

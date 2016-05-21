@@ -1,0 +1,26 @@
+ 'use strict';
+ 
+ /* App Module */
+
+/*definiujemy moduł 'astroApp' zawierający dwa parametry*/
+var astroApp = angular.module('astroApp', [
+  'ngRoute', /*routingowy - czyli gdzie ma Cię skierować*/
+  'objectControllers' /*i jakiej kontrolki z controller.js to dotyczy*/
+  'appServices'
+]);
+
+astroApp.config(['$routeProvider',
+  function($routeProvider) {
+    $routeProvider.
+      when('/objects', {
+        templateUrl: 'partials/object-list.html',
+        controller: 'ObjectListCtrl'
+      }).
+      when('/objects/:objectId', {
+        templateUrl: 'partials/object-detail.html',
+        controller: 'ObjectDetailCtrl'
+      }).
+      otherwise({
+        redirectTo: '/objects'
+      });
+  }]);
