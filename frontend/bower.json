@@ -12,6 +12,8 @@
     "bootstrap": "~3.1.1",
     "angular-route": "1.4.x",
     "angular-resource": "1.4.x",
-    "angular-smart-table": ""
+    "angular-smart-table": "",
+    "angularjs-datetime-picker": "",
+    "moment": ""
   }
 }

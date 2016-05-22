@@ -7,7 +7,7 @@ try:
     cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
     cursor = cnx.cursor()
 
-    get_observationsCount = ("select count(1) from dbo.Observations;")
+    get_observationsCount = ("select count(1) from dbo.observations_sorted;")
 
     cursor.execute(get_observationsCount)
     observationsCount = cursor.fetchone()
@@ -18,12 +18,12 @@ try:
 
     for counter in range(1, observationsCount+1):
        id=str(counter)
-       get_objectName = ("select StarName from dbo.Observations where id="+id)
-       get_StartDate = ("select StartDate from dbo.Observations where id="+id)
-       get_EndDate = ("select EndDate from dbo.Observations where id="+id)
-       get_UPhotometry = ("select UPhotometry from dbo.Observations where id="+id)
-       get_VPhotometry = ("select VPhotometry from dbo.Observations where id="+id)
-       get_Bhotometry = ("select BPhotometry from dbo.Observations where id="+id)
+       get_objectName = ("select StarName from dbo.observations_sorted where id="+id)
+       get_StartDate = ("select StartDate from dbo.observations_sorted where id="+id)
+       get_EndDate = ("select EndDate from dbo.observations_sorted where id="+id)
+       get_UPhotometry = ("select UPhotometry from dbo.observations_sorted where id="+id)
+       get_VPhotometry = ("select VPhotometry from dbo.observations_sorted where id="+id)
+       get_Bhotometry = ("select BPhotometry from dbo.observations_sorted where id="+id)
 
        cursor.execute(get_objectName)
        objectName = cursor.fetchone()

@@ -1,7 +1,8 @@
 'use strict';
 
 
-var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table']);
+var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
+'angularjs-datetime-picker']);
 
     astroApp.config(['$httpProvider', function ($httpProvider) {
                 $httpProvider.defaults.useXDomain = true;
@@ -17,10 +18,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller("tableCtrl", ['$scope', '$routeParams', 'getEmployee', '$uibModal', 'postEmployee', function($scope, $routeParams, Observation, $uibModal, NewObservation) {
        $scope.displayedObservations = [];
        $scope.observations = Observation.query();
-
-       $scope.removeRow = function(index){
-          $scope.observations.splice( index, 1);
-       };
 
        $scope.addRow = function(){
 	      $scope.observations.push({ 'name':$scope.name,
@@ -43,28 +40,65 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.bPhotometry='';
        };
 
-       $scope.items = ['item1', 'item2', 'item3'];
        $scope.animationsEnabled = true;
+
        $scope.open = function (size) {
-
-       var modalInstance = $uibModal.open({
-          animation: $scope.animationsEnabled,
-          templateUrl: 'myModalContent.html',
-          controller: 'tableCtrl',
-          size: size,
-          resolve: {
-             items: function () {
-             return $scope.items;
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'myModalContent.html',
+             controller: 'tableCtrl',
+             size: size,
+             resolve: {
+                items: function () {
+                return $scope.items;
+                }
              }
-          }
-       });
-
-       modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
-          }, function () {
-               $log.info('Modal dismissed at: ' + new Date());
-             });
+          });
        };
+
+       $scope.removeObservation = function (size, index) {
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'removeObservationModal.html',
+             controller: 'tableCtrl',
+             size: size,
+             resolve: {
+                items: function () {
+                return $scope.items;
+                }
+             }
+          });
+
+          $scope.observations.splice( index, 1);
+       }
+
+       $scope.editObservation = function (size) {
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'editObservationModal.html',
+             controller: 'tableCtrl',
+             size: size,
+             resolve: {
+                items: function () {
+                return $scope.items;
+                }
+             }
+          });
+       }
+
+       $scope.editPhotometry = function (size) {
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'editPhotometryModal.html',
+             controller: 'tableCtrl',
+             size: size,
+             resolve: {
+                items: function () {
+                return $scope.items;
+                }
+             }
+          });
+       }
 
        $scope.toggleAnimation = function () {
        $scope.animationsEnabled = !$scope.animationsEnabled;
@@ -74,36 +108,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 }]);
 
-
-//---------------------------------------------------------Rest Form----------------------------------------------------
-    //restFormCtrl
-	astroApp.controller('restFormCtrl', function($scope) {
-       $scope.reset = function(){
-       $scope.firstName = "";
-       $scope.startDate = "";
-       $scope.endDate = "";
-       $scope.uPhotometry = "";
-       $scope.vPhotometry = "";
-       $scope.bPhotometry = "";
-       }
-       $scope.reset();
+//---------------------------------------------------------HR Diagram----------------------------------------------------
+    //hrDiagramCtrl
+	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    //submitFormCtrl
-    astroApp.controller("submitFormCtrl", ['$scope', 'getEmployee', '$resource', '$routeParams', 'postEmployee',
-        function($scope, Employee, $resource, $routeParams, NewEmployee) {
 
+//--------------------------------------------------------Admin Panel---------------------------------------------------
 
-       $scope.company = Employee.query();//get json
-
-
-       $scope.removeRow = function(index){
-          $scope.company.splice( index, 1);
-       };
-    }]);
-
-
-
+	astroApp.controller('adminCtrl', function($scope) {
+	   $scope.message = 'Admin Panel';
+	});
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl

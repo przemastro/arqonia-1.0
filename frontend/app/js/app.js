@@ -16,8 +16,13 @@
 				controller  : 'tableListCtrl'
 			})
 
-			.when('/rest-form', {
-				templateUrl : 'pages/rest-form.html',
-				controller  : 'restFormCtrl',
+			.when('/hr-diagram', {
+				templateUrl : 'pages/hr-diagram.html',
+				controller  : 'hrDiagramCtrl',
+			})
+
+			.when('/admin', {
+				templateUrl : 'pages/admin.html',
+				controller  : 'adminCtrl',
 			})
 	}]);
