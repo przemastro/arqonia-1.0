@@ -1,4 +1,25 @@
 <body ng-app = "testApp" ng-controller = "mainCtrl">
 <div id="main">
     <h1>Astro App</h1>
+<ul>
+    <li>1. User will be able to open numeric filter (UVB) in bootstrap window. Data will be provided in table. Data will be taken from filter view.</li>
+</ul>
+<ul>
+    <li>2. User will be able to remove data by means of DELETE method. Remove means soft delete. Active flag in dbo.StagingObservations table is changed to 0</li>
+</ul>
+<ul>
+    <li>3. User will be able to edit and update data by means of PUT method. Data will be updated in dbo.StagingObservations table.</li>
+</ul>
+<ul>
+    <li>4. User will be able to add new observation by means of POST method. Data will be inserted into dbo.StagingObservations table.</li>
+</ul>
+<ul>
+    <li>5. User will be able to see all of the observations taken by means of GET method. Data comes from dbo.Observations_Sorted view</li>
+</ul>
+<ul>
+    <li>6. User will be able to see HR diagram and diagram of observations for specified star and general of all observations</li>
+</ul>
+<ul>
+    <li>7. Admin will be able to run stored procedures from admin panel. Stored procedures will be processing data from dbo.StagingObservations table</li>
+</ul>
 </div>

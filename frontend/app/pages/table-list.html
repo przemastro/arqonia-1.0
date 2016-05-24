@@ -2,17 +2,17 @@
 <body ng-app = "testApp" ng-controller="tableListCtrl">
 
 <div ng-controller="tableCtrl">
+    <div ng-controller="ModalCtrl">
 
-    <script type="text/ng-template" id="myModalContent.html">
+    <script type="text/ng-template" id="newModalContent.html">
     <div class="modal-header">
         <h3 class="modal-title">New observation</h3>
     </div>
-    <div class="modal-body" ng-controller="AppCtrl">
-
         <table class="main">
             <tr>
                     <td style="width:60%;vertical-align: top">
                     <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                        <div class="modal-body">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Star Name</label>
                             <div class="col-md-4">
@@ -61,10 +61,10 @@
                                 <input type="text" class="form-control" name="bPhotometry" ng-model="bPhotometry" />
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-3" style="padding-left:300px">
-                                <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                            </div>
+                        </div>
+                        <div class="modal-footer" style="padding-right:300px">
+                            <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                         </div>
                     </form>
                 </td>
@@ -117,7 +117,7 @@
 
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
-            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="open()"/></td>
+            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()"/></td>
             <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
         </tr>
         <tr>
@@ -146,5 +146,6 @@
             </tfoot>
         </tr>
     </table>
+  </div>
 </div>
 </body>

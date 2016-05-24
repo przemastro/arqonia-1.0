@@ -23,7 +23,7 @@ try:
        get_EndDate = ("select EndDate from dbo.observations_sorted where id="+id)
        get_UPhotometry = ("select UPhotometry from dbo.observations_sorted where id="+id)
        get_VPhotometry = ("select VPhotometry from dbo.observations_sorted where id="+id)
-       get_Bhotometry = ("select BPhotometry from dbo.observations_sorted where id="+id)
+       get_BPhotometry = ("select BPhotometry from dbo.observations_sorted where id="+id)
 
        cursor.execute(get_objectName)
        objectName = cursor.fetchone()
@@ -40,19 +40,31 @@ try:
        cursor.execute(get_UPhotometry)
        UPhotometry = cursor.fetchone()
        UPhotometry = str(UPhotometry[0])
+       if UPhotometry == 'True':
+           UPhotometry = 'YES'
+       else:
+           UPhotometry = 'NO'
 
        cursor.execute(get_VPhotometry)
        VPhotometry = cursor.fetchone()
        VPhotometry = str(VPhotometry[0])
+       if VPhotometry == 'True':
+          VPhotometry = 'YES'
+       else:
+          VPhotometry = 'NO'
 
-       cursor.execute(get_Bhotometry)
-       Bhotometry = cursor.fetchone()
-       Bhotometry = str(Bhotometry[0])
+       cursor.execute(get_BPhotometry)
+       BPhotometry = cursor.fetchone()
+       BPhotometry = str(BPhotometry[0])
+       if BPhotometry == 'True':
+          BPhotometry = 'YES'
+       else:
+          BPhotometry = 'NO'
 
        object = {'name': objectName, 'startDate': StartDate,
                   'endDate': EndDate, 'uPhotometry': UPhotometry,
                   'vPhotometry': VPhotometry,
-                  'bPhotometry': Bhotometry}
+                  'bPhotometry': BPhotometry}
 
        controller = str(object) + ',' + controller
 
