@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         </div>
-                        <div class="modal-footer" style="padding-right:300px">
+                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
                             <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
                             <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                         </div>
@@ -77,42 +77,108 @@
         <div class="modal-header">
             <h3 class="modal-title">Remove record?</h3>
         </div>
-        <div class="modal-body">
-            <table class="main">
-                <tr>
-                    <td style="width:60%;vertical-align: top">
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <table class="main">
+            <tr>
+                <td style="width:60%;vertical-align: top">
+                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                            <button type="button" ng-click="remove()" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">No</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </script>
 
     <script type="text/ng-template" id="editObservationModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">Remove record?</h3>
+            <h3 class="modal-title">Observation</h3>
         </div>
-        <div class="modal-body">
-            <table class="main">
-                <tr>
-                    <td style="width:60%;vertical-align: top">
-                    </td>
-                </tr>
-            </table>
+        <table class="main">
+            <tr>
+                <td style="width:60%;vertical-align: top">
+                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Star Name</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" value="name" required/>
+                                    <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="maxlength">This field is too long</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Start Date</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" required/>
+                                    <div ng-messages="restForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="maxlength">This field is too long</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">End Date</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" required/>
+                                    <div ng-messages="restForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                        <div ng-message="required">This field is required</div>
+                                        <div ng-message="maxlength">This field is too long</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">U Photometry</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="uPhotometry" ng-model="uPhotometry" ng-maxlength="46"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">V Photometry</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="vPhotometry" ng-model="vPhotometry" ng-maxlength="20"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">B Photometry</label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" name="bPhotometry" ng-model="bPhotometry" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                            <input type="submit" value="Save" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
         </div>
     </script>
 
     <script type="text/ng-template" id="editPhotometryModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">Remove record?</h3>
+            <h3 class="modal-title">Photometry</h3>
         </div>
-        <div class="modal-body">
-            <table class="main">
-                <tr>
-                    <td style="width:60%;vertical-align: top">
-                    </td>
-                </tr>
-            </table>
-        </div>
+        <table class="main">
+            <tr>
+                <td style="width:60%;vertical-align: top">
+                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
     </script>
 
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">

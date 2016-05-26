@@ -16,6 +16,7 @@
     "angular-smart-table": "",
     "angularjs-datetime-picker": "",
     "moment": "",
-    "angular-modal-service": "0.6.10"
+    "angular-modal-service": "0.6.10",
+    "angular-chart.js": ""
   }
 }

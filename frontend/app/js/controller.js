@@ -2,7 +2,7 @@
 
 
 var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
-'angularjs-datetime-picker', 'angularModalService']);
+'angularjs-datetime-picker', 'angularModalService', 'chart.js']);
 
     astroApp.config(['$httpProvider', function ($httpProvider) {
                 $httpProvider.defaults.useXDomain = true;
@@ -42,8 +42,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             });
 
 
-          /*modalInstance.addRow = function(){
-   	      modalInstance.observations.push({ 'name':$scope.name,
+          $scope.addRow = function(){
+   	      $scope.observations.push({ 'name':$scope.name,
    	                           'startDate': $scope.startDate,
    	                           'endDate':$scope.endDate,
    	                           'uPhotometry':$scope.uPhotometry,
@@ -52,41 +52,33 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
    		   NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
-   		      modalInstance.message = response.message;
+   		      $scope.message = response.message;
    		   });
-
-   	      $scope.name='';
-   	      $scope.startDate='';
-   	      $scope.endDate='';
-   	      $scope.uPhotometry='';
-             $scope.vPhotometry='';
-             $scope.bPhotometry='';
-          };*/
+          };
        };
 
-        $scope.removeObservation = function (size, index) {
+        $scope.removeObservation = function (index) {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'removeObservationModal.html',
-              controller: 'ModalCtrl'
+              controller: 'ModalInstanceRemoveCtrl'
            });
-
-           $scope.observations.splice( index, 1);
+           $scope.observations.splice(index, 1);
         }
 
-        $scope.editObservation = function (size) {
+        $scope.editObservation = function () {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'editObservationModal.html',
-              controller: 'ModalCtrl'
+              controller: 'ModalInstanceEditCtrl'
            });
         }
 
-        $scope.editPhotometry = function (size) {
+        $scope.editPhotometry = function () {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'editPhotometryModal.html',
-              controller: 'ModalCtrl'
+              controller: 'ModalInstanceEditPhotometryCtrl'
            });
         }
     }]);
@@ -97,11 +89,69 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
-//---------------------------------------------------------HR Diagram----------------------------------------------------
+    astroApp.controller('ModalInstanceEditCtrl', function ($scope, $uibModalInstance) {
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceEditPhotometryCtrl', function ($scope, $uibModalInstance) {
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceRemoveCtrl', function ($scope, $uibModalInstance) {
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+
+      $scope.remove = function (index) {
+        $scope.observations.splice(index, 1);
+        $uibModalInstance.dismiss();
+      };
+    });
+
+//---------------------------------------------------------Diagrams-----------------------------------------------------
     //hrDiagramCtrl
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
+	astroApp.controller("observationsCtrl", function ($scope)
+     {
+      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+      $scope.series = ['Series A'];
+      $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40]
+      ];
+      $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+      };
+    });
+
+    astroApp.controller("periodCtrl", function ($scope)
+     {
+      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+      $scope.series = ['Series A'];
+      $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40]
+      ];
+      $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+      };
+    });
+
+    astroApp.controller("hrCtrl", function ($scope)
+     {
+      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
+      $scope.series = ['Series A'];
+      $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40]
+      ];
+      $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+      };
+    });
 
 //--------------------------------------------------------Admin Panel---------------------------------------------------
 
