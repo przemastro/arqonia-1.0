@@ -4,8 +4,8 @@ var services = angular.module('astroApp.services', ['ngResource']);
 
 services.factory('getObservations', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/:objectId', {}, {
-        query: {method:'GET', params:{objectId:'observations'}, isArray:true}
+    return $resource('http://localhost\\:5000/observations', {}, {
+        query: {method:'GET', isArray:true}
     });
 }]);
 
@@ -16,3 +16,16 @@ services.factory('postObservation', ['$resource',
     });
 }]);
 
+services.factory('processData', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/lastLoad', {}, {
+        query: {method:'PUT', isArray:true}
+    });
+}]);
+
+services.factory('getProcessedData', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/lastLoad', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);

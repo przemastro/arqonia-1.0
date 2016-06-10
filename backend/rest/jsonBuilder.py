@@ -4,19 +4,21 @@ import ast
 
 try:
 
-    cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
+    #cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
+    cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
     cursor = cnx.cursor()
 
-    get_observationsCount = ("select count(distinct(ID)) from bi.observationsSorted;")
 
-    cursor.execute(get_observationsCount)
-    observationsCount = cursor.fetchone()
-    observationsCount = observationsCount[0]
-    print observationsCount
+    get_Ids = ("select distinct(Id) from bi.observationsSorted order by id desc")
+    cursor.execute(get_Ids)
+    getIds = cursor.fetchall()
+    getIds = [g[0] for g in getIds]
+    print getIds
+
     controller = ''
     count = ''
 
-    for counter in range(1, observationsCount+1):
+    for counter in getIds:
        id=str(counter)
        get_objectName = ("select distinct(StarName) from bi.observationsSorted where id="+id)
        get_StartDate = ("select top 1 StartDate from bi.observationsSorted where id="+id)
@@ -70,6 +72,7 @@ try:
 
     controller = controller[:-1]
     controller = ast.literal_eval(controller)
+
     try:
        print json.dumps(controller, skipkeys=True)
     except (TypeError, ValueError) as err:
@@ -80,8 +83,35 @@ try:
     json_string = json.loads(controller)
 
 
+#------------------------------------------------get last Processed data------------------------------------------------
+
+    get_LastLoadObservationId = ("select distinct(lg.ObservationId) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadStarName = ("select distinct(os.StarName) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadStartDate = ("select distinct(cast(os.StartDate as varchar)) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadEndDate = ("select distinct(cast(os.EndDate as varchar)) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
+
+    cursor.execute(get_LastLoadObservationId)
+    LastLoadObservationId = cursor.fetchone()
+    LastLoadObservationId = LastLoadObservationId[0]
+
+    cursor.execute(get_LastLoadStarName)
+    LastLoadStarName = cursor.fetchone()
+    LastLoadStarName = LastLoadStarName[0]
+
+    cursor.execute(get_LastLoadStartDate)
+    LastLoadStartDate = cursor.fetchone()
+    LastLoadStartDate = LastLoadStartDate[0]
+
+    cursor.execute(get_LastLoadEndDate)
+    LastLoadEndDate = cursor.fetchone()
+    LastLoadEndDate = LastLoadEndDate[0]
+
+
+    lastLoad = [{'observationId': LastLoadObservationId, 'starName': LastLoadStarName, 'startDate': LastLoadStartDate, 'endDate': LastLoadEndDate}]
+
     cursor.close()
 
+    print lastLoad
 except:
         print 'errors'
 else:
@@ -89,3 +119,6 @@ else:
 
 def json_data():
     json_data.jsonData = json_string
+
+def json_load():
+    json_load.jsonLastLoad = lastLoad

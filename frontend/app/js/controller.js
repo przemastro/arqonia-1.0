@@ -2,7 +2,7 @@
 
 
 var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
-'angularjs-datetime-picker', 'angularModalService', 'chart.js']);
+'angularjs-datetime-picker', 'angularModalService', 'chart.js', 'angularSpinner']);
 
     astroApp.config(['$httpProvider', function ($httpProvider) {
                 $httpProvider.defaults.useXDomain = true;
@@ -158,6 +158,39 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('adminCtrl', function($scope) {
 	   $scope.message = 'Admin Panel';
 	});
+
+	astroApp.controller('processCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'processData', 'getProcessedData', '$window', '$timeout',
+      function($scope, usSpinnerService, $rootScope, ProcessData, GetProcessedData, $window, $timeout) {
+        $scope.message = 'Admin Panel';
+
+        $scope.displayedObservations = [];
+        $scope.observations = GetProcessedData.query();
+
+        $scope.startSpin = function() {
+          if (!$scope.spinneractive) {
+            usSpinnerService.spin('spinner-1');
+   		    ProcessData.query(function(response){
+   		      $scope.message = response.message;
+   		   });
+          }
+          $timeout(function(){
+             $window.location.reload();
+             }, 5000);
+
+        };
+
+
+        $scope.spinneractive = false;
+
+        $rootScope.$on('us-spinner:spin', function(event, key) {
+          $scope.spinneractive = true;
+        });
+
+        $rootScope.$on('us-spinner:stop', function(event, key) {
+          $scope.spinneractive = false;
+        });
+      }
+    ]);
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl
