@@ -14,10 +14,8 @@ json_load()
 Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
 
-print Observations
-print ''
-print LastLoad
-print ''
+#print Observations
+#print LastLoad
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad

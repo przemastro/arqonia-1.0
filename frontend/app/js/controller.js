@@ -15,10 +15,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$scope', '$routeParams', 'getObservations',
+    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations',
                                      function($scope, $routeParams, Observations) {
        $scope.displayedObservations = [];
        $scope.observations = Observations.query();
+
 
 
        $scope.toggleAnimation = function () {
@@ -74,11 +75,42 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
            });
         }
 
-        $scope.editPhotometry = function () {
+        $scope.editUPhotometry = function (editUPhotometry) {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
-              templateUrl: 'editPhotometryModal.html',
-              controller: 'ModalInstanceEditPhotometryCtrl'
+              templateUrl: 'editUPhotometryModal.html',
+              controller: 'ModalInstanceEditUPhotometryCtrl',
+              resolve: {
+                  editUPhotometry: function () {
+                      return editUPhotometry;
+                  }
+              }
+           });
+        }
+
+        $scope.editVPhotometry = function (editVPhotometry) {
+           var modalInstance = $uibModal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'editVPhotometryModal.html',
+              controller: 'ModalInstanceEditVPhotometryCtrl',
+              resolve: {
+                  editVPhotometry: function () {
+                      return editVPhotometry;
+                  }
+              }
+           });
+        }
+
+        $scope.editBPhotometry = function (editBPhotometry) {
+           var modalInstance = $uibModal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'editBPhotometryModal.html',
+              controller: 'ModalInstanceEditBPhotometryCtrl',
+              resolve: {
+                  editBPhotometry: function () {
+                      return editBPhotometry;
+                  }
+              }
            });
         }
     }]);
@@ -95,7 +127,25 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
-    astroApp.controller('ModalInstanceEditPhotometryCtrl', function ($scope, $uibModalInstance) {
+    astroApp.controller('ModalInstanceEditUPhotometryCtrl', function ($scope, $uibModalInstance, editUPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editUPhotometry = editUPhotometry;
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceEditVPhotometryCtrl', function ($scope, $uibModalInstance, editVPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editVPhotometry = editVPhotometry;
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceEditBPhotometryCtrl', function ($scope, $uibModalInstance, editBPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editBPhotometry = editBPhotometry;
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
