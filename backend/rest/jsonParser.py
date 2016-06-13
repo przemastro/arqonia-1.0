@@ -8,10 +8,11 @@ sys.setdefaultencoding('utf8')
 #-----------------------------------------insert new employee to tablelist----------------------------------------------
 def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry):
  try:
-    cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
+    #cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
+    cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
     cursor = cnx.cursor()
 
-    get_lastId = ("select top 1 id from dbo.StagingObservations order by id desc")
+    get_lastId = ("select top 1 id from stg.StagingObservations order by id desc")
     cursor.execute(get_lastId)
     lastId = cursor.fetchone()
 
@@ -28,8 +29,8 @@ def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry)
     vPhotometry = str(vPhotometry)
     bPhotometry = str(bPhotometry)
 
-    insert_observation = ("insert into dbo.StagingObservations(id, Name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry) "
-                       "values("+lastId+",'"+name+"', '"+startDate+"', '"+endDate+"', '"+uPhotometry+"', '"+vPhotometry+"', '"+bPhotometry+"')")
+    insert_observation = ("Insert into stg.stagingObservations (id, RowId, StarName, StartDate, EndDate, uPhotometry, uPhotometryTime, vPhotometry, vPhotometryTime, bPhotometry, bPhotometryTime, Status, Active) "
+                          "values ("+lastId+", 1, '"+name+"', '"+startDate+"', '"+endDate+"', '0.259254028383', '2721.7367', '0.259254028383', '2721.7367', '0.259254028383', '2721.7367', 'new', 1)")
 
     print insert_observation
 

@@ -47,15 +47,9 @@ class Rest(Resource):
 class RestNewObservation(Resource):
     def post(self):
         args = parser.parse_args()
-        REST["observations"].append({'name': args['name'],
-                                 'startDate': args['startDate'],
-                                 'endDate': args['endDate'],
-                                 'uPhotometry': args['uPhotometry'],
-                                 'vPhotometry': args['vPhotometry'],
-                                 'bPhotometry': args['bPhotometry']})
         json_parser(args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
 
-        return REST["observations"], 201
+        return 201
 
 
 class RestLastObservation(Resource):
