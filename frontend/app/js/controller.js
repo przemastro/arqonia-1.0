@@ -107,12 +107,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         }
     }]);
 
-    astroApp.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'postObservation', function ($scope, $uibModalInstance, NewObservation) {
+    astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', function ($scope, $log, $uibModalInstance, NewObservation) {
+      $log.debug($scope.name);
       $scope.addRow = function(){
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
    		  $scope.message = response.message;
    		   });
+   		   $log.debug($scope.name);
    		  $uibModalInstance.dismiss();
        };
 
@@ -132,7 +134,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.remove = function () {
         //$scope.observations.splice(removePhotometry, 1);
-
         $scope.removePhotometry = removePhotometry;
         RemoveObservation.save({id:$scope.ob[removePhotometry].id}, function(response){
            $scope.message = response.message;
@@ -143,13 +144,23 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
-    astroApp.controller('ModalInstanceEditCtrl', function ($scope, $uibModalInstance, editPhotometry) {
+    astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry) {
+      $log.debug($scope.name);
       $scope.ob = $scope.observations;
       $scope.editPhotometry = editPhotometry;
+
+      $scope.updateRow = function(){
+   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.name,startDate:$scope.ob[editPhotometry].startDate,endDate:$scope.ob[editPhotometry].endDate,
+   		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
+   		  $scope.message = response.message;
+   		   });
+   		   $log.debug($scope.name);
+   		  $uibModalInstance.dismiss();
+       };
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
-    });
+    }]);
 
     astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$log', '$uibModalInstance', 'editUPhotometry', function ($scope, $log, $uibModalInstance, editUPhotometry) {
       $log.debug(editUPhotometry);

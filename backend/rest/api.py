@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load
-from jsonParser import json_parser
+from jsonParser import json_parser, updateObservation
 from procRunner import procRunner, deleteObservation
 
 
@@ -42,10 +42,15 @@ class Rest(Resource):
         return REST[rest_id]
 
 
-class RestNewObservation(Resource):
+class RestObservation(Resource):
     def post(self):
         args = parser.parse_args()
         json_parser(args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
+        return 201
+
+    def put(self):
+        args = parser.parse_args()
+        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
         return 201
 
 
@@ -66,7 +71,7 @@ class RestDeleteObservation(Resource):
 
 
 api.add_resource(Rest, '/<rest_id>')
-api.add_resource(RestNewObservation, '/observations')
+api.add_resource(RestObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 

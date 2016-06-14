@@ -36,3 +36,10 @@ services.factory('removeObservation', ['$resource',
         save: {method:'POST'}
     });
 }]);
+
+services.factory('updateObservation', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/observations', {}, {
+        update: {method:'PUT'}
+    });
+}]);

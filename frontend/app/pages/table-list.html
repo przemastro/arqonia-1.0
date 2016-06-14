@@ -103,7 +103,7 @@
         <table class="main">
             <tr ng-repeat="observation in ob" ng-if="$index == editPhotometry">
                 <td style="width:60%;vertical-align: top">
-                    <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && addRow()">
+                    <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Star Name</label>
