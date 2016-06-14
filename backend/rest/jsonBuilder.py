@@ -20,6 +20,7 @@ try:
 
     for counter in getIds:
        id=str(counter)
+       print id
        get_objectName = ("select distinct(StarName) from bi.observationsSorted where id="+id)
        get_StartDate = ("select top 1 StartDate from bi.observationsSorted where id="+id)
        get_EndDate = ("select top 1 EndDate from bi.observationsSorted where id="+id)
@@ -123,10 +124,10 @@ try:
 
 #------------------------------------------------get last Processed data------------------------------------------------
 
-    get_LastLoadObservationId = ("select distinct(lg.ObservationId) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
-    get_LastLoadStarName = ("select distinct(os.StarName) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
-    get_LastLoadStartDate = ("select distinct(cast(os.StartDate as varchar)) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
-    get_LastLoadEndDate = ("select distinct(cast(os.EndDate as varchar)) from log.log lg join bi.observationsSorted os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadObservationId = ("select distinct(lg.ObservationId) from log.log lg join stg.stagingObservations os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadStarName = ("select distinct(os.StarName) from log.log lg join stg.stagingObservations os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadStartDate = ("select distinct(cast(os.StartDate as varchar)) from log.log lg join stg.stagingObservations os on lg.ObservationId=os.Id where lg.LastLoad=1")
+    get_LastLoadEndDate = ("select distinct(cast(os.EndDate as varchar)) from log.log lg join stg.stagingObservations os on lg.ObservationId=os.Id where lg.LastLoad=1")
 
     cursor.execute(get_LastLoadObservationId)
     LastLoadObservationId = cursor.fetchone()

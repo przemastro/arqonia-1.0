@@ -20,8 +20,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.displayedObservations = [];
        $scope.observations = Observations.query();
 
-
-
        $scope.toggleAnimation = function () {
        $scope.animationsEnabled = !$scope.animationsEnabled;
 
@@ -30,7 +28,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     }]);
 
-    astroApp.controller('ModalCtrl', ['$scope', '$uibModal', 'postObservation', function ($scope, $uibModal, NewObservation) {
+    astroApp.controller('ModalCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) {
 
        $scope.animationsEnabled = true;
 
@@ -39,39 +37,33 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'newModalContent.html',
-              controller: 'ModalInstanceCtrl'
+              controller: 'ModalInstanceCtrl',
             });
-
-
-          $scope.addRow = function(){
-   	      $scope.observations.push({ 'name':$scope.name,
-   	                           'startDate': $scope.startDate,
-   	                           'endDate':$scope.endDate,
-   	                           'uPhotometry':$scope.uPhotometry,
-   	                           'vPhotometry':$scope.vPhotometry,
-   	                           'bPhotometry':$scope.bPhotometry});
-
-   		   NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
-   		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
-   		      $scope.message = response.message;
-   		   });
-          };
        };
 
-        $scope.removeObservation = function (index) {
+        $scope.removeObservation = function (removePhotometry) {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'removeObservationModal.html',
-              controller: 'ModalInstanceRemoveCtrl'
+              controller: 'ModalInstanceRemoveCtrl',
+              resolve: {
+                  removePhotometry: function () {
+                      return removePhotometry;
+                  }
+              }
            });
-           $scope.observations.splice(index, 1);
         }
 
-        $scope.editObservation = function () {
+        $scope.editObservation = function (editPhotometry) {
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'editObservationModal.html',
-              controller: 'ModalInstanceEditCtrl'
+              controller: 'ModalInstanceEditCtrl',
+              resolve: {
+                  editPhotometry: function () {
+                      return editPhotometry;
+                  }
+              }
            });
         }
 
@@ -115,25 +107,58 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         }
     }]);
 
-    astroApp.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+    astroApp.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', 'postObservation', function ($scope, $uibModalInstance, NewObservation) {
+      $scope.addRow = function(){
+   		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
+   		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
+   		  $scope.message = response.message;
+   		   });
+   		  $uibModalInstance.dismiss();
+       };
+
+       $scope.cancel = function () {
+         $uibModalInstance.dismiss('cancel');
+       };
+    }]);
+
+    astroApp.controller('ModalInstanceRemoveCtrl', ['$scope', '$log', '$uibModalInstance', 'removeObservation', 'removePhotometry', function ($scope, $log, $uibModalInstance, RemoveObservation, removePhotometry) {
+      $log.debug(removePhotometry);
+      $scope.ob = $scope.observations;
+      var removePhotometry = parseInt(removePhotometry);
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+
+      $scope.remove = function () {
+        //$scope.observations.splice(removePhotometry, 1);
+
+        $scope.removePhotometry = removePhotometry;
+        RemoveObservation.save({id:$scope.ob[removePhotometry].id}, function(response){
+           $scope.message = response.message;
+        });
+        $scope.isDisabled = true;
+        $uibModalInstance.dismiss();
+        return false;
+      };
+    }]);
+
+    astroApp.controller('ModalInstanceEditCtrl', function ($scope, $uibModalInstance, editPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editPhotometry = editPhotometry;
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
     });
 
-    astroApp.controller('ModalInstanceEditCtrl', function ($scope, $uibModalInstance) {
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
-    });
-
-    astroApp.controller('ModalInstanceEditUPhotometryCtrl', function ($scope, $uibModalInstance, editUPhotometry) {
+    astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$log', '$uibModalInstance', 'editUPhotometry', function ($scope, $log, $uibModalInstance, editUPhotometry) {
+      $log.debug(editUPhotometry);
       $scope.ob = $scope.observations;
       $scope.editUPhotometry = editUPhotometry;
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
-    });
+    }]);
 
     astroApp.controller('ModalInstanceEditVPhotometryCtrl', function ($scope, $uibModalInstance, editVPhotometry) {
       $scope.ob = $scope.observations;
@@ -151,35 +176,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
-    astroApp.controller('ModalInstanceRemoveCtrl', function ($scope, $uibModalInstance) {
-      $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-      };
-
-      $scope.remove = function (index) {
-        $scope.observations.splice(index, 1);
-        $uibModalInstance.dismiss();
-      };
-    });
-
 //---------------------------------------------------------Diagrams-----------------------------------------------------
     //hrDiagramCtrl
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
 	astroApp.controller("observationsCtrl", function ($scope)
-     {
-      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-      $scope.series = ['Series A'];
-      $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40]
-      ];
-      $scope.onClick = function (points, evt) {
-        console.log(points, evt);
-      };
-    });
-
-    astroApp.controller("periodCtrl", function ($scope)
      {
       $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
       $scope.series = ['Series A'];

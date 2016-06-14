@@ -2,7 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load
 from jsonParser import json_parser
-from procRunner import procRunner
+from procRunner import procRunner, deleteObservation
 
 
 app = Flask(__name__)
@@ -21,9 +21,6 @@ REST = {'observations': Observations,
         'lastLoad': LastLoad
         }
 
-#RESTLastObservation = {'lastLoad': LastLoad
-#                      }
-
 
 def abort_if_json_doesnt_exist(rest_id):
     if rest_id not in REST:
@@ -37,6 +34,7 @@ parser.add_argument('endDate', type=str)
 parser.add_argument('uPhotometry', type=str)
 parser.add_argument('vPhotometry', type=str)
 parser.add_argument('bPhotometry', type=str)
+parser.add_argument('id', type=str)
 
 class Rest(Resource):
     def get(self, rest_id):
@@ -48,22 +46,29 @@ class RestNewObservation(Resource):
     def post(self):
         args = parser.parse_args()
         json_parser(args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
-
         return 201
 
 
 class RestLastObservation(Resource):
     def get(self):
-        #abort_if_json_doesnt_exist(rest_id)
         return REST["lastLoad"]
 
     def put(self):
         procRunner()
         return LastLoad
 
+
+class RestDeleteObservation(Resource):
+    def post(self):
+        args = parser.parse_args()
+        deleteObservation(args['id'])
+        return 201
+
+
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestNewObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
+api.add_resource(RestDeleteObservation, '/deletedObservations')
 
 # Handling COR requests
 @app.after_request

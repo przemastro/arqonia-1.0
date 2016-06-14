@@ -29,3 +29,10 @@ services.factory('getProcessedData', ['$resource',
         query: {method:'GET', isArray:true}
     });
 }]);
+
+services.factory('removeObservation', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/deletedObservations', {}, {
+        save: {method:'POST'}
+    });
+}]);

@@ -7,7 +7,7 @@ import os
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-#-----------------------------------------insert new employee to tablelist----------------------------------------------
+#-----------------------------------------------Process data in Staging Table-------------------------------------------
 def procRunner():
     try:
         #cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
@@ -47,6 +47,28 @@ def procRunner():
                 break
             else:
                 continue
+
+
+        cursor.close()
+
+    except:
+        print 'errors'
+    else:
+        cnx.close()
+
+
+#--------------------------------------------------soft delete observation----------------------------------------------
+def deleteObservation(id):
+    try:
+        #cnx = pyodbc.connect('Driver={SQL Server};Server=SAMSUNG-PC\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=SAMSUNG-PC\SAMSUNG;pwd=')
+        cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+        cursor = cnx.cursor()
+
+        id=str(id)
+        removeObservation = ("update stg.stagingObservations set active=1, status='deleted' where id="+id)
+        print removeObservation
+        cursor.execute(removeObservation)
+        cnx.commit()
 
 
         cursor.close()

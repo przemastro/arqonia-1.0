@@ -6,12 +6,13 @@
 
     <script type="text/ng-template" id="newModalContent.html">
     <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h3 class="modal-title">New observation</h3>
     </div>
         <table class="main">
             <tr>
                     <td style="width:60%;vertical-align: top">
-                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
                         <div class="modal-body">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Star Name</label>
@@ -64,7 +65,7 @@
                         </div>
                         <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
                             <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </form>
                 </td>
@@ -80,11 +81,12 @@
         <table class="main">
             <tr>
                 <td style="width:60%;vertical-align: top">
-                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                    <form name="removeForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="removeForm.$valid && removeRow()">
                         <div class="modal-body">
+                            <td>{{name}} Record will be soft deleted from database. Would you like to continue?</td>
                         </div>
-                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
-                            <button type="button" ng-click="remove()" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <div class="modal-footer" style="padding-right:200px;border-top: 0px;">
+                            <button type="button" ng-click="remove($index)" class="btn btn-primary" ng-model="checked" data-dismiss="modal" ng-if="$index == removePhotometry">Yes</button>
                             <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">No</button>
                         </div>
                     </form>
@@ -95,40 +97,38 @@
 
     <script type="text/ng-template" id="editObservationModal.html">
         <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h3 class="modal-title">Observation</h3>
         </div>
         <table class="main">
-            <tr>
+            <tr ng-repeat="observation in ob" ng-if="$index == editPhotometry">
                 <td style="width:60%;vertical-align: top">
-                    <form name="restForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="restForm.$valid && addRow()">
+                    <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && addRow()">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Star Name</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" value="name" required/>
+                                    <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" required/>
                                     <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
-                                        <div ng-message="maxlength">This field is too long</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Start Date</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" required/>
+                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" required/>
                                     <div ng-messages="restForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
-                                        <div ng-message="maxlength">This field is too long</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">End Date</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" required/>
+                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" required/>
                                     <div ng-messages="restForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
-                                        <div ng-message="maxlength">This field is too long</div>
                                     </div>
                                 </div>
                             </div>
@@ -151,9 +151,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;border-bottom: 0px;">
                             <input type="submit" value="Save" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </form>
                 </td>
@@ -257,8 +257,8 @@
             <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editUPhotometry($index)"/></td>
             <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry($index)"/></td>
             <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry($index)"/></td>
-            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation()"/></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation($index)"/></td>
+            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation($index)" /></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation($index)" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
         </tr>
         <tr>
             <tfoot>
