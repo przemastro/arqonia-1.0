@@ -207,10 +207,20 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         return $scope.data;
       });
       $log.debug($scope.labels);
+              $scope.colours = [{ // default
+                "fillColor": "rgba(0, 0, 0, 0)",
+                "strokeColor": "rgba(0, 0, 0, 0)",
+                "pointColor": "rgba(220,220,220,1)",
+                "pointStrokeColor": "#ffffff",
+                "pointHighlightFill": "#ffffff",
+                "pointHighlightStroke": "rgba(151,187,205,0.8)"}];
+              $scope.options = [{"showHorizontalLines" : "false",
+                                 "scaleGridLineColor" : "rgba(0,0,0,0)"}];
               $scope.series = ['Series A'];
               $scope.onClick = function (points, evt) {
                 console.log(points, evt);
               };
+
     }]);
 
     astroApp.controller("hrCtrl", function ($scope)

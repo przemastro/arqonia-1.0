@@ -4,8 +4,8 @@ import ast
 
 try:
 
-    #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-    cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+    cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
+    #cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
     cursor = cnx.cursor()
 
 
