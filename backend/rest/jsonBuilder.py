@@ -4,8 +4,8 @@ import ast
 
 try:
 
-    cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-    #cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+    #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
+    cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
     cursor = cnx.cursor()
 
 
@@ -144,13 +144,41 @@ try:
     cursor.execute(get_LastLoadEndDate)
     LastLoadEndDate = cursor.fetchone()
     LastLoadEndDate = LastLoadEndDate[0]
+    print LastLoadEndDate
 
 
     lastLoad = [{'observationId': LastLoadObservationId, 'starName': LastLoadStarName, 'startDate': LastLoadStartDate, 'endDate': LastLoadEndDate}]
 
+    print lastLoad
+
+#------------------------------------------------get Observations counts------------------------------------------------
+
+    get_ObservationsDates = ("select cast(StartDate as varchar) from bi.observationsSorted group by StartDate order by CONVERT(DateTime, StartDate ,101) asc")
+    get_ObservationsCounts = ("select count(distinct cast(id as varchar)) as data from bi.observationsSorted group by StartDate order by CONVERT(DateTime, StartDate ,101) asc")
+
+
+    cursor.execute(get_ObservationsCounts)
+    ObservationsCounts = cursor.fetchall()
+    print 'test'
+    print ObservationsCounts
+    ObservationsCounts = [oc[0] for oc in ObservationsCounts]
+    print ObservationsCounts
+    #ObservationsCounts = ', '.join(str(e) for e in ObservationsCounts)
+    print ObservationsCounts
+
+
+
+    cursor.execute(get_ObservationsDates)
+    ObservationsDates = cursor.fetchall()
+    ObservationsDates = [od[0] for od in ObservationsDates]
+    #ObservationsDates = ans = ', '.join(ObservationsDates)
+
+    observationsDiagram = [{'data': ObservationsCounts, 'dates': ObservationsDates}]
+
+    print observationsDiagram
     cursor.close()
 
-    print lastLoad
+
 except:
         print 'errors'
 else:
@@ -161,3 +189,6 @@ def json_data():
 
 def json_load():
     json_load.jsonLastLoad = lastLoad
+
+def json_diagram():
+    json_diagram.jsonDiagram = observationsDiagram

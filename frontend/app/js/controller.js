@@ -15,10 +15,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations',
-                                     function($scope, $routeParams, Observations) {
+    astroApp.controller('tableCtrl', ['$rootScope', '$log', '$routeParams', 'getObservations',
+                                     function($scope, $log, $routeParams, Observations) {
        $scope.displayedObservations = [];
        $scope.observations = Observations.query();
+       $log.debug($scope.observations);
 
        $scope.toggleAnimation = function () {
        $scope.animationsEnabled = !$scope.animationsEnabled;
@@ -192,17 +193,25 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-	astroApp.controller("observationsCtrl", function ($scope)
+	astroApp.controller("observationsCtrl", ['$scope', '$log', 'getObservationsDiagram', function ($scope, $log, ObservationsDiagram)
      {
-      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-      $scope.series = ['Series A'];
-      $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40]
-      ];
-      $scope.onClick = function (points, evt) {
-        console.log(points, evt);
-      };
-    });
+
+      $scope.labels = ObservationsDiagram.query(function(observationsDiagram) {
+        $scope.labels = observationsDiagram[0].dates;
+        $log.debug($scope.labels);
+        return $scope.labels;
+      });
+      $scope.data = ObservationsDiagram.query(function(observationsDiagram) {
+        $scope.data = [observationsDiagram[0].data];
+        $log.debug($scope.data);
+        return $scope.data;
+      });
+      $log.debug($scope.labels);
+              $scope.series = ['Series A'];
+              $scope.onClick = function (points, evt) {
+                console.log(points, evt);
+              };
+    }]);
 
     astroApp.controller("hrCtrl", function ($scope)
      {
