@@ -16,6 +16,13 @@ services.factory('getObservationsDiagram', ['$resource',
     });
 }]);
 
+services.factory('getObservationsHRDiagram', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/observationsHRDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
 services.factory('postObservation', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {

@@ -4,8 +4,8 @@ import ast
 
 try:
 
-    cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-    #cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+    #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
+    cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
     cursor = cnx.cursor()
 
 
@@ -159,12 +159,8 @@ try:
 
     cursor.execute(get_ObservationsCounts)
     ObservationsCounts = cursor.fetchall()
-    print 'test'
-    print ObservationsCounts
     ObservationsCounts = [oc[0] for oc in ObservationsCounts]
-    print ObservationsCounts
     #ObservationsCounts = ', '.join(str(e) for e in ObservationsCounts)
-    print ObservationsCounts
 
 
 
@@ -176,6 +172,36 @@ try:
     observationsDiagram = [{'data': ObservationsCounts, 'dates': ObservationsDates}]
 
     print observationsDiagram
+
+
+#------------------------------------------------get Observations for HR------------------------------------------------
+
+    get_BObservations = ("select cast(avg(cast(cast(rtrim(ltrim(bPhotometry)) as varchar(10)) as decimal(18,10))) as varchar) as bAverage from bi.bPhotometrySorted group by StarName")
+    get_VObservations = ("select cast(avg(cast(cast(rtrim(ltrim(vPhotometry)) as varchar(10)) as decimal(18,10))) as varchar) as vAverage from bi.vPhotometrySorted group by StarName")
+    get_BVObservationsDifference = ("select BVDifference from bi.hrDiagramAvg")
+    get_StarNames = ("select StarName from bi.hrDiagramAvg")
+
+    cursor.execute(get_VObservations)
+    VObservations = cursor.fetchall()
+    VObservations = [oc[0] for oc in VObservations]
+
+    cursor.execute(get_BVObservationsDifference)
+    BVObservationsDifference = cursor.fetchall()
+    BVObservationsDifference = [od[0] for od in BVObservationsDifference]
+
+    cursor.execute(get_StarNames)
+    StarNames = cursor.fetchall()
+    StarNames = [od[0] for od in StarNames]
+
+    print 'test'
+    print StarNames
+
+
+    observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations, 'starNames': StarNames}]
+
+    print observationsHRDiagram
+
+
     cursor.close()
 
 
@@ -192,3 +218,6 @@ def json_load():
 
 def json_diagram():
     json_diagram.jsonDiagram = observationsDiagram
+
+def json_hrdiagram():
+    json_hrdiagram.jsonHRDiagram = observationsHRDiagram

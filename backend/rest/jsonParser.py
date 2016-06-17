@@ -8,8 +8,8 @@ sys.setdefaultencoding('utf8')
 #-----------------------------------------insert new observation to tablelist-------------------------------------------
 def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry):
  try:
-     cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-     #cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+     #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
+     cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
      cursor = cnx.cursor()
 
      get_lastId = ("select top 1 id from stg.StagingObservations order by id desc")
@@ -48,8 +48,8 @@ def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry)
 #---------------------------------------------Update existing observation----------------------------------------------
 def updateObservation(id, name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry):
     try:
-        cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-        #cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+        #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
+        cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
         cursor = cnx.cursor()
 
 

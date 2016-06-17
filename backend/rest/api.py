@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_restful import reqparse, Api, Resource, abort
-from jsonBuilder import json_data, json_load, json_diagram
+from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
 from jsonParser import json_parser, updateObservation
 from procRunner import procRunner, deleteObservation
 
@@ -11,17 +11,20 @@ api = Api(app)
 json_data()
 json_load()
 json_diagram()
+json_hrdiagram()
 
 Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
 ObservationsDiagram = json_diagram.jsonDiagram
+ObservationsHRDiagram = json_hrdiagram.jsonHRDiagram
 
 #print Observations
 #print LastLoad
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
-        'observationsDiagram': ObservationsDiagram
+        'observationsDiagram': ObservationsDiagram,
+        'observationsHRDiagram': ObservationsHRDiagram
         }
 
 
@@ -73,6 +76,10 @@ class RestDeleteObservation(Resource):
         return 201
 
 
+class RestObservationHRDiagram(Resource):
+    def get(self):
+        return REST["observationsHRDiagram"]
+
 class RestObservationDiagram(Resource):
     def get(self):
         return REST["observationsDiagram"]
@@ -83,6 +90,7 @@ api.add_resource(RestObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationDiagram, '/observationsDiagram')
+api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
 
 # Handling COR requests
 @app.after_request

@@ -2,7 +2,7 @@
 
 
 var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
-'angularjs-datetime-picker', 'angularModalService', 'chart.js', 'angularSpinner']);
+'angularjs-datetime-picker', 'angularModalService', 'chart.js', 'angularSpinner', 'nvd3']);
 
     astroApp.config(['$httpProvider', function ($httpProvider) {
                 $httpProvider.defaults.useXDomain = true;
@@ -198,15 +198,30 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.labels = ObservationsDiagram.query(function(observationsDiagram) {
         $scope.labels = observationsDiagram[0].dates;
-        $log.debug($scope.labels);
         return $scope.labels;
       });
       $scope.data = ObservationsDiagram.query(function(observationsDiagram) {
         $scope.data = [observationsDiagram[0].data];
-        $log.debug($scope.data);
         return $scope.data;
       });
       $log.debug($scope.labels);
+              $scope.series = ['Series A'];
+              $scope.onClick = function (points, evt) {
+                console.log(points, evt);
+              };
+
+    }]);
+
+    astroApp.controller("hrCtrl", ['$scope', '$log', 'getObservationsHRDiagram', function ($scope, $log, ObservationsHRDiagram)
+     {
+      $scope.labels = ObservationsHRDiagram.query(function(observationsHRDiagram) {
+        $scope.labels = observationsHRDiagram[0].bvObservationsDifference;
+        return $scope.labels;
+      });
+      $scope.data = ObservationsHRDiagram.query(function(observationsHRDiagram) {
+        $scope.data = [observationsHRDiagram[0].vObservations];
+        return $scope.data;
+      });
               $scope.colours = [{ // default
                 "fillColor": "rgba(0, 0, 0, 0)",
                 "strokeColor": "rgba(0, 0, 0, 0)",
@@ -216,24 +231,94 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 "pointHighlightStroke": "rgba(151,187,205,0.8)"}];
               $scope.options = [{"showHorizontalLines" : "false",
                                  "scaleGridLineColor" : "rgba(0,0,0,0)"}];
-              $scope.series = ['Series A'];
-              $scope.onClick = function (points, evt) {
-                console.log(points, evt);
-              };
-
-    }]);
-
-    astroApp.controller("hrCtrl", function ($scope)
-     {
-      $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-      $scope.series = ['Series A'];
-      $scope.data = [
-        [65, 59, 80, 81, 56, 55, 40]
-      ];
       $scope.onClick = function (points, evt) {
         console.log(points, evt);
       };
-    });
+    }]);
+
+
+    astroApp.controller("cmdCtrl", ['$scope', '$log', 'getObservationsHRDiagram', (function ($scope, $log, ObservationsHRDiagram) {
+
+            $scope.options = {
+                       chart: {
+                           type: 'scatterChart',
+                           height: 850,
+                           width: 750,
+                           color: d3.scale.category10().range(),
+                           scatter: {
+                               onlyCircles: false
+                           },
+                           showLegend: false,
+                           showDistX: false,
+                           showDistY: false,
+                           yDomain: [0.5,-0.5],
+                           xDomain: [0.5,-0.5],
+                           tooltipContent: function(key) {
+                               return '<h3>' + key + '</h3>';
+                           },
+                           duration: 350,
+                           xAxis: {
+                               axisLabel: 'B - V',
+                               tickFormat: function(d){
+                                   return d3.format('.02f')(d);
+                               },
+                               ticks: 0
+                           },
+                           yAxis: {
+                               axisLabel: 'V',
+                               tickFormat: function(d){
+                                   return d3.format('.02f')(d);
+                               },
+                               axisLabelDistance: -5,
+                               ticks: 0
+                           },
+                           zoom: {
+                               enabled: true,
+                               scaleExtent: [1, 10],
+                               useFixedDomain: false,
+                               useNiceScale: false,
+                               horizontalOff: false,
+                               verticalOff: false,
+                               unzoomEventType: 'dblclick.zoom'
+                           }
+                       }
+                   };
+
+                               $scope.data = generateData();
+
+
+                           function generateData() {
+                                                          var data = [],
+                                                              shapes = ['circle'],
+                                                              random = d3.random.normal();
+                                                         $scope.observations = ObservationsHRDiagram.query(function(observationsHRDiagram) {
+                                                           var i = 0
+                                                           $scope.starNames = observationsHRDiagram[0].starNames;
+                                                           $scope.bvObservationsDifference = observationsHRDiagram[0].bvObservationsDifference;
+                                                           $scope.vObservations = observationsHRDiagram[0].vObservations;
+                                                                    angular.forEach($scope.starNames, function(value, index){
+                                                                            $log.debug(value);
+                                                                                  data.push({
+                                                                                      key: value,
+                                                                                      values: []
+                                                                                  });
+
+                                                                                  data[i].values.push({
+                                                                                      x: $scope.bvObservationsDifference[i]
+                                                                                      , y: $scope.vObservations[i]
+                                                                                      , size: 2
+                                                                                      , shape: shapes[1]
+                                                                                  });
+                                                                                  i++;
+                                                                     })
+                                                           return $scope.starNames, data;
+                                                         });
+                               return data;
+                           }
+           $scope.exampleData = $scope.data;
+                                   })]);
+
+
 
 //--------------------------------------------------------Admin Panel---------------------------------------------------
 
