@@ -13,7 +13,7 @@
             <tr>
                     <td style="width:60%;vertical-align: top">
                     <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
-                        <div class="modal-body">
+                        <div class="modal-body" style="margin-top:-70px">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Star Name</label>
                             <div class="col-md-4">
@@ -76,18 +76,19 @@
 
     <script type="text/ng-template" id="removeObservationModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">Remove record?</h3>
+            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">Remove observation</h3>
         </div>
         <table class="main">
             <tr>
                 <td style="width:60%;vertical-align: top">
-                    <form name="removeForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="removeForm.$valid && removeRow()">
-                        <div class="modal-body">
-                            <td>{{name}} Record will be soft deleted from database. Would you like to continue?</td>
+                    <form name="removeForm" class="form-horizontal" role="form" style="width:100%;margin-left:0px;" novalidate ng-submit="removeForm.$valid && removeRow()">
+                        <div class="modal-body" style="margin-top:-70px">
+                            <div>Record will be soft deleted from database. Would you like to continue?</div>
                         </div>
-                        <div class="modal-footer" style="padding-right:200px;border-top: 0px;">
+                        <div class="modal-footer" style="padding-right:100px;margin-top:0px;border-top: 0px;">
                             <button type="button" ng-click="remove($index)" class="btn btn-primary" ng-model="checked" data-dismiss="modal" ng-if="$index == removePhotometry">Yes</button>
-                            <button type="button" ng-click="cancel()" class="btn btn-primary" data-dismiss="modal">No</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </form>
                 </td>
@@ -104,7 +105,7 @@
             <tr ng-repeat="observation in ob" ng-if="$index == editPhotometry">
                 <td style="width:60%;vertical-align: top">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
-                        <div class="modal-body">
+                        <div class="modal-body" style="margin-top:-70px">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Star Name</label>
                                 <div class="col-md-4">

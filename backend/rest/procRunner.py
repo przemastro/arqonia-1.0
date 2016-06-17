@@ -3,6 +3,11 @@ import re
 import pyodbc
 import subprocess
 import os
+import ConfigParser
+
+config = ConfigParser.RawConfigParser()
+config.read('../resources/ConfigFile.properties')
+dbAddress = config.get('DatabaseSection', 'database.address');
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -10,10 +15,8 @@ sys.setdefaultencoding('utf8')
 #-----------------------------------------------Process data in Staging Table-------------------------------------------
 def procRunner():
     try:
-        #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-        cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+        cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
-
 
         get_Ids = ("select distinct(Id) from stg.StagingObservations where (status='new' and active=1) or (status='deleted' and active=1) order by id desc")
         cursor.execute(get_Ids)
@@ -60,8 +63,7 @@ def procRunner():
 #--------------------------------------------------soft delete observation----------------------------------------------
 def deleteObservation(id):
     try:
-        #cnx = pyodbc.connect('Driver={SQL Server};Server=DESKTOP-4UP85UJ\SQLEXPRESS;Database=astro;Trusted_Connection=yes;uid=DESKTOP-4UP85UJ\Przemek;pwd=')
-        cnx = pyodbc.connect('Driver={SQL Server};Server=GPLPL0041\SQLEXPRESS;Database=Astro;Trusted_Connection=yes;uid=GFT\pwji;pwd=')
+        cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
         id=str(id)
