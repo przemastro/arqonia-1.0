@@ -13,8 +13,9 @@
             chart-legend="true" chart-click="onClick" chart-hover="onHover" chart-series="series" chart-colours="colours" chart-options="options">
     </canvas>
 </div>-->
-<div align="center" ng-controller="cmdCtrl" >
-    <nvd3 options="options" data="exampleData"></nvd3>
+<div id="chart" align="center" ng-controller="cmdCtrl" class="with-3d-shadow with-transitions" ng-class="{disabled: params.disabled}" style="overflow-x:auto;">
+    <div style="text-align: center;" class="title h4">Color-Magnitude Diagram </div>
+    <nvd3  options="options" data="exampleData"></nvd3>
 </div>
 
 </body>

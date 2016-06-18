@@ -239,20 +239,32 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     astroApp.controller("cmdCtrl", ['$scope', '$log', 'getObservationsHRDiagram', (function ($scope, $log, ObservationsHRDiagram) {
 
+
+     ObservationsHRDiagram.query(function(observationsHRDiagram) {
+         $scope.XMax = observationsHRDiagram[0].XMax;
+         $scope.XMin = observationsHRDiagram[0].XMin;
+         $scope.YMax = observationsHRDiagram[0].YMax;
+         $scope.YMin = observationsHRDiagram[0].YMin;
+         $log.debug($scope.XMax);
+
+
+            var myColors = ["#000000"];
             $scope.options = {
                        chart: {
                            type: 'scatterChart',
-                           height: 850,
-                           width: 750,
-                           color: d3.scale.category10().range(),
+                           height: 550,
+                           width: 600,
+                           color: d3.scale.category10().range(myColors),
                            scatter: {
-                               onlyCircles: false
+                               onlyCircles: true
                            },
                            showLegend: false,
                            showDistX: false,
                            showDistY: false,
-                           yDomain: [0.5,-0.5],
-                           xDomain: [0.5,-0.5],
+                           showXAxis: true,
+                           showYAxis: true,
+                           yDomain: [$scope.YMax,$scope.YMin],
+                           xDomain: [$scope.XMin,$scope.XMax],
                            tooltipContent: function(key) {
                                return '<h3>' + key + '</h3>';
                            },
@@ -262,7 +274,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                tickFormat: function(d){
                                    return d3.format('.02f')(d);
                                },
-                               ticks: 0
+                               ticks: 5
                            },
                            yAxis: {
                                axisLabel: 'V',
@@ -270,7 +282,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                    return d3.format('.02f')(d);
                                },
                                axisLabelDistance: -5,
-                               ticks: 0
+                               ticks: 10
                            },
                            zoom: {
                                enabled: true,
@@ -283,7 +295,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                            }
                        }
                    };
-
+                   return $scope.options
+               });
                                $scope.data = generateData();
 
 

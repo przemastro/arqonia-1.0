@@ -186,6 +186,12 @@ try:
     get_BVObservationsDifference = ("select BVDifference from bi.hrDiagramAvg")
     get_StarNames = ("select StarName from bi.hrDiagramAvg")
 
+    get_XMax = ("select cast((max(cast(cast(rtrim(ltrim(BVDifference)) as varchar(10)) as decimal(18,10)))) as varchar) as bvDifferenceMax from bi.hrDiagramAvg")
+    get_XMin = ("select cast((min(cast(cast(rtrim(ltrim(BVDifference)) as varchar(10)) as decimal(18,10)))) as varchar) as bvDifferenceMin from bi.hrDiagramAvg")
+    get_YMax = ("select cast((max(cast(cast(rtrim(ltrim(vPhotometry)) as varchar(10)) as decimal(18,10)))) as varchar) as vPhotometryMax from bi.vPhotometrySorted")
+    get_YMin = ("select cast((min(cast(cast(rtrim(ltrim(vPhotometry)) as varchar(10)) as decimal(18,10)))) as varchar) as vPhotometryMin from bi.vPhotometrySorted")
+
+
     cursor.execute(get_VObservations)
     VObservations = cursor.fetchall()
     VObservations = [oc[0] for oc in VObservations]
@@ -198,11 +204,27 @@ try:
     StarNames = cursor.fetchall()
     StarNames = [od[0] for od in StarNames]
 
-    print 'test'
+    cursor.execute(get_XMax)
+    XMax = cursor.fetchone()
+    XMax = XMax[0]
+
+    cursor.execute(get_XMin)
+    XMin = cursor.fetchone()
+    XMin = XMin[0]
+
+    cursor.execute(get_YMax)
+    YMax = cursor.fetchone()
+    YMax = YMax[0]
+
+    cursor.execute(get_YMin)
+    YMin = cursor.fetchone()
+    YMin = YMin[0]
+
     print StarNames
 
 
-    observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations, 'starNames': StarNames}]
+    observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations, 'starNames': StarNames,
+                              'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
 
     print observationsHRDiagram
 
