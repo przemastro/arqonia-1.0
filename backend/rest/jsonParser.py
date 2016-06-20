@@ -26,6 +26,7 @@ def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry)
      else:
          lastId = lastId[0] + 1
 
+
      lastId = str(lastId)
      name = str(name)
      startDate = str(startDate)
@@ -33,9 +34,25 @@ def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry)
      uPhotometry = str(uPhotometry)
      vPhotometry = str(vPhotometry)
      bPhotometry = str(bPhotometry)
+     insert_observation = ''
 
-     insert_observation = ("Insert into stg.stagingObservations (id, RowId, StarName, StartDate, EndDate, uPhotometry, uPhotometryTime, vPhotometry, vPhotometryTime, bPhotometry, bPhotometryTime, Status, Active) "
-                           "values ("+lastId+", 1, '"+name+"', '"+startDate+"', '"+endDate+"', '0.259254028383', '2721.7367', '0.259254028383', '2721.7367', '0.259254028383', '2721.7367', 'new', 1)")
+     getIds = 3
+     for counter in range(1,getIds):
+        print counter
+        if counter < getIds-1:
+           counter = str(counter)
+           observation = "SELECT "+lastId+","+counter+",'"+name+"','"+startDate+"','"+endDate+"',2720.81478,-6.68,2720.81478,-6.44,2720.81478,-6.14,'new',1 UNION ALL "
+           insert_observation = insert_observation + observation
+        else:
+           counter = str(counter)
+           observation = "SELECT "+lastId+","+counter+",'"+name+"','"+startDate+"','"+endDate+"',2720.81478,-6.68,2720.81478,-6.44,2720.81478,-6.14,'new',1"
+           insert_observation = insert_observation + observation
+
+
+
+     insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
+                          "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
+                          "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
 
      print insert_observation
 
