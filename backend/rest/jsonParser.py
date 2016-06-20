@@ -12,7 +12,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 #-----------------------------------------insert new observation to tablelist-------------------------------------------
-def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry):
+def json_parser(name, startDate, endDate, uFileName, vPhotometry, bPhotometry):
  try:
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
@@ -26,6 +26,8 @@ def json_parser(name, startDate, endDate, uPhotometry, vPhotometry, bPhotometry)
      else:
          lastId = lastId[0] + 1
 
+     print 'uFileName'
+     print uFileName
 
      lastId = str(lastId)
      name = str(name)

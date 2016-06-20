@@ -37,7 +37,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('name', type=str)
 parser.add_argument('startDate', type=str)
 parser.add_argument('endDate', type=str)
-parser.add_argument('uPhotometry', type=str)
+parser.add_argument('uFileName', type=str)
 parser.add_argument('vPhotometry', type=str)
 parser.add_argument('bPhotometry', type=str)
 parser.add_argument('id', type=str)
@@ -51,12 +51,12 @@ class Rest(Resource):
 class RestObservation(Resource):
     def post(self):
         args = parser.parse_args()
-        json_parser(args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
+        json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'], args['vPhotometry'], args['bPhotometry'])
         return 201
 
     def put(self):
         args = parser.parse_args()
-        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uPhotometry'], args['vPhotometry'], args['bPhotometry'])
+        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'], args['vPhotometry'], args['bPhotometry'])
         return 201
 
 

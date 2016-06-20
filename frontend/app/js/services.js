@@ -2,6 +2,21 @@
 
 var services = angular.module('astroApp.services', ['ngResource']);
 
+/*services.factory('httpPostFactory', function($http) {
+  return function(file, data, callback) {
+    $http({
+      url: file,
+      method: "POST",
+      data: data,
+      headers: {
+        'Content-Type': undefined
+      }
+    }).success(function(response) {
+      callback(response);
+    });
+  };
+});*/
+
 services.factory('getObservations', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {

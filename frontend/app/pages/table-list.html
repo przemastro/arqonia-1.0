@@ -1,6 +1,14 @@
 
 <body ng-app = "testApp" ng-controller="tableListCtrl">
-
+<div>
+    <input data-my-Directive type="file" name="file">
+    <p>
+        post request with this data:
+    </p>
+                              <pre ng-repeat="(key, value) in fileLog">
+                              {{key}} {{ value }}
+                              </pre>
+</div>
 <div ng-controller="tableCtrl">
     <div ng-controller="ModalCtrl">
 
@@ -47,9 +55,10 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">U Photometry</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="uPhotometry" ng-model="uPhotometry" ng-maxlength="46"/>
+                                <input type="file" class="btn btn-primary" name="uFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)" required/>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <label class="col-md-4 control-label">V Photometry</label>
                             <div class="col-md-4">
@@ -238,7 +247,9 @@
             </div>
         </script>
 
-    <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
+
+
+        <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
             <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()"/></td>
             <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
