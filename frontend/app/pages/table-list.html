@@ -1,6 +1,6 @@
 
 <body ng-app = "testApp" ng-controller="tableListCtrl">
-<div>
+<!--<div>
     <input data-my-Directive type="file" name="file">
     <p>
         post request with this data:
@@ -8,7 +8,7 @@
                               <pre ng-repeat="(key, value) in fileLog">
                               {{key}} {{ value }}
                               </pre>
-</div>
+</div>-->
 <div ng-controller="tableCtrl">
     <div ng-controller="ModalCtrl">
 
@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">U Photometry</label>
                             <div class="col-md-4">
-                                <input type="file" class="btn btn-primary" name="uFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)" required/>
+                                <input type="file" class="btn btn-primary" file-model = "myFile" name="uFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)" required/>
                             </div>
                         </div>
 

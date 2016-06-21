@@ -108,20 +108,41 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         }
     }]);
 
-    astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', function ($scope, $log, $uibModalInstance, NewObservation) {
+    astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', function ($scope, $log, $uibModalInstance, NewObservation, fileUpload) {
       $log.debug($scope.name);
 
       $scope.setFile = function(element) {
                         $scope.$apply(function($scope) {
+
+                        var formData = new FormData();
+                            formData.append('uFileName', element.files[0]);
                             $scope.fileName = element.files[0];
                             $scope.fileType = element.files[0];
-                        });
 
+                            var fileObject = element.files[0];
+                                    $scope.fileLog = {
+                                      'lastModified': fileObject.lastModified,
+                                      'lastModifiedDate': fileObject.lastModifiedDate,
+                                      'name': fileObject.name,
+                                      'size': fileObject.size,
+                                      'type': fileObject.type,
+                                      'path': fileObject.path
+                                    };
+
+                        });
                 };
 
       $scope.addRow = function(){
+          var file = $scope.myFile;
+
+          console.log('file is ' );
+          console.dir(file.name);
+
+
+          var uploadUrl = "http://localhost:5000/fileUpload";
+          fileUpload.uploadFileToUrl(file, uploadUrl);
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
-   		                     uFileName:$scope.uFileName,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
+   		                     uName:$scope.name,uFileName:file.name,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
    		  $scope.message = response.message;
    		   });
    		   $log.debug($scope.name);

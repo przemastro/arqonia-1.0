@@ -1,25 +1,16 @@
 
-astroApp.directive('myDirective', function() {
-  return {
-    restrict: 'A',
-    link: function(scope, element, attr) {
-      element.bind('change', function() {
-        var formData = new FormData();
-        formData.append('file', element[0].files[0]);
+astroApp.directive('fileModel', ['$parse', function ($parse) {
+                       return {
+                          restrict: 'A',
+                          link: function(scope, element, attrs) {
+                             var model = $parse(attrs.fileModel);
+                             var modelSetter = model.assign;
 
-        // optional front-end logging
-        var fileObject = element[0].files[0];
-        scope.fileLog = {
-          'lastModified': fileObject.lastModified,
-          'lastModifiedDate': fileObject.lastModifiedDate,
-          'name': fileObject.name,
-          'size': fileObject.size,
-          'type': fileObject.type
-        };
-        scope.$apply();
-
-      });
-
-    }
-  };
-});
+                             element.bind('change', function(){
+                                scope.$apply(function(){
+                                   modelSetter(scope, element[0].files[0]);
+                                });
+                             });
+                          }
+                       };
+                    }]);

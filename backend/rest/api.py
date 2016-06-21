@@ -1,11 +1,13 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
 from jsonParser import json_parser, updateObservation
 from procRunner import procRunner, deleteObservation
+import os
 
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads/'
 api = Api(app)
 
 json_data()
@@ -37,6 +39,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('name', type=str)
 parser.add_argument('startDate', type=str)
 parser.add_argument('endDate', type=str)
+parser.add_argument('uName', type=str)
 parser.add_argument('uFileName', type=str)
 parser.add_argument('vPhotometry', type=str)
 parser.add_argument('bPhotometry', type=str)
@@ -51,7 +54,7 @@ class Rest(Resource):
 class RestObservation(Resource):
     def post(self):
         args = parser.parse_args()
-        json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'], args['vPhotometry'], args['bPhotometry'])
+        json_parser(args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vPhotometry'], args['bPhotometry'])
         return 201
 
     def put(self):
@@ -84,6 +87,15 @@ class RestObservationDiagram(Resource):
     def get(self):
         return REST["observationsDiagram"]
 
+class RestFileUpload(Resource):
+    def post(self):
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 201
+
+
+
 
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
@@ -91,6 +103,7 @@ api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationDiagram, '/observationsDiagram')
 api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
+api.add_resource(RestFileUpload, '/fileUpload')
 
 # Handling COR requests
 @app.after_request

@@ -11,11 +11,12 @@ dbAddress = config.get('DatabaseSection', 'database.address');
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-#-----------------------------------------insert new observation to tablelist-------------------------------------------
-def json_parser(name, startDate, endDate, uFileName, vPhotometry, bPhotometry):
+#----------------------------------------------insert new observation---------------------------------------------------
+def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotometry):
  try:
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
+
 
      get_lastId = ("select top 1 id from stg.StagingObservations order by id desc")
      cursor.execute(get_lastId)
@@ -26,16 +27,31 @@ def json_parser(name, startDate, endDate, uFileName, vPhotometry, bPhotometry):
      else:
          lastId = lastId[0] + 1
 
-     print 'uFileName'
-     print uFileName
-
      lastId = str(lastId)
      name = str(name)
      startDate = str(startDate)
      endDate = str(endDate)
-     uPhotometry = str(uPhotometry)
      vPhotometry = str(vPhotometry)
      bPhotometry = str(bPhotometry)
+
+
+  #--insert to data.fileNames
+     print uName
+     uName = str(uName)
+     uFileName = str(uFileName)
+
+     insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
+
+     print insert_uFileName
+
+     cursor.execute(insert_uFileName)
+     cnx.commit()
+
+  #---insert to stg.stagingObservations
+     #--open File
+
+
+
      insert_observation = ''
 
      getIds = 3
