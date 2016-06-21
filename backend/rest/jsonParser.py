@@ -2,6 +2,7 @@ import sys
 import re
 import pyodbc
 import ConfigParser
+import csv
 
 
 config = ConfigParser.RawConfigParser()
@@ -48,7 +49,12 @@ def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotom
      cnx.commit()
 
   #---insert to stg.stagingObservations
-     #--open File
+     #--read file
+     print 'testowo'
+     with open('uploads/'+uFileName, 'rb') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for row in spamreader:
+                print row[0] + '' + row[1]
 
 
 
@@ -56,7 +62,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotom
 
      getIds = 3
      for counter in range(1,getIds):
-        print counter
         if counter < getIds-1:
            counter = str(counter)
            observation = "SELECT "+lastId+","+counter+",'"+name+"','"+startDate+"','"+endDate+"',2720.81478,-6.68,2720.81478,-6.44,2720.81478,-6.14,'new',1 UNION ALL "
