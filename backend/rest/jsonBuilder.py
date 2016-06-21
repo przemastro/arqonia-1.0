@@ -18,14 +18,14 @@ try:
     cursor.execute(get_Ids)
     getIds = cursor.fetchall()
     getIds = [g[0] for g in getIds]
-    print getIds
+    #print getIds
 
     controller = ''
     count = ''
 
     for counter in getIds:
        id=str(counter)
-       print id
+       #print id
        get_objectName = ("select distinct(StarName) from bi.observationsSorted where id="+id)
        get_StartDate = ("select top 1 StartDate from bi.observationsSorted where id="+id)
        get_EndDate = ("select top 1 EndDate from bi.observationsSorted where id="+id)
@@ -176,7 +176,7 @@ try:
 
     observationsDiagram = [{'data': ObservationsCounts, 'dates': ObservationsDates}]
 
-    print observationsDiagram
+    #print observationsDiagram
 
 
 #------------------------------------------------get Observations for HR------------------------------------------------
@@ -220,13 +220,13 @@ try:
     YMin = cursor.fetchone()
     YMin = YMin[0]
 
-    print StarNames
+    #print StarNames
 
 
     observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations, 'starNames': StarNames,
                               'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
 
-    print observationsHRDiagram
+    #print observationsHRDiagram
 
 
     cursor.close()

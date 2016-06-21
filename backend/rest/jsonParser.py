@@ -3,6 +3,7 @@ import re
 import pyodbc
 import ConfigParser
 import csv
+import pandas
 
 
 config = ConfigParser.RawConfigParser()
@@ -50,25 +51,35 @@ def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotom
 
   #---insert to stg.stagingObservations
      #--read file
-     print 'testowo'
-     with open('uploads/'+uFileName, 'rb') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        for row in spamreader:
-                print row[0] + '' + row[1]
+
+     data = pandas.read_csv('uploads/'+uFileName, header=None)
+     print data
+     dataRange = len(data)
+     print dataRange
+     data.columns = ["uTime", "uFlux"]
+     print(data.columns)
+     print data.uTime[0]
 
 
 
      insert_observation = ''
 
-     getIds = 3
-     for counter in range(1,getIds):
-        if counter < getIds-1:
-           counter = str(counter)
-           observation = "SELECT "+lastId+","+counter+",'"+name+"','"+startDate+"','"+endDate+"',2720.81478,-6.68,2720.81478,-6.44,2720.81478,-6.14,'new',1 UNION ALL "
+     for counter in range(0,dataRange):
+        if counter < dataRange-1:
+           i = counter
+           j = counter
+           utime = str(data.uTime[i])
+           uflux = str(data.uFlux[i])
+           j = str(counter + 1)
+           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','2720.81478','-6.44','2720.81478','-6.14','new',1 UNION ALL "
            insert_observation = insert_observation + observation
         else:
-           counter = str(counter)
-           observation = "SELECT "+lastId+","+counter+",'"+name+"','"+startDate+"','"+endDate+"',2720.81478,-6.68,2720.81478,-6.44,2720.81478,-6.14,'new',1"
+           i = counter
+           j = counter
+           utime = str(data.uTime[i])
+           uflux = str(data.uFlux[i])
+           j = str(counter + 1)
+           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','2720.81478','-6.44','2720.81478','-6.14','new',1"
            insert_observation = insert_observation + observation
 
 
