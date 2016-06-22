@@ -14,7 +14,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 #----------------------------------------------insert new observation---------------------------------------------------
-def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotometry):
+def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bName, bFileName):
  try:
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
@@ -33,15 +33,13 @@ def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotom
      name = str(name)
      startDate = str(startDate)
      endDate = str(endDate)
-     vPhotometry = str(vPhotometry)
-     bPhotometry = str(bPhotometry)
 
 
   #--insert to data.fileNames
-     print uName
+     #--uPhotometry
      uName = str(uName)
      uFileName = str(uFileName)
-
+     print uFileName
      insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
 
      print insert_uFileName
@@ -49,37 +47,83 @@ def json_parser(name, startDate, endDate, uName, uFileName, vPhotometry, bPhotom
      cursor.execute(insert_uFileName)
      cnx.commit()
 
+     #--vPhotometry
+     vName = str(vName)
+     vFileName = str(vFileName)
+     print vFileName
+     insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
+
+     print insert_vFileName
+
+     cursor.execute(insert_vFileName)
+     cnx.commit()
+
+     #--bPhotometry
+     bName = str(bName)
+     bFileName = str(bFileName)
+     print bFileName
+     insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
+
+     print insert_bFileName
+
+     cursor.execute(insert_bFileName)
+     cnx.commit()
+
   #---insert to stg.stagingObservations
-     #--read file
+     #--read ufile
+     udata = pandas.read_csv('uploads/'+uFileName, header=None)
+     print udata
+     udataRange = len(udata)
+     print udataRange
+     udata.columns = ["uTime", "uFlux"]
+     print(udata.columns)
+     print udata.uTime[0]
 
-     data = pandas.read_csv('uploads/'+uFileName, header=None)
-     print data
-     dataRange = len(data)
-     print dataRange
-     data.columns = ["uTime", "uFlux"]
-     print(data.columns)
-     print data.uTime[0]
+     #--read vfile
+     vdata = pandas.read_csv('uploads/'+vFileName, header=None)
+     print vdata
+     vdataRange = len(vdata)
+     print vdataRange
+     vdata.columns = ["vTime", "vFlux"]
+     print(vdata.columns)
+     print vdata.vTime[0]
 
+     #--read bfile
+     bdata = pandas.read_csv('uploads/'+bFileName, header=None)
+     print bdata
+     bdataRange = len(bdata)
+     print bdataRange
+     bdata.columns = ["bTime", "bFlux"]
+     print(bdata.columns)
+     print bdata.bTime[0]
 
 
      insert_observation = ''
 
-     for counter in range(0,dataRange):
-        if counter < dataRange-1:
+     for counter in range(0,udataRange):
+        if counter < udataRange-1:
            i = counter
            j = counter
-           utime = str(data.uTime[i])
-           uflux = str(data.uFlux[i])
+           utime = str(udata.uTime[i])
+           uflux = str(udata.uFlux[i])
+           vtime = str(vdata.vTime[i])
+           vflux = str(vdata.vFlux[i])
+           btime = str(bdata.bTime[i])
+           bflux = str(bdata.bFlux[i])
            j = str(counter + 1)
-           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','2720.81478','-6.44','2720.81478','-6.14','new',1 UNION ALL "
+           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','"+vtime+"','"+vflux+"','"+btime+"','"+bflux+"','new',1 UNION ALL "
            insert_observation = insert_observation + observation
         else:
            i = counter
            j = counter
-           utime = str(data.uTime[i])
-           uflux = str(data.uFlux[i])
+           utime = str(udata.uTime[i])
+           uflux = str(udata.uFlux[i])
+           vtime = str(vdata.vTime[i])
+           vflux = str(vdata.vFlux[i])
+           btime = str(bdata.bTime[i])
+           bflux = str(bdata.bFlux[i])
            j = str(counter + 1)
-           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','2720.81478','-6.44','2720.81478','-6.14','new',1"
+           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','"+vtime+"','"+vflux+"','"+btime+"','"+bflux+"','new',1"
            insert_observation = insert_observation + observation
 
 

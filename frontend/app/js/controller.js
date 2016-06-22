@@ -134,15 +134,26 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.addRow = function(){
           var file = $scope.myFile;
-
           console.log('file is ' );
           console.dir(file.name);
-
-
           var uploadUrl = "http://localhost:5000/fileUpload";
           fileUpload.uploadFileToUrl(file, uploadUrl);
+
+          var file2 = $scope.myFile2;
+          console.log('file is ' );
+          console.dir(file2.name);
+          var uploadUrl = "http://localhost:5000/fileUpload";
+          fileUpload.uploadFileToUrl(file2, uploadUrl);
+
+          var file3 = $scope.myFile3;
+          console.log('file is ' );
+          console.dir(file3.name);
+          var uploadUrl = "http://localhost:5000/fileUpload";
+          fileUpload.uploadFileToUrl(file3, uploadUrl);
+
+
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
-   		                     uName:$scope.name,uFileName:file.name,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
+   		                     uName:$scope.name,uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;
    		   });
    		   $log.debug($scope.name);
