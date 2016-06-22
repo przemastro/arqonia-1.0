@@ -43,6 +43,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        };
 
         $scope.removeObservation = function (removePhotometry) {
+           $scope.isDisabled = false;
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'removeObservationModal.html',
@@ -111,49 +112,26 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', function ($scope, $log, $uibModalInstance, NewObservation, fileUpload) {
       $log.debug($scope.name);
 
-      $scope.setFile = function(element) {
-                        $scope.$apply(function($scope) {
-
-                        var formData = new FormData();
-                            formData.append('uFileName', element.files[0]);
-                            $scope.fileName = element.files[0];
-                            $scope.fileType = element.files[0];
-
-                            var fileObject = element.files[0];
-                                    $scope.fileLog = {
-                                      'lastModified': fileObject.lastModified,
-                                      'lastModifiedDate': fileObject.lastModifiedDate,
-                                      'name': fileObject.name,
-                                      'size': fileObject.size,
-                                      'type': fileObject.type,
-                                      'path': fileObject.path
-                                    };
-
-                        });
-                };
 
       $scope.addRow = function(){
           var file = $scope.myFile;
-          console.log('file is ' );
           console.dir(file.name);
           var uploadUrl = "http://localhost:5000/fileUpload";
           fileUpload.uploadFileToUrl(file, uploadUrl);
 
           var file2 = $scope.myFile2;
-          console.log('file is ' );
           console.dir(file2.name);
           var uploadUrl = "http://localhost:5000/fileUpload";
           fileUpload.uploadFileToUrl(file2, uploadUrl);
 
           var file3 = $scope.myFile3;
-          console.log('file is ' );
           console.dir(file3.name);
           var uploadUrl = "http://localhost:5000/fileUpload";
           fileUpload.uploadFileToUrl(file3, uploadUrl);
 
 
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
-   		                     uName:$scope.name,uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
+   		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;
    		   });
    		   $log.debug($scope.name);
@@ -175,25 +153,44 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
 
       $scope.remove = function () {
-        //$scope.observations.splice(removePhotometry, 1);
         $scope.removePhotometry = removePhotometry;
         RemoveObservation.save({id:$scope.ob[removePhotometry].id}, function(response){
            $scope.message = response.message;
         });
+
         $scope.isDisabled = true;
         $uibModalInstance.dismiss();
         return false;
       };
     }]);
 
-    astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry) {
+    astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload) {
       $log.debug($scope.name);
       $scope.ob = $scope.observations;
       $scope.editPhotometry = editPhotometry;
+      $log.debug($scope.ob[editPhotometry].name);
 
       $scope.updateRow = function(){
-   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.name,startDate:$scope.ob[editPhotometry].startDate,endDate:$scope.ob[editPhotometry].endDate,
-   		                     uPhotometry:$scope.uPhotometry,vPhotometry:$scope.vPhotometry,bPhotometry:$scope.bPhotometry}, function(response){
+
+                var file = $scope.myFile;
+                console.dir(file.name);
+                var uploadUrl = "http://localhost:5000/fileUpload";
+                fileUpload.uploadFileToUrl(file, uploadUrl);
+
+               $log.debug($scope.ob[editPhotometry].name);
+                var file2 = $scope.myFile2;
+                console.dir(file2.name);
+                var uploadUrl = "http://localhost:5000/fileUpload";
+                fileUpload.uploadFileToUrl(file2, uploadUrl);
+
+                var file3 = $scope.myFile3;
+                console.dir(file3.name);
+                var uploadUrl = "http://localhost:5000/fileUpload";
+                fileUpload.uploadFileToUrl(file3, uploadUrl);
+
+   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.name,startDate:$scope.ob[editPhotometry].startDate,
+   		                            endDate:$scope.ob[editPhotometry].endDate,
+   		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;
    		   });
    		   $log.debug($scope.name);

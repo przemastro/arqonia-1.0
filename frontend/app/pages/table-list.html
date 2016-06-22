@@ -1,14 +1,6 @@
 
 <body ng-app = "testApp" ng-controller="tableListCtrl">
-<!--<div>
-    <input data-my-Directive type="file" name="file">
-    <p>
-        post request with this data:
-    </p>
-                              <pre ng-repeat="(key, value) in fileLog">
-                              {{key}} {{ value }}
-                              </pre>
-</div>-->
+
 <div ng-controller="tableCtrl">
     <div ng-controller="ModalCtrl">
 
@@ -26,7 +18,7 @@
                             <label class="col-md-4 control-label">Star Name</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" required/>
-                                <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                     <div ng-message="required">This field is required</div>
                                     <div ng-message="maxlength">This field is too long</div>
                                 </div>
@@ -36,7 +28,7 @@
                             <label class="col-md-4 control-label">Start Date</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" required/>
-                                <div ng-messages="restForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                     <div ng-message="required">This field is required</div>
                                     <div ng-message="maxlength">This field is too long</div>
                                 </div>
@@ -46,7 +38,7 @@
                             <label class="col-md-4 control-label">End Date</label>
                             <div class="col-md-4">
                                 <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" required/>
-                                <div ng-messages="restForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                     <div ng-message="required">This field is required</div>
                                     <div ng-message="maxlength">This field is too long</div>
                                 </div>
@@ -55,20 +47,20 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">U Photometry</label>
                             <div class="col-md-4">
-                                <input type="file" class="btn btn-primary" file-model = "myFile" name="uFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)"/>
+                                <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-4 control-label">V Photometry</label>
                             <div class="col-md-4">
-                                <input type="file" class="btn btn-primary" file-model = "myFile2" name="vFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)"/>
+                                <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4 control-label">B Photometry</label>
                             <div class="col-md-4">
-                                <input type="file" class="btn btn-primary" file-model = "myFile3" name="bFileName" accept="text/csv" onchange="angular.element(this).scope().setFile(this)"/>
+                                <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
                             </div>
                         </div>
                         </div>
@@ -111,33 +103,32 @@
             <h3 class="modal-title">Observation</h3>
         </div>
         <table class="main">
-            <tr ng-repeat="observation in ob" ng-if="$index == editPhotometry">
                 <td style="width:60%;vertical-align: top">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Star Name</label>
-                                <div class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
                                     <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" required/>
-                                    <div ng-messages="restForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Start Date</label>
-                                <div class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
                                     <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" required/>
-                                    <div ng-messages="restForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-messages="editForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">End Date</label>
-                                <div class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
                                     <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" required/>
-                                    <div ng-messages="restForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-messages="editForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
                                 </div>
@@ -145,19 +136,19 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">U Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="uPhotometry" ng-model="uPhotometry" ng-maxlength="46"/>
+                                    <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">V Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="vPhotometry" ng-model="vPhotometry" ng-maxlength="20"/>
+                                    <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">B Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" name="bPhotometry" ng-model="bPhotometry" />
+                                    <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +158,6 @@
                         </div>
                     </form>
                 </td>
-            </tr>
         </table>
         </div>
     </script>
@@ -270,7 +260,7 @@
             <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry($index)"/></td>
             <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry($index)"/></td>
             <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation($index)" /></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation($index)" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation($index)"  ng-disabled="isDisabled" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
         </tr>
         <tr>
             <tfoot>

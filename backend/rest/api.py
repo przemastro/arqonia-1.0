@@ -61,7 +61,7 @@ class RestObservation(Resource):
 
     def put(self):
         args = parser.parse_args()
-        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'], args['vFileName'], args['bFileName'])
+        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
         return 201
 
 
