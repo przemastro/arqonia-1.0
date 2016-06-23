@@ -68,7 +68,7 @@ Rest API consists of following modules:
     6. ConfigFile.properties
 
 
-Client consists of following pages:
+Client consists of following:
 
     1. app.css
     2. app.js
