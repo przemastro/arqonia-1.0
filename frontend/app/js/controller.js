@@ -115,19 +115,35 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.addRow = function(){
           var file = $scope.myFile;
-          console.dir(file.name);
-          var uploadUrl = "http://localhost:5000/fileUpload";
-          fileUpload.uploadFileToUrl(file, uploadUrl);
+          if(file) {
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file, uploadUrl);
+             }
+          else {
+             var file = 'No file';
+             console.dir(file.name);
+             }
 
           var file2 = $scope.myFile2;
-          console.dir(file2.name);
-          var uploadUrl = "http://localhost:5000/fileUpload";
-          fileUpload.uploadFileToUrl(file2, uploadUrl);
+          if(file2) {
+
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file2, uploadUrl);
+             }
+          else {
+             var file2 = 'No file2';
+             console.dir(file2.name);
+             }
 
           var file3 = $scope.myFile3;
-          console.dir(file3.name);
-          var uploadUrl = "http://localhost:5000/fileUpload";
-          fileUpload.uploadFileToUrl(file3, uploadUrl);
+          if(file3) {
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file3, uploadUrl);
+             }
+          else {
+             var file3 = 'No file3';
+             console.dir(file3.name);
+             }
 
 
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,

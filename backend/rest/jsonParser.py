@@ -37,105 +37,136 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
 
   #--insert to data.fileNames
      #--uPhotometry
+
      uName = str(uName)
      uFileName = str(uFileName)
-     print uFileName
-     insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
+     if uFileName != 'None':
+        print uFileName
+        insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
 
-     print insert_uFileName
+        print insert_uFileName
 
-     cursor.execute(insert_uFileName)
-     cnx.commit()
+        cursor.execute(insert_uFileName)
+        cnx.commit()
 
      #--vPhotometry
      vName = str(vName)
      vFileName = str(vFileName)
-     print vFileName
-     insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
+     if vFileName != 'None':
+        print vFileName
+        insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
 
-     print insert_vFileName
+        print insert_vFileName
 
-     cursor.execute(insert_vFileName)
-     cnx.commit()
+        cursor.execute(insert_vFileName)
+        cnx.commit()
 
      #--bPhotometry
      bName = str(bName)
      bFileName = str(bFileName)
-     print bFileName
-     insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
+     if bFileName != 'None':
+        print bFileName
+        insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
 
-     print insert_bFileName
+        print insert_bFileName
 
-     cursor.execute(insert_bFileName)
-     cnx.commit()
+        cursor.execute(insert_bFileName)
+        cnx.commit()
+
 
   #---insert to stg.stagingObservations
      #--read ufile
-     udata = pandas.read_csv('uploads/'+uFileName, header=None)
-     print udata
-     udataRange = len(udata)
-     print udataRange
-     udata.columns = ["uTime", "uFlux"]
-     print(udata.columns)
-     print udata.uTime[0]
+     udataRange = 0
+     if uFileName != 'None':
+        udata = pandas.read_csv('uploads/'+uFileName, header=None)
+        udataRange = len(udata)
+        udata.columns = ["uTime", "uFlux"]
 
      #--read vfile
-     vdata = pandas.read_csv('uploads/'+vFileName, header=None)
-     print vdata
-     vdataRange = len(vdata)
-     print vdataRange
-     vdata.columns = ["vTime", "vFlux"]
-     print(vdata.columns)
-     print vdata.vTime[0]
+     vdataRange = 0
+     if vFileName != 'None':
+        vdata = pandas.read_csv('uploads/'+vFileName, header=None)
+        vdataRange = len(vdata)
+        vdata.columns = ["vTime", "vFlux"]
 
      #--read bfile
-     bdata = pandas.read_csv('uploads/'+bFileName, header=None)
-     print bdata
-     bdataRange = len(bdata)
-     print bdataRange
-     bdata.columns = ["bTime", "bFlux"]
-     print(bdata.columns)
-     print bdata.bTime[0]
+     bdataRange = 0
+     if bFileName != 'None':
+        bdata = pandas.read_csv('uploads/'+bFileName, header=None)
+        bdataRange = len(bdata)
+        bdata.columns = ["bTime", "bFlux"]
 
+     globalRange = udataRange
+     if vdataRange>udataRange:
+         globalRange = vdataRange
+     if bdataRange>vdataRange:
+         globalRange = bdataRange
 
      insert_observation = ''
 
-     for counter in range(0,udataRange):
-        if counter < udataRange-1:
-           i = counter
-           j = counter
-           utime = str(udata.uTime[i])
-           uflux = str(udata.uFlux[i])
-           vtime = str(vdata.vTime[i])
-           vflux = str(vdata.vFlux[i])
-           btime = str(bdata.bTime[i])
-           bflux = str(bdata.bFlux[i])
-           j = str(counter + 1)
-           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','"+vtime+"','"+vflux+"','"+btime+"','"+bflux+"','new',1 UNION ALL "
-           insert_observation = insert_observation + observation
-        else:
-           i = counter
-           j = counter
-           utime = str(udata.uTime[i])
-           uflux = str(udata.uFlux[i])
-           vtime = str(vdata.vTime[i])
-           vflux = str(vdata.vFlux[i])
-           btime = str(bdata.bTime[i])
-           bflux = str(bdata.bFlux[i])
-           j = str(counter + 1)
-           observation = "SELECT "+lastId+","+j+",'"+name+"','"+startDate+"','"+endDate+"','"+utime+"','"+uflux+"','"+vtime+"','"+vflux+"','"+btime+"','"+bflux+"','new',1"
-           insert_observation = insert_observation + observation
+     if uFileName != 'None' or vFileName != 'None' or bFileName != 'None':
+        for counter in range(0,globalRange):
+           if counter < globalRange-1:
+              i = counter
+              j = counter
+              if uFileName != 'None':
+                 utime = str(udata.uTime[i])
+                 uflux = str(udata.uFlux[i])
+              else:
+                 utime = 'NULL'
+                 uflux = 'NULL'
+              if vFileName != 'None':
+                 vtime = str(vdata.vTime[i])
+                 vflux = str(vdata.vFlux[i])
+              else:
+                 vtime = 'NULL'
+                 vflux = 'NULL'
+              if bFileName != 'None':
+                 btime = str(bdata.bTime[i])
+                 bflux = str(bdata.bFlux[i])
+              else:
+                  btime = 'NULL'
+                  bflux = 'NULL'
+              j = str(counter + 1)
+              print 'testowo'
+              print uflux
+              observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
+              insert_observation = insert_observation + observation
+           else:
+              i = counter
+              j = counter
+              if uFileName != 'None':
+                  utime = str(udata.uTime[i])
+                  uflux = str(udata.uFlux[i])
+              else:
+                  utime = 'NULL'
+                  uflux = 'NULL'
+              if vFileName != 'None':
+                  vtime = str(vdata.vTime[i])
+                  vflux = str(vdata.vFlux[i])
+              else:
+                  vtime = 'NULL'
+                  vflux = 'NULL'
+              if bFileName != 'None':
+                  btime = str(bdata.bTime[i])
+                  bflux = str(bdata.bFlux[i])
+              else:
+                  btime = 'NULL'
+                  bflux = 'NULL'
+              j = str(counter + 1)
+              observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1"
+              insert_observation = insert_observation + observation
 
 
 
-     insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
-                          "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
-                          "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
+        insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
+                             "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
+                             "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
 
-     print insert_observation
+        print insert_observation
 
-     cursor.execute(insert_observation)
-     cnx.commit()
+        cursor.execute(insert_observation)
+        cnx.commit()
 
      cursor.close()
 
