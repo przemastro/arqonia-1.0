@@ -54,56 +54,70 @@ try:
        cursor.execute(get_UPhotometryFlag)
        UPhotometry = cursor.fetchone()
        UPhotometry = str(UPhotometry[0])
-       if UPhotometry != 'null':
+       if UPhotometry != 'null' and UPhotometry != '0':
            UPhotometry = 'YES'
        else:
            UPhotometry = 'NO'
 
-       cursor.execute(get_UPhotometryFlux)
-       UPhotometryFlux = cursor.fetchall()
-       UPhotometryFlux = [u[0] for u in UPhotometryFlux]
-       UPhotometryFlux = ans = ' '.join(UPhotometryFlux).replace(' ', '\n')
+       if UPhotometry == 'YES':
+           cursor.execute(get_UPhotometryFlux)
+           UPhotometryFlux = cursor.fetchall()
+           UPhotometryFlux = [u[0] for u in UPhotometryFlux]
+           UPhotometryFlux = ans = ' '.join(UPhotometryFlux).replace(' ', '\n')
 
-       cursor.execute(get_UPhotometryTime)
-       UPhotometryTime = cursor.fetchall()
-       UPhotometryTime = [u[0] for u in UPhotometryTime]
-       UPhotometryTime = ans = ' '.join(UPhotometryTime).replace(' ', '\n')
+           cursor.execute(get_UPhotometryTime)
+           UPhotometryTime = cursor.fetchall()
+           UPhotometryTime = [u[0] for u in UPhotometryTime]
+           UPhotometryTime = ans = ' '.join(UPhotometryTime).replace(' ', '\n')
+       else:
+           UPhotometryFlux = 'No data available'
+           UPhotometryTime = 'No data available'
+
 
        cursor.execute(get_VPhotometryFlag)
        VPhotometry = cursor.fetchone()
        VPhotometry = str(VPhotometry[0])
-       if VPhotometry != 'null':
+       if VPhotometry != 'null' and VPhotometry != '0':
           VPhotometry = 'YES'
        else:
           VPhotometry = 'NO'
 
-       cursor.execute(get_VPhotometryFlux)
-       VPhotometryFlux = cursor.fetchall()
-       VPhotometryFlux = [v[0] for v in VPhotometryFlux]
-       VPhotometryFlux = ans = ' '.join(VPhotometryFlux).replace(' ', '\n')
+       if VPhotometry == 'YES':
+          cursor.execute(get_VPhotometryFlux)
+          VPhotometryFlux = cursor.fetchall()
+          VPhotometryFlux = [v[0] for v in VPhotometryFlux]
+          VPhotometryFlux = ans = ' '.join(VPhotometryFlux).replace(' ', '\n')
 
-       cursor.execute(get_VPhotometryTime)
-       VPhotometryTime = cursor.fetchall()
-       VPhotometryTime = [v[0] for v in VPhotometryTime]
-       VPhotometryTime = ans = ' '.join(VPhotometryTime).replace(' ', '\n')
+          cursor.execute(get_VPhotometryTime)
+          VPhotometryTime = cursor.fetchall()
+          VPhotometryTime = [v[0] for v in VPhotometryTime]
+          VPhotometryTime = ans = ' '.join(VPhotometryTime).replace(' ', '\n')
+       else:
+           VPhotometryFlux = 'No data available'
+           VPhotometryTime = 'No data available'
+
 
        cursor.execute(get_BPhotometryFlag)
        BPhotometry = cursor.fetchone()
        BPhotometry = str(BPhotometry[0])
-       if BPhotometry != 'null':
+       if BPhotometry != 'null' and BPhotometry != '0':
           BPhotometry = 'YES'
        else:
           BPhotometry = 'NO'
 
-       cursor.execute(get_BPhotometryFlux)
-       BPhotometryFlux = cursor.fetchall()
-       BPhotometryFlux = [b[0] for b in BPhotometryFlux]
-       BPhotometryFlux = ans = ' '.join(BPhotometryFlux).replace(' ', '\n')
+       if BPhotometry == 'YES':
+          cursor.execute(get_BPhotometryFlux)
+          BPhotometryFlux = cursor.fetchall()
+          BPhotometryFlux = [b[0] for b in BPhotometryFlux]
+          BPhotometryFlux = ans = ' '.join(BPhotometryFlux).replace(' ', '\n')
 
-       cursor.execute(get_BPhotometryTime)
-       BPhotometryTime = cursor.fetchall()
-       BPhotometryTime = [b[0] for b in BPhotometryTime]
-       BPhotometryTime = ans = ' '.join(BPhotometryTime).replace(' ', '\n')
+          cursor.execute(get_BPhotometryTime)
+          BPhotometryTime = cursor.fetchall()
+          BPhotometryTime = [b[0] for b in BPhotometryTime]
+          BPhotometryTime = ans = ' '.join(BPhotometryTime).replace(' ', '\n')
+       else:
+           BPhotometryFlux = 'No data available'
+           BPhotometryTime = 'No data available'
 
        object = {'id': id, 'name': objectName, 'startDate': StartDate,
                   'endDate': EndDate,
