@@ -187,22 +187,37 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $log.debug($scope.ob[editPhotometry].name);
 
       $scope.updateRow = function(){
+          var file = $scope.myFile;
+          if(file) {
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file, uploadUrl);
+             }
+          else {
+             var file = 'No file';
+             console.dir(file.name);
+             }
 
-                var file = $scope.myFile;
-                console.dir(file.name);
-                var uploadUrl = "http://localhost:5000/fileUpload";
-                fileUpload.uploadFileToUrl(file, uploadUrl);
+          var file2 = $scope.myFile2;
+          if(file2) {
 
-               $log.debug($scope.ob[editPhotometry].name);
-                var file2 = $scope.myFile2;
-                console.dir(file2.name);
-                var uploadUrl = "http://localhost:5000/fileUpload";
-                fileUpload.uploadFileToUrl(file2, uploadUrl);
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file2, uploadUrl);
+             }
+          else {
+             var file2 = 'No file2';
+             console.dir(file2.name);
+             }
 
-                var file3 = $scope.myFile3;
-                console.dir(file3.name);
-                var uploadUrl = "http://localhost:5000/fileUpload";
-                fileUpload.uploadFileToUrl(file3, uploadUrl);
+          var file3 = $scope.myFile3;
+          if(file3) {
+             var uploadUrl = "http://localhost:5000/fileUpload";
+             fileUpload.uploadFileToUrl(file3, uploadUrl);
+             }
+          else {
+             var file3 = 'No file3';
+             console.dir(file3.name);
+             }
+
 
    		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.name,startDate:$scope.ob[editPhotometry].startDate,
    		                            endDate:$scope.ob[editPhotometry].endDate,
