@@ -162,7 +162,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('ModalInstanceRemoveCtrl', ['$scope', '$log', '$uibModalInstance', 'removeObservation', 'removePhotometry', function ($scope, $log, $uibModalInstance, RemoveObservation, removePhotometry) {
       $log.debug(removePhotometry);
       $scope.ob = $scope.observations;
-      var removePhotometry = parseInt(removePhotometry);
+      var removePhotometry = removePhotometry;
+
+		$log.debug(removePhotometry);
 
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -170,7 +172,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.remove = function () {
         $scope.removePhotometry = removePhotometry;
-        RemoveObservation.save({id:$scope.ob[removePhotometry].id}, function(response){
+        $log.debug($scope.removePhotometry);
+        RemoveObservation.save({id:removePhotometry}, function(response){
            $scope.message = response.message;
         });
 
@@ -181,10 +184,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     }]);
 
     astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload) {
-      $log.debug($scope.name);
       $scope.ob = $scope.observations;
       $scope.editPhotometry = editPhotometry;
-      $log.debug($scope.ob[editPhotometry].name);
+      var editPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editPhotometry ) {
+      				editPhotometry2 = i;
+      				$log.debug($scope.ob[editPhotometry2].name);
+      				break;
+      			}
+      		}
+      $log.debug($scope.ob[editPhotometry2].id);
 
       $scope.updateRow = function(){
           var file = $scope.myFile;
@@ -219,8 +230,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
 
 
-   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.ob[editPhotometry].name,startDate:$scope.ob[editPhotometry].startDate,
-   		                            endDate:$scope.ob[editPhotometry].endDate,
+   		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.ob[editPhotometry2].name,startDate:$scope.ob[editPhotometry2].startDate,
+   		                            endDate:$scope.ob[editPhotometry2].endDate,
    		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;
    		   });
@@ -230,12 +241,22 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
+      $scope.editPhotometry = editPhotometry2
     }]);
 
     astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$log', '$uibModalInstance', 'editUPhotometry', function ($scope, $log, $uibModalInstance, editUPhotometry) {
-      $log.debug(editUPhotometry);
       $scope.ob = $scope.observations;
       $scope.editUPhotometry = editUPhotometry;
+      var editUPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editUPhotometry ) {
+      				editUPhotometry2 = i;
+      				break;
+      			}
+      		}
+      $scope.editUPhotometry = editUPhotometry2
+
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
@@ -244,6 +265,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('ModalInstanceEditVPhotometryCtrl', function ($scope, $uibModalInstance, editVPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editVPhotometry = editVPhotometry;
+      var editVPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editVPhotometry ) {
+      				editVPhotometry2 = i;
+      				break;
+      			}
+      		}
+      $scope.editVPhotometry = editVPhotometry2
+
+
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
@@ -252,6 +284,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('ModalInstanceEditBPhotometryCtrl', function ($scope, $uibModalInstance, editBPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editBPhotometry = editBPhotometry;
+      var editBPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editBPhotometry ) {
+      				editBPhotometry2 = i;
+      				break;
+      			}
+      		}
+      $scope.editBPhotometry = editBPhotometry2
+
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };

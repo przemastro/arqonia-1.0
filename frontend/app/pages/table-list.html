@@ -256,20 +256,19 @@
             <td>{{observation.name}}</td>
             <td>{{observation.startDate}}</td>
             <td>{{observation.endDate}}</td>
-            <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editUPhotometry($index)"/></td>
-            <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry($index)"/></td>
-            <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry($index)"/></td>
-            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation($index)" /></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation($index)"  ng-disabled="isDisabled" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
+            <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editUPhotometry(observation.id)"/></td>
+            <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry(observation.id)"/></td>
+            <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
+            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation(observation.id)" /></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation(observation.id)"  ng-disabled="isDisabled" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
         </tr>
-<!--        <tr>
+        <tr>
             <tfoot>
             <td style="border-bottom: 0px" colspan="7" class="text-center">
                 <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
             </td>
             </tfoot>
         </tr>
--->
     </table>
   </div>
 </div>
