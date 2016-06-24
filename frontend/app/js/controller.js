@@ -219,7 +219,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
 
 
-   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.name,startDate:$scope.ob[editPhotometry].startDate,
+   		  UpdateObservation.update({id:$scope.ob[editPhotometry].id,name:$scope.ob[editPhotometry].name,startDate:$scope.ob[editPhotometry].startDate,
    		                            endDate:$scope.ob[editPhotometry].endDate,
    		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;

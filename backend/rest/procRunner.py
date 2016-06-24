@@ -40,7 +40,7 @@ def procRunner():
             cursor.execute(get_Log)
             Log = cursor.fetchone()
             Log = str(Log[0])
-            print Log
+            #print Log
             if(Log):
                 fn = open('api.py', 'a')
                 fn.write(" ")
