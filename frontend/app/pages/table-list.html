@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Star Name</label>
                                 <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
-                                    <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" required/>
+                                    <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" ng-change='changeName()' required/>
                                     <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
@@ -118,7 +118,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Start Date</label>
                                 <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
-                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" required/>
+                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" ng-change='changeStartDate()' required/>
                                     <div ng-messages="editForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
@@ -127,7 +127,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">End Date</label>
                                 <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
-                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" required/>
+                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" ng-change='changeEndDate()' required/>
                                     <div ng-messages="editForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
                                     </div>
@@ -260,7 +260,7 @@
             <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry(observation.id)"/></td>
             <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
             <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation(observation.id)" /></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation(observation.id)"  ng-disabled="isDisabled" ng-model="isDisabled" ng-disabled="isDisabled"/></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation(observation.id)"  ng-model="isDisabled" ng-disabled="isDisabled"/></td>
         </tr>
         <tr>
             <tfoot>
