@@ -109,22 +109,34 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
            if counter < globalRange-1:
               i = counter
               j = counter
-              if uFileName != 'None':
-                 utime = str(udata.uTime[i])
-                 uflux = str(udata.uFlux[i])
-              else:
-                 utime = 'NULL'
-                 uflux = 'NULL'
-              if vFileName != 'None':
-                 vtime = str(vdata.vTime[i])
-                 vflux = str(vdata.vFlux[i])
-              else:
-                 vtime = 'NULL'
-                 vflux = 'NULL'
-              if bFileName != 'None':
-                 btime = str(bdata.bTime[i])
-                 bflux = str(bdata.bFlux[i])
-              else:
+              try:
+                  if uFileName != 'None':
+                      utime = str(udata.uTime[i])
+                      uflux = str(udata.uFlux[i])
+                  else:
+                      utime = 'NULL'
+                      uflux = 'NULL'
+              except:
+                  utime = 'NULL'
+                  uflux = 'NULL'
+              try:
+                  if vFileName != 'None':
+                      vtime = str(vdata.vTime[i])
+                      vflux = str(vdata.vFlux[i])
+                  else:
+                      vtime = 'NULL'
+                      vflux = 'NULL'
+              except:
+                  vtime = 'NULL'
+                  vflux = 'NULL'
+              try:
+                  if bFileName != 'None':
+                      btime = str(bdata.bTime[i])
+                      bflux = str(bdata.bFlux[i])
+                  else:
+                      btime = 'NULL'
+                      bflux = 'NULL'
+              except:
                   btime = 'NULL'
                   bflux = 'NULL'
               j = str(counter + 1)
@@ -134,22 +146,35 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
            else:
               i = counter
               j = counter
-              if uFileName != 'None':
-                  utime = str(udata.uTime[i])
-                  uflux = str(udata.uFlux[i])
-              else:
+
+              try:
+                  if uFileName != 'None':
+                      utime = str(udata.uTime[i])
+                      uflux = str(udata.uFlux[i])
+                  else:
+                      utime = 'NULL'
+                      uflux = 'NULL'
+              except:
                   utime = 'NULL'
                   uflux = 'NULL'
-              if vFileName != 'None':
-                  vtime = str(vdata.vTime[i])
-                  vflux = str(vdata.vFlux[i])
-              else:
+              try:
+                  if vFileName != 'None':
+                      vtime = str(vdata.vTime[i])
+                      vflux = str(vdata.vFlux[i])
+                  else:
+                      vtime = 'NULL'
+                      vflux = 'NULL'
+              except:
                   vtime = 'NULL'
                   vflux = 'NULL'
-              if bFileName != 'None':
-                  btime = str(bdata.bTime[i])
-                  bflux = str(bdata.bFlux[i])
-              else:
+              try:
+                  if bFileName != 'None':
+                      btime = str(bdata.bTime[i])
+                      bflux = str(bdata.bFlux[i])
+                  else:
+                      btime = 'NULL'
+                      bflux = 'NULL'
+              except:
                   btime = 'NULL'
                   bflux = 'NULL'
               j = str(counter + 1)
@@ -281,22 +306,34 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
             if counter < globalRange-1:
                 i = counter
                 j = counter
-                if uFileName != 'None':
-                   utime = str(udata.uTime[i])
-                   uflux = str(udata.uFlux[i])
-                else:
-                   utime = 'NULL'
-                   uflux = 'NULL'
-                if vFileName != 'None':
-                    vtime = str(vdata.vTime[i])
-                    vflux = str(vdata.vFlux[i])
-                else:
+                try:
+                    if uFileName != 'None':
+                        utime = str(udata.uTime[i])
+                        uflux = str(udata.uFlux[i])
+                    else:
+                        utime = 'NULL'
+                        uflux = 'NULL'
+                except:
+                    utime = 'NULL'
+                    uflux = 'NULL'
+                try:
+                    if vFileName != 'None':
+                        vtime = str(vdata.vTime[i])
+                        vflux = str(vdata.vFlux[i])
+                    else:
+                        vtime = 'NULL'
+                        vflux = 'NULL'
+                except:
                     vtime = 'NULL'
                     vflux = 'NULL'
-                if bFileName != 'None':
-                    btime = str(bdata.bTime[i])
-                    bflux = str(bdata.bFlux[i])
-                else:
+                try:
+                    if bFileName != 'None':
+                        btime = str(bdata.bTime[i])
+                        bflux = str(bdata.bFlux[i])
+                    else:
+                        btime = 'NULL'
+                        bflux = 'NULL'
+                except:
                     btime = 'NULL'
                     bflux = 'NULL'
                 j = str(counter + 1)
@@ -305,22 +342,34 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
             else:
                 i = counter
                 j = counter
-                if uFileName != 'None':
-                    utime = str(udata.uTime[i])
-                    uflux = str(udata.uFlux[i])
-                else:
+                try:
+                    if uFileName != 'None':
+                        utime = str(udata.uTime[i])
+                        uflux = str(udata.uFlux[i])
+                    else:
+                        utime = 'NULL'
+                        uflux = 'NULL'
+                except:
                     utime = 'NULL'
                     uflux = 'NULL'
-                if vFileName != 'None':
-                    vtime = str(vdata.vTime[i])
-                    vflux = str(vdata.vFlux[i])
-                else:
+                try:
+                    if vFileName != 'None':
+                        vtime = str(vdata.vTime[i])
+                        vflux = str(vdata.vFlux[i])
+                    else:
+                        vtime = 'NULL'
+                        vflux = 'NULL'
+                except:
                     vtime = 'NULL'
                     vflux = 'NULL'
-                if bFileName != 'None':
-                    btime = str(bdata.bTime[i])
-                    bflux = str(bdata.bFlux[i])
-                else:
+                try:
+                    if bFileName != 'None':
+                        btime = str(bdata.bTime[i])
+                        bflux = str(bdata.bFlux[i])
+                    else:
+                        btime = 'NULL'
+                        bflux = 'NULL'
+                except:
                     btime = 'NULL'
                     bflux = 'NULL'
                 j = str(counter + 1)

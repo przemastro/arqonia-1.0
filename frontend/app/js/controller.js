@@ -186,29 +186,30 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload) {
       $scope.ob = $scope.observations;
       $scope.editPhotometry = editPhotometry;
-                  $scope.name = $scope.ob[editPhotometry].name;
+                  $log.debug($scope.name);
                   $scope.changeName = function() {
                      $scope.name = this.name;
                       $log.debug($scope.name);
                   };
-                  $scope.startDate = $scope.ob[editPhotometry].startDate;
                   $scope.changeStartDate = function() {
                      $scope.startDate = this.startDate;
                       $log.debug($scope.startDate);
                   };
-                  $scope.endDate = $scope.ob[editPhotometry].endDate;
                   $scope.changeEndDate = function() {
                      $scope.endDate = this.endDate;
                       $log.debug($scope.endDate);
                   };
 
-      $log.debug($scope.name);
+
       var editPhotometry2 = -1
       		var evaluatedOb = $scope.ob.length;
       		for( var i = 0; i < evaluatedOb; i++ ) {
       			if( $scope.ob[i].id === editPhotometry ) {
       				editPhotometry2 = i;
       				$log.debug($scope.ob[editPhotometry2].name);
+      				$scope.name = $scope.ob[editPhotometry2].name;
+      				$scope.startDate = $scope.ob[editPhotometry2].startDate;
+      				$scope.endDate = $scope.ob[editPhotometry2].endDate;
       				break;
       			}
       		}
@@ -247,6 +248,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              console.dir(file3.name);
              }
 
+          $log.debug($scope.name);
+          $log.debug($scope.startDate);
+          $log.debug($scope.endDate);
 
    		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.name,startDate:$scope.startDate,
    		                            endDate:$scope.endDate,
