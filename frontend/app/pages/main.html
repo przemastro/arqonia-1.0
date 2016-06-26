@@ -1,13 +1,57 @@
 <body ng-app = "astroApp" ng-controller = "mainCtrl">
-<div id="main">
-    <h1>Bugs and features</h1>
-    <ul>
-        <li>1. Kręciołek mógłby się przestać kręcić po przeładowaniu serwisu</li>
-    </ul>
-    <ul>
-        <li>2. Kiedy usuwamy plik, Remove button powinien zostać zdisejblowany</li>
-    </ul>
-    <ul>
-        <li>3. Czasem połączenie z backendem się zrywa</li>
-    </ul>
+</div id="main">
+    <h1>Status 2016/06/26/</h1>
+    <table>
+    <tr>
+        <th>This application is a concept application created to verify ability of REST service to consume big data.
+        Following functionalities are available:</th>
+    </tr>
+        <tr>
+            <td>1. In the 'Observation' page user is able to search for active observation</td>
+        </tr>
+    <tr>
+        <td>2. User is able to add new observation. This includes name of star start and end date of observation and taken photometry.
+               User should upload at least one photometry UBV. System accepts .csv file in the following format:<br>
+            2720.81478,-4.971<br>
+            2720.81479,-4.971<br>
+            2720.81480,-4.981<br>
+            2720.81481,-4.961<br>
+            2720.81482,-4.971<br>
+        No column names, only numbers. <br>
+            The First column is a date (In fact it is a Julian Date).<br>
+            The second column is an absolute magnitude.
+        </td>
+    </tr>
+        <tr>
+            <td>3. User is able to see time series taken in Johnson photometric system (UVB) for all active observations.</td>
+        </tr>
+        <tr>
+            <td>4. User is able to edit active observation and update it.</td>
+        </tr>
+        <tr>
+            <td>5. User is able to remove active observation by means of soft delete.</td>
+        </tr>
+        <tr>
+            <td>6. All three operations (Add, Update and delete) are fully performed when clicking [Process] button on the 'Admin Panel' page.</td>
+        </tr>
+        <tr>
+            <td>7. On the 'Diagrams' page user is able to see consolidated observations on the Color-Magnitude diagram (M_V vs. B-V).</td>
+        </tr>
+    </table>
+
+<table>
+    <tr>
+        <th>Known bugs and features</th>
+    </tr>
+    <tr>
+        <td>Spinner on the 'Admin Panel' has hardcoded time of running. This should be fixed. Time should depend on backend reload.</td>
+    </tr>
+    <tr>
+        <td>Sometimes unexpected lost of connection between frontend and backend appears</td>
+    </tr>
+    <tr>
+        <td>It would be good if the table on the 'Observations' page shown status of records (active, deleted and new)</td>
+    </tr>
+</table>
 </div>
+</body>

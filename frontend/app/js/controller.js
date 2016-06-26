@@ -43,7 +43,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        };
 
         $scope.removeObservation = function (removePhotometry) {
-           $scope.isDisabled = false;
+
            var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
               templateUrl: 'removeObservationModal.html',
@@ -177,9 +177,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
            $scope.message = response.message;
         });
 
-        $scope.isDisabled = true;
         $uibModalInstance.dismiss();
-        return false;
+        return true;
       };
     }]);
 
