@@ -2,7 +2,7 @@
   "version": "0.0.0",
   "private": true,
   "name": "angular",
-  "description": "A tutorial application for AngularJS",
+  "description": "AstroApp",
   "license": "MIT",
   "devDependencies": {
     "bower": "^1.3.1",
@@ -27,8 +27,5 @@
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor test/protractor-conf.js",
     "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + cat('bower_components/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'app/index-async.html');\""
-  },
-  "dependencies": {
-    "chart.js": "^2.1.3"
   }
 }

@@ -2,6 +2,7 @@
 
 var services = angular.module('astroApp.services', ['ngResource']);
 
+//File Upload
 astroApp.service('fileUpload', ['$http', function ($http) {
             this.uploadFileToUrl = function(file, uploadUrl){
                var fd = new FormData();
@@ -18,8 +19,9 @@ astroApp.service('fileUpload', ['$http', function ($http) {
                .error(function(){
                });
             }
-         }]);
+}]);
 
+//Table list data
 services.factory('getObservations', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {
@@ -27,6 +29,7 @@ services.factory('getObservations', ['$resource',
     });
 }]);
 
+//HR-Diagram data
 services.factory('getObservationsDiagram', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observationsDiagram', {}, {
@@ -34,13 +37,7 @@ services.factory('getObservationsDiagram', ['$resource',
     });
 }]);
 
-services.factory('getObservationsHRDiagram', ['$resource',
-    function ($resource) {
-    return $resource('http://localhost\\:5000/observationsHRDiagram', {}, {
-        query: {method:'GET', isArray:true}
-    });
-}]);
-
+//Add new observation
 services.factory('postObservation', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {
@@ -48,6 +45,7 @@ services.factory('postObservation', ['$resource',
     });
 }]);
 
+//Trigger SQL procedure
 services.factory('processData', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/lastLoad', {}, {
@@ -55,6 +53,7 @@ services.factory('processData', ['$resource',
     });
 }]);
 
+//Get Last processed observation
 services.factory('getProcessedData', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/lastLoad', {}, {
@@ -62,6 +61,7 @@ services.factory('getProcessedData', ['$resource',
     });
 }]);
 
+//Remove observation
 services.factory('removeObservation', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/deletedObservations', {}, {
@@ -69,6 +69,7 @@ services.factory('removeObservation', ['$resource',
     });
 }]);
 
+//Update observation
 services.factory('updateObservation', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {

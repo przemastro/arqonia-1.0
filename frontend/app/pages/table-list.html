@@ -1,85 +1,83 @@
-
 <body ng-app = "astroApp" ng-controller="tableListCtrl">
-
 <div ng-controller="tableCtrl">
-    <div ng-controller="ModalCtrl">
+  <div ng-controller="ModalCtrl">
 
+    <!--New Observation Modal-->
     <script type="text/ng-template" id="newModalContent.html">
-    <div class="modal-header">
-        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">New observation</h3>
-    </div>
-        <table class="main">
-            <tr>
-                    <td style="width:60%;vertical-align: top">
-                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
-                        <div class="modal-body" style="margin-top:-70px">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Star Name</label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" required/>
-                                <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                    <div ng-message="maxlength">This field is too long</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Start Date</label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" required/>
-                                <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                    <div ng-message="maxlength">This field is too long</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">End Date</label>
-                            <div class="col-md-4">
-                                <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" required/>
-                                <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                    <div ng-message="maxlength">This field is too long</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">U Photometry</label>
-                            <div class="col-md-4">
-                                <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">V Photometry</label>
-                            <div class="col-md-4">
-                                <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">B Photometry</label>
-                            <div class="col-md-4">
-                                <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
-                            <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                            <button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-            </table>
-    </div>
+                       <div class="modal-header">
+                           <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                           <h3 class="modal-title">New observation</h3>
+                       </div>
+       <table class="main">
+           <tr>
+               <td style="width:60%;vertical-align: top">
+                   <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
+                       <div class="modal-body" style="margin-top:-70px">
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">Star Name</label>
+                              <div class="col-md-4">
+                                  <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" required/>
+                                  <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                      <div ng-message="required">This field is required</div>
+                                      <div ng-message="maxlength">This field is too long</div>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">Start Date</label>
+                              <div class="col-md-4">
+                                  <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" required/>
+                                  <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                      <div ng-message="required">This field is required</div>
+                                      <div ng-message="maxlength">This field is too long</div>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">End Date</label>
+                              <div class="col-md-4">
+                                  <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" required/>
+                                  <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                      <div ng-message="required">This field is required</div>
+                                      <div ng-message="maxlength">This field is too long</div>
+                                  </div>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">U Photometry</label>
+                              <div class="col-md-4">
+                                  <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">V Photometry</label>
+                              <div class="col-md-4">
+                                  <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="col-md-4 control-label">B Photometry</label>
+                              <div class="col-md-4">
+                                  <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
+                              </div>
+                           </div>
+                       </div>
+                       <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                           <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                           <button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button>
+                       </div>
+                   </form>
+               </td>
+           </tr>
+       </table>
     </script>
 
+    <!--Remove Observation Modal-->
     <script type="text/ng-template" id="removeObservationModal.html">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h3 class="modal-title">Remove observation</h3>
-        </div>
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title">Remove observation</h3>
+                        </div>
         <table class="main">
             <tr>
                 <td style="width:60%;vertical-align: top">
@@ -97,12 +95,13 @@
         </table>
     </script>
 
+    <!--Edit Observation Modal-->
     <script type="text/ng-template" id="editObservationModal.html">
-        <div class="modal-header">
-            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h3 class="modal-title">Observation</h3>
-        </div>
-        <table class="main">
+                        <div class="modal-header">
+                            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h3 class="modal-title">Observation</h3>
+                        </div>
+           <table class="main">
                 <td style="width:60%;vertical-align: top">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
@@ -158,10 +157,10 @@
                         </div>
                     </form>
                 </td>
-        </table>
-        </div>
+           </table>
     </script>
 
+    <!--Edit UPhotometry Modal-->
     <script type="text/ng-template" id="editUPhotometryModal.html">
         <div class="modal-header">
             <h3 class="modal-title">U Photometry</h3>
@@ -183,17 +182,18 @@
                 </tr>
             </table>
         </div>
-        <div class="modal-footer" hidden="true" style="display:none;">
+            <div class="modal-footer" hidden="true" style="display:none;">
         </div>
     </script>
 
-        <script type="text/ng-template" id="editVPhotometryModal.html">
-            <div class="modal-header">
-                <h3 class="modal-title">V Photometry</h3>
-            </div>
-            <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
-                <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <table class="main">
+    <!--Edit VPhotometry Modal-->
+    <script type="text/ng-template" id="editVPhotometryModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">V Photometry</h3>
+        </div>
+        <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
+            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <table class="main">
                 <tr>
                     <th style="width:50%;padding-left:45px;">Flux</th>
                     <th style="width:90%;padding-right:40px;">Time</th>
@@ -207,39 +207,39 @@
                     <td style="white-space: pre;width:90%;text-align: right;border-bottom: 0px;height:50%"><button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button></td>
                 </tr>
             </table>
-            </div>
-            <div class="modal-footer" hidden="true" style="display:none;">
-            </div>
-        </script>
+        </div>
+        <div class="modal-footer" hidden="true" style="display:none;">
+        </div>
+    </script>
 
-        <script type="text/ng-template" id="editBPhotometryModal.html">
-            <div class="modal-header">
-                <h3 class="modal-title">B Photometry</h3>
-            </div>
-            <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
-                <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <table class="main">
-                    <tr>
-                        <th style="width:50%;padding-left:45px;">Flux</th>
-                        <th style="width:90%;padding-right:40px;">Time</th>
-                    </tr>
-                    <tr ng-repeat="observation in ob" ng-if="$index == editBPhotometry">
-                        <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;">{{observation.bPhotometryFlux}}</td>
-                        <td style="white-space: pre;width:90%;text-align: left;padding-left:92px;">{{observation.bPhotometryTime}}</td>
-                    </tr>
-                    <tr>
-                        <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;border-bottom: 0px;"></td>
-                        <td style="white-space: pre;width:90%;text-align: right;border-bottom: 0px;height:50%"><button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal-footer" hidden="true" style="display:none;">
-            </div>
-        </script>
+    <!--Edit BPhotometry Modal-->
+    <script type="text/ng-template" id="editBPhotometryModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">B Photometry</h3>
+        </div>
+        <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
+            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <table class="main">
+                <tr>
+                    <th style="width:50%;padding-left:45px;">Flux</th>
+                    <th style="width:90%;padding-right:40px;">Time</th>
+                </tr>
+                <tr ng-repeat="observation in ob" ng-if="$index == editBPhotometry">
+                    <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;">{{observation.bPhotometryFlux}}</td>
+                    <td style="white-space: pre;width:90%;text-align: left;padding-left:92px;">{{observation.bPhotometryTime}}</td>
+                </tr>
+                <tr>
+                    <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;border-bottom: 0px;"></td>
+                    <td style="white-space: pre;width:90%;text-align: right;border-bottom: 0px;height:50%"><button type="button" ng-click="cancel()" class="btn btn-default" data-dismiss="modal">Close</button></td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer" hidden="true" style="display:none;">
+        </div>
+    </script>
 
-
-
-        <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
+    <!--Observations Table-->
+    <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
             <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()"/></td>
             <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
@@ -264,9 +264,9 @@
         </tr>
         <tr>
             <tfoot>
-            <td style="border-bottom: 0px" colspan="7" class="text-center">
-                <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
-            </td>
+               <td style="border-bottom: 0px" colspan="7" class="text-center">
+                  <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+               </td>
             </tfoot>
         </tr>
     </table>

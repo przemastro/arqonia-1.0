@@ -13,4 +13,4 @@ astroApp.directive('fileModel', ['$parse', function ($parse) {
                              });
                           }
                        };
-                    }]);
+}]);
