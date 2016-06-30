@@ -29,10 +29,18 @@ services.factory('getObservations', ['$resource',
     });
 }]);
 
-//HR-Diagram data
+//Diagram data
 services.factory('getObservationsDiagram', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observationsDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+//HR-Diagram data
+services.factory('getObservationsHRDiagram', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/observationsHRDiagram', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
