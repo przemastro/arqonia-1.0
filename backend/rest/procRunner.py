@@ -1,7 +1,5 @@
 import sys
-import re
 import pyodbc
-import subprocess
 import os
 import ConfigParser
 
@@ -22,25 +20,19 @@ def procRunner():
         cursor.execute(get_Ids)
         getIds = cursor.fetchall()
         getIds = [g[0] for g in getIds]
-        print getIds
 
         for i in getIds:
            i=str(i)
-           print i
            runObservationsDelta = ("exec bi.observationsDelta @observationId="+i)
-           print runObservationsDelta
            cursor.execute(runObservationsDelta)
            cnx.commit()
 
-        print i
-        print 'Processing ...'
         Log = False
         while(Log != True):
             get_Log = ("select LastLoad from log.log where ObservationId="+i+" and Message='Completed'")
             cursor.execute(get_Log)
             Log = cursor.fetchone()
             Log = str(Log[0])
-            #print Log
             if(Log):
                 fn = open('api.py', 'a')
                 fn.write(" ")
@@ -68,7 +60,6 @@ def deleteObservation(id):
 
         id=str(id)
         removeObservation = ("update stg.stagingObservations set active=1, status='deleted' where id="+id)
-        print removeObservation
         cursor.execute(removeObservation)
         cnx.commit()
 

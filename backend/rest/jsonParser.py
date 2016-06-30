@@ -1,8 +1,6 @@
 import sys
-import re
 import pyodbc
 import ConfigParser
-import csv
 import pandas
 
 
@@ -41,10 +39,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      uName = str(uName)
      uFileName = str(uFileName)
      if uFileName != 'None':
-        print uFileName
         insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
-
-        print insert_uFileName
 
         cursor.execute(insert_uFileName)
         cnx.commit()
@@ -53,10 +48,8 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      vName = str(vName)
      vFileName = str(vFileName)
      if vFileName != 'None':
-        print vFileName
         insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
 
-        print insert_vFileName
 
         cursor.execute(insert_vFileName)
         cnx.commit()
@@ -65,10 +58,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      bName = str(bName)
      bFileName = str(bFileName)
      if bFileName != 'None':
-        print bFileName
         insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
-
-        print insert_bFileName
 
         cursor.execute(insert_bFileName)
         cnx.commit()
@@ -140,7 +130,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
                   btime = 'NULL'
                   bflux = 'NULL'
               j = str(counter + 1)
-              print uflux
               observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
               insert_observation = insert_observation + observation
            else:
@@ -187,8 +176,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
                              "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
                              "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
 
-        print insert_observation
-
         cursor.execute(insert_observation)
         cnx.commit()
 
@@ -216,19 +203,16 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
     #--update in stg.stagingObservations and delete in data.fileNames
 
         delete_stagingObservation= ("delete from stg.stagingObservations where id="+id)
-        print delete_stagingObservation
 
         cursor.execute(delete_stagingObservation)
         cnx.commit()
 
         delete_observation= ("delete from bi.observations where id="+id)
-        print delete_observation
 
         cursor.execute(delete_observation)
         cnx.commit()
 
         delete_files= ("delete from data.fileNames where observationId="+id)
-        print delete_files
 
         cursor.execute(delete_files)
         cnx.commit()
@@ -238,10 +222,7 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         uName = str(uName)
         uFileName = str(uFileName)
         if uFileName != 'None':
-           print uFileName
            insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+uFileName+"', ' ', ' ')")
-
-           print insert_uFileName
 
            cursor.execute(insert_uFileName)
            cnx.commit()
@@ -250,10 +231,8 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         vName = str(vName)
         vFileName = str(vFileName)
         if vFileName != 'None':
-           print vFileName
            insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+vFileName+"', ' ', ' ')")
 
-           print insert_vFileName
 
            cursor.execute(insert_vFileName)
            cnx.commit()
@@ -262,10 +241,7 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         bName = str(bName)
         bFileName = str(bFileName)
         if bFileName != 'None':
-           print bFileName
            insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+bFileName+"', ' ', ' ')")
-
-           print insert_bFileName
 
            cursor.execute(insert_bFileName)
            cnx.commit()
@@ -382,7 +358,6 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
                              "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
                                                                                       "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
 
-        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()

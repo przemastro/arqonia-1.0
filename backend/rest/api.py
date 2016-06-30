@@ -20,9 +20,6 @@ LastLoad = json_load.jsonLastLoad
 ObservationsDiagram = json_diagram.jsonDiagram
 ObservationsHRDiagram = json_hrdiagram.jsonHRDiagram
 
-#print Observations
-#print LastLoad
-
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
         'observationsDiagram': ObservationsDiagram,
@@ -120,4 +117,5 @@ def after_request(response):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    #app.run(debug=True, host='10.61.3.121', port=5000)
+    app.run(debug=True, host='localhost', port=5000)
