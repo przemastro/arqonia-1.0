@@ -1,14 +1,19 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
-from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from jsonParser import json_parser, updateObservation
-from procRunner import procRunner, deleteObservation
+from JsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
+from JsonParser import json_parser, updateObservation
+from ProcRunner import procRunner, deleteObservation
 import os
+import ConfigParser
 
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 api = Api(app)
+
+config = ConfigParser.RawConfigParser()
+config.read('../resources/ConfigFile.properties')
+serverAddress = config.get('Server', 'server.address');
 
 json_data()
 json_load()
@@ -94,8 +99,6 @@ class RestFileUpload(Resource):
         return 201
 
 
-
-
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
@@ -117,5 +120,4 @@ def after_request(response):
 
 
 if __name__ == '__main__':
-    #app.run(debug=True, host='10.61.3.121', port=5000)
-    app.run(debug=True, host='localhost', port=5000)
+    app.run(debug=True, host=serverAddress, port=5000)

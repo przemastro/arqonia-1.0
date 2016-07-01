@@ -5,34 +5,32 @@ import ConfigParser
 
 config = ConfigParser.RawConfigParser()
 config.read('../resources/ConfigFile.properties')
-dbAddress = config.get('DatabaseSection', 'database.address');
+dbAddress = config.get('DatabaseConnection', 'database.address');
+cnx = pyodbc.connect(dbAddress)
+cursor = cnx.cursor()
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-#-----------------------------------------------Process data in Staging Table-------------------------------------------
 def procRunner():
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_Ids = ("select distinct(Id) from stg.StagingObservations where (status='new' and active=1) or (status='deleted' and active=1) order by id desc")
-        cursor.execute(get_Ids)
-        getIds = cursor.fetchall()
-        getIds = [g[0] for g in getIds]
+
+        get_Ids = (config.get('DatabaseQueries', 'database.getIdsFromStagingObservations'))
+        getIds = fetch_all(get_Ids)
 
         for i in getIds:
            i=str(i)
-           runObservationsDelta = ("exec bi.observationsDelta @observationId="+i)
+           runObservationsDelta = (config.get('DatabaseQueries', 'database.runObservationsDelta')+i)
            cursor.execute(runObservationsDelta)
            cnx.commit()
 
         Log = False
         while(Log != True):
-            get_Log = ("select LastLoad from log.log where ObservationId="+i+" and Message='Completed'")
-            cursor.execute(get_Log)
-            Log = cursor.fetchone()
-            Log = str(Log[0])
+            get_Log = (config.get('DatabaseQueries', 'database.getLogFromLog')+i)
+            Log = str(fetch_one(get_Log))
             if(Log):
                 fn = open('api.py', 'a')
                 fn.write(" ")
@@ -42,31 +40,39 @@ def procRunner():
                 break
             else:
                 continue
-
-
         cursor.close()
 
     except:
-        print 'errors'
+        print 'errors in procRunner function'
     else:
         cnx.close()
 
 
-#--------------------------------------------------soft delete observation----------------------------------------------
 def deleteObservation(id):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
         id=str(id)
-        removeObservation = ("update stg.stagingObservations set active=1, status='deleted' where id="+id)
+        removeObservation = (config.get('DatabaseQueries', 'database.removeObservation')+id)
         cursor.execute(removeObservation)
         cnx.commit()
-
-
         cursor.close()
 
     except:
-        print 'errors'
+        print 'errors in deleteObservation function'
     else:
         cnx.close()
+
+
+def fetch_one(get_value):
+    cursor.execute(get_value)
+    Value = cursor.fetchone()
+    Value = Value[0]
+    return Value
+
+def fetch_all(get_value):
+    cursor.execute(get_value)
+    Value = cursor.fetchall()
+    Value = [oc[0] for oc in Value]
+    return Value

@@ -6,7 +6,7 @@ import pandas
 
 config = ConfigParser.RawConfigParser()
 config.read('../resources/ConfigFile.properties')
-dbAddress = config.get('DatabaseSection', 'database.address');
+dbAddress = config.get('DatabaseConnection', 'database.address');
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -35,8 +35,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
 
   #--insert to data.fileNames
      #--uPhotometry
-
-     uName = str(uName)
      uFileName = str(uFileName)
      if uFileName != 'None':
         insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
@@ -45,7 +43,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
         cnx.commit()
 
      #--vPhotometry
-     vName = str(vName)
      vFileName = str(vFileName)
      if vFileName != 'None':
         insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
@@ -55,7 +52,6 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
         cnx.commit()
 
      #--bPhotometry
-     bName = str(bName)
      bFileName = str(bFileName)
      if bFileName != 'None':
         insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
@@ -86,17 +82,18 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
         bdataRange = len(bdata)
         bdata.columns = ["bTime", "bFlux"]
 
+
      globalRange = udataRange
      if vdataRange>udataRange:
          globalRange = vdataRange
-     if bdataRange>vdataRange:
+     if bdataRange>globalRange:
          globalRange = bdataRange
 
      insert_observation = ''
 
      if uFileName != 'None' or vFileName != 'None' or bFileName != 'None':
         for counter in range(0,globalRange):
-           if counter < globalRange-1:
+           if counter < globalRange:
               i = counter
               j = counter
               try:
@@ -132,44 +129,8 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
               j = str(counter + 1)
               observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
               insert_observation = insert_observation + observation
-           else:
-              i = counter
-              j = counter
 
-              try:
-                  if uFileName != 'None':
-                      utime = str(udata.uTime[i])
-                      uflux = str(udata.uFlux[i])
-                  else:
-                      utime = 'NULL'
-                      uflux = 'NULL'
-              except:
-                  utime = 'NULL'
-                  uflux = 'NULL'
-              try:
-                  if vFileName != 'None':
-                      vtime = str(vdata.vTime[i])
-                      vflux = str(vdata.vFlux[i])
-                  else:
-                      vtime = 'NULL'
-                      vflux = 'NULL'
-              except:
-                  vtime = 'NULL'
-                  vflux = 'NULL'
-              try:
-                  if bFileName != 'None':
-                      btime = str(bdata.bTime[i])
-                      bflux = str(bdata.bFlux[i])
-                  else:
-                      btime = 'NULL'
-                      bflux = 'NULL'
-              except:
-                  btime = 'NULL'
-                  bflux = 'NULL'
-              j = str(counter + 1)
-              observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1"
-              insert_observation = insert_observation + observation
-
+        insert_observation = insert_observation[:-10]
 
 
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
@@ -273,13 +234,13 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         globalRange = udataRange
         if vdataRange>udataRange:
            globalRange = vdataRange
-        if bdataRange>vdataRange:
+        if bdataRange>globalRange:
            globalRange = bdataRange
 
         insert_observation = ''
 
         for counter in range(0,globalRange):
-            if counter < globalRange-1:
+            if counter < globalRange:
                 i = counter
                 j = counter
                 try:
@@ -315,44 +276,8 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
                 j = str(counter + 1)
                 observation = "SELECT "+id+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
                 insert_observation = insert_observation + observation
-            else:
-                i = counter
-                j = counter
-                try:
-                    if uFileName != 'None':
-                        utime = str(udata.uTime[i])
-                        uflux = str(udata.uFlux[i])
-                    else:
-                        utime = 'NULL'
-                        uflux = 'NULL'
-                except:
-                    utime = 'NULL'
-                    uflux = 'NULL'
-                try:
-                    if vFileName != 'None':
-                        vtime = str(vdata.vTime[i])
-                        vflux = str(vdata.vFlux[i])
-                    else:
-                        vtime = 'NULL'
-                        vflux = 'NULL'
-                except:
-                    vtime = 'NULL'
-                    vflux = 'NULL'
-                try:
-                    if bFileName != 'None':
-                        btime = str(bdata.bTime[i])
-                        bflux = str(bdata.bFlux[i])
-                    else:
-                        btime = 'NULL'
-                        bflux = 'NULL'
-                except:
-                    btime = 'NULL'
-                    bflux = 'NULL'
-                j = str(counter + 1)
-                observation = "SELECT "+id+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1"
-                insert_observation = insert_observation + observation
 
-
+        insert_observation = insert_observation[:-10]
 
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
                              "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
