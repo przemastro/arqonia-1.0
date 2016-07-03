@@ -454,6 +454,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         });
       }
     ]);
+
+//----------------------------------------------------------Login-------------------------------------------------------
+
+    //loginCtrl
+	astroApp.controller('loginCtrl', function($scope) {
+	   $scope.message = 'Login';
+	});
+
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl

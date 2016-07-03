@@ -7,6 +7,9 @@ import pandas
 config = ConfigParser.RawConfigParser()
 config.read('../resources/ConfigFile.properties')
 dbAddress = config.get('DatabaseConnection', 'database.address');
+cnx = pyodbc.connect(dbAddress)
+cursor = cnx.cursor()
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -17,11 +20,10 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
 
-
-     get_lastId = ("select top 1 id from stg.StagingObservations order by id desc")
+     get_lastId = config.get('DatabaseQueries', 'database.getLastIdFromStagingObservations')
      cursor.execute(get_lastId)
      lastId = cursor.fetchone()
-
+     print lastId
      if lastId is None:
          lastId = 1
      else:
@@ -32,30 +34,25 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      startDate = str(startDate)
      endDate = str(endDate)
 
-
   #--insert to data.fileNames
      #--uPhotometry
      uFileName = str(uFileName)
      if uFileName != 'None':
-        insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+uFileName+"', ' ', ' ')")
-
+        insert_uFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
         cursor.execute(insert_uFileName)
         cnx.commit()
 
      #--vPhotometry
      vFileName = str(vFileName)
      if vFileName != 'None':
-        insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+vFileName+"', ' ', ' ')")
-
-
+        insert_vFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
         cursor.execute(insert_vFileName)
         cnx.commit()
 
      #--bPhotometry
      bFileName = str(bFileName)
      if bFileName != 'None':
-        insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+lastId+",'"+bFileName+"', ' ', ' ')")
-
+        insert_bFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
         cursor.execute(insert_bFileName)
         cnx.commit()
 
@@ -143,7 +140,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      cursor.close()
 
  except:
-   print 'errors'
+   print 'errors in json_parser function'
  else:
    cnx.close()
 
@@ -153,8 +150,6 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
-
-
 
         id = str(id)
         name = str(name)
@@ -180,30 +175,23 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
 
     #--insert to data.fileNames
         #--uPhotometry
-        uName = str(uName)
         uFileName = str(uFileName)
         if uFileName != 'None':
-           insert_uFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+uFileName+"', ' ', ' ')")
-
+           insert_uFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+uFileName+"', ' ', ' ')")
            cursor.execute(insert_uFileName)
            cnx.commit()
 
         #--vPhotometry
-        vName = str(vName)
         vFileName = str(vFileName)
         if vFileName != 'None':
-           insert_vFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+vFileName+"', ' ', ' ')")
-
-
+           insert_vFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+vFileName+"', ' ', ' ')")
            cursor.execute(insert_vFileName)
            cnx.commit()
 
         #--bPhotometry
-        bName = str(bName)
         bFileName = str(bFileName)
         if bFileName != 'None':
-           insert_bFileName = ("insert into data.fileNames(ObservationId, FileName, FileType, FileSize) values("+id+",'"+bFileName+"', ' ', ' ')")
-
+           insert_bFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+bFileName+"', ' ', ' ')")
            cursor.execute(insert_bFileName)
            cnx.commit()
 
@@ -215,7 +203,6 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
            udata = pandas.read_csv('uploads/'+uFileName, header=None)
            udataRange = len(udata)
            udata.columns = ["uTime", "uFlux"]
-
         #--read vfile
         vdataRange = 0
         if vFileName != 'None':
@@ -291,6 +278,6 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         cursor.close()
 
     except:
-        print 'errors'
+        print 'errors in updateObservation function'
     else:
         cnx.close()

@@ -25,4 +25,14 @@
 				templateUrl : 'pages/admin.html',
 				controller  : 'adminCtrl',
 			})
+
+			.when('/login', {
+				templateUrl : 'pages/login.html',
+				controller  : 'loginCtrl',
+			})
+
+			.when('/register', {
+				templateUrl : 'pages/register.html',
+				controller  : 'registerCtrl',
+			})
 	}]);
