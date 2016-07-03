@@ -49,58 +49,67 @@ parser.add_argument('bName', type=str)
 parser.add_argument('bFileName', type=str)
 parser.add_argument('id', type=str)
 
+
+
 class Rest(Resource):
     def get(self, rest_id):
-        abort_if_json_doesnt_exist(rest_id)
-        return REST[rest_id]
+            abort_if_json_doesnt_exist(rest_id)
+            return REST[rest_id]
 
 
 class RestObservation(Resource):
     def post(self):
-        args = parser.parse_args()
-        json_parser(args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
-        return 201
+            args = parser.parse_args()
+            json_parser(args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
+            return 201
+
 
     def put(self):
-        args = parser.parse_args()
-        updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
-        return 201
+            args = parser.parse_args()
+            updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
+            return 201
+
 
 
 class RestLastObservation(Resource):
     def get(self):
-        return REST["lastLoad"]
+            return REST["lastLoad"]
 
-    def put(self):
-        procRunner()
-        return LastLoad
+
+def put(self):
+            procRunner()
+            return LastLoad
+
 
 
 class RestDeleteObservation(Resource):
     def post(self):
-        args = parser.parse_args()
-        deleteObservation(args['id'])
-        return 201
+            args = parser.parse_args()
+            deleteObservation(args['id'])
+            return 201
+
 
 
 class RestObservationHRDiagram(Resource):
     def get(self):
-        return REST["observationsHRDiagram"]
+            return REST["observationsHRDiagram"]
+
+
 
 class RestObservationDiagram(Resource):
     def get(self):
-        return REST["observationsDiagram"]
+            return REST["observationsDiagram"]
 
 class RestFileUpload(Resource):
     def post(self):
-        file = request.files['file']
-        filename = file.filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return 201
+            file = request.files['file']
+            filename = file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return 201
 
 
 api.add_resource(Rest, '/<rest_id>')
-api.add_resource(RestObservation, '/observations')
+api.add_resource(RestObservation, '/astroApp.cgi/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationDiagram, '/observationsDiagram')
@@ -115,9 +124,10 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     response.headers.add("Access-Control-Max-Age", "3600");
     response.headers.add("Access-Control-Allow-Headers", "x-requested-with");
-    response.headers.add("Connection", "keep-alive");
+    #response.headers.add("Connection", "keep-alive");
     return response
 
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host=serverAddress, port=5000)
+    app.run(debug=True, host=serverAddress, port=5000, threaded=True)

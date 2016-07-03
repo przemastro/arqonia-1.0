@@ -320,9 +320,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    astroApp.controller("cmdCtrl", ['$scope', '$log', 'getObservationsHRDiagram', (function ($scope, $log, ObservationsHRDiagram) {
+    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', (function ($scope, $log, ObservationsHRDiagram) {
 
-      ObservationsHRDiagram.query(function(observationsHRDiagram) {
+
+      $scope.ob = ObservationsHRDiagram.query
+      $scope.ob(function(observationsHRDiagram) {
 
          //Range of data
          $scope.XMax = observationsHRDiagram[0].XMax;
@@ -379,20 +381,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                     }
                 };
                 return $scope.options
+
             });
          //The magic
          $scope.data = generateData();
+         //$log.debug('test');
          function generateData() {
              var data = [],
                   shapes = ['circle'],
                   random = d3.random.normal();
-             $scope.observations = ObservationsHRDiagram.query(function(observationsHRDiagram) {
+               $scope.ob(function(observationsHRDiagram) {
                var i = 0
                $scope.starNames = observationsHRDiagram[0].starNames;
                $scope.bvObservationsDifference = observationsHRDiagram[0].bvObservationsDifference;
                $scope.vObservations = observationsHRDiagram[0].vObservations;
                         angular.forEach($scope.starNames, function(value, index){
-                            $log.debug(value);
                                 data.push({
                                     key: value,
                                     values: []
