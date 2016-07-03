@@ -124,7 +124,8 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     response.headers.add("Access-Control-Max-Age", "3600");
     response.headers.add("Access-Control-Allow-Headers", "x-requested-with");
-    #response.headers.add("Connection", "keep-alive");
+    response.headers.add("Connection", "keep-alive");
+    response.headers.add("Vary", "Accept-Encoding");
     return response
 
 

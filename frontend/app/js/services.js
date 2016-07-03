@@ -25,7 +25,7 @@ astroApp.service('fileUpload', ['$http', function ($http) {
 services.factory('getObservations', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observations', {}, {
-        query: {method:'GET', isArray:true}
+        query: {method:'GET', isArray:true, cache: true}
     });
 }]);
 
@@ -33,7 +33,7 @@ services.factory('getObservations', ['$resource',
 services.factory('getObservationsDiagram', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observationsDiagram', {}, {
-        query: {method:'GET', isArray:true}
+        query: {method:'GET', isArray:true, cache: true}
     });
 }]);
 
@@ -41,7 +41,7 @@ services.factory('getObservationsDiagram', ['$resource',
 services.factory('getObservationsHRDiagram', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/observationsHRDiagram', {}, {
-        query: {method:'GET', isArray:true}
+        query: {method:'GET', isArray:true, cache: true}
     });
 }]);
 
@@ -65,7 +65,7 @@ services.factory('processData', ['$resource',
 services.factory('getProcessedData', ['$resource',
     function ($resource) {
     return $resource('http://localhost\\:5000/lastLoad', {}, {
-        query: {method:'GET', isArray:true}
+        query: {method:'GET', isArray:true, cache: true}
     });
 }]);
 
