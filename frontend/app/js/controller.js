@@ -465,6 +465,24 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Login';
 	});
 
+    //registerCtrl
+	astroApp.controller('registerCtrl', function($scope) {
+	   $scope.message = 'Register';
+	});
+
+    astroApp.controller('regCtrl', ['$scope', '$log', 'register', function ($scope, $log, Register) {
+
+      //[Submit]
+      $scope.addUser = function(){
+
+   		  Register.save({name:$scope.name,email:$scope.email,password:$scope.password}, function(response){
+   		  $scope.message = response.message;
+   		  });
+      };
+
+    }]);
+
+
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl

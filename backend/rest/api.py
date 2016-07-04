@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from JsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from JsonParser import json_parser, updateObservation
+from JsonParser import json_parser, updateObservation, addUser
 from ProcRunner import procRunner, deleteObservation
 import os
 import ConfigParser
@@ -11,11 +11,28 @@ import logging
 import random
 from threading import *
 import multiprocessing, time, signal
+from flask_mail import Mail, Message
+
+
+
 
 
 app = Flask(__name__)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'HRHomeSurvey@gmail.com'
+app.config['MAIL_PASSWORD'] = 'astroApp1234'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+
+mail = Mail()
+mail.init_app(app)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 api = Api(app)
+
+
 
 config = ConfigParser.RawConfigParser()
 config.read('../resources/ConfigFile.properties')
@@ -54,6 +71,8 @@ parser.add_argument('vFileName', type=str)
 parser.add_argument('bName', type=str)
 parser.add_argument('bFileName', type=str)
 parser.add_argument('id', type=str)
+parser.add_argument('email', type=str)
+parser.add_argument('password', type=str)
 
 
 
@@ -122,6 +141,17 @@ class RestFileUpload(Resource):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return 201
 
+class RestRegister(Resource):
+    def post(self):
+        args = parser.parse_args()
+        addUser(args['name'],args['email'], args['password'])
+        msg = Message("Hello "+args['name'],
+                      sender="admin@astroApp.com",
+                      recipients=[args['email']])
+        mail.send(msg);
+        return 201
+
+
 
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
@@ -130,6 +160,7 @@ api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationDiagram, '/observationsDiagram')
 api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
+api.add_resource(RestRegister, '/register')
 
 # Handling COR requests
 @app.after_request

@@ -1,19 +1,28 @@
-<body ng-app = "astroApp" ng-controller = "registerCtrl">
-<div class="col-sm-4 col-sm-offset-4">
+<body ng-app="astroApp" ng-controller="registerCtrl">
+<div class="col-sm-4 col-sm-offset-4" ng-controller="regCtrl">
     <div class="well">
         <h3>Register</h3>
-        <form>
+        <form name="registerForm" role="form" novalidate ng-submit="registerForm.$valid && addUser()">
             <div class="form-group">
-                <input type="name" class="form-control" placeholder="Name" ng-model="newUser.name">
+                <input type="name" class="form-control" placeholder="Name" name="name" ng-model="name" required/>
+                <div ng-messages="registerForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                    <div ng-message="required">This field is required</div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="email" class="form-control" placeholder="Email" ng-model="newUser.email">
+                <input type="email" class="form-control" placeholder="Email" name="email" ng-model="email" required/>
+                <div ng-messages="registerForm.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                    <div ng-message="required">This field is required</div>
+                </div>
             </div>
 
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" ng-model="newUser.password">
+                <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required/>
+                <div ng-messages="registerForm.password.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                    <div ng-message="required">This field is required</div>
+                </div>
             </div>
-            <button class="btn btn-primary" ng-click="register()">Submit</button>
+            <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
         </form>
         <br/>
         <a href="#login" >Login</a>

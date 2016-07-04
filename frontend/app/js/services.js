@@ -21,6 +21,17 @@ astroApp.service('fileUpload', ['$http', function ($http) {
             }
 }]);
 
+//Authentication
+//Register
+services.factory('register', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/register', {}, {
+        save: {method:'POST'}
+    });
+}]);
+
+
+
 //Table list data
 services.factory('getObservations', ['$resource',
     function ($resource) {
