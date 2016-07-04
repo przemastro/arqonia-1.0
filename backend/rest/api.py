@@ -76,7 +76,7 @@ class RestLastObservation(Resource):
             return REST["lastLoad"]
 
 
-def put(self):
+    def put(self):
             procRunner()
             return LastLoad
 
@@ -109,7 +109,7 @@ class RestFileUpload(Resource):
 
 
 api.add_resource(Rest, '/<rest_id>')
-api.add_resource(RestObservation, '/astroApp.cgi/observations')
+api.add_resource(RestObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationDiagram, '/observationsDiagram')

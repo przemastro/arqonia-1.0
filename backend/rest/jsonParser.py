@@ -195,7 +195,6 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
            cursor.execute(insert_bFileName)
            cnx.commit()
 
-
     #---insert to stg.stagingObservations
         #--read ufile
         udataRange = 0
