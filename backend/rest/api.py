@@ -5,6 +5,12 @@ from JsonParser import json_parser, updateObservation
 from ProcRunner import procRunner, deleteObservation
 import os
 import ConfigParser
+import threading
+import time
+import logging
+import random
+from threading import *
+import multiprocessing, time, signal
 
 
 app = Flask(__name__)
@@ -71,14 +77,23 @@ class RestObservation(Resource):
 
 
 
+
 class RestLastObservation(Resource):
     def get(self):
             return REST["lastLoad"]
 
 
     def put(self):
-            procRunner()
-            return LastLoad
+        procRunner()
+        print threading.current_thread()
+        for t in threading.enumerate():
+            if t is threading.enumerate():
+                continue
+            logging.debug('joining %s', t.getName())
+            t.join(2.0)
+            print 't.isAlive()', t.isAlive()
+        #procRunner()
+        return LastLoad
 
 
 
@@ -128,7 +143,32 @@ def after_request(response):
     response.headers.add("Vary", "Accept-Encoding");
     return response
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='(%(threadName)-9s) %(message)s',)
 
+def f():
+    t = threading.currentThread()
+    r = random.randint(1,1)
+    logging.debug('sleeping %s', r)
+    time.sleep(r)
+    logging.debug('ending')
+    return
 
 if __name__ == '__main__':
+    #app.run(host=serverAddress, port=5000, threaded=True, use_reloader=True, reloader_type='watchdog')
     app.run(debug=True, host=serverAddress, port=5000, threaded=True)
+    #app.run(debug=True, host=serverAddress, port=5000)
+
+    for i in range(1):
+        t = threading.Thread(target=f)
+    t.setDaemon(True)
+    t.start()
+
+
+    main_thread = threading.current_thread()
+    for t in threading.enumerate():
+        if t is main_thread:
+            continue
+        logging.debug('joining %s', t.getName())
+        t.join(2.0)
+        print 't.isAlive()', t.isAlive()
