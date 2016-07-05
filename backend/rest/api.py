@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from JsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from JsonParser import json_parser, updateObservation, addUser
+from JsonParser import json_parser, updateObservation, addUser, verifyCredentials
 from ProcRunner import procRunner, deleteObservation
 import os
 import ConfigParser
@@ -151,6 +151,12 @@ class RestRegister(Resource):
         mail.send(msg);
         return 201
 
+class RestLogin(Resource):
+    def put(self):
+        args = parser.parse_args()
+        print 'test'
+        msg = verifyCredentials(args['email'], args['password'])
+        return jsonify({'msg': msg})
 
 
 api.add_resource(Rest, '/<rest_id>')
@@ -161,6 +167,7 @@ api.add_resource(RestObservationDiagram, '/observationsDiagram')
 api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
+api.add_resource(RestLogin, '/login')
 
 # Handling COR requests
 @app.after_request

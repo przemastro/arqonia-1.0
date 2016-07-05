@@ -147,6 +147,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
    		  $scope.message = response.message;
+   		  $log.debug($scope.message);
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
@@ -465,6 +466,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Login';
 	});
 
+    astroApp.controller('logCtrl', ['$rootScope', '$log', 'login', function ($scope, $log, Login) {
+
+      //[Submit]
+      $scope.loginUser = function(){
+
+   		  Login.update({email:$scope.email,password:$scope.password}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+   		  $log.debug($scope.message)
+   		  $scope.isUserLoggedIn = "True";
+   		  });
+      };
+
+    }]);
+
+
     //registerCtrl
 	astroApp.controller('registerCtrl', function($scope) {
 	   $scope.message = 'Register';
@@ -481,6 +497,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
 
     }]);
+
+
+
 
 
 //-----------------------------------------------------------Home-------------------------------------------------------

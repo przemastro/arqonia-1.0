@@ -47,13 +47,16 @@
         <td>Spinner on the 'Admin Panel' has hardcoded time of running. This should be fixed. Time should depend on backend reload.</td>
     </tr>
     <tr>
-        <td>multi threading</td>
-    </tr>
-    <tr>
         <td>It would be good if the table on the 'Observations' page shown status of records (active, deleted and new)</td>
     </tr>
     <tr>
-        <td>Authentication</td>
+        <td>Authentication: <br>
+            1. Register - notification + verification if user exists. After Register close modal<br>
+            2. Login - verification by email/login If not exists Error message "user does not exist". if exists then verification of password.
+            If password is correct route to main page. If password is not correct error message "wrong password". <br>
+            3. If user logged in following are displayed: [New Observation], [Remove], [Edit], "Admin Panel" page. "Login" is changed to "Logout" <br>
+            4. When clicking "Logout" change to "Login".
+        </td>
     </tr>
 </table>
 </div>

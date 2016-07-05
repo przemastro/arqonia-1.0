@@ -280,3 +280,53 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         print 'errors in updateObservation function'
     else:
         cnx.close()
+
+
+#----------------------------------------------------add new user-------------------------------------------------------
+def addUser(name, email, password):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        name = str(name)
+        email = str(email)
+        password = str(password)
+        if email != 'None' and password != 'None' and name != 'None':
+            insert_NewUser = (config.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
+            cursor.execute(insert_NewUser)
+            cnx.commit()
+
+
+        cursor.close()
+
+    except:
+        print 'errors in addUser function'
+    else:
+        cnx.close()
+
+#----------------------------------------------------verify Credentials-------------------------------------------------
+def verifyCredentials(email, password):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+        password = str(password)
+        if email != 'None' and password != 'None':
+            insert_NewUser = ("select count(1) from data.users where Email='"+email+"' and Password='"+password+"'")
+            cursor.execute(insert_NewUser)
+
+        Value = cursor.fetchone()
+        Value = Value[0]
+
+        if Value>0:
+            msg = "Correct"
+        else:
+            msg = "Wrong credentials"
+        return msg
+        cursor.close()
+
+    except:
+        print 'errors in addUser function'
+    else:
+        cnx.close()

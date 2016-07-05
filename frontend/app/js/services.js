@@ -30,6 +30,14 @@ services.factory('register', ['$resource',
     });
 }]);
 
+//Login
+services.factory('login', ['$resource',
+    function ($resource) {
+    return $resource('http://localhost\\:5000/login', {}, {
+        update: {method:'PUT'}
+    });
+}]);
+
 
 
 //Table list data

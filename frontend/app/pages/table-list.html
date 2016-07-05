@@ -241,26 +241,26 @@
     <!--Observations Table-->
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
-            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()"/></td>
             <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
+            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
             <th>Star Name</th>
-            <th>Start Date</th>
-            <th style="width:20%">End Date</th>
+            <th style="width:15%">Start Date</th>
+            <th style="width:15%">End Date</th>
             <th>U Photometry</th>
             <th>V Photometry</th>
             <th>B Photometry</th>
         </tr>
         <tr ng-repeat="observation in displayedObservations" >
-            <td>{{observation.name}}</td>
+            <td style="text-align: left;">{{observation.name}}</td>
             <td>{{observation.startDate}}</td>
             <td>{{observation.endDate}}</td>
             <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editUPhotometry(observation.id)"/></td>
             <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editVPhotometry(observation.id)"/></td>
             <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
-            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation(observation.id)"/></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation(observation.id)"/></td>
+            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-sm btn-info custom" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
+            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-sm btn-danger custom" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
             <tfoot>
