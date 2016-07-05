@@ -47,7 +47,6 @@ def procRunner():
     else:
         cnx.close()
 
-
 def deleteObservation(id):
     try:
         cnx = pyodbc.connect(dbAddress)
