@@ -15,12 +15,14 @@
                     <div ng-message="required">This field is required</div>
                 </div>
             </div>
-
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required/>
                 <div ng-messages="registerForm.password.$error" style="color:maroon" role="alert" ng-if='submitted'>
                     <div ng-message="required">This field is required</div>
                 </div>
+            </div>
+            <div class="form-group">
+                <div style="color:maroon" role="alert" ng-if='errorFlag'>User exists</div>
             </div>
             <input type="submit" value="Submit" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
         </form>

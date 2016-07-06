@@ -4,7 +4,7 @@
 	angular.module('astroApp', ['ngRoute', 'astroApp.services', 'astroApp.controller', 'ngMessages'])
 
 	// configure routes
-	   .config(['$routeProvider', function($routeProvider) {
+	   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 		 $routeProvider
             .when('/main', {
 				templateUrl : 'pages/main.html',

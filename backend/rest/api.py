@@ -144,12 +144,13 @@ class RestFileUpload(Resource):
 class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
-        addUser(args['name'],args['email'], args['password'])
-        msg = Message("Hello "+args['name'],
+        msg = addUser(args['name'],args['email'], args['password'])
+        if msg == 'Correct':
+            content = Message("Hello "+args['name'],
                       sender="admin@astroApp.com",
                       recipients=[args['email']])
-        mail.send(msg);
-        return 201
+            mail.send(content);
+        return jsonify({'msg': msg})
 
 class RestLogin(Resource):
     def put(self):

@@ -468,17 +468,24 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Login';
 	});
 
-    astroApp.controller('logCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
+    astroApp.controller('logCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', '$location', function ($rootScope, $scope, $log, Login, $cookies, $location) {
 
       //[Submit]
       $scope.loginUser = function(){
-
+          $log.debug($scope.email)
    		  Login.update({email:$scope.email,password:$scope.password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
    		  $log.debug($scope.message)
-
-   		  $cookies.put('cook', true);
-   		  $scope.isUserLoggedIn = $cookies.get('cook');
+          if($scope.message == "Wrong credentials"){
+   		     $rootScope.isUserLoggedIn = false
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+   		     $cookies.put('cook', true);
+   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
+   		     $rootScope.errorFlag = false
+   		     $location.path("main");
+   		     }
    		  });
       };
 
@@ -490,13 +497,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Register';
 	});
 
-    astroApp.controller('regCtrl', ['$scope', '$log', 'register', function ($scope, $log, Register) {
+    astroApp.controller('regCtrl', ['$rootScope', '$scope', '$log', 'register', '$location', function ($rootScope, $scope, $log, Register, $location) {
 
       //[Submit]
       $scope.addUser = function(){
 
    		  Register.save({name:$scope.name,email:$scope.email,password:$scope.password}, function(response){
-   		  $scope.message = response.message;
+   		  $scope.message = response[Object.keys(response)[0]];
+   		  $log.debug($scope.message)
+          if($scope.message == "User exists"){
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+   		     $rootScope.errorFlag = false
+   		     $location.path("login");
+   		     }
    		  });
       };
 
@@ -510,11 +525,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $cookies.remove("cook");
 	}]);
 
-    astroApp.controller('goodbyeCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
-       //$cookies.remove("cook");
-   	   //$cookies.put('cook', false);
+    astroApp.controller('goodbyeCtrl', ['$rootScope', '$log', 'login', '$cookies', '$location', function ($scope, $log, Login, $cookies, $location) {
        $scope.isUserLoggedIn = false;
        console.log($scope.isUserLoggedIn);
+       $location.path("main");
     }]);
 
 
