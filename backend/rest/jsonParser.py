@@ -291,12 +291,23 @@ def addUser(name, email, password):
         name = str(name)
         email = str(email)
         password = str(password)
+
         if email != 'None' and password != 'None' and name != 'None':
-            insert_NewUser = (config.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
-            cursor.execute(insert_NewUser)
-            cnx.commit()
+            verify_User = ("select count(1) from data.users where Email='"+email+"'")
+            cursor.execute(verify_User)
 
+            Value = cursor.fetchone()
+            Value = Value[0]
 
+            if Value>0:
+                msg = "User exists"
+            else:
+                insert_NewUser = (config.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
+                cursor.execute(insert_NewUser)
+                cnx.commit()
+                msg = "Correct"
+
+        return msg
         cursor.close()
 
     except:
@@ -304,7 +315,7 @@ def addUser(name, email, password):
     else:
         cnx.close()
 
-#----------------------------------------------------verify Credentials-------------------------------------------------
+#-----------------------------------------------------verify Credentials------------------------------------------------
 def verifyCredentials(email, password):
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -313,8 +324,8 @@ def verifyCredentials(email, password):
         email = str(email)
         password = str(password)
         if email != 'None' and password != 'None':
-            insert_NewUser = ("select count(1) from data.users where Email='"+email+"' and Password='"+password+"'")
-            cursor.execute(insert_NewUser)
+            verify_User = ("select count(1) from data.users where Email='"+email+"' and Password='"+password+"'")
+            cursor.execute(verify_User)
 
         Value = cursor.fetchone()
         Value = Value[0]
@@ -323,10 +334,11 @@ def verifyCredentials(email, password):
             msg = "Correct"
         else:
             msg = "Wrong credentials"
+
         return msg
         cursor.close()
 
     except:
-        print 'errors in addUser function'
+        print 'errors in verifyCredentials function'
     else:
         cnx.close()
