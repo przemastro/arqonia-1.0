@@ -194,7 +194,7 @@ def f():
 
 if __name__ == '__main__':
     #app.run(host=serverAddress, port=5000, threaded=True, use_reloader=True, reloader_type='watchdog')
-    app.run(debug=True, host=serverAddress, port=5000, threaded=True)
+    app.run(debug=True, host=serverAddress, port=5001, threaded=True)
     #app.run(debug=True, host=serverAddress, port=5000)
 
     for i in range(1):

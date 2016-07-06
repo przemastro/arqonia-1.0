@@ -25,7 +25,7 @@ astroApp.service('fileUpload', ['$http', function ($http) {
 //Register
 services.factory('register', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/register', {}, {
+    return $resource('http://localhost\\:5001/register', {}, {
         save: {method:'POST'}
     });
 }]);
@@ -33,7 +33,7 @@ services.factory('register', ['$resource',
 //Login
 services.factory('login', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/login', {}, {
+    return $resource('http://localhost\\:5001/login', {}, {
         update: {method:'PUT'}
     });
 }]);
@@ -43,7 +43,7 @@ services.factory('login', ['$resource',
 //Table list data
 services.factory('getObservations', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/observations', {}, {
+    return $resource('http://localhost\\:5001/observations', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
@@ -51,7 +51,7 @@ services.factory('getObservations', ['$resource',
 //Diagram data
 services.factory('getObservationsDiagram', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/observationsDiagram', {}, {
+    return $resource('http://localhost\\:5001/observationsDiagram', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
@@ -59,7 +59,7 @@ services.factory('getObservationsDiagram', ['$resource',
 //HR-Diagram data
 services.factory('getObservationsHRDiagram', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/observationsHRDiagram', {}, {
+    return $resource('http://localhost\\:5001/observationsHRDiagram', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
@@ -67,7 +67,7 @@ services.factory('getObservationsHRDiagram', ['$resource',
 //Add new observation
 services.factory('postObservation', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/observations', {}, {
+    return $resource('http://localhost\\:5001/observations', {}, {
         save: {method:'POST'}
     });
 }]);
@@ -75,7 +75,7 @@ services.factory('postObservation', ['$resource',
 //Trigger SQL procedure
 services.factory('processData', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/lastLoad', {}, {
+    return $resource('http://localhost\\:5001/lastLoad', {}, {
         query: {method:'PUT', isArray:true}
     });
 }]);
@@ -83,7 +83,7 @@ services.factory('processData', ['$resource',
 //Get Last processed observation
 services.factory('getProcessedData', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/lastLoad', {}, {
+    return $resource('http://localhost\\:5001/lastLoad', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
@@ -91,7 +91,7 @@ services.factory('getProcessedData', ['$resource',
 //Remove observation
 services.factory('removeObservation', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/deletedObservations', {}, {
+    return $resource('http://localhost\\:5001/deletedObservations', {}, {
         save: {method:'POST'}
     });
 }]);
@@ -99,7 +99,7 @@ services.factory('removeObservation', ['$resource',
 //Update observation
 services.factory('updateObservation', ['$resource',
     function ($resource) {
-    return $resource('http://localhost\\:5000/observations', {}, {
+    return $resource('http://localhost\\:5001/observations', {}, {
         update: {method:'PUT'}
     });
 }]);

@@ -2,7 +2,7 @@
 
 
 var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
- 'angularModalService', 'angularSpinner', 'nvd3']);
+ 'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies']);
 
 
 //---------------------------------------------------Table List---------------------------------------------------------
@@ -11,8 +11,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$rootScope', '$log', '$routeParams', 'getObservations',
-                                     function($scope, $log, $routeParams, Observations) {
+    astroApp.controller('tableCtrl', ['$rootScope', '$log', '$routeParams', 'getObservations', '$cookies',
+                                     function($scope, $log, $routeParams, Observations, $cookies) {
        //Get data
        $scope.displayedObservations = [];
        $scope.observations = Observations.query();
@@ -23,6 +23,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.animationsEnabled = !$scope.animationsEnabled;
           $scope.itemsByPage=15
        };
+       //$scope.isUserLoggedIn = $cookies.get('cook');
     }]);
 
     //ModalCtrl
@@ -118,7 +119,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file, uploadUrl);
              }
           else {
@@ -127,7 +128,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file2 = $scope.myFile2;
           if(file2) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file2, uploadUrl);
              }
           else {
@@ -136,7 +137,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file3 = $scope.myFile3;
           if(file3) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file3, uploadUrl);
              }
           else {
@@ -218,7 +219,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file, uploadUrl);
              }
           else {
@@ -227,7 +228,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file2 = $scope.myFile2;
           if(file2) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file2, uploadUrl);
              }
           else {
@@ -236,7 +237,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file3 = $scope.myFile3;
           if(file3) {
-             var uploadUrl = "http://localhost:5000/fileUpload";
+             var uploadUrl = "http://localhost:5001/fileUpload";
              fileUpload.uploadFileToUrl(file3, uploadUrl);
              }
           else {
@@ -420,14 +421,15 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 //--------------------------------------------------------Admin Panel---------------------------------------------------
 
-	astroApp.controller('adminCtrl', function($scope) {
+	astroApp.controller('adminCtrl', ['$rootScope', '$cookies', function($scope, $cookies) {
 	   $scope.message = 'Admin Panel';
-	});
+	   $scope.isUserLoggedIn = $cookies.get('cook');
+	}]);
 
-	astroApp.controller('processCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'processData', 'getProcessedData', '$window', '$timeout',
-      function($scope, usSpinnerService, $rootScope, ProcessData, GetProcessedData, $window, $timeout) {
+	astroApp.controller('processCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'processData', 'getProcessedData', '$window', '$timeout', '$cookies',
+      function($scope, usSpinnerService, $rootScope, ProcessData, GetProcessedData, $window, $timeout, $cookies) {
         $scope.message = 'Admin Panel';
-
+        $scope.isUserLoggedIn = $cookies.get('cook');
         $scope.displayedObservations = [];
         //Call getProcessedData service
         $scope.observations = GetProcessedData.query();
@@ -466,7 +468,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Login';
 	});
 
-    astroApp.controller('logCtrl', ['$rootScope', '$log', 'login', function ($scope, $log, Login) {
+    astroApp.controller('logCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
 
       //[Submit]
       $scope.loginUser = function(){
@@ -474,7 +476,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  Login.update({email:$scope.email,password:$scope.password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
    		  $log.debug($scope.message)
-   		  $scope.isUserLoggedIn = "True";
+
+   		  $cookies.put('cook', true);
+   		  $scope.isUserLoggedIn = $cookies.get('cook');
    		  });
       };
 
@@ -498,13 +502,26 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     }]);
 
+//----------------------------------------------------------Logout-------------------------------------------------------
 
+    //logoutCtrl
+	astroApp.controller('logoutCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
+	   $scope.message = 'Logout';
+	   $cookies.remove("cook");
+	}]);
 
+    astroApp.controller('goodbyeCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
+       //$cookies.remove("cook");
+   	   //$cookies.put('cook', false);
+       $scope.isUserLoggedIn = false;
+       console.log($scope.isUserLoggedIn);
+    }]);
 
 
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl
-	astroApp.controller('mainCtrl', function($scope) {
+	astroApp.controller('mainCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
 	   $scope.message = 'Home made HR diagram';
-	});
+	   $scope.isUserLoggedIn = $cookies.get('cook');
+	}]);

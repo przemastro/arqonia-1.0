@@ -35,4 +35,9 @@
 				templateUrl : 'pages/register.html',
 				controller  : 'registerCtrl',
 			})
+
+			.when('/logout', {
+				templateUrl : 'pages/logout.html',
+				controller  : 'logoutCtrl',
+			})
 	}]);

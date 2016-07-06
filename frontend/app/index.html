@@ -26,6 +26,7 @@
    <script src="bower_components/d3/d3.min.js"></script>
    <script src="bower_components/nvd3/build/nv.d3.min.js"></script>
    <script src="bower_components/angular-nvd3/dist/angular-nvd3.min.js"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-rc.0/angular-cookies.min.js"></script>
 
  </head>
  <!-- define angular controller -->
@@ -38,9 +39,8 @@
    <li><a href="#hr-diagram" style="color:white;text-decoration: none">Diagrams</a></li>
    <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none">Login</a></li>
    <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Logout</a></li>
-   <li style="float:right"><a href="#admin" style="color:white;text-decoration: none">Admin Panel</a></li>
+   <li style="float:right"><a href="#admin" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Admin Panel</a></li>
  </ul>
-
  <div id="main">
    <!-- this is where content will be injected -->
    <div ng-view></div>
