@@ -12,6 +12,8 @@ import random
 from threading import *
 import multiprocessing, time, signal
 from flask_mail import Mail, Message
+from sjcl import SJCL
+import simplejson as json
 
 
 
@@ -141,6 +143,7 @@ class RestFileUpload(Resource):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return 201
 
+
 class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
@@ -155,8 +158,16 @@ class RestRegister(Resource):
 class RestLogin(Resource):
     def put(self):
         args = parser.parse_args()
-        print 'test'
-        msg = verifyCredentials(args['email'], args['password'])
+        #print args['email']
+        #print args['password']
+        cyphertext = encrypt_password()
+        print cyphertext
+        print args['password']
+        sj = decrypt_password(args['password'])
+
+        print sj
+
+        msg = verifyCredentials(args['email'], sj)
         return jsonify({'msg': msg})
 
 
@@ -181,6 +192,19 @@ def after_request(response):
     response.headers.add("Connection", "keep-alive");
     response.headers.add("Vary", "Accept-Encoding");
     return response
+
+
+
+
+def encrypt_password():
+    cyphertext = SJCL().encrypt("secret message to encrypt", "shared_secret")
+    return cyphertext
+
+def decrypt_password(password):
+    d = json.loads(password)
+    print d
+    sj = SJCL().decrypt(d, "password")
+    return sj
 
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s',)

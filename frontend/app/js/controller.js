@@ -473,7 +473,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       //[Submit]
       $scope.loginUser = function(){
           $log.debug($scope.email)
-   		  Login.update({email:$scope.email,password:$scope.password}, function(response){
+
+          var password = sjcl.encrypt("password", $scope.password)
+          $log.debug('test')
+          $log.debug(password)
+
+
+
+   		  Login.update({email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
    		  $log.debug($scope.message)
           if($scope.message == "Wrong credentials"){
