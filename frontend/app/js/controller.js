@@ -469,16 +469,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     astroApp.controller('logCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', '$location', function ($rootScope, $scope, $log, Login, $cookies, $location) {
-
+      $rootScope.errorFlag = false
       //[Submit]
       $scope.loginUser = function(){
-          $log.debug($scope.email)
-
           var password = sjcl.encrypt("password", $scope.password)
-          $log.debug('test')
-          $log.debug(password)
-
-
 
    		  Login.update({email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
@@ -495,7 +489,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     }
    		  });
       };
-
     }]);
 
 
@@ -506,10 +499,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     astroApp.controller('regCtrl', ['$rootScope', '$scope', '$log', 'register', '$location', function ($rootScope, $scope, $log, Register, $location) {
 
+      $rootScope.errorFlag = false
       //[Submit]
       $scope.addUser = function(){
+          var password = sjcl.encrypt("password", $scope.password)
 
-   		  Register.save({name:$scope.name,email:$scope.email,password:$scope.password}, function(response){
+   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
    		  $log.debug($scope.message)
           if($scope.message == "User exists"){

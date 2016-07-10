@@ -18,7 +18,6 @@ import simplejson as json
 
 
 
-
 app = Flask(__name__)
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
@@ -143,30 +142,26 @@ class RestFileUpload(Resource):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return 201
 
-
 class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
-        msg = addUser(args['name'],args['email'], args['password'])
+
+        sj = decrypt_password(args['password'])
+        msg = addUser(args['name'],args['email'], str(sj))
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
                       sender="admin@astroApp.com",
                       recipients=[args['email']])
+            content.body = 'Welcome '+args['name']+',\n\nThank you for joining AstroApp, the biggest astronomical fandom in the Universe.' \
+                                                   '\n\nBest Regards, \nThe Creator'
             mail.send(content);
         return jsonify({'msg': msg})
+
 
 class RestLogin(Resource):
     def put(self):
         args = parser.parse_args()
-        #print args['email']
-        #print args['password']
-        cyphertext = encrypt_password()
-        print cyphertext
-        print args['password']
         sj = decrypt_password(args['password'])
-
-        print sj
-
         msg = verifyCredentials(args['email'], sj)
         return jsonify({'msg': msg})
 
@@ -195,14 +190,8 @@ def after_request(response):
 
 
 
-
-def encrypt_password():
-    cyphertext = SJCL().encrypt("secret message to encrypt", "shared_secret")
-    return cyphertext
-
 def decrypt_password(password):
     d = json.loads(password)
-    print d
     sj = SJCL().decrypt(d, "password")
     return sj
 
@@ -220,13 +209,12 @@ def f():
 if __name__ == '__main__':
     app.run(debug=False, host=serverAddress, port=5001, threaded=True, use_reloader=True)
     #app.run(debug=True, host=serverAddress, port=5001, threaded=True)
-    #app.run(debug=True, host=serverAddress, port=5000)
+    #app.run(debug=True, host=serverAddress, port=5001)
 
     for i in range(1):
         t = threading.Thread(target=f)
     t.setDaemon(True)
     t.start()
-
 
     main_thread = threading.current_thread()
     for t in threading.enumerate():
