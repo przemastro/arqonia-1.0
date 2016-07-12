@@ -96,3 +96,4 @@ Frontend
     5. CMD diagram dots should be colorized
     6. Mail server should be configured
     7. Diagram should be described in a better way
+    8. Ability to sort by date
