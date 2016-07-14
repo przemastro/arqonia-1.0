@@ -85,3 +85,22 @@ Client consists of following:
   
 More info you can find in gettingStarted.txt.
 
+# Thinking about the future
+
+Frontend features
+
+    1. User should be able to choose date from date picker
+    2. Spinner should stop when backend is reloaded
+    3. UVB data should be pre-populated in Edit modal
+    4. Ability to navigate to the last page of table list
+    5. CMD diagram dots should be colorized
+    6. Mail server should be configured
+    7. Diagram should be described in a better way
+    8. Ability to sort by date
+    9. Logged in User details should be displayed
+
+Bugs
+
+    1. Sometimes Diagram is not fully loaded
+    2. Service is not re-loading immediately after processing
+    
