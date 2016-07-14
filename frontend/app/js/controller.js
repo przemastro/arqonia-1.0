@@ -24,6 +24,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.itemsByPage=15
        };
        //$scope.isUserLoggedIn = $cookies.get('cook');
+
     }]);
 
     //ModalCtrl
@@ -322,17 +323,19 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', (function ($scope, $log, ObservationsHRDiagram) {
+    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', 'getObservationsDiagram', (function ($scope, $log, ObservationsHRDiagram,
+                        ObservationsDiagram) {
 
 
-      $scope.ob = ObservationsHRDiagram.query
-      $scope.ob(function(observationsHRDiagram) {
+      $scope.ob = ObservationsHRDiagram.query;
+      $scope.obRange = ObservationsDiagram.query;
+      $scope.obRange(function(observationsDiagram) {
 
          //Range of data
-         $scope.XMax = observationsHRDiagram[0].XMax;
-         $scope.XMin = observationsHRDiagram[0].XMin;
-         $scope.YMax = observationsHRDiagram[0].YMax;
-         $scope.YMin = observationsHRDiagram[0].YMin;
+         $scope.XMax = observationsDiagram[0].XMax;
+         $scope.XMin = observationsDiagram[0].XMin;
+         $scope.YMax = observationsDiagram[0].YMax;
+         $scope.YMin = observationsDiagram[0].YMin;
 
          //Diagram options
          var myColors = ["#000000"];
@@ -445,7 +448,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           }
           $timeout(function(){
              $window.location.reload();
-             }, 5000);
+             }, 15000);
 
         };
 

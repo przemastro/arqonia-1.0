@@ -245,9 +245,9 @@
             <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
-            <th>Star Name</th>
-            <th style="width:15%">Start Date</th>
-            <th style="width:15%">End Date</th>
+            <th st-sort="name">Star Name<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
+            <th style="width:15%" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
+            <th style="width:15%" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th>U Photometry</th>
             <th>V Photometry</th>
             <th>B Photometry</th>
@@ -265,7 +265,8 @@
         <tr>
             <tfoot>
                <td style="border-bottom: 0px" colspan="7" class="text-center">
-                  <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+                   <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5" st-template="pages/pagination.custom.html"></div>
+                   <!--<div st-items-by-page="10" st-pagination="" st-template="pages/pagination.custom.html"></div>-->
                </td>
             </tfoot>
         </tr>

@@ -135,13 +135,17 @@ def json_diagram():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_ObservationsDates = (config.get('DatabaseQueries', 'database.getObservationsDatesFromObservationsSorted'))
-        get_ObservationsCounts = (config.get('DatabaseQueries', 'database.getObservationsCountsFromObservationsSorted'))
+        get_XMax = (config.get('DatabaseQueries', 'database.getXMaxFromHrDiagramAvg'))
+        get_XMin = (config.get('DatabaseQueries', 'database.getXMinFromHrDiagramAvg'))
+        get_YMax = (config.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
+        get_YMin = (config.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
 
-        ObservationsCounts = fetch_all(get_ObservationsCounts)
-        ObservationsDates = fetch_all(get_ObservationsDates)
+        XMax = fetch_one(get_XMax)
+        XMin = fetch_one(get_XMin)
+        YMax = fetch_one(get_YMax)
+        YMin = fetch_one(get_YMin)
 
-        observationsDiagram = [{'data': ObservationsCounts, 'dates': ObservationsDates}]
+        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
 
         cursor.close()
         json_diagram.jsonDiagram = observationsDiagram
@@ -158,27 +162,17 @@ def json_hrdiagram():
         cursor = cnx.cursor()
 
         get_VObservations = (config.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
-        get_BVObservationsDifference = (
-        config.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromHrDiagramAvg'))
+        get_BVObservationsDifference = (config.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromHrDiagramAvg'))
         get_StarNames = (config.get('DatabaseQueries', 'database.getStarNamesFromHrDiagramAvg'))
 
-        get_XMax = (config.get('DatabaseQueries', 'database.getXMaxFromHrDiagramAvg'))
-        get_XMin = (config.get('DatabaseQueries', 'database.getXMinFromHrDiagramAvg'))
-        get_YMax = (config.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
-        get_YMin = (config.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
 
         VObservations = fetch_all(get_VObservations)
         BVObservationsDifference = fetch_all(get_BVObservationsDifference)
         StarNames = fetch_all(get_StarNames)
 
-        XMax = fetch_one(get_XMax)
-        XMin = fetch_one(get_XMin)
-        YMax = fetch_one(get_YMax)
-        YMin = fetch_one(get_YMin)
 
         observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations,
-                                  'starNames': StarNames,
-                                  'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+                                  'starNames': StarNames}]
 
         cursor.close()
         json_hrdiagram.jsonHRDiagram = observationsHRDiagram

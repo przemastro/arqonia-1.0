@@ -5,16 +5,14 @@ from JsonParser import json_parser, updateObservation, addUser, verifyCredential
 from ProcRunner import procRunner, deleteObservation
 import os
 import ConfigParser
-import threading
-import time
-import logging
 import random
 from threading import *
-import multiprocessing, time, signal
 from flask_mail import Mail, Message
 from sjcl import SJCL
 import simplejson as json
-
+import threading
+import time
+import logging
 
 
 
@@ -48,6 +46,7 @@ Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
 ObservationsDiagram = json_diagram.jsonDiagram
 ObservationsHRDiagram = json_hrdiagram.jsonHRDiagram
+
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
@@ -104,18 +103,23 @@ class RestLastObservation(Resource):
 
 
     def put(self):
-        procRunner()
-        print threading.current_thread()
-        for t in threading.enumerate():
-            if t is threading.enumerate():
-                continue
-            logging.debug('joining %s', t.getName())
-            t.join(2.0)
-            print 't.isAlive()', t.isAlive()
         #procRunner()
-        return LastLoad
+        print threading.current_thread()
+        main_thread = threading.Thread
+        print main_thread
+        main_thread = threading.current_thread()
+        for t in threading.enumerate():
+            if t is main_thread:
+                continue
+                logging.debug('joining %s', t.getName())
+                t.join(2.0)
+                Thread.join(2.0)
+                print 't.isAlive()', t.isAlive()
 
-
+        #shutdown_server()
+        #os.system("python api.py")
+        time.sleep(5)
+        procRunner()
 
 class RestDeleteObservation(Resource):
     def post(self):
@@ -128,7 +132,6 @@ class RestDeleteObservation(Resource):
 class RestObservationHRDiagram(Resource):
     def get(self):
             return REST["observationsHRDiagram"]
-
 
 
 class RestObservationDiagram(Resource):
@@ -206,8 +209,24 @@ def f():
     logging.debug('ending')
     return
 
+def n():
+    logging.debug('Starting')
+    logging.debug('Exiting')
+
+def d():
+    logging.debug('Starting')
+    time.sleep(5)
+    logging.debug('Exiting')
+
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
 if __name__ == '__main__':
-    app.run(debug=False, host=serverAddress, port=5001, threaded=True, use_reloader=True)
+    app.run(debug=False, host=serverAddress, port=5001, threaded=True, use_reloader=True, reloader_type='watchdog')
     #app.run(debug=True, host=serverAddress, port=5001, threaded=True)
     #app.run(debug=True, host=serverAddress, port=5001)
 
@@ -216,10 +235,12 @@ if __name__ == '__main__':
     t.setDaemon(True)
     t.start()
 
-    main_thread = threading.current_thread()
-    for t in threading.enumerate():
-        if t is main_thread:
-            continue
-        logging.debug('joining %s', t.getName())
-        t.join(2.0)
-        print 't.isAlive()', t.isAlive()
+
+
+    #main_thread = threading.current_thread()
+    #for t in threading.enumerate():
+    #    if t is main_thread:
+    #        continue
+    #    logging.debug('joining %s', t.getName())
+    #    t.join(2.0)
+    #    print 't.isAlive()', t.isAlive()
