@@ -497,6 +497,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $cookies.put('cook', true);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.errorFlag = false
+   		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     }
    		  });
