@@ -1,8 +1,18 @@
 'use strict';
 
 
+    //var __env = {};
+
+    //if(window){
+    //  Object.assign(__env, window.__env);
+    //}
+
 var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies']);
+
+    // Register environment in AngularJS as constant
+    astroApp.constant('__env', __env);
+
 
 
 //---------------------------------------------------Table List---------------------------------------------------------
@@ -117,10 +127,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       //[Submit]
       $scope.addRow = function(){
           var file = $scope.myFile;
-
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file, uploadUrl);
              }
           else {
@@ -129,7 +138,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file2 = $scope.myFile2;
           if(file2) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file2, uploadUrl);
              }
           else {
@@ -138,7 +147,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file3 = $scope.myFile3;
           if(file3) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file3, uploadUrl);
              }
           else {
@@ -220,7 +229,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file, uploadUrl);
              }
           else {
@@ -229,7 +238,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file2 = $scope.myFile2;
           if(file2) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file2, uploadUrl);
              }
           else {
@@ -238,7 +247,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           var file3 = $scope.myFile3;
           if(file3) {
-             var uploadUrl = "http://localhost:5001/fileUpload";
+             var uploadUrl = __env.apiUrl+"/fileUpload";
              fileUpload.uploadFileToUrl(file3, uploadUrl);
              }
           else {

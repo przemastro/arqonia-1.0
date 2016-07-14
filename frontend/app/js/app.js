@@ -1,5 +1,6 @@
 'use strict';
 
+
 	// create the module and name it astroApp
 	angular.module('astroApp', ['ngRoute', 'astroApp.services', 'astroApp.controller', 'ngMessages'])
 

@@ -36,6 +36,7 @@ api = Api(app)
 config = ConfigParser.RawConfigParser()
 config.read('../resources/ConfigFile.properties')
 serverAddress = config.get('Server', 'server.address');
+serverPort = int(config.get('Server', 'server.port'));
 
 json_data()
 json_load()
@@ -226,7 +227,7 @@ def shutdown_server():
     func()
 
 if __name__ == '__main__':
-    app.run(debug=False, host=serverAddress, port=5001, threaded=True, use_reloader=True, reloader_type='watchdog')
+    app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True, reloader_type='watchdog')
     #app.run(debug=True, host=serverAddress, port=5001, threaded=True)
     #app.run(debug=True, host=serverAddress, port=5001)
 
