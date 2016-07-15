@@ -96,6 +96,7 @@ Frontend features
     5. Mail server should be configured
     6. Diagram should be described in a better way
     7. Logged in User details should be displayed
+    8. Remove # tag from the address
 
 Bugs
 
