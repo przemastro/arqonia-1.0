@@ -2,7 +2,7 @@
 <html lang="en" ng-app="astroApp">
  <head>
    <meta charset="utf-8">
-   <title>Astro App</title>
+   <title>Arqonia</title>
    <link rel="stylesheet" href="css/app.min.css">
    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
    <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.min.css">
@@ -29,7 +29,7 @@
    <script src="bower_components/nvd3/build/nv.d3.min.js"></script>
    <script src="bower_components/angular-nvd3/dist/angular-nvd3.min.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-rc.0/angular-cookies.min.js"></script>
-
+   <!--<base href="/">-->
  </head>
  <!-- define angular controller -->
 
@@ -40,7 +40,7 @@
    <li><a href="#table-list" style="color:white;text-decoration: none">Observations</a></li>
    <li><a href="#hr-diagram" style="color:white;text-decoration: none">Diagrams</a></li>
    <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none">Login</a></li>
-   <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">{{loggedInUser}}  User</a></li>
+   <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Logout</a></li>
    <li style="float:right"><a href="#admin" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Admin Panel</a></li>
  </ul>
  <div id="main">

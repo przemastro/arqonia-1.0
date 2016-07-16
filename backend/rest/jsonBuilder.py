@@ -4,8 +4,10 @@ import ast
 import ConfigParser
 
 config = ConfigParser.RawConfigParser()
-config.read('../resources/ConfigFile.properties')
+config.read('../resources/env.properties')
 dbAddress = config.get('DatabaseConnection', 'database.address');
+queries = ConfigParser.RawConfigParser()
+queries.read('../resources/queries.properties')
 cnx = pyodbc.connect(dbAddress)
 cursor = cnx.cursor()
 
@@ -15,34 +17,34 @@ def json_data():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_IdFromObservationsSorted = config.get('DatabaseQueries', 'database.getIdFromObservationsSorted');
+        get_IdFromObservationsSorted = queries.get('DatabaseQueries', 'database.getIdFromObservationsSorted');
         getIds = fetch_all(get_IdFromObservationsSorted)
 
         controller = ''
 
         for counter in getIds:
             id = str(counter)
-            get_objectName = (config.get('DatabaseQueries', 'database.getStarNameFromObservationsSorted') + id)
-            get_StartDate = (config.get('DatabaseQueries', 'database.getStartDateFromObservationsSorted') + id)
-            get_EndDate = (config.get('DatabaseQueries', 'database.getEndDateFromObservationsSorted') + id)
+            get_objectName = (queries.get('DatabaseQueries', 'database.getStarNameFromObservationsSorted') + id)
+            get_StartDate = (queries.get('DatabaseQueries', 'database.getStartDateFromObservationsSorted') + id)
+            get_EndDate = (queries.get('DatabaseQueries', 'database.getEndDateFromObservationsSorted') + id)
             get_UPhotometryFlag = (
-            config.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
             get_UPhotometryFlux = (
-            config.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
             get_UPhotometryTime = (
-            config.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
             get_VPhotometryFlag = (
-            config.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
             get_VPhotometryFlux = (
-            config.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
             get_VPhotometryTime = (
-            config.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
             get_BPhotometryFlag = (
-            config.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
             get_BPhotometryFlux = (
-            config.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
             get_BPhotometryTime = (
-            config.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
+            queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
 
             objectName = str(fetch_one(get_objectName))
             StartDate = str(fetch_one(get_StartDate))
@@ -107,10 +109,10 @@ def json_load():
         cursor = cnx.cursor()
 
         get_LastLoadObservationId = (
-        config.get('DatabaseQueries', 'database.getLastLoadObservationIdFromStagingObservations'))
-        get_LastLoadStarName = (config.get('DatabaseQueries', 'database.getLastLoadStarNameFromStagingObservations'))
-        get_LastLoadStartDate = (config.get('DatabaseQueries', 'database.getLastLoadStartDateFromStagingObservations'))
-        get_LastLoadEndDate = (config.get('DatabaseQueries', 'database.getLastLoadEndDateFromStagingObservations'))
+        queries.get('DatabaseQueries', 'database.getLastLoadObservationIdFromStagingObservations'))
+        get_LastLoadStarName = (queries.get('DatabaseQueries', 'database.getLastLoadStarNameFromStagingObservations'))
+        get_LastLoadStartDate = (queries.get('DatabaseQueries', 'database.getLastLoadStartDateFromStagingObservations'))
+        get_LastLoadEndDate = (queries.get('DatabaseQueries', 'database.getLastLoadEndDateFromStagingObservations'))
 
         LastLoadObservationId = fetch_one(get_LastLoadObservationId)
         LastLoadStarName = fetch_one(get_LastLoadStarName)
@@ -135,10 +137,10 @@ def json_diagram():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_XMax = (config.get('DatabaseQueries', 'database.getXMaxFromHrDiagramAvg'))
-        get_XMin = (config.get('DatabaseQueries', 'database.getXMinFromHrDiagramAvg'))
-        get_YMax = (config.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
-        get_YMin = (config.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
+        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromHrDiagramAvg'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromHrDiagramAvg'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
 
         XMax = fetch_one(get_XMax)
         XMin = fetch_one(get_XMin)
@@ -161,9 +163,9 @@ def json_hrdiagram():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_VObservations = (config.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
-        get_BVObservationsDifference = (config.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromHrDiagramAvg'))
-        get_StarNames = (config.get('DatabaseQueries', 'database.getStarNamesFromHrDiagramAvg'))
+        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
+        get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromHrDiagramAvg'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromHrDiagramAvg'))
 
 
         VObservations = fetch_all(get_VObservations)

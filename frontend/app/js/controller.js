@@ -338,8 +338,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.ob = ObservationsHRDiagram.query;
       $scope.obRange = ObservationsDiagram.query;
-      $scope.obRange(function(observationsDiagram) {
 
+      $log.debug($scope.XMax)
+
+      $scope.obRange(function(observationsDiagram) {
+      $scope.XMax = 0;
+      $scope.XMin = 0;
+      $scope.YMax = 0;
+      $scope.YMin = 0;
          //Range of data
          $scope.XMax = observationsDiagram[0].XMax;
          $scope.XMin = observationsDiagram[0].XMin;

@@ -4,8 +4,10 @@ import os
 import ConfigParser
 
 config = ConfigParser.RawConfigParser()
-config.read('../resources/ConfigFile.properties')
+config.read('../resources/env.properties')
 dbAddress = config.get('DatabaseConnection', 'database.address');
+queries = ConfigParser.RawConfigParser()
+queries.read('../resources/queries.properties')
 cnx = pyodbc.connect(dbAddress)
 cursor = cnx.cursor()
 
@@ -18,18 +20,18 @@ def procRunner():
         cursor = cnx.cursor()
 
 
-        get_Ids = (config.get('DatabaseQueries', 'database.getIdsFromStagingObservations'))
+        get_Ids = (queries.get('DatabaseQueries', 'database.getIdsFromStagingObservations'))
         getIds = fetch_all(get_Ids)
 
         for i in getIds:
            i=str(i)
-           runObservationsDelta = (config.get('DatabaseQueries', 'database.runObservationsDelta')+i)
+           runObservationsDelta = (queries.get('DatabaseQueries', 'database.runObservationsDelta')+i)
            cursor.execute(runObservationsDelta)
            cnx.commit()
 
         Log = False
         while(Log != True):
-            get_Log = (config.get('DatabaseQueries', 'database.getLogFromLog')+i)
+            get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i)
             Log = str(fetch_one(get_Log))
             if(Log):
                 fn = open('api.py', 'a')
@@ -53,7 +55,7 @@ def deleteObservation(id):
         cursor = cnx.cursor()
 
         id=str(id)
-        removeObservation = (config.get('DatabaseQueries', 'database.removeObservation')+id)
+        removeObservation = (queries.get('DatabaseQueries', 'database.removeObservation')+id)
         cursor.execute(removeObservation)
         cnx.commit()
         cursor.close()

@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
-from JsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from JsonParser import json_parser, updateObservation, addUser, verifyCredentials
-from ProcRunner import procRunner, deleteObservation
+from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials
+from procRunner import procRunner, deleteObservation
 import os
 import ConfigParser
 import random
@@ -34,7 +34,7 @@ api = Api(app)
 
 
 config = ConfigParser.RawConfigParser()
-config.read('../resources/ConfigFile.properties')
+config.read('../resources/env.properties')
 serverAddress = config.get('Server', 'server.address');
 serverPort = int(config.get('Server', 'server.port'));
 
@@ -228,8 +228,8 @@ def shutdown_server():
 
 if __name__ == '__main__':
     app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True, reloader_type='watchdog')
-    #app.run(debug=True, host=serverAddress, port=5001, threaded=True)
-    #app.run(debug=True, host=serverAddress, port=5001)
+    #app.run(debug=True, host=serverAddress, port=serverPort, threaded=True)
+    #app.run(debug=True, host=serverAddress, port=serverPort)
 
     for i in range(1):
         t = threading.Thread(target=f)

@@ -4,9 +4,11 @@ import ConfigParser
 import pandas
 
 
-config = ConfigParser.RawConfigParser()
-config.read('../resources/ConfigFile.properties')
-dbAddress = config.get('DatabaseConnection', 'database.address');
+env = ConfigParser.RawConfigParser()
+env.read('../resources/env.properties')
+dbAddress = env.get('DatabaseConnection', 'database.address');
+queries = ConfigParser.RawConfigParser()
+queries.read('../resources/queries.properties')
 cnx = pyodbc.connect(dbAddress)
 cursor = cnx.cursor()
 
@@ -20,7 +22,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
 
-     get_lastId = config.get('DatabaseQueries', 'database.getLastIdFromStagingObservations')
+     get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromStagingObservations')
      cursor.execute(get_lastId)
      lastId = cursor.fetchone()
      print lastId
@@ -38,21 +40,21 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
      #--uPhotometry
      uFileName = str(uFileName)
      if uFileName != 'None':
-        insert_uFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
+        insert_uFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
         cursor.execute(insert_uFileName)
         cnx.commit()
 
      #--vPhotometry
      vFileName = str(vFileName)
      if vFileName != 'None':
-        insert_vFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
+        insert_vFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
         cursor.execute(insert_vFileName)
         cnx.commit()
 
      #--bPhotometry
      bFileName = str(bFileName)
      if bFileName != 'None':
-        insert_bFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
+        insert_bFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
         cursor.execute(insert_bFileName)
         cnx.commit()
 
@@ -177,21 +179,21 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
         #--uPhotometry
         uFileName = str(uFileName)
         if uFileName != 'None':
-           insert_uFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+uFileName+"', ' ', ' ')")
+           insert_uFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+uFileName+"', ' ', ' ')")
            cursor.execute(insert_uFileName)
            cnx.commit()
 
         #--vPhotometry
         vFileName = str(vFileName)
         if vFileName != 'None':
-           insert_vFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+vFileName+"', ' ', ' ')")
+           insert_vFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+vFileName+"', ' ', ' ')")
            cursor.execute(insert_vFileName)
            cnx.commit()
 
         #--bPhotometry
         bFileName = str(bFileName)
         if bFileName != 'None':
-           insert_bFileName = (config.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+bFileName+"', ' ', ' ')")
+           insert_bFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+bFileName+"', ' ', ' ')")
            cursor.execute(insert_bFileName)
            cnx.commit()
 
@@ -302,7 +304,7 @@ def addUser(name, email, password):
             if Value>0:
                 msg = "User exists"
             else:
-                insert_NewUser = (config.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
+                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
                 cursor.execute(insert_NewUser)
                 cnx.commit()
                 msg = "Correct"
@@ -331,7 +333,10 @@ def verifyCredentials(email, password):
         Value = Value[0]
 
         if Value>0:
-            msg = "Correct"
+            select_userName = ("select name from data.users where Email='"+email+"' and Password='"+password+"'")
+            cursor.execute(select_userName)
+            Name = cursor.fetchone()
+            msg = Name[0]
         else:
             msg = "Wrong credentials"
 

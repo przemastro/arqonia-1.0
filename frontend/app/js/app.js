@@ -7,6 +7,11 @@
 	// configure routes
 	   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 		 $routeProvider
+            .when('/', {
+				templateUrl : 'pages/main.html',
+				controller  : 'mainCtrl'
+			})
+
             .when('/main', {
 				templateUrl : 'pages/main.html',
 				controller  : 'mainCtrl'
@@ -41,4 +46,6 @@
 				templateUrl : 'pages/logout.html',
 				controller  : 'logoutCtrl',
 			})
+
+			//$locationProvider.html5Mode(true);
 	}]);
