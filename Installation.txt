@@ -25,7 +25,34 @@ I. Installation of Arqonia service
          will populate stg.stagingObservations table. Then you will need to run exec bi.observationsDelta @observationId=id
          for each star's id
 
-   3. Backend installation:
+   3. Create personal config files.
+      1. env.js with following content
+
+            //DEV Environment
+            (function (window) {
+              window.__env = window.__env || {};
+
+              // API url
+              window.__env.apiUrl = 'http://localhost:5001';
+              window.__env.apiUrlService = 'http://localhost\\:5001';
+
+              window.__env.enableDebug = true;
+            }(this));
+
+         and copy to js folder
+      2. env.properties with following content
+
+            [Server]
+            #DEV Environment
+            server.address=localhost
+            server.port=5001
+
+            [DatabaseConnection]
+            #database.address=Driver={SQL Server};Server=<<Name of Server>>;Database=Astro;Trusted_Connection=yes;uid=<<login>>;pwd=<<password>>
+
+         and copy to resourced folder
+
+   4. Backend installation:
       1. In cmd in the astroApp folder run "python distribute_setup.py" script
       2. Run "easy_install pip" in cmd
       3. Run "pip install flask"
@@ -42,7 +69,7 @@ I. Installation of Arqonia service
       8. Assuming that everything is correct with db and backend installation you can verify jsons by hitting
          http://localhost:5001/observations in the browser.
 
-   4. Frontend installation
+   5. Frontend installation
       1. In the app folder in the cmd run "npm start" - many errors might appear, don't worry it will work. npm and bower
          will install all packages and modules
       2. Now open in Intellij project and right click on index.html. Select browser and enjoy Arqonia for the first time
@@ -68,10 +95,10 @@ III. Jenkins setup
    2. In cmd run inside Jenkins folder run:
       java -jar jenkins.war --httpPort=8090 -Dhudson.util.ProcessTree.disable=true
    3. Type in the welcome screen Initial Admin Password located in C:\Users\<<user name>>\.jenkins\secrets
-   4. Then follow the instructions
+   4. Then follow the instructions. You might need set CATALINA_HOME environment variable
    5. Last thing I will need to provide you are the fourth scripts located in astroApp folder, called:
       stop-tomcat.bat, copy-frontend.bat, build-frontend.sh, start-tomcat.sh. When you start creating new job in Jenkins
-      use this order to correctly deploy, build and start Arqonia
+      use this order to correctly deploy, build and start Arqonia. Probably you will need to verify some paths in scripts.
 
 
 Have Fun!
