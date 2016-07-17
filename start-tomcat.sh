@@ -1,0 +1,1 @@
+BUILD_ID=allow_to_run_as_daemon /C/tomcat/bin/startup.bat
