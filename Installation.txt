@@ -1,0 +1,78 @@
+This is not too short introduction to Arqonia service installation. Installation includes also CI setup and Tomcat setup
+
+Technology stack: Intellij, XAMPP, SQLServer 2014 Express, Git bash, Python, Nodejs, Angularjs, Jenkins, Java, testng,
+                  Maven, Selenium WebDriver, Npm, Bower, Visual Studio 2015 or better Microsoft C++ compiler, Tomcat
+
+Before setup of Arqonia please download tools listed above.
+
+I. Installation of Arqonia service
+
+   1. Add following (if not added automatically) to Path system variable:
+      C:\Program Files\nodejs\
+      C:\Program Files\Git\cmd
+      C:\Python27
+      C:\Python27\Scripts
+      C:\Program Files\Git\bin
+      Paths may differ in your case
+
+      Add system variable JAVA_HOME with value: C:\Program Files\Java\jdk1.8.0_91
+      Add system variable VS90COMNTOOLS with value: C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\
+
+   2. DB installation
+      1. Open Management Studio and run DB.sql query provided in db folder. A new "Astro" db will be created
+      2. Next run metadata.sql query in "Astro" db
+      3. You might want to insert test data. These are located in the stars folder. For instance running FullList.sql script
+         will populate stg.stagingObservations table. Then you will need to run exec bi.observationsDelta @observationId=id
+         for each star's id
+
+   3. Backend installation:
+      1. In cmd in the astroApp folder run "python distribute_setup.py" script
+      2. Run "easy_install pip" in cmd
+      3. Run "pip install flask"
+      4. Run "pip install flask-restful"
+      5. In rest folder run "python api.py" - you will see some errors, it means that several packages need to be installed
+      6. Continue with pip install. For instance you will need to run "pip install simpleJson" package
+      7. The only problem with installation you may encounter while installing pyCrypto package. First of all search for
+         pycrypto-2.7a1.tar. Try to run "python setup.py" inside folder. If error "Unable to find vcvarsall.bat" appears go
+         to C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools and check if file is present, if not it should
+         be located here C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC. Then copy this file to the expected location
+         and run "python setup.py". If error is still present go to C:\Python27\Lib\distutils and open msvc9compiler.py
+         and search for "MANIFESTFILE". Add following ld_args.append('/MANIFEST') below ld_args.append('/MANIFESTFILE:' + temp_manifest).
+         Run again "python setup.py". If problem is still present just google for the solution.
+      8. Assuming that everything is correct with db and backend installation you can verify jsons by hitting
+         http://localhost:5001/observations in the browser.
+
+   4. Frontend installation
+      1. In the app folder in the cmd run "npm start" - many errors might appear, don't worry it will work. npm and bower
+         will install all packages and modules
+      2. Now open in Intellij project and right click on index.html. Select browser and enjoy Arqonia for the first time
+
+II. Tomcat setup
+   1. Lets assume you have downloaded tomcat and copied to C:\tomcat
+   2. Delete tomcat stuff from C:\tomcat\webapps\ROOT and copy there content of app folder
+   3. Go to C:\tomcat\conf and open server.xml.
+      1. First of all add this "<Context  docBase="C:\tomcat\webapps\ROOT\images"   path="/app/images" />" inside <Host></Host>
+         so static content will be visible
+      2. Then update connector to start tomcat on port 80 instead of 8080. Verify if port 80 is available.
+   4. Open web.xml and verify if this
+           <init-param>
+               <param-name>listings</param-name>
+               <param-value>true</param-value>
+           </init-param>
+      is present.
+   5. Start tomcat by double click startup.bat located in bin folder.
+   6. To verify if everything is correct type localhost in browser. You should see Arqonia
+
+III. Jenkins setup
+   1. Execute jenkins.exe. By default jenkins will run on port 8080 after installation. I don't like it.
+   2. In cmd run inside Jenkins folder run:
+      java -jar jenkins.war --httpPort=8090 -Dhudson.util.ProcessTree.disable=true
+   3. Type in the welcome screen Initial Admin Password located in C:\Users\<<user name>>\.jenkins\secrets
+   4. Then follow the instructions
+   5. Last thing I will need to provide you are the fourth scripts located in astroApp folder, called:
+      stop-tomcat.bat, copy-frontend.bat, build-frontend.sh, start-tomcat.sh. When you start creating new job in Jenkins
+      use this order to correctly deploy, build and start Arqonia
+
+
+Have Fun!
+
