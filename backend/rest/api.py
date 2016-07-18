@@ -105,22 +105,9 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        print threading.current_thread()
-        main_thread = threading.Thread
-        print main_thread
-        main_thread = threading.current_thread()
-        #for t in threading.enumerate():
-        #    if t is main_thread:
-        #        continue
-        #        logging.debug('joining %s', t.getName())
-        #        t.join(2.0)
-        #        Thread.join(2.0)
-        #        print 't.isAlive()', t.isAlive()
-
         shutdown_server()
-        #os.system("python api.py")
         time.sleep(5)
-        #procRunner()
+        return 'Server shutting down...'
 
 class RestDeleteObservation(Resource):
     def post(self):
@@ -202,22 +189,6 @@ def decrypt_password(password):
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s',)
 
-def f():
-    t = threading.currentThread()
-    r = random.randint(1,1)
-    logging.debug('sleeping %s', r)
-    time.sleep(r)
-    logging.debug('ending')
-    return
-
-def n():
-    logging.debug('Starting')
-    logging.debug('Exiting')
-
-def d():
-    logging.debug('Starting')
-    time.sleep(5)
-    logging.debug('Exiting')
 
 
 def shutdown_server():
@@ -227,21 +198,6 @@ def shutdown_server():
     func()
 
 if __name__ == '__main__':
-    app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True, reloader_type='watchdog')
+    app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
     #app.run(debug=True, host=serverAddress, port=serverPort, threaded=True)
     #app.run(debug=True, host=serverAddress, port=serverPort)
-
-    for i in range(1):
-        t = threading.Thread(target=f)
-    t.setDaemon(True)
-    t.start()
-
-
-
-    #main_thread = threading.current_thread()
-    #for t in threading.enumerate():
-    #    if t is main_thread:
-    #        continue
-    #    logging.debug('joining %s', t.getName())
-    #    t.join(2.0)
-    #    print 't.isAlive()', t.isAlive()
