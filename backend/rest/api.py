@@ -104,23 +104,23 @@ class RestLastObservation(Resource):
 
 
     def put(self):
-        #procRunner()
+        procRunner()
         print threading.current_thread()
         main_thread = threading.Thread
         print main_thread
         main_thread = threading.current_thread()
-        for t in threading.enumerate():
-            if t is main_thread:
-                continue
-                logging.debug('joining %s', t.getName())
-                t.join(2.0)
-                Thread.join(2.0)
-                print 't.isAlive()', t.isAlive()
+        #for t in threading.enumerate():
+        #    if t is main_thread:
+        #        continue
+        #        logging.debug('joining %s', t.getName())
+        #        t.join(2.0)
+        #        Thread.join(2.0)
+        #        print 't.isAlive()', t.isAlive()
 
-        #shutdown_server()
+        shutdown_server()
         #os.system("python api.py")
         time.sleep(5)
-        procRunner()
+        #procRunner()
 
 class RestDeleteObservation(Resource):
     def post(self):
