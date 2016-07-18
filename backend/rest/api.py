@@ -105,8 +105,9 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        shutdown_server()
+        #shutdown_server()
         time.sleep(5)
+        os.system("restartService.bat ")
         return 'Server shutting down...'
 
 class RestDeleteObservation(Resource):
