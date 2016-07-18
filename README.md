@@ -21,9 +21,10 @@ Tables
     10.log.log 
     11.data.fileNames
     12.data.TestData
-    13.util.testStatus
-    14.util.metadataCounts
-    15.util.metadataComparison
+    13.data.users
+    14.util.testStatus
+    15.util.metadataCounts
+    16.util.metadataComparison
     
 
 Views
@@ -46,6 +47,7 @@ Queries
 
     1. metadata.sql
     2. DB.sql
+    3. FullList.sql
     
 
 Test Data
@@ -65,7 +67,6 @@ Rest API consists of following modules:
     3. api.py
     4. procRunner.py
     5. ../uploads area
-    6. ConfigFile.properties
 
 
 Client consists of following:
