@@ -97,9 +97,6 @@ Frontend features
     5. Logged in User details should be displayed
     6. Remove # tag from the address
 
-Bugs
-
-    1. Sometimes Diagram is not fully loaded
     
 
 Release 2
