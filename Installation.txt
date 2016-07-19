@@ -46,6 +46,7 @@ I. Installation of Arqonia service
             #DEV Environment
             server.address=localhost
             server.port=5001
+            server.service=Yes
 
             [DatabaseConnection]
             #database.address=Driver={SQL Server};Server=<<Name of Server>>;Database=Astro;Trusted_Connection=yes;uid=<<login>>;pwd=<<password>>
@@ -74,7 +75,15 @@ I. Installation of Arqonia service
          will install all packages and modules
       2. Now open in Intellij project and right click on index.html. Select browser and enjoy Arqonia for the first time
 
-II. Tomcat setup
+II. Windows service (optional) - if server.service=Yes
+   1. Download nssm
+   2. In cmd go to nssm32 or nssm64 folder and type "nssm install apipy"
+   3. Provide necessary values and install service
+   4. Open "Services" and try to run apipy service. If you are getting error it means you have to change logon options in properties.
+      Select "This account" and provide correct credentials.
+   5. Start service again
+
+III. Tomcat setup
    1. Lets assume you have downloaded tomcat and copied to C:\tomcat
    2. Delete tomcat stuff from C:\tomcat\webapps\ROOT and copy there content of app folder
    3. Go to C:\tomcat\conf and open server.xml.
@@ -90,7 +99,7 @@ II. Tomcat setup
    5. Start tomcat by double click startup.bat located in bin folder.
    6. To verify if everything is correct type localhost in browser. You should see Arqonia
 
-III. Jenkins setup
+IV. Jenkins setup
    1. Execute jenkins.exe. By default jenkins will run on port 8080 after installation. I don't like it.
    2. In cmd run inside Jenkins folder run:
       java -jar jenkins.war --httpPort=8090 -Dhudson.util.ProcessTree.disable=true

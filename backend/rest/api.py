@@ -37,6 +37,7 @@ config = ConfigParser.RawConfigParser()
 config.read('../resources/env.properties')
 serverAddress = config.get('Server', 'server.address');
 serverPort = int(config.get('Server', 'server.port'));
+serverService = config.get('Server', 'server.service');
 
 json_data()
 json_load()
@@ -105,10 +106,12 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        #shutdown_server()
-        time.sleep(5)
-        os.system("restartService.bat ")
-        return 'Server shutting down...'
+        print serverService
+        if serverService == 'Yes':
+            shutdown_server()
+           #time.sleep(5)
+           #os.system("restartService.bat")
+        return 'Processing...'
 
 class RestDeleteObservation(Resource):
     def post(self):
