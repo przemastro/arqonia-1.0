@@ -472,10 +472,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
           $timeout(function(){
              $scope.showSuccessAlert = false;
-             }, 10000);
+             }, 15000);
           $timeout(function(){
              $window.location.reload();
-             }, 15000);
+             }, 25000);
 
         };
 
