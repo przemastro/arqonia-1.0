@@ -31,7 +31,7 @@ def procRunner():
 
         Log = False
         while(Log != True):
-            get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i)
+            get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i+" order by id desc")
             Log = str(fetch_one(get_Log))
             if(Log):
                 #fn = open('api.py', 'a')
@@ -43,7 +43,6 @@ def procRunner():
             else:
                 continue
         cursor.close()
-
     except:
         print 'errors in procRunner function'
     else:

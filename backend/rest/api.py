@@ -13,7 +13,6 @@ import simplejson as json
 import threading
 import time
 import logging
-import win32serviceutil
 import sys
 
 
@@ -40,6 +39,7 @@ config.read('../resources/env.properties')
 serverAddress = config.get('Server', 'server.address');
 serverPort = int(config.get('Server', 'server.port'));
 serverService = config.get('Server', 'server.service');
+
 
 json_data()
 json_load()
@@ -108,13 +108,11 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        if serverService == 'Yes':
+        #if serverService == 'Yes':
            #shutdown_server()
-           #time.sleep(5)
-           os.system("forceKill.bat")
-           #win32serviceutil.RestartService("apipy")
-           #sys.exit("Error message")
-        return 'Processing...'
+        #   time.sleep(1000)
+        os.system("forceKill.bat")
+        return 201
 
 class RestDeleteObservation(Resource):
     def post(self):
