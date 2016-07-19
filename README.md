@@ -91,16 +91,23 @@ More info you can find in gettingStarted.txt.
 Frontend features
 
     1. User should be able to choose date from date picker
-    2. Spinner should stop when backend is reloaded
-    3. UVB data should be pre-populated in Edit modal
-    4. CMD diagram dots should be colorized
-    5. Mail server should be configured
-    6. Diagram should be described in a better way
-    7. Logged in User details should be displayed
-    8. Remove # tag from the address
+    2. UVB data should be pre-populated in Edit modal
+    3. CMD diagram dots should be colorized
+    4. Diagram should be described in a better way
+    5. Logged in User details should be displayed
+    6. Remove # tag from the address
 
 Bugs
 
     1. Sometimes Diagram is not fully loaded
-    2. Service is not re-loading immediately after processing
     
+
+Release 2
+
+    1. Observations should personalized - when user log in only his observations should be displayed.
+    2. Notifications should be sent to logged in user when adding, updating, removing and processing data
+    3. New page with Stars Catalogues search option 
+    4. Mail server should be configured
+    5. New diagrams should be present - this includes personal diagrams
+    6. Custom filter option in observations should be available
+
