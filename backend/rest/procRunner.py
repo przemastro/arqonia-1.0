@@ -34,11 +34,11 @@ def procRunner():
             get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i)
             Log = str(fetch_one(get_Log))
             if(Log):
-                fn = open('api.py', 'a')
-                fn.write(" ")
-                fn.seek(-1, os.SEEK_END)
-                fn.truncate()
-                fn.close()
+                #fn = open('api.py', 'a')
+                #fn.write(" ")
+                #fn.seek(-1, os.SEEK_END)
+                #fn.truncate()
+                #fn.close()
                 break
             else:
                 continue

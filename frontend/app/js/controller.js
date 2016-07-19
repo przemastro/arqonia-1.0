@@ -463,7 +463,19 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           }
           $timeout(function(){
              $window.location.reload();
-             }, 15000);
+             }, 5000);
+
+          $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
+              $scope.showSuccessAlert = true;
+
+              // switch flag
+              $scope.switchBool = function (value) {
+                  $scope[value] = !$scope[value];
+              };
+
+          $timeout(function(){
+             $scope.showSuccessAlert = false;
+             }, 5000);
 
         };
 

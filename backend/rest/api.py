@@ -13,6 +13,8 @@ import simplejson as json
 import threading
 import time
 import logging
+import win32serviceutil
+import sys
 
 
 
@@ -106,11 +108,12 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        print serverService
         if serverService == 'Yes':
-            shutdown_server()
+           #shutdown_server()
            #time.sleep(5)
-           #os.system("restartService.bat")
+           os.system("forceKill.bat")
+           #win32serviceutil.RestartService("apipy")
+           #sys.exit("Error message")
         return 'Processing...'
 
 class RestDeleteObservation(Resource):
@@ -205,3 +208,4 @@ if __name__ == '__main__':
     app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
     #app.run(debug=True, host=serverAddress, port=serverPort, threaded=True)
     #app.run(debug=True, host=serverAddress, port=serverPort)
+
