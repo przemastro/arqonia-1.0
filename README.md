@@ -98,13 +98,23 @@ Frontend features
     6. Remove # tag from the address
 
     
-
 Release 2
 
     1. Observations should personalized - when user log in only his observations should be displayed.
     2. Notifications should be sent to logged in user when adding, updating, removing and processing data
     3. New page with Stars Catalogues search option 
     4. Mail server should be configured
-    5. New diagrams should be present - this includes personal diagrams
+    5. New HR diagrams should be present - this includes personal diagrams
     6. Custom filter option in observations should be available
 
+Release 3
+
+    1. Spectroscopic observations
+    2. Observations of Sun
+    3. Observations of planetoids and comets
+    4. New diagrams - Periodograms, Light curves, Sun's activity
+
+Release 4
+
+    1. Observations of satelites 
+    2. New diagrams
