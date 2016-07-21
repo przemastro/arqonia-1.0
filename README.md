@@ -1,4 +1,4 @@
-# astroApp
+# Arqonia
 In Progress
 MSSQL Server + Rest API (python) + Client (angular.js)
 
