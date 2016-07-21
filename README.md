@@ -84,7 +84,7 @@ Client consists of following:
 
 
   
-More info you can find in gettingStarted.txt.
+More info you can find in Installation.txt.
 
 # Thinking about the future
 
@@ -100,7 +100,7 @@ Frontend features
     
 Release 2
 
-    1. Observations should personalized - when user log in only his observations should be displayed.
+    1. Observations should be personalized - when user log in only his observations should be displayed.
     2. Notifications should be sent to logged in user when adding, updating, removing and processing data
     3. New page with Stars Catalogues search option 
     4. Mail server should be configured
@@ -114,7 +114,3 @@ Release 3
     3. Observations of planetoids and comets
     4. New diagrams - Periodograms, Light curves, Sun's activity
 
-Release 4
-
-    1. Observations of satelites 
-    2. New diagrams
