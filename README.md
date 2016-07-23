@@ -96,6 +96,11 @@ Frontend features
     4. Diagram should be described in a better way
     5. Logged in User details should be displayed
     6. Remove # tag from the address
+    7. Accordion in the Home page should be added
+
+Bugs
+
+    1. Sometimes diagram is not fully displayed
 
     
 Release 2
@@ -113,4 +118,5 @@ Release 3
     2. Observations of Sun
     3. Observations of planetoids and comets
     4. New diagrams - Periodograms, Light curves, Sun's activity
+    5. Forum
 
