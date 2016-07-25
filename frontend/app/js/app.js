@@ -32,6 +32,11 @@
 				controller  : 'adminCtrl',
 			})
 
+			.when('/search', {
+				templateUrl : 'pages/search.html',
+				controller  : 'searchCtrl',
+			})
+
 			.when('/login', {
 				templateUrl : 'pages/login.html',
 				controller  : 'loginCtrl',

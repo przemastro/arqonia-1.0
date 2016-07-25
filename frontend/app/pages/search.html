@@ -1,0 +1,11 @@
+<body ng-controller = "searchCtrl" ng-app = "astroApp">
+<div ng-controller = "searchDBCtrl">
+    <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
+        <tr>
+            <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
+            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="Process" class="btn btn-primary" ng-click="startSpin()"/></td>
+        </tr>
+    </table>
+    <span us-spinner spinner-key="spinner-1"></span>
+</div>
+</body>
