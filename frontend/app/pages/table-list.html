@@ -14,9 +14,9 @@
                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
                        <div class="modal-body" style="margin-top:-70px">
                            <div class="form-group">
-                              <label class="col-md-4 control-label">Star Name</label>
+                              <label class="col-md-4 control-label">Object Name</label>
                               <div class="col-md-4">
-                                  <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="10" placeholder="e.g. Vega" required/>
+                                  <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="e.g. Vega" required/>
                                   <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
                                       <div ng-message="maxlength">This field is too long</div>
@@ -26,7 +26,7 @@
                            <div class="form-group">
                               <label class="col-md-4 control-label">Start Date</label>
                               <div class="col-md-4">
-                                  <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="10" placeholder="YYYY-MM-DD HH:MM:SS" required/>
+                                  <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
                                   <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
                                       <div ng-message="maxlength">This field is too long</div>
@@ -36,7 +36,7 @@
                            <div class="form-group">
                               <label class="col-md-4 control-label">End Date</label>
                               <div class="col-md-4">
-                                  <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="10" placeholder="YYYY-MM-DD HH:MM:SS" required/>
+                                  <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
                                   <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
                                       <div ng-message="maxlength">This field is too long</div>
@@ -106,7 +106,7 @@
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Star Name</label>
+                                <label class="col-md-4 control-label">Object Name</label>
                                 <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
                                     <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" ng-change='changeName()' required/>
                                     <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
@@ -245,7 +245,7 @@
             <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
-            <th st-sort="name">Star Name<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
+            <th st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th style="width:15%" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th style="width:15%" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th>U Photometry</th>
