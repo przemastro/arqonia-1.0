@@ -555,7 +555,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Login';
 	});
 
-    astroApp.controller('logCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', '$location', function ($rootScope, $scope, $log, Login, $cookies, $location) {
+    astroApp.controller('logCtrl', ['$rootScope', '$scope', 'usSpinnerService', '$log', 'login', '$cookies', '$location',
+    function ($rootScope, $scope, usSpinnerService, $log, Login, $cookies, $location) {
       $rootScope.errorFlag = false
       //[Submit]
       $scope.loginUser = function(){
@@ -569,11 +570,23 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.errorFlag = true
    		     }
    		  else {
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
    		     $cookies.put('cook', true);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.errorFlag = false
    		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
+   		     $scope.spinneractive = false;
+
+   	         $rootScope.$on('us-spinner:spin', function(event, key) {
+               $scope.spinneractive = true;
+             });
+
+             $rootScope.$on('us-spinner:stop', function(event, key) {
+               $scope.spinneractive = false;
+             });
    		     }
    		  });
       };
@@ -585,7 +598,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Register';
 	});
 
-    astroApp.controller('regCtrl', ['$rootScope', '$scope', '$log', 'register', '$location', function ($rootScope, $scope, $log, Register, $location) {
+    astroApp.controller('regCtrl', ['$rootScope', '$scope', 'usSpinnerService', '$log', 'register', '$location',
+    function ($rootScope, $scope, usSpinnerService, $log, Register, $location) {
 
       $rootScope.errorFlag = false
       //[Submit]
@@ -599,8 +613,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.errorFlag = true
    		     }
    		  else {
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+
    		     $rootScope.errorFlag = false
    		     $location.path("login");
+
+             $scope.spinneractive = false;
+   	         $rootScope.$on('us-spinner:spin', function(event, key) {
+               $scope.spinneractive = true;
+             });
+
+             $rootScope.$on('us-spinner:stop', function(event, key) {
+               $scope.spinneractive = false;
+             });
    		     }
    		  });
       };
@@ -615,9 +642,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $cookies.remove("cook");
 	}]);
 
-    astroApp.controller('goodbyeCtrl', ['$rootScope', '$log', 'login', '$cookies', '$location', function ($scope, $log, Login, $cookies, $location) {
+    astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', '$log', 'login', '$cookies', '$location',
+    function ($scope, usSpinnerService, $log, Login, $cookies, $location) {
        $scope.isUserLoggedIn = false;
        console.log($scope.isUserLoggedIn);
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+             $scope.spinneractive = false;
        $location.path("main");
     }]);
 
