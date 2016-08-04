@@ -1,11 +1,52 @@
 <body ng-controller = "searchCtrl" ng-app = "astroApp">
 <div ng-controller = "searchDBCtrl">
-    <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
+    <form class="form-inline" name="searchForm" role="form" novalidate ng-submit="searchForm.$valid && startSpin()">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Object Name" name="nam" ng-model="nam" required/>
+            <div ng-messages="searchForm.nam.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                <div ng-message="required">This field is required</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Search" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+        </div>
+    </form>
+    <table style="width:70%" st-table="displayedObservations" st-safe-src="observations" ng-show="search" class="tableList">
+        <tr ng-repeat="observation in Data" ng-if="$index == 1">
+            <td style="border-bottom: 0px;text-align:left"><b>Category: </b></td><td style="border-bottom: 0px;text-align:left">{{observation.type}}</td>
+        </tr>
+        <tr ng-repeat="observation in Data" ng-if="$index == 1">
+            <td style="border-bottom: 0px;text-align:left"><b>Coordinates J2000: </b></td>
+            <td style="border-bottom: 0px;text-align:left">{{observation.ra}}</td>
+            <td style="border-bottom: 0px;text-align:left">{{observation.de}}</td>
+        </tr>
         <tr>
-            <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
-            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="Process" class="btn btn-primary" ng-click="startSpin()"/></td>
+            <th style="width:18%">Catalog</th>
+            <th style="width:12%">Object Name</th>
+            <th>U Photometry</th>
+            <th>V Photometry</th>
+            <th>B Photometry</th>
+            <th>B-V</th>
+            <th>U-B</th>
+            <th>R-I</th>
+            <th>V-I</th>
+            <th style="width:35%">Spectral Type</th>
+        </tr>
+        <tr ng-repeat="observation in Data" >
+            <td>{{observation.code}}</td>
+            <td>{{observation.name}}</td>
+            <td>{{observation.Umag}}</td>
+            <td>{{observation.Vmag}}</td>
+            <td>{{observation.Bmag}}</td>
+            <td>{{observation.BV}}</td>
+            <td>{{observation.UB}}</td>
+            <td>{{observation.RI}}</td>
+            <td>{{observation.VI}}</td>
+            <td>{{observation.SpType}}</td>
         </tr>
     </table>
     <span us-spinner spinner-key="spinner-1"></span>
+    <!--Observations Table-->
+
 </div>
 </body>

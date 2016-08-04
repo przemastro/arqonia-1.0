@@ -74,7 +74,7 @@ services.factory('postObservation', ['$resource',
     });
 }]);
 
-//Trigger SQL procedure
+//Trigger SQL process procedure
 services.factory('processData', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/lastLoad', {}, {
@@ -87,6 +87,14 @@ services.factory('getProcessedData', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/lastLoad', {}, {
         query: {method:'GET', isArray:true}
+    });
+}]);
+
+//Trigger SQL Search procedure
+services.factory('searchData', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/search', {}, {
+        update: {method:'PUT', isArray:true}
     });
 }]);
 

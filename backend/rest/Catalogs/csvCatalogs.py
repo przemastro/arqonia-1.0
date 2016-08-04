@@ -58,12 +58,10 @@ def gc_catalog():
            DE_icrs = str(gc.DE_icrs[i])
 
            #single insert
-           insert_data = "INSERT INTO data.gc (GlonJ2000,GlatJ2000,RAJ2000,DEJ2000,GC,Vmag,SpType," \
-                                                                      "RA1950,EpRA,pmRA,DE1950,EpDE,pmDE,Remark,DM,GLON," \
-                                                                      "GLAT,HD,m_HD,e_RA,e_pmRA,e_DE,e_pmDE,RA_icrs,DE_icrs)" \
-                                     "values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"','"+GC+"','"+Vmag+"','"+SpType+"','"+RA1950+"'," \
-                             "'"+EpRA+"','"+pmRA+"','"+DE1950+"','"+EpDE+"','"+pmDE+"','"+Remark+"','"+DM+"','"+GLON+"'," \
-                         "'"+GLAT+"','"+HD+"','"+m_HD+"','"+e_RA+"','"+e_pmRA+"','"+e_DE+"','"+e_pmDE+"','"+RA_icrs+"','"+DE_icrs+"')"
+           insert_data = "INSERT INTO data.gc " \
+                         "values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"','"+GC+"','"+Vmag+"','"+SpType+"','"+RA1950+"'," \
+                             "'"+EpRA+"','"+pmRA+"','"+DE1950+"','"+EpDE+"','"+pmDE+"','"+Remark+"',ltrim(rtrim('"+DM+"')),'"+GLON+"'," \
+                         "'"+GLAT+"',ltrim(rtrim('"+HD+"')),'"+m_HD+"','"+e_RA+"','"+e_pmRA+"','"+e_DE+"','"+e_pmDE+"','"+RA_icrs+"','"+DE_icrs+"')"
 
            print i
            cursor.execute(insert_data)
@@ -118,7 +116,7 @@ def hd_catalog():
             insert_data = "INSERT INTO data.hd (GlonJ1900,GlatJ1900,RAJ2000,DEJ2000,HD,DM,RAB1900," \
                           "DEB1900,q_Ptm,Ptm,n_Ptm,q_Ptg,Ptg,n_Ptg,SpT,Int," \
                           "Rem,RA_icrs,DE_icrs,Tycho2)" \
-                          " values ('"+GlonJ1900+"','"+GlatJ1900+"','"+RAJ2000+"','"+DEJ2000+"','"+HD+"','"+DM+"','"+RAB1900+"','"+DEB1900+"'," \
+                          " values ('"+GlonJ1900+"','"+GlatJ1900+"','"+RAJ2000+"','"+DEJ2000+"',ltrim(rtrim('"+HD+"')),ltrim(rtrim('"+DM+"')),'"+RAB1900+"','"+DEB1900+"'," \
                                   "'"+q_Ptm+"','"+Ptm+"','"+n_Ptm+"','"+q_Ptg+"','"+Ptg+"','"+n_Ptg+"','"+SpT+"','"+Int+"'," \
                                   "'"+Rem+"','"+RA_icrs+"','"+DE_icrs+"','"+Tycho2+"')"
 
@@ -184,7 +182,7 @@ def hip_catalog():
 
             #single insert
             insert_data = "INSERT INTO data.hip " \
-                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"','"+HIP+"','"+n_HIP+"','"+Sn+"','"+So+"'," \
+                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"',ltrim(rtrim('"+HIP+"')),'"+n_HIP+"','"+Sn+"','"+So+"'," \
                                    "'"+Nc+"','"+RArad+"','"+e_RArad+"','"+DErad+"','"+e_DErad+"','"+Plx+"','"+e_Plx+"','"+pmRA+"'," \
                                    "'"+e_pmRA+"','"+pmDE+"','"+e_pmDE+"','"+Ntr+"','"+F2+"','"+F1+"','"+varr+"','"+Hpmag+"'," \
                                    "'"+e_Hpmag+"','"+sHp+"','"+VA+"','"+B_V+"','"+e_B_V+"','"+V_I+"','"+HIP1+"','"+Phot+"')"
@@ -266,7 +264,7 @@ def hr_catalog():
 
             #single insert
             insert_data = "INSERT INTO data.hr " \
-                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"','"+HR+"','"+Name+"','"+DM+"','"+HD+"','"+SAO+"','"+FK5+"','"+IRflag+"','"+r_IRflag+"'," \
+                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"',cast(ltrim(rtrim('"+HR+"')) as int),ltrim(rtrim('"+Name+"')),ltrim(rtrim('"+DM+"')),cast(ltrim(rtrim('"+HD+"')) as int),cast(ltrim(rtrim('"+SAO+"')) as int),'"+FK5+"','"+IRflag+"','"+r_IRflag+"'," \
                                    "'"+Multiple+"','"+ADS+"','"+ADScomp+"','"+VarID+"','"+RAJ2000_original+"','"+DEJ2000_original+"','"+GLON+"','"+GLAT+"','"+Vmag+"'," \
                                    "'"+n_Vmag+"','"+u_Vmag+"','"+B_V+"','"+u_B_V+"','"+U_B+"','"+u_U_B+"','"+R_I+"','"+n_R_I+"','"+SpType+"','"+n_SpType+"','"+pmRA+"','"+pmDE+"'," \
                                    "'"+n_Parallax+"','"+Parallax+"','"+RadVel+"','"+n_RadVel+"','"+l_RotVel+"','"+RotVel+"','"+u_RotVel+"','"+Dmag+"','"+Sep+"','"+MultID+"','"+MultCnt+"','"+NoteFlag+"')"
@@ -424,10 +422,10 @@ def tyc2_catalog():
 
             #single insert
             insert_data = "INSERT INTO data.tyc2 " \
-                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"','"+TYC1+"','"+TYC2+"','"+TYC3+"','"+pflag+"'," \
+                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"',ltrim(rtrim('"+TYC1+"')),ltrim(rtrim('"+TYC2+"')),ltrim(rtrim('"+TYC3+"')),'"+pflag+"'," \
                                     "'"+RAmdeg+"','"+DEmdeg+"','"+pmRA+"','"+pmDE+"','"+e_RAmdeg+"','"+e_DEmdeg+"','"+e_pmRA+"','"+e_pmDE+"'," \
                                     "'"+EpRAm+"','"+EpDEm+"','"+Num+"','"+q_RAmdeg+"','"+q_DEmdeg+"','"+q_pmRA+"','"+q_pmDE+"','"+BTmag+"'," \
-                                    "'"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"','"+HIP+"','"+CCDM+"','"+RAdeg+"','"+DEdeg+"'," \
+                                    "'"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"','"+RAdeg+"','"+DEdeg+"'," \
                                     "'"+EpRA1990+"','"+EpDE1990+"','"+e_RAdeg+"','"+e_DEdeg+"','"+posflg+"','"+corr2+"')"
 
             print i
@@ -442,6 +440,184 @@ def tyc2_catalog():
         cnx.close()
 
 
+def tyc2_sup1_catalog():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        tyc2_sup1 = pandas.read_csv(catalogsPath+'TYC2_sup1.csv', header=None, sep=';', low_memory=False)
+        tyc2_sup1Range = len(tyc2_sup1)
+        tyc2_sup1.columns = ["GlonJ2000","GlatJ2000","RAJ2000","DEJ2000","TYC1","TYC2","TYC3","pflag","RAmdeg","DEmdeg","pmRA",
+                             "pmDE","e_RAmdeg","e_DEmdeg","e_pmRA","e_pmDE","BTmag","e_BTmag","VTmag","e_VTmag","prox","TYC","HIP","CCDM"]
+
+        insert_data = ''
+        for counter in range(0,tyc2_sup1Range):
+            insert_data = ''
+            i = counter
+            GlonJ2000 = str(tyc2_sup1.GlonJ2000[i])
+            GlatJ2000 = str(tyc2_sup1.GlatJ2000[i])
+            RAJ2000 = str(tyc2_sup1.RAJ2000[i])
+            DEJ2000 = str(tyc2_sup1.DEJ2000[i])
+            TYC1 = str(tyc2_sup1.TYC1[i])
+            TYC2 = str(tyc2_sup1.TYC2[i])
+            TYC3 = str(tyc2_sup1.TYC3[i])
+            pflag = str(tyc2_sup1.pflag[i])
+            RAmdeg = str(tyc2_sup1.RAmdeg[i])
+            DEmdeg = str(tyc2_sup1.DEmdeg[i])
+            pmRA = str(tyc2_sup1.pmRA[i])
+            pmDE = str(tyc2_sup1.pmDE[i])
+            e_RAmdeg = str(tyc2_sup1.e_RAmdeg[i])
+            e_DEmdeg = str(tyc2_sup1.e_DEmdeg[i])
+            e_pmRA = str(tyc2_sup1.e_pmRA[i])
+            e_pmDE = str(tyc2_sup1.e_pmDE[i])
+            BTmag = str(tyc2_sup1.BTmag[i])
+            e_BTmag = str(tyc2_sup1.e_BTmag[i])
+            VTmag = str(tyc2_sup1.VTmag[i])
+            e_VTmag = str(tyc2_sup1.e_VTmag[i])
+            prox = str(tyc2_sup1.prox[i])
+            TYC = str(tyc2_sup1.TYC[i])
+            HIP = str(tyc2_sup1.HIP[i])
+            CCDM = str(tyc2_sup1.CCDM[i])
+
+            #single insert
+            insert_data = "INSERT INTO data.TYC2 (GlonJ2000,GlatJ2000,RAJ2000,DEJ2000,TYC1,TYC2,TYC3,pflag,RAmdeg,DEmdeg,pmRA," \
+                                                      "pmDE,e_RAmdeg,e_DEmdeg,e_pmRA,e_pmDE,BTmag,e_BTmag,VTmag,e_VTmag,prox,TYC,HIP,CCDM)" \
+                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"',ltrim(rtrim('"+TYC1+"')),ltrim(rtrim('"+TYC2+"')),ltrim(rtrim('"+TYC3+"')),'"+pflag+"'," \
+                                     "'"+RAmdeg+"','"+DEmdeg+"','"+pmRA+"','"+pmDE+"','"+e_RAmdeg+"','"+e_DEmdeg+"','"+e_pmRA+"','"+e_pmDE+"'," \
+                                     "'"+BTmag+"','"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"')"
+
+            print i
+            cursor.execute(insert_data)
+            cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in tyc2_sup1_catalog function'
+    else:
+        cnx.close()
+
+
+def tyc2_sup2_catalog():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        tyc2_sup2 = pandas.read_csv(catalogsPath+'TYC2_sup2.csv', header=None, sep=';', low_memory=False)
+        tyc2_sup2Range = len(tyc2_sup2)
+
+        tyc2_sup2.columns = ["GlonJ2000","GlatJ2000","RAJ2000","DEJ2000","TYC1","TYC2","TYC3","pflag","RAmdeg","DEmdeg","pmRA",
+                             "pmDE","e_RAmdeg","e_DEmdeg","e_pmRA","e_pmDE","BTmag","e_BTmag","VTmag","e_VTmag","prox","TYC","HIP","CCDM"]
+
+        insert_data = ''
+        for counter in range(0,tyc2_sup2Range):
+            insert_data = ''
+            i = counter
+            GlonJ2000 = str(tyc2_sup2.GlonJ2000[i])
+            GlatJ2000 = str(tyc2_sup2.GlatJ2000[i])
+            RAJ2000 = str(tyc2_sup2.RAJ2000[i])
+            DEJ2000 = str(tyc2_sup2.DEJ2000[i])
+            TYC1 = str(tyc2_sup2.TYC1[i])
+            TYC2 = str(tyc2_sup2.TYC2[i])
+            TYC3 = str(tyc2_sup2.TYC3[i])
+            pflag = str(tyc2_sup2.pflag[i])
+            RAmdeg = str(tyc2_sup2.RAmdeg[i])
+            DEmdeg = str(tyc2_sup2.DEmdeg[i])
+            pmRA = str(tyc2_sup2.pmRA[i])
+            pmDE = str(tyc2_sup2.pmDE[i])
+            e_RAmdeg = str(tyc2_sup2.e_RAmdeg[i])
+            e_DEmdeg = str(tyc2_sup2.e_DEmdeg[i])
+            e_pmRA = str(tyc2_sup2.e_pmRA[i])
+            e_pmDE = str(tyc2_sup2.e_pmDE[i])
+            BTmag = str(tyc2_sup2.BTmag[i])
+            e_BTmag = str(tyc2_sup2.e_BTmag[i])
+            VTmag = str(tyc2_sup2.VTmag[i])
+            e_VTmag = str(tyc2_sup2.e_VTmag[i])
+            prox = str(tyc2_sup2.prox[i])
+            TYC = str(tyc2_sup2.TYC[i])
+            HIP = str(tyc2_sup2.HIP[i])
+            CCDM = str(tyc2_sup2.CCDM[i])
+
+            #single insert
+            insert_data = "INSERT INTO data.TYC2 (GlonJ2000,GlatJ2000,RAJ2000,DEJ2000,TYC1,TYC2,TYC3,pflag,RAmdeg,DEmdeg,pmRA," \
+                          "pmDE,e_RAmdeg,e_DEmdeg,e_pmRA,e_pmDE,BTmag,e_BTmag,VTmag,e_VTmag,prox,TYC,HIP,CCDM)" \
+                          " values ('"+GlonJ2000+"','"+GlatJ2000+"','"+RAJ2000+"','"+DEJ2000+"',ltrim(rtrim('"+TYC1+"')),ltrim(rtrim('"+TYC2+"')),ltrim(rtrim('"+TYC3+"')),'"+pflag+"'," \
+                                    "'"+RAmdeg+"','"+DEmdeg+"','"+pmRA+"','"+pmDE+"','"+e_RAmdeg+"','"+e_DEmdeg+"','"+e_pmRA+"','"+e_pmDE+"'," \
+                                    "'"+BTmag+"','"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"')"
+
+            print i
+            cursor.execute(insert_data)
+            cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in tyc2_sup2_catalog function'
+    else:
+        cnx.close()
+
+
+def tyc2_hd_catalog():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        tyc2_hd = pandas.read_csv(catalogsPath+'TYC2_HD.csv', header=None, sep=';', low_memory=False)
+        tyc2_hdRange = len(tyc2_hd)
+
+        tyc2_hd.columns = ["TYC1","TYC2","TYC3","HD"]
+        insert_data = ''
+        for counter in range(0,tyc2_hdRange):
+            insert_data = ''
+            i = counter
+            TYC1 = str(tyc2_hd.TYC1[i])
+            TYC2 = str(tyc2_hd.TYC2[i])
+            TYC3 = str(tyc2_hd.TYC3[i])
+            HD = str(tyc2_hd.HD[i])
+
+            #single insert
+            insert_data = "INSERT INTO data.tyc2_hd " \
+                          " values (ltrim(rtrim('"+TYC1+"')),ltrim(rtrim('"+TYC2+"')),ltrim(rtrim('"+TYC3+"')),ltrim(rtrim('"+HD+"')))"
+
+            print i
+            cursor.execute(insert_data)
+            cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in tyc2_hd_catalog function'
+    else:
+        cnx.close()
+
+
+def hd_name_catalog():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        hd_name = pandas.read_csv(catalogsPath+'HD_NAME.csv', header=None, sep=';', low_memory=False)
+        hd_nameRange = len(hd_name)
+        print hd_nameRange
+        hd_name.columns = ["HD","BFD","NAME"]
+        insert_data = ''
+        for counter in range(0,hd_nameRange):
+            insert_data = ''
+            i = counter
+            HD = str(hd_name.HD[i])
+            BFD = str(hd_name.BFD[i])
+            NAME = str(hd_name.NAME[i])
+
+            #single insert
+            insert_data = "INSERT INTO data.hd_name " \
+                          " values (ltrim(rtrim('"+HD+"')),ltrim(rtrim('"+BFD+"')),ltrim(rtrim('"+NAME+"')))"
+
+            print i
+            cursor.execute(insert_data)
+            cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in hd_name_catalog function'
+    else:
+        cnx.close()
 
 
 try:
@@ -450,6 +626,10 @@ try:
     #hip_catalog()
     #hr_catalog()
     #sao_catalog()
-    tyc2_catalog()
+    #tyc2_catalog()
+    #tyc2_sup1_catalog()
+    tyc2_sup2_catalog()
+    #tyc2_hd_catalog()
+    #hd_name_catalog()
 except:
     print 'errors'

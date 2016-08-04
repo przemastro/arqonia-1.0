@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from jsonParser import json_parser, updateObservation, addUser, verifyCredentials
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails
 from procRunner import procRunner, deleteObservation
 import os
 import ConfigParser
@@ -161,6 +161,13 @@ class RestLogin(Resource):
         msg = verifyCredentials(args['email'], sj)
         return jsonify({'msg': msg})
 
+class RestSearch(Resource):
+    def put(self):
+        args = parser.parse_args()
+        details = objectDetails(args['name'])
+        print details
+        return jsonify(details)
+
 
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
@@ -171,6 +178,7 @@ api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestLogin, '/login')
+api.add_resource(RestSearch, '/search')
 
 # Handling COR requests
 @app.after_request
@@ -203,7 +211,7 @@ def shutdown_server():
     func()
 
 if __name__ == '__main__':
-    app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
+    #app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
     #app.run(debug=True, host=serverAddress, port=serverPort, threaded=True)
-    #app.run(debug=True, host=serverAddress, port=serverPort)
+    app.run(debug=True, host=serverAddress, port=serverPort)
 
