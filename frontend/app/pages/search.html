@@ -9,28 +9,95 @@
         </div>
         <div class="form-group">
             <input type="submit" value="Search" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+            <div ng-messages="searchForm.nam.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                <div ng-message="required">&nbsp;</div>
+            </div>
         </div>
     </form>
-    <table style="width:70%" st-table="displayedObservations" st-safe-src="observations" ng-show="search" class="tableList">
+    <table style="width:70%" st-table="displayedObservations" st-safe-src="observations" ng-show="planetoids" class="tableList">
+        <tr ng-repeat="observation in Data" ng-if="$index == 0">
+            <td style="border-bottom: 0px;text-align:left"><b>Category: </b></td><td style="border-bottom: 0px;text-align:left">{{observation.type}}</td>
+        </tr>
+        <tr>
+            <th style="width:10%">Catalog</th>
+            <th style="width:30%">Object Name</th>
+            <th>Number</th>
+            <th title="Absolute magnitude">H</th>
+            <th>Epoch</th>
+            <th title="Mean anomaly at the epoch, [degrees]">M </th>
+            <th title="Argument of perihelion, J2000.0 [degrees]">&omega;</th>
+            <th title="Longitude of the ascending node, J2000.0 [degrees]">L</th>
+            <th title="Inclination to the ecliptic, J2000.0 [degrees]">I</th>
+            <th title="Orbital eccentricity">e</th>
+            <th title="Mean daily motion, [degrees per day]">n</th>
+            <th title="Semimajor axis, [AU]">a</th>
+        </tr>
+        <tr ng-repeat="observation in Data" >
+            <td>MPC</td>
+            <td>{{observation.name}}</td>
+            <td>{{observation.number}}</td>
+            <td>{{observation.h}}</td>
+            <td>{{observation.epoch}}</td>
+            <td>{{observation.m}}</td>
+            <td>{{observation.perihelion}}</td>
+            <td>{{observation.longitude}}</td>
+            <td>{{observation.inclination}}</td>
+            <td>{{observation.e}}</td>
+            <td>{{observation.n}}</td>
+            <td>{{observation.a}}</td>
+        </tr>
+    </table>
+    <table style="width:70%" st-table="displayedObservations" st-safe-src="observations" ng-show="comets" class="tableList">
+        <tr ng-repeat="observation in Data" ng-if="$index == 0">
+            <td style="border-bottom: 0px;text-align:left"><b>Category: </b></td><td style="border-bottom: 0px;text-align:left">{{observation.type}}</td>
+        </tr>
+        <tr>
+            <th style="width:10%">Catalog</th>
+            <th style="width:20%">Object Name</th>
+            <th style="width:14%" title="Orbit type">Orbit Type</th>
+            <th title="Date of perihelion passage">Date</th>
+            <th title="Perihelion distance [AU]">PD</th>
+            <th title="Orbital eccentricity">e</th>
+            <th title="Argument of perihelion, J2000.0 [degrees]">&omega;</th>
+            <th title="Longitude of the ascending node, J2000.0 [degrees]">L</th>
+            <th title="Inclination in degrees, J2000.0 [degrees]">I</th>
+            <th title="Date of epoch for perturbed solutions">Epoch Date</th>
+            <th title="Absolute magnitude">Mag</th>
+        </tr>
+        <tr ng-repeat="observation in Data" >
+            <td>MPC</td>
+            <td>{{observation.name}}</td>
+            <td>{{observation.orbitType}}</td>
+            <td>{{observation.pDate}}</td>
+            <td>{{observation.pDistance}}</td>
+            <td>{{observation.e}}</td>
+            <td>{{observation.perihelion}}</td>
+            <td>{{observation.longitude}}</td>
+            <td>{{observation.inclination}}</td>
+            <td style="padding-left:20px;padding-right:20px;">{{observation.eDate}}</td>
+            <td>{{observation.absMag}}</td>
+        </tr>
+    </table>
+    <table style="width:70%" st-table="displayedObservations" st-safe-src="observations" ng-show="stars" class="tableList">
         <tr ng-repeat="observation in Data" ng-if="$index == 1">
             <td style="border-bottom: 0px;text-align:left"><b>Category: </b></td><td style="border-bottom: 0px;text-align:left">{{observation.type}}</td>
         </tr>
         <tr ng-repeat="observation in Data" ng-if="$index == 1">
             <td style="border-bottom: 0px;text-align:left"><b>Coordinates J2000: </b></td>
-            <td style="border-bottom: 0px;text-align:left">{{observation.ra}}</td>
-            <td style="border-bottom: 0px;text-align:left">{{observation.de}}</td>
+            <td title="Right ascension" style="border-bottom: 0px;text-align:left">{{observation.ra}}</td>
+            <td title="Declination" style="border-bottom: 0px;text-align:left">{{observation.de}}</td>
         </tr>
         <tr>
-            <th style="width:18%">Catalog</th>
-            <th style="width:12%">Object Name</th>
-            <th>U Photometry</th>
-            <th>V Photometry</th>
-            <th>B Photometry</th>
+            <th style="width:25%">Catalog</th>
+            <th style="width:15%">Object Name</th>
+            <th title="Ultraviolet magnitude">U</th>
+            <th title="Visual magnitude">V</th>
+            <th title="Blue magnitude">B</th>
             <th>B-V</th>
             <th>U-B</th>
             <th>R-I</th>
             <th>V-I</th>
-            <th style="width:35%">Spectral Type</th>
+            <th>Spectral Type</th>
         </tr>
         <tr ng-repeat="observation in Data" >
             <td>{{observation.code}}</td>
@@ -42,7 +109,7 @@
             <td>{{observation.UB}}</td>
             <td>{{observation.RI}}</td>
             <td>{{observation.VI}}</td>
-            <td>{{observation.SpType}}</td>
+            <td style="padding-left:50px;padding-right:50px;">{{observation.SpType}}</td>
         </tr>
     </table>
     <span us-spinner spinner-key="spinner-1"></span>

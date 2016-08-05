@@ -572,6 +572,78 @@ def objectDetails(name):
             controller = json.dumps(controller, skipkeys=True)
             json_string = json.loads(controller)
 
+
+        #HR by name
+        elif ((cursor.execute("select count(1) from data.HR where name = '"+objectName+"'").fetchone())[0]>0):
+
+            select_hd = ("select distinct hd.RAJ2000, hd.DEJ2000, hd.HD, hd.Ptm, hd.Ptg, hd.SpT from data.HR hr join data.HD hd on hd.hd=hr.hd where hr.name = '"+objectName+"'")
+            HD = cursor.execute(select_hd).fetchone()
+            if(HD): #if record exists
+                if(HD[4].strip() != "" and HD[3].strip() != ""): #if columns are not null
+                    calc = str(float(HD[4].strip())-float(HD[3].strip()))
+                else:
+                    calc = " "
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                controller = str(details) + ',' + controller
+
+            select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr where hr.name = '"+objectName+"'")
+            HR = cursor.execute(select_hr).fetchone()
+            if(HR):
+                if(HR[5].strip() != "" and HR[3].strip() != "" and HR[6].strip() != ""):
+                    calcB = str(float(HR[5].strip())+float(HR[3].strip()))
+                    calcU = str(float(HR[6].strip())+float(HR[3].strip()))
+                else:
+                    calcB = " "
+                    calcU = " "
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                controller = str(details) + ',' + controller
+
+            select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.GC gc on hd.hd=gc.hd where hr.name = '"+objectName+"'")
+            GC = cursor.execute(select_gc).fetchone()
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            controller = str(details) + ',' + controller
+
+            select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.SAO sao on hd.hd=sao.hd where hr.name = '"+objectName+"'")
+            SAO = cursor.execute(select_sao).fetchone()
+            if(SAO):
+                if(SAO[3].strip() != "" and SAO[4].strip() != ""):
+                    calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
+                else:
+                    calc = " "
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                controller = str(details) + ',' + controller
+
+            select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.HR hr join data.HD hd on hd.hd=hr.hd "
+                           "join data.tyc2_HD tychd on tychd.hd=hd.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 and tychd.TYC2=tyc.TYC2 "
+                           "and tychd.TYC3=tyc.TYC3 where hr.name = '"+objectName+"'")
+            TYC2 = cursor.execute(select_tyc2).fetchone()
+            if(TYC2):
+                if(TYC2[5].strip() != "" and TYC2[6].strip() != ""):
+                    calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
+                else:
+                    calc = " "
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                controller = str(details) + ',' + controller
+
+
+            select_hip = ("select distinct hip.RAJ2000, hip.DEJ2000, hip.HIP, hip.Hpmag, hip.B_V, hip.V_I from data.HR hr join data.HD hd on hd.hd=hr.hd join data.tyc2_HD tychd on tychd.hd=hd.hd "
+                          "join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 and tychd.TYC2=tyc.TYC2 and tychd.TYC3=tyc.TYC3 "
+                          "join data.hip hip on hip.HIP=tyc.HIP where hr.name = '"+objectName+"'")
+            HIP = cursor.execute(select_hip).fetchone()
+            if(HIP):
+                if(HIP[3].strip() != "" and HIP[4].strip() != ""):
+                    calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
+                else:
+                    calc = " "
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                controller = str(details) + ',' + controller
+
+            controller = ast.literal_eval(controller[:-1])
+            controller = json.dumps(controller, skipkeys=True)
+            json_string = json.loads(controller)
+
+
+
         #GC
         elif (objectName[:2]=='GC' and (cursor.execute("select count(1) from data.GC where gc = '"+objectName[2:]+"'").fetchone())[0]>0):
             gcObjectName = objectName[2:]
@@ -803,12 +875,10 @@ def objectDetails(name):
         elif (objectName[:3]=='TYC' and (cursor.execute("select count(1) from data.TYC2 "
             "where TYC1 = '"+tyc1ObjectName+"' and TYC2 = '"+tyc2ObjectName+"' and TYC3 = '"+tyc3ObjectName+"'").fetchone())[0]>0):
 
-            print tyc2ObjectName
             select_hd = ("select distinct hd.RAJ2000, hd.DEJ2000, hd.HD, hd.Ptm, hd.Ptg, hd.SpT from data.HD hd "
                          "join data.tyc2_HD tychd on tychd.hd=hd.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 "
                          "and tychd.TYC2=tyc.TYC2 and tychd.TYC3=tyc.TYC3 "
                          "where tyc.TYC1 = '"+tyc1ObjectName+"' and tyc.TYC2 = '"+tyc2ObjectName+"' and tyc.TYC3 = '"+tyc3ObjectName+"'")
-            print select_hd
 
             HD = cursor.execute(select_hd).fetchone()
             if(HD): #if record exists
@@ -818,7 +888,6 @@ def objectDetails(name):
                     calc = " "
                 details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
-                print controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr "
                          "join data.HD hd on hd.hd=hr.hd join data.tyc2_HD tychd on tychd.hd=hd.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 "
@@ -884,6 +953,41 @@ def objectDetails(name):
             json_string = json.loads(controller)
 
 
+        #Comets
+        elif ((cursor.execute("select count(1) from data.comets where ltrim(rtrim(name)) = '"+objectName+"'").fetchone())[0]>0):
+            select_comet = ("select Name, OrbitType, P_Year, P_Month, P_Day, P_Distance, e, Perihelion, Longitude, Inclination, "
+                         "E_Year, E_Month, E_Day, Abs_Mag from data.comets where ltrim(rtrim(name)) = '"+objectName+"'")
+
+            COMET = cursor.execute(select_comet).fetchone()
+            if(COMET): #if record exists
+                details = calculate_cometsParameters(COMET[0].strip(), COMET[1].strip(), COMET[2].strip()+" "+COMET[3].strip()+" "+COMET[4].strip(),
+                                                     COMET[5].strip(), COMET[6].strip(), COMET[7].strip(), COMET[8].strip(), COMET[9].strip(),
+                                                     COMET[10].strip()+COMET[11].strip()+COMET[12].strip(), COMET[13].strip())
+                controller = str(details) + ',' + controller
+
+            controller = ast.literal_eval(controller[:-1])
+            controller = json.dumps(controller, skipkeys=True)
+            json_string = [json.loads(controller)]
+
+        #Planetoids
+        elif ((cursor.execute("select count(1) from data.mpc where ltrim(rtrim(name)) = '"+objectName+"'").fetchone())[0]>0):
+
+            select_planetoid = ("select Name, Number, H, Epoch, M, Perihelion, Node, Inclination, e, n, a from data.mpc"
+                                " where ltrim(rtrim(name)) = '"+objectName+"'")
+
+            PL = cursor.execute(select_planetoid).fetchone()
+            if(PL): #if record exists
+                details = calculate_planetoidsParameters(PL[0].strip(), PL[1].strip(), PL[2].strip(), PL[3].strip(), PL[4].strip(),
+                                                         PL[5].strip(), PL[6].strip(), PL[7].strip(), PL[8].strip(), PL[9].strip(),
+                                                         PL[10].strip())
+                print details
+
+                controller = str(details) + ',' + controller
+                print controller
+
+            controller = ast.literal_eval(controller[:-1])
+            controller = json.dumps(controller, skipkeys=True)
+            json_string = [json.loads(controller)]
 
         return json_string
         cursor.close()
@@ -894,4 +998,14 @@ def objectDetails(name):
 
 def calculate_starsParameters(ra, de, code, name, Umag, Vmag, Bmag, BV, UB, RI, VI, SpType):
     details = {"type": "Star", "ra": ra, "de": de, "code": code, "name": name, "Umag": Umag, "Vmag": Vmag, "Bmag": Bmag, "BV": BV, "UB": UB, "RI": RI, "VI": VI, "SpType": SpType}
+    return details
+
+def calculate_cometsParameters(name, orbitType, pDate, pDistance, e, perihelion, longitude, inclination, eDate, absMag):
+    details = {"type": "Comet", "name": name, "orbitType": orbitType, "pDate": pDate, "pDistance": pDistance, "e": e, "perihelion": perihelion,
+               "longitude": longitude, "inclination": inclination, "eDate": eDate, "absMag": absMag}
+    return details
+
+def calculate_planetoidsParameters(name, number, h, epoch, m, perihelion, longitude, inclination, e, n, a):
+    details = {"type": "Planetoid", "name": name, "number": number, "h": h, "epoch": epoch, "m": m, "perihelion": perihelion,
+               "longitude": longitude, "inclination": inclination, "e": e, "n": n, "a": a}
     return details

@@ -498,6 +498,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Search';
 	   $scope.isUserLoggedIn = $cookies.get('cook');
 	   $scope.search = false
+	   $scope.stars = false
+       $scope.comets = false
+       $scope.planetoids = false
 	}]);
 
 	astroApp.controller('searchDBCtrl', ['$scope', 'usSpinnerService', '$log', '$rootScope', 'searchData', '$window', '$timeout', '$cookies',
@@ -511,10 +514,32 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             usSpinnerService.spin('spinner-1');
             //Call searchData service
    		    SearchData.update({name:$scope.nam}, function(response){
-              $scope.Data = response
-              console.log($scope.Data);
-   		      usSpinnerService.stop('spinner-1');
-              $rootScope.search = true
+   		    $rootScope.stars = false
+   		    $rootScope.comets = false
+   		    $rootScope.planetoids = false
+   		    var object = response[Object.keys(response)[0]];
+   		    console.log(object.type);
+   		      if (object.type == "Star") {
+                 $scope.Data = response
+                 console.log($scope.Data);
+   		         usSpinnerService.stop('spinner-1');
+                 $rootScope.stars = true
+              }
+   		      else if (object.type == "Comet") {
+                 $scope.Data = response
+                 console.log($scope.Data);
+   		         usSpinnerService.stop('spinner-1');
+                 $rootScope.comets = true
+              }
+   		      else if (object.type == "Planetoid") {
+                 $scope.Data = response
+                 console.log($scope.Data);
+   		         usSpinnerService.stop('spinner-1');
+                 $rootScope.planetoids = true
+              }
+   		      else {
+   		         usSpinnerService.stop('spinner-1');
+              }
    		   });
         }};
       }

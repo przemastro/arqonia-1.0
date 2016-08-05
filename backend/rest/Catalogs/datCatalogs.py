@@ -174,7 +174,7 @@ def comets_catalog():
 
 
 try:
-    mpc_catalog()
-    #comets_catalog()
+    #mpc_catalog()
+    comets_catalog()
 except:
     print 'errors'

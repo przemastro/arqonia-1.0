@@ -249,9 +249,9 @@
             <th st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th style="width:15%" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
             <th style="width:15%" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:15px"/></th>
-            <th>U Photometry</th>
-            <th>V Photometry</th>
-            <th>B Photometry</th>
+            <th title="Ultraviolet magnitude">U</th>
+            <th title="Visual magnitude">V</th>
+            <th title="Blue magnitude">B</th>
         </tr>
         <tr ng-repeat="observation in displayedObservations" >
             <td style="text-align: left;">{{observation.name}}</td>
