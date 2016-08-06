@@ -3,7 +3,7 @@
  <head>
    <meta charset="utf-8">
    <title>Arqonia</title>
-   <link rel="stylesheet" href="css/app.min.css">
+   <link rel="stylesheet" href="css/app.css">
    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
    <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.min.css">
    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.min.css"/>
@@ -33,17 +33,80 @@
  </head>
  <!-- define angular controller -->
 
- <body ng-controller="mainCtrl">
+ <body ng-controller="mainCtrl" style="background-color: #efefef;">
+
+ <ul class="topMenu" background-image="images/mirror.jpg.PNG" style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: white;
+                                                                     background-color: black;">
+   <li style="float:right"><a href="#register" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
+   <li style="float:right;color:white;text-decoration: none;padding: 0px 0px;padding-right:0px;" ng-show="!isUserLoggedIn">|</li>
+   <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
+     <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 10px;">Logout</a></li>
+   <li style="float:right"><a href="#admin" ng-show="isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
+ </ul>
 
  <ul>
    <li><a href="#main" style="color:white;text-decoration: none">Home</a></li>
    <li><a href="#table-list" style="color:white;text-decoration: none">Observations</a></li>
    <li><a href="#hr-diagram" style="color:white;text-decoration: none">Diagrams</a></li>
    <li><a href="#search" style="color:white;text-decoration: none">Search</a></li>
-   <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none">Login</a></li>
-   <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Logout</a></li>
-   <li style="float:right"><a href="#admin" ng-show="isUserLoggedIn" style="color:white;text-decoration: none">Admin Panel</a></li>
  </ul>
+
+ <div class="subMenu" style="margin-top: 50px;">
+   <table class="menu">
+     <tr>
+       <td>
+          <div class="start" style="margin-right: 65px;">
+            <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:#4d6a79;color: white;width: 225px;">
+              <li style="color:white;text-decoration: none;padding-left:5px;padding: 5px 5px;">1. Login or Sign up</li>
+             </ul>
+            <div style="padding: 5px 5px;">
+            <p>Before any data processing can be started an existing user needs to <a href="#login">Login</a> to the service.
+            New user has to <a href="#register">Sign up</a> firstly.</p>
+            </div>
+          </div>
+       </td>
+       <td>
+          <div class="start" style="margin-right: 65px;">
+             <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:#4d6a79;color: white;width: 225px;">
+               <li style="color:white;text-decoration: none;padding-left:5px;padding: 5px 5px;">2. Load data to the system</li>
+             </ul>
+             <div style="padding: 5px 5px;">
+             <p>User can load new data or modify/remove existing data. System allows .csv files (flux, time) without column headers.
+             Please see FAQ section. </p><br>
+             </div>
+             <div style="text-align: center">
+               <a href="#table-list" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
+             </div>
+          </div>
+       </td>
+       <td>
+          <div class="start" style="margin-right: 65px;">
+             <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:#4d6a79;color: white;width: 225px;">
+               <li style="color:white;text-decoration: none;padding-left:5px;padding: 5px 5px;">3. Process data</li>
+             </ul>
+             <div style="padding: 5px 5px;">
+             <p>Once user is done with data loading it is time to process data. Be careful all observations marked as "verified"
+             will appear not only in users diagrams but also in global.</p>
+             </div>
+          </div>
+         </td>
+       <td>
+          <div class="start" style="margin-right: 0px;">
+             <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:#4d6a79;color: white;width: 225px;">
+               <li style="color:white;text-decoration: none;padding-left:5px;padding: 5px 5px;">4. Verify results</li>
+             </ul>
+             <div style="padding: 5px 5px;">
+             <p>Processing of data usually takes few seconds. When this is done its time to verify your results in diagrams.</p>
+             </div>
+             <div style="text-align: center">
+               <a href="#hr-diagram" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
+             </div>
+          </div>
+       </td>
+     </tr>
+   </table>
+ </div>
+
  <div id="main">
    <!-- this is where content will be injected -->
    <div ng-view></div>

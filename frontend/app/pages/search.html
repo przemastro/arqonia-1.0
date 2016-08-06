@@ -1,6 +1,6 @@
 <body ng-controller = "searchCtrl" ng-app = "astroApp">
-<div ng-controller = "searchDBCtrl">
-    <form class="form-inline" name="searchForm" role="form" novalidate ng-submit="searchForm.$valid && startSpin()">
+<div ng-controller = "searchDBCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
+    <form style="margin-top: 50px;" class="form-inline" name="searchForm" role="form" novalidate ng-submit="searchForm.$valid && startSpin()">
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Object Name" name="nam" ng-model="nam" required/>
             <div ng-messages="searchForm.nam.$error" style="color:maroon" role="alert" ng-if='submitted'>
@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="form-group">
-            <input type="submit" value="Search" class="btn btn-primary" ng-click="submitted=true" ng-keyup="submitted=false"/>
+            <input type="submit" value="Search" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
             <div ng-messages="searchForm.nam.$error" style="color:maroon" role="alert" ng-if='submitted'>
                 <div ng-message="required">&nbsp;</div>
             </div>
@@ -113,7 +113,39 @@
         </tr>
     </table>
     <span us-spinner spinner-key="spinner-1"></span>
-    <!--Observations Table-->
-
+    <table class="menu" style="background-color: white;" ng-show="(stars!=true && comets!=true && planetoids!=true)">
+        <tr>
+            <td>
+                <div class="start" style="margin-right: 65px;">
+                    <div style="padding: 5px 5px;">
+                        <p>Before any data processing can be started an existing user needs to <a href="#login">Login</a> to the service.
+                            New user has to <a href="#register">Sign up</a> firstly.</p>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="start" style="margin-right: 65px;">
+                    <div style="padding: 5px 5px;">
+                        <p>User can load new data or modify/remove existing data. System allows .csv files (flux, time) without column headers.
+                            Please see FAQ section. </p><br>
+                    </div>
+                    <div style="text-align: center">
+                        <a href="#table-list" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="start" style="margin-right: 65px;">
+                    <div style="padding: 5px 5px;">
+                        <p>User can load new data or modify/remove existing data. System allows .csv files (flux, time) without column headers.
+                            Please see FAQ section. </p><br>
+                    </div>
+                    <div style="text-align: center">
+                        <a href="#table-list" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
 </div>
 </body>

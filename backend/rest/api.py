@@ -211,7 +211,7 @@ def shutdown_server():
     func()
 
 if __name__ == '__main__':
-    #app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
+    app.run(debug=False, host=serverAddress, port=serverPort, threaded=True, use_reloader=True)
     #app.run(debug=True, host=serverAddress, port=serverPort, threaded=True)
-    app.run(debug=True, host=serverAddress, port=serverPort)
+    #app.run(debug=True, host=serverAddress, port=serverPort)
 
