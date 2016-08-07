@@ -81,7 +81,7 @@ li a {
 }
 
 li a:hover:not(.active) {
-    background-color: #0277bd;
+    background-color: #4d6a79;
     text-decoration: none;
 }
 
@@ -125,6 +125,18 @@ p {
     color: #4c4c4c;
     font-style: normal;
 }
+
+.start b {
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1.7rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    text-rendering: optimizeLegibility;
+    color: black;
+    font-style: normal;
+}
+
 
 .start {
      text-align: center;
@@ -187,6 +199,20 @@ p {
     text-align: left;
     padding: 0px 0px;
     height: 250px;
+    border-bottom: 0px;
+}
+
+.searchStart {
+    max-width: 350px;
+    margin-: 0px auto;
+    background-color:white;
+    width:100%;
+    display:inline-block;
+    border-radius:0px;
+    text-align: left;
+    padding: 0px 0px;
+    height: 250px;
+    border-bottom: 0px;
 }
 
 .tableList {
@@ -230,6 +256,7 @@ p {
     margin: 0px 0px 0px 0px;
     display:inline-block;
     background-color: #efefef;
+    border-bottom: 0px;
 }
 
 .menu td {
@@ -237,6 +264,27 @@ p {
     border-bottom: 0px;
     height: 250px;
     width: 225px;
+    border-bottom: 0px;
+}
+
+.search {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0px 0px 0px 0px;
+    display:inline-block;
+    background-color: #efefef;
+    border-bottom: 0px;
+    margin-left: 0px;
+}
+
+.search td {
+    width: 100%;
+    border-bottom: 0px;
+    height: 250px;
+    width: 600px;
+    border-bottom: 0px;
+    margin-left: 0px;
 }
 
 
@@ -316,4 +364,24 @@ p {
 
 * {
   border-radius: 0 !important;
+}
+
+
+.scrollToTop{
+    width: 100px;
+    height: 100px;
+	padding:0px;
+	text-align:center;
+	background: whiteSmoke;
+	font-weight: bold;
+	color: #444;
+	text-decoration: none;
+	position:fixed;
+	top:530px;
+	right:-15px;
+	display:none;
+	background: url('images\arrow_up.png') no-repeat 0px 20px;
+}
+.scrollToTop:hover{
+	text-decoration:none;
 }

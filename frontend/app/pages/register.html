@@ -1,7 +1,7 @@
 <body ng-app="astroApp" ng-controller="registerCtrl">
 <div style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
 <div class="col-sm-4 col-sm-offset-4" ng-controller="regCtrl">
-    <div class="well">
+    <div class="well" style="margin: 100px auto;">
         <h3>Sign up</h3>
         <form name="registerForm" role="form" novalidate ng-submit="registerForm.$valid && addUser()">
             <div class="form-group">
@@ -30,7 +30,7 @@
         <br/>
         <a href="#login" >Login</a>
     </div>
-    <span us-spinner spinner-key="spinner-1"></span>
+    <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
 </div>
 </div>
 </body>
