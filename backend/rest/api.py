@@ -74,6 +74,10 @@ parser.add_argument('vName', type=str)
 parser.add_argument('vFileName', type=str)
 parser.add_argument('bName', type=str)
 parser.add_argument('bFileName', type=str)
+parser.add_argument('rName', type=str)
+parser.add_argument('rFileName', type=str)
+parser.add_argument('iName', type=str)
+parser.add_argument('iFileName', type=str)
 parser.add_argument('id', type=str)
 parser.add_argument('email', type=str)
 parser.add_argument('password', type=str)
@@ -89,13 +93,15 @@ class Rest(Resource):
 class RestObservation(Resource):
     def post(self):
             args = parser.parse_args()
-            json_parser(args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
+            json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
+                        args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'])
             return 201
 
 
     def put(self):
             args = parser.parse_args()
-            updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uName'], args['uFileName'], args['vName'], args['vFileName'], args['bName'], args['bFileName'])
+            updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
+                              args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'])
             return 201
 
 

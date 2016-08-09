@@ -64,6 +64,26 @@ INSERT INTO util.metadataCounts
         UNION ALL
 		SELECT 4,
 		       1,
+			   N'rPhotometry',
+			   N'rPhotometry',
+			   N'rPhotometryId',
+			   N'bi.rPhotometry',
+			   N'cast(rPhotometry as varchar)',
+			   N'null',
+			   N'inner join'
+        UNION ALL
+		SELECT 5,
+		       1,
+			   N'iPhotometry',
+			   N'iPhotometry',
+			   N'iPhotometryId',
+			   N'bi.iPhotometry',
+			   N'cast(iPhotometry as varchar)',
+			   N'null',
+			   N'inner join'
+        UNION ALL
+		SELECT 6,
+		       1,
 			   N'uPhotometryTime',
 			   N'uPhotometryTime',
 			   N'uPhotometryTimeId',
@@ -72,7 +92,7 @@ INSERT INTO util.metadataCounts
 			   N'null',
 			   N'inner join'   
 		UNION ALL
-		SELECT 5,
+		SELECT 7,
 		       1,
 			   N'vPhotometryTime',
 			   N'vPhotometryTime',
@@ -82,7 +102,7 @@ INSERT INTO util.metadataCounts
 			   N'null',
 			   N'inner join' 
         UNION ALL
-		SELECT 6,
+		SELECT 8,
 		       1,
 			   N'bPhotometryTime',
 			   N'bPhotometryTime',
@@ -90,7 +110,27 @@ INSERT INTO util.metadataCounts
 			   N'bi.bPhotometryTime',
 			   N'cast(bPhotometryTime as varchar)',
 			   N'null',
-			   N'inner join' 
+			   N'inner join'
+        UNION ALL
+		SELECT 9,
+		       1,
+			   N'rPhotometryTime',
+			   N'rPhotometryTime',
+			   N'rPhotometryTimeId',
+			   N'bi.rPhotometryTime',
+			   N'cast(rPhotometryTime as varchar)',
+			   N'null',
+			   N'inner join'
+        UNION ALL
+		SELECT 10,
+		       1,
+			   N'iPhotometryTime',
+			   N'iPhotometryTime',
+			   N'iPhotometryTimeId',
+			   N'bi.iPhotometryTime',
+			   N'cast(iPhotometryTime as varchar)',
+			   N'null',
+			   N'inner join'
 			   )
 INSERT INTO util.metadataComparison
                ( ID,

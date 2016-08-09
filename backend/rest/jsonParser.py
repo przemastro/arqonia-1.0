@@ -18,7 +18,7 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 #----------------------------------------------insert new observation---------------------------------------------------
-def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bName, bFileName):
+def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName):
  try:
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
@@ -33,6 +33,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
          lastId = lastId[0] + 1
 
      lastId = str(lastId)
+
      name = str(name)
      startDate = str(startDate)
      endDate = str(endDate)
@@ -59,6 +60,20 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
         cursor.execute(insert_bFileName)
         cnx.commit()
 
+     #--rPhotometry
+     rFileName = str(rFileName)
+     if rFileName != 'None':
+         insert_rFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+rFileName+"', ' ', ' ')")
+         cursor.execute(insert_rFileName)
+         cnx.commit()
+
+     #--iPhotometry
+     iFileName = str(iFileName)
+     if iFileName != 'None':
+         insert_iFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+iFileName+"', ' ', ' ')")
+         cursor.execute(insert_iFileName)
+         cnx.commit()
+
 
   #---insert to stg.stagingObservations
      #--read ufile
@@ -82,12 +97,31 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
         bdataRange = len(bdata)
         bdata.columns = ["bTime", "bFlux"]
 
+     #--read vfile
+     rdataRange = 0
+     if rFileName != 'None':
+         rdata = pandas.read_csv('uploads/'+rFileName, header=None)
+         rdataRange = len(rdata)
+         rdata.columns = ["rTime", "rFlux"]
+
+     #--read bfile
+     idataRange = 0
+     if iFileName != 'None':
+         idata = pandas.read_csv('uploads/'+iFileName, header=None)
+         idataRange = len(idata)
+         idata.columns = ["iTime", "iFlux"]
+
 
      globalRange = udataRange
      if vdataRange>udataRange:
          globalRange = vdataRange
      if bdataRange>globalRange:
          globalRange = bdataRange
+     if rdataRange>globalRange:
+         globalRange = rdataRange
+     if idataRange>globalRange:
+         globalRange = idataRange
+
 
      insert_observation = ''
 
@@ -126,16 +160,38 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
               except:
                   btime = 'NULL'
                   bflux = 'NULL'
+              try:
+                  if rFileName != 'None':
+                      rtime = str(rdata.rTime[i])
+                      rflux = str(rdata.rFlux[i])
+                  else:
+                      rtime = 'NULL'
+                      rflux = 'NULL'
+              except:
+                  rtime = 'NULL'
+                  rflux = 'NULL'
+              try:
+                  if iFileName != 'None':
+                      itime = str(idata.iTime[i])
+                      iflux = str(idata.iFlux[i])
+                  else:
+                      itime = 'NULL'
+                      iflux = 'NULL'
+              except:
+                  itime = 'NULL'
+                  iflux = 'NULL'
               j = str(counter + 1)
-              observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
+              observation = "SELECT "+lastId+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+"," \
+                                                                    ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1 UNION ALL "
               insert_observation = insert_observation + observation
 
         insert_observation = insert_observation[:-10]
 
+        insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,ObjectName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
+                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,StartDate,EndDate," \
+                             "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active) select * from cte GO"
 
-        insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
-                             "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
-                             "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
+        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()
@@ -149,7 +205,7 @@ def json_parser(name, startDate, endDate, uName, uFileName, vName, vFileName, bN
 
 
 #---------------------------------------------Update existing observation----------------------------------------------
-def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFileName, bName, bFileName):
+def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
@@ -198,6 +254,20 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
            cursor.execute(insert_bFileName)
            cnx.commit()
 
+        #--rPhotometry
+        rFileName = str(rFileName)
+        if rFileName != 'None':
+            insert_rFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+rFileName+"', ' ', ' ')")
+            cursor.execute(insert_rFileName)
+            cnx.commit()
+
+        #--iPhotometry
+        iFileName = str(iFileName)
+        if iFileName != 'None':
+            insert_iFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+iFileName+"', ' ', ' ')")
+            cursor.execute(insert_iFileName)
+            cnx.commit()
+
     #---insert to stg.stagingObservations
         #--read ufile
         udataRange = 0
@@ -219,12 +289,30 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
            bdataRange = len(bdata)
            bdata.columns = ["bTime", "bFlux"]
 
+        #--read vfile
+        rdataRange = 0
+        if rFileName != 'None':
+            rdata = pandas.read_csv('uploads/'+rFileName, header=None)
+            rdataRange = len(rdata)
+            rdata.columns = ["rTime", "rFlux"]
+
+        #--read bfile
+        idataRange = 0
+        if iFileName != 'None':
+            idata = pandas.read_csv('uploads/'+iFileName, header=None)
+            idataRange = len(idata)
+            idata.columns = ["iTime", "iFlux"]
+
 
         globalRange = udataRange
         if vdataRange>udataRange:
-           globalRange = vdataRange
+            globalRange = vdataRange
         if bdataRange>globalRange:
-           globalRange = bdataRange
+            globalRange = bdataRange
+        if rdataRange>globalRange:
+            globalRange = rdataRange
+        if idataRange>globalRange:
+            globalRange = idataRange
 
         insert_observation = ''
 
@@ -262,15 +350,36 @@ def updateObservation(id, name, startDate, endDate, uName, uFileName, vName, vFi
                 except:
                     btime = 'NULL'
                     bflux = 'NULL'
+                try:
+                    if rFileName != 'None':
+                        rtime = str(rdata.rTime[i])
+                        rflux = str(rdata.rFlux[i])
+                    else:
+                        rtime = 'NULL'
+                        rflux = 'NULL'
+                except:
+                    rtime = 'NULL'
+                    rflux = 'NULL'
+                try:
+                    if iFileName != 'None':
+                        itime = str(idata.iTime[i])
+                        iflux = str(idata.iFlux[i])
+                    else:
+                        itime = 'NULL'
+                        iflux = 'NULL'
+                except:
+                    itime = 'NULL'
+                    iflux = 'NULL'
                 j = str(counter + 1)
-                observation = "SELECT "+id+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+",'new',1 UNION ALL "
+                observation = "SELECT "+id+","+j+",'"+name+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+"," \
+                                                                   ""+btime+","+bflux+","+rtime+","+rflux+","+itime+","+iflux+",'new',1 UNION ALL "
                 insert_observation = insert_observation + observation
 
         insert_observation = insert_observation[:-10]
 
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,StarName,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
-                             "bPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
-                                                                                      "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,Status,Active) select * from cte GO"
+                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,StarName,StartDate,EndDate," \
+                                                                                      "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active) select * from cte GO"
 
 
         cursor.execute(insert_observation)

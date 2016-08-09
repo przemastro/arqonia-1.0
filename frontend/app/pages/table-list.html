@@ -12,10 +12,25 @@
            <tr>
                <td style="width:60%;vertical-align: top">
                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
-                       <div class="modal-body" style="margin-top:-70px">
+                       <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                           <div class="form-group" data-toggle="buttons">
+                               <label style="text-align: right;padding-left: 50px;" class="col-md-4 control-label">Object Type</label>
+                               <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
+                                   <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
+                               </label>
+                               <label class="btn btn-default pull-left btnMarginRight customLong">
+                                   <input type="radio" class="form-control" ng-model="planetoid" name="radio" required> Planetoid </input>
+                               </label>
+                               <label class="btn btn-default pull-left btnMarginRight custom">
+                                   <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
+                               </label>
+                               <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                   <div ng-message="required">This field is required</div>
+                               </div>
+                           </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">Object Name</label>
-                              <div class="col-md-4">
+                              <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name </label>
+                              <div class="col-md-7">
                                   <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="e.g. Vega" required/>
                                   <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
@@ -24,8 +39,8 @@
                               </div>
                            </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">Start Date</label>
-                              <div class="col-md-4">
+                              <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Start Date</label>
+                              <div class="col-md-7">
                                   <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
                                   <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
@@ -34,8 +49,8 @@
                               </div>
                            </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">End Date</label>
-                              <div class="col-md-4">
+                              <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">End Date</label>
+                              <div class="col-md-7">
                                   <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
                                   <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
@@ -44,22 +59,46 @@
                               </div>
                            </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">U Photometry</label>
-                              <div class="col-md-4">
-                                  <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
+                              <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">U Photometry</label>
+                              <div class="col-md-7">
+                                  <input type="file" class="btn btn-default customUpload" file-model = "myFile" name="uFileName" accept="text/csv"/>
                               </div>
                            </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">V Photometry</label>
-                              <div class="col-md-4">
-                                  <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
+                              <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">V Photometry</label>
+                              <div class="col-md-7">
+                                  <input type="file" class="btn btn-default customUpload" file-model = "myFile2" name="vFileName" accept="text/csv"/>
                               </div>
                            </div>
                            <div class="form-group">
-                              <label class="col-md-4 control-label">B Photometry</label>
-                              <div class="col-md-4">
-                                  <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
+                              <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">B Photometry</label>
+                              <div class="col-md-7">
+                                  <input type="file" class="btn btn-default customUpload" file-model = "myFile3" name="bFileName" accept="text/csv"/>
                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">R Photometry</label>
+                               <div class="col-md-7">
+                                   <input type="file" class="btn btn-default customUpload" file-model = "myFile4" name="rFileName" accept="text/csv"/>
+                               </div>
+                           </div>
+                           <div class="form-group">
+                               <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">I Photometry</label>
+                               <div class="col-md-7">
+                                   <input type="file" class="btn btn-default customUpload" file-model = "myFile5" name="iFileName" accept="text/csv"/>
+                               </div>
+                           </div>
+                           <div class="form-group" data-toggle="buttons">
+                               <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is observation verified?</label>
+                               <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo">
+                                   <input type="radio" class="form-control" ng-model="radio" name="radio" required> Yes </input>
+                               </label>
+                               <label class="btn btn-default pull-left btnMarginRight customYesNo">
+                                   <input type="radio" class="form-control" ng-model="radio" name="radio" required> No </input>
+                               </label>
+                               <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                   <div ng-message="required">This field is required</div>
+                               </div>
                            </div>
                        </div>
                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
@@ -102,12 +141,27 @@
                             <h3 class="modal-title">Observation</h3>
                         </div>
            <table class="main">
-                <td style="width:60%;vertical-align: top">
+                <td style="width:60%;vertical-align: top;">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
+                            <div class="form-group" data-toggle="buttons">
+                                <label style="text-align: right;padding-left: 50px;" class="col-md-4 control-label">Object Type</label>
+                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
+                                    <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
+                                </label>
+                                <label class="btn btn-default pull-left btnMarginRight customLong">
+                                    <input type="radio" class="form-control" ng-model="planetoid" name="radio" required> Planetoid </input>
+                                </label>
+                                <label class="btn btn-default pull-left btnMarginRight custom">
+                                    <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
+                                </label>
+                                <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Object Name</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
                                     <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" ng-change='changeName()' required/>
                                     <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
@@ -116,7 +170,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Start Date</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
                                     <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" ng-change='changeStartDate()' required/>
                                     <div ng-messages="editForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
@@ -125,7 +179,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">End Date</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-4">
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
                                     <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" ng-change='changeEndDate()' required/>
                                     <div ng-messages="editForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                         <div ng-message="required">This field is required</div>
@@ -135,19 +189,43 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">U Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="file" class="btn btn-default" file-model = "myFile" name="uFileName" accept="text/csv"/>
+                                    <input type="file" class="btn btn-default customUpload" file-model = "myFile" name="uFileName" accept="text/csv"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">V Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="file" class="btn btn-default" file-model = "myFile2" name="vFileName" accept="text/csv"/>
+                                    <input type="file" class="btn btn-default customUpload" file-model = "myFile2" name="vFileName" accept="text/csv"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">B Photometry</label>
                                 <div class="col-md-4">
-                                    <input type="file" class="btn btn-default" file-model = "myFile3" name="bFileName" accept="text/csv"/>
+                                    <input type="file" class="btn btn-default customUpload" file-model = "myFile3" name="bFileName" accept="text/csv"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">R Photometry</label>
+                                <div class="col-md-4">
+                                    <input type="file" class="btn btn-default customUpload" file-model = "myFile4" name="rFileName" accept="text/csv"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">I Photometry</label>
+                                <div class="col-md-4">
+                                    <input type="file" class="btn btn-default customUpload" file-model = "myFile5" name="iFileName" accept="text/csv"/>
+                                </div>
+                            </div>
+                            <div class="form-group" data-toggle="buttons">
+                                <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is observation verified?</label>
+                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo">
+                                    <input type="radio" class="form-control" ng-model="radio" name="radio" required> Yes </input>
+                                </label>
+                                <label class="btn btn-default pull-left btnMarginRight customYesNo">
+                                    <input type="radio" class="form-control" ng-model="radio" name="radio" required> No </input>
+                                </label>
+                                <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
                                 </div>
                             </div>
                         </div>
@@ -238,37 +316,98 @@
         </div>
     </script>
 
-    <!--Observations Table-->
+      <!--Edit RPhotometry Modal-->
+      <script type="text/ng-template" id="editRPhotometryModal.html">
+          <div class="modal-header">
+              <h3 class="modal-title">R Photometry</h3>
+          </div>
+          <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
+              <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <table class="main">
+                  <tr>
+                      <th style="width:50%;padding-left:45px;">Flux</th>
+                      <th style="width:90%;padding-right:40px;">Time</th>
+                  </tr>
+                  <tr ng-repeat="observation in ob" ng-if="$index == editRPhotometry">
+                      <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;">{{observation.rPhotometryFlux}}</td>
+                      <td style="white-space: pre;width:90%;text-align: left;padding-left:92px;">{{observation.rPhotometryTime}}</td>
+                  </tr>
+                  <tr>
+                      <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;border-bottom: 0px;"></td>
+                      <td style="white-space: pre;width:90%;text-align: right;border-bottom: 0px;height:50%"><button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button></td>
+                  </tr>
+              </table>
+          </div>
+          <div class="modal-footer" hidden="true" style="display:none;">
+          </div>
+      </script>
+
+      <!--Edit IPhotometry Modal-->
+      <script type="text/ng-template" id="editIPhotometryModal.html">
+          <div class="modal-header">
+              <h3 class="modal-title">I Photometry</h3>
+          </div>
+          <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
+              <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <table class="main">
+                  <tr>
+                      <th style="width:50%;padding-left:45px;">Flux</th>
+                      <th style="width:90%;padding-right:40px;">Time</th>
+                  </tr>
+                  <tr ng-repeat="observation in ob" ng-if="$index == editIPhotometry">
+                      <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;">{{observation.iPhotometryFlux}}</td>
+                      <td style="white-space: pre;width:90%;text-align: left;padding-left:92px;">{{observation.iPhotometryTime}}</td>
+                  </tr>
+                  <tr>
+                      <td style="white-space: pre;width:50%;text-align: left;padding-left:105px;border-bottom: 0px;"></td>
+                      <td style="white-space: pre;width:90%;text-align: right;border-bottom: 0px;height:50%"><button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button></td>
+                  </tr>
+              </table>
+          </div>
+          <div class="modal-footer" hidden="true" style="display:none;">
+          </div>
+      </script>
+
+      <!--Observations Table-->
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
-            <td style="border-bottom: 0px;background-color: white;" ng-show="!isUserLoggedIn"></td>
-            <td style="width:20%;border-bottom: 0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
-            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="New Observation" class="btn btn-primary sharp" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
-            <td style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="Generate Catalog" class="btn btn-success sharp" ng-click="generateCatalog()" ng-show="isUserLoggedIn"/></td>
+            <td style="border-bottom: 0px;padding-right:10px;padding-left:0px"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"><input type="button" value="New Observation" class="btn btn-primary sharp" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input type="button" value="Generate Catalog" class="btn btn-success sharp" ng-click="generateCatalog()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
+            <td colspan = "2" style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="Process" class="btn btn-primary sharp" ng-click="startSpin()" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
-            <th style="border-bottom: 0px;background-color: white;" ng-show="!isUserLoggedIn"></th>
-            <th st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:25px;height:20px;padding-left:5px;"/></th>
-            <th style="width:15%" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:20px;padding-left:5px;"/></th>
-            <th style="width:15%" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:25px;height:20px;padding-left:5px;"/></th>
-            <th title="Ultraviolet magnitude">U</th>
-            <th title="Visual magnitude">V</th>
-            <th title="Blue magnitude">B</th>
+            <th style="padding-right:0px;padding-left:10px;white-space: nowrap;"st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
+            <th style="white-space: nowrap;" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
+            <th style="white-space: nowrap;" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
+            <th style="padding-right:0px;padding-left:0px;" title="Ultraviolet magnitude">U</th>
+            <th style="padding-right:0px;padding-left:0px;" title="Visual magnitude">V</th>
+            <th style="padding-right:0px;padding-left:0px;" title="Blue magnitude">B</th>
+            <th style="padding-right:0px;padding-left:0px;" title="Red magnitude">R</th>
+            <th style="padding-right:0px;padding-left:0px;" title="Infrared magnitude">I</th>
+            <th style="width: 100%;" ng-show="!isUserLoggedIn">Owner</th>
         </tr>
         <tr ng-repeat="observation in displayedObservations" >
-            <td style="border-bottom: 0px;background-color: white;" ng-show="!isUserLoggedIn"></td>
             <td style="text-align: left;">{{observation.name}}</td>
-            <td>{{observation.startDate}}</td>
-            <td>{{observation.endDate}}</td>
-            <td><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editUPhotometry(observation.id)"/></td>
-            <td><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editVPhotometry(observation.id)"/></td>
-            <td><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
-            <td style="border-bottom: 0px;width:10%"><input align="right" type="button" value="Edit" class="btn btn-primary custom sharp" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
-            <td style="border-bottom: 0px;width:2%"><input align="right" type="button" value="Remove" class="btn btn-danger custom sharp" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
+            <td style="white-space: nowrap;">{{observation.startDate}}</td>
+            <td style="white-space: nowrap;">{{observation.endDate}}</td>
+            <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editUPhotometry(observation.id)"/></td>
+            <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.vPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editVPhotometry(observation.id)"/></td>
+            <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
+            <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.rPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editRPhotometry(observation.id)"/></td>
+            <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.iPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editIPhotometry(observation.id)"/></td>
+            <td style="width: 100%;" ng-show="!isUserLoggedIn"></td>
+            <td style="border-bottom: 0px;padding-right:0px;padding-left:0px;padding-bottom: 7px;"><input align="right" type="button" value="Edit" class="btn btn-primary custom sharp" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
+            <td style="border-bottom: 0px;padding-right:0px;padding-bottom: 7px;"><input align="right" type="button" value="Remove" class="btn btn-danger custom sharp" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
             <tfoot>
-               <td style="border-bottom: 0px" colspan="8" class="text-center">
+               <td style="border-bottom: 0px" colspan="10" class="text-center">
                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5" st-template="pages/pagination.custom.html"></div>
                    <!--<div st-items-by-page="10" st-pagination="" st-template="pages/pagination.custom.html"></div>-->
                </td>

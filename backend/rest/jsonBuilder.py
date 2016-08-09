@@ -45,6 +45,18 @@ def json_data():
             queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
             get_BPhotometryTime = (
             queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
+            get_RPhotometryFlag = (
+            queries.get('DatabaseQueries', 'database.getRPhotometryFlagFromRPhotometrySorted') + id)
+            get_RPhotometryFlux = (
+            queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
+            get_RPhotometryTime = (
+            queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
+            get_IPhotometryFlag = (
+            queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
+            get_IPhotometryFlux = (
+            queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
+            get_IPhotometryTime = (
+            queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
 
             objectName = str(fetch_one(get_objectName))
             StartDate = str(fetch_one(get_StartDate))
@@ -80,13 +92,37 @@ def json_data():
                 BPhotometryFlux = 'No data available'
                 BPhotometryTime = 'No data available'
 
+            RPhotometry = str(fetch_one(get_RPhotometryFlag))
+            if RPhotometry != 'null' and RPhotometry != '0':
+                RPhotometry = 'YES'
+                RPhotometryFlux = fetch_all_replace(get_RPhotometryFlux)
+                RPhotometryTime = fetch_all_replace(get_RPhotometryTime)
+            else:
+                RPhotometry = 'NO'
+                RPhotometryFlux = 'No data available'
+                RPhotometryTime = 'No data available'
+
+            IPhotometry = str(fetch_one(get_IPhotometryFlag))
+            if IPhotometry != 'null' and IPhotometry != '0':
+                IPhotometry = 'YES'
+                IPhotometryFlux = fetch_all_replace(get_IPhotometryFlux)
+                IPhotometryTime = fetch_all_replace(get_IPhotometryTime)
+            else:
+                IPhotometry = 'NO'
+                IPhotometryFlux = 'No data available'
+                IPhotometryTime = 'No data available'
+
             object = {'id': id, 'name': objectName, 'startDate': StartDate, 'endDate': EndDate,
                       'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux,
                       'uPhotometryTime': UPhotometryTime,
                       'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux,
                       'vPhotometryTime': VPhotometryTime,
                       'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux,
-                      'bPhotometryTime': BPhotometryTime}
+                      'bPhotometryTime': BPhotometryTime,
+                      'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux,
+                      'rPhotometryTime': RPhotometryTime,
+                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux,
+                      'iPhotometryTime': IPhotometryTime}
 
             controller = str(object) + ',' + controller
 

@@ -120,6 +120,34 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
           });
        }
+
+       //Edit RPhotometry Modal
+       $scope.editRPhotometry = function (editRPhotometry) {
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'editRPhotometryModal.html',
+             controller: 'ModalInstanceEditRPhotometryCtrl',
+             resolve: {
+                 editRPhotometry: function () {
+                     return editRPhotometry;
+                 }
+             }
+          });
+       }
+
+       //Edit IPhotometry Modal
+       $scope.editIPhotometry = function (editIPhotometry) {
+          var modalInstance = $uibModal.open({
+             animation: $scope.animationsEnabled,
+             templateUrl: 'editIPhotometryModal.html',
+             controller: 'ModalInstanceEditIPhotometryCtrl',
+             resolve: {
+                 editIPhotometry: function () {
+                     return editIPhotometry;
+                 }
+             }
+          });
+       }
     }]);
 
     astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', function ($scope, $log, $uibModalInstance, NewObservation, fileUpload) {
@@ -154,9 +182,28 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              var file3 = 'No file3';
              }
 
+          var file4 = $scope.myFile4;
+          if(file4) {
+             var uploadUrl = __env.apiUrl+"/fileUpload";
+             fileUpload.uploadFileToUrl(file4, uploadUrl);
+             }
+          else {
+             var file4 = 'No file4';
+             }
+
+          var file5 = $scope.myFile5;
+          if(file5) {
+             var uploadUrl = __env.apiUrl+"/fileUpload";
+             fileUpload.uploadFileToUrl(file5, uploadUrl);
+             }
+          else {
+             var file5 = 'No file5';
+             }
+
           //Call postObservation service...
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
-   		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
+   		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
+   		                     rFileName:file4.name,iFileName:file5.name}, function(response){
    		  $scope.message = response.message;
    		  $log.debug($scope.message);
    		  });
@@ -253,11 +300,29 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           else {
              var file3 = 'No file3';
              }
+          var file4 = $scope.myFile4;
+          if(file4) {
+             var uploadUrl = __env.apiUrl+"/fileUpload";
+             fileUpload.uploadFileToUrl(file4, uploadUrl);
+             }
+          else {
+             var file4 = 'No file4';
+             }
+
+          var file5 = $scope.myFile5;
+          if(file5) {
+             var uploadUrl = __env.apiUrl+"/fileUpload";
+             fileUpload.uploadFileToUrl(file5, uploadUrl);
+             }
+          else {
+             var file5 = 'No file5';
+             }
 
           //Call updateObservation service...
    		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.name,startDate:$scope.startDate,
    		                            endDate:$scope.endDate,
-   		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name}, function(response){
+   		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
+   		                            rFileName:file4.name,iFileName:file5.name}, function(response){
    		  $scope.message = response.message;
    		  });
    		  //...and close modal
@@ -321,6 +386,42 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       			}
       		}
       $scope.editBPhotometry = editBPhotometry2
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceEditRPhotometryCtrl', function ($scope, $uibModalInstance, editRPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editRPhotometry = editRPhotometry;
+      var editRPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editRPhotometry ) {
+      				editRPhotometry2 = i;
+      				break;
+      			}
+      		}
+      $scope.editRPhotometry = editRPhotometry2
+
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+    astroApp.controller('ModalInstanceEditIPhotometryCtrl', function ($scope, $uibModalInstance, editIPhotometry) {
+      $scope.ob = $scope.observations;
+      $scope.editIPhotometry = editIPhotometry;
+      var editIPhotometry2 = -1
+      		var evaluatedOb = $scope.ob.length;
+      		for( var i = 0; i < evaluatedOb; i++ ) {
+      			if( $scope.ob[i].id === editIPhotometry ) {
+      				editIPhotometry2 = i;
+      				break;
+      			}
+      		}
+      $scope.editIPhotometry = editIPhotometry2
 
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
