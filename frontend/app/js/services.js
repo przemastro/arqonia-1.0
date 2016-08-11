@@ -41,6 +41,14 @@ services.factory('login', ['$resource',
 }]);
 
 
+//Subscribe
+services.factory('subscribe', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/subscribe', {}, {
+        save: {method:'POST'}
+    });
+}]);
+
 
 //Table list data
 services.factory('getObservations', ['$resource',
@@ -62,6 +70,14 @@ services.factory('getObservationsDiagram', ['$resource',
 services.factory('getObservationsHRDiagram', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/observationsHRDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+//Statistics data
+services.factory('getStatistics', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/statistics', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);

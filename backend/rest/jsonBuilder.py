@@ -220,6 +220,30 @@ def json_hrdiagram():
     else:
         cnx.close()
 
+def json_statistics():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        get_NumberOfUsers = (queries.get('DatabaseQueries', 'database.getNumberOfUsers'))
+        get_NumberOfFiles = (queries.get('DatabaseQueries', 'database.getNumberOfFiles'))
+        get_NumberOfObjects = (queries.get('DatabaseQueries', 'database.getNumberOfObjects'))
+
+        NumberOfUsers = fetch_one(get_NumberOfUsers)
+        NumberOfFiles = fetch_one(get_NumberOfFiles)
+        NumberOfObjects = fetch_one(get_NumberOfObjects)
+
+
+        statistics = [{'numberOfUsers': NumberOfUsers, 'numberOfFiles': NumberOfFiles,
+                                  'numberOfObjects': NumberOfObjects}]
+        cursor.close()
+        json_statistics.jsonStatistics = statistics
+
+    except:
+        print 'errors in json_hrdiagram function'
+    else:
+        cnx.close()
+
 
 def fetch_one(get_value):
     cursor.execute(get_value)

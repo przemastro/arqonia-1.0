@@ -6,15 +6,16 @@
     <script type="text/ng-template" id="newModalContent.html">
                        <div class="modal-header">
                            <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                           <h3 class="modal-title">New observation</h3>
+                           <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">New observation</h3>
                        </div>
        <table class="main">
            <tr>
-               <td style="width:60%;vertical-align: top">
+               <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
                        <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
-                           <div class="form-group" data-toggle="buttons">
-                               <label style="text-align: right;padding-left: 50px;" class="col-md-4 control-label">Object Type</label>
+                           <div style="padding-left: 94px" class="form-group" data-toggle="buttons">
                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
                                    <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
                                </label>
@@ -89,7 +90,7 @@
                                </div>
                            </div>
                            <div class="form-group" data-toggle="buttons">
-                               <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is observation verified?</label>
+                               <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo">
                                    <input type="radio" class="form-control" ng-model="radio" name="radio" required> Yes </input>
                                </label>
@@ -102,7 +103,7 @@
                            </div>
                        </div>
                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
-                           <input type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                           <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
                            <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
                        </div>
                    </form>
@@ -115,17 +116,19 @@
     <script type="text/ng-template" id="removeObservationModal.html">
                         <div class="modal-header">
                             <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title">Remove observation</h3>
+                            <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Remove observation</h3>
                         </div>
         <table class="main">
             <tr>
                 <td style="width:60%;vertical-align: top">
-                    <form name="removeForm" class="form-horizontal" role="form" style="width:100%;margin-left:0px;" novalidate ng-submit="removeForm.$valid && removeRow()">
-                        <div class="modal-body" style="margin-top:-70px">
+                    <form name="removeForm" class="form-horizontal" role="form" style="width:100%;margin-left:0px;margin-bottom: 0px;" novalidate ng-submit="removeForm.$valid && removeRow()">
+                        <div style="font-family: inherit;font-weight: normal;
+                           font-size: 1.8rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-body">
                             <div>Record will be soft deleted from database. Would you like to continue?</div>
                         </div>
                         <div class="modal-footer" style="padding-right:100px;margin-top:0px;border-top: 0px;">
-                            <button type="button" ng-click="remove($index)" class="btn btn-primary sharp" ng-model="checked" data-dismiss="modal" ng-if="$index == removePhotometry">Yes</button>
+                            <button style="background-color: #4d9dc2;border: 0px" type="button" ng-click="remove($index)" class="btn btn-primary sharp" ng-model="checked" data-dismiss="modal" ng-if="$index == removePhotometry">Yes</button>
                             <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
                         </div>
                     </form>
@@ -138,14 +141,15 @@
     <script type="text/ng-template" id="editObservationModal.html">
                         <div class="modal-header">
                             <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h3 class="modal-title">Observation</h3>
+                            <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Observation</h3>
                         </div>
            <table class="main">
-                <td style="width:60%;vertical-align: top;">
+                <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
-                            <div class="form-group" data-toggle="buttons">
-                                <label style="text-align: right;padding-left: 50px;" class="col-md-4 control-label">Object Type</label>
+                            <div style="padding-left: 94px" class="form-group" data-toggle="buttons">
                                 <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
                                     <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
                                 </label>
@@ -217,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="form-group" data-toggle="buttons">
-                                <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is observation verified?</label>
+                                <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
                                 <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo">
                                     <input type="radio" class="form-control" ng-model="radio" name="radio" required> Yes </input>
                                 </label>
@@ -230,7 +234,7 @@
                             </div>
                         </div>
                         <div class="modal-footer" style="padding-right:100px;border-top: 0px;border-bottom: 0px;">
-                            <input type="submit" value="Save" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                            <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Save" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
                             <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
                         </div>
                     </form>
@@ -241,7 +245,8 @@
     <!--Edit UPhotometry Modal-->
     <script type="text/ng-template" id="editUPhotometryModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">U Photometry</h3>
+            <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">U Photometry</h3>
         </div>
         <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
             <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -267,7 +272,8 @@
     <!--Edit VPhotometry Modal-->
     <script type="text/ng-template" id="editVPhotometryModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">V Photometry</h3>
+            <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">V Photometry</h3>
         </div>
         <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
             <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -293,7 +299,8 @@
     <!--Edit BPhotometry Modal-->
     <script type="text/ng-template" id="editBPhotometryModal.html">
         <div class="modal-header">
-            <h3 class="modal-title">B Photometry</h3>
+            <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">B Photometry</h3>
         </div>
         <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
             <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -319,7 +326,8 @@
       <!--Edit RPhotometry Modal-->
       <script type="text/ng-template" id="editRPhotometryModal.html">
           <div class="modal-header">
-              <h3 class="modal-title">R Photometry</h3>
+              <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">R Photometry</h3>
           </div>
           <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
               <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -345,7 +353,8 @@
       <!--Edit IPhotometry Modal-->
       <script type="text/ng-template" id="editIPhotometryModal.html">
           <div class="modal-header">
-              <h3 class="modal-title">I Photometry</h3>
+              <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">I Photometry</h3>
           </div>
           <div class="modal-body" style="padding-right:15px;margin-top:-70px;padding-bottom:0px;margin-bottom: 0;">
               <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -372,14 +381,14 @@
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
             <td style="border-bottom: 0px;padding-right:10px;padding-left:0px"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
-            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"><input type="button" value="New Observation" class="btn btn-primary sharp" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
-            <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input type="button" value="Generate Catalog" class="btn btn-success sharp" ng-click="generateCatalog()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"><input style="background-color: #4d9dc2;border: 0px" type="button" value="New Observation" class="btn btn-primary sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input style="border: 0px" type="button" value="Generate Catalog" class="btn btn-success sharp customHeight" ng-click="generateCatalog()" ng-show="isUserLoggedIn"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
-            <td colspan = "2" style="width:10%;vertical-align: top;border-bottom: 0px;"><input type="button" value="Process" class="btn btn-primary sharp" ng-click="startSpin()" ng-show="isUserLoggedIn"/></td>
+            <td colspan = "2" style="width:10%;vertical-align: top;border-bottom: 0px;"><input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp" ng-click="startSpin()" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
             <th style="padding-right:0px;padding-left:10px;white-space: nowrap;"st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
@@ -402,8 +411,8 @@
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.rPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editRPhotometry(observation.id)"/></td>
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.iPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editIPhotometry(observation.id)"/></td>
             <td style="width: 100%;" ng-show="!isUserLoggedIn"></td>
-            <td style="border-bottom: 0px;padding-right:0px;padding-left:0px;padding-bottom: 7px;"><input align="right" type="button" value="Edit" class="btn btn-primary custom sharp" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
-            <td style="border-bottom: 0px;padding-right:0px;padding-bottom: 7px;"><input align="right" type="button" value="Remove" class="btn btn-danger custom sharp" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
+            <td style="border-bottom: 0px;padding-right:0px;padding-left:0px;margin-bottom: 7px;"><input style="background-color: #4d9dc2;border: 0px" align="right" type="button" value="Edit" class="btn btn-primary custom sharp" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
+            <td style="border-bottom: 0px;padding-right:0px;margin-bottom: 7px;"><input style="border: 0px" align="right" type="button" value="Remove" class="btn btn-danger custom sharp" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
         </tr>
         <tr>
             <tfoot>

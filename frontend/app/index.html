@@ -35,48 +35,152 @@
 
  <body ng-controller="mainCtrl" style="background-color: #efefef;">
 
- <ul class="topMenu" background-image="images/mirror.jpg.PNG" style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: white;
-                                                                     background-color: black;">
-   <li style="float:right"><a href="#register" class="pageSection" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
-   <li style="float:right;color:white;text-decoration: none;padding: 0px 0px;padding-right:0px;" ng-show="!isUserLoggedIn">|</li>
-   <li style="float:right"><a href="#login" class="pageSection" ng-show="!isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
-     <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 10px;">Logout</a></li>
-   <li style="float:right"><a href="#admin" class="pageSection" ng-show="isUserLoggedIn" style="color:white;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
+ <ul class="topMenu" style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: #4c4c4c;background-color: #efefef;">
+   <li style="float:right"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
+   <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 0px 0px;padding-right:0px;" ng-show="!isUserLoggedIn">|</li>
+   <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
+     <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;">Logout</a></li>
+   <li style="float:right"><a href="#admin" class="pageSection" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
  </ul>
 
  <div id="header">
      <ul>
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
-         <li style="margin-left: 500px;margin-top: 8px"><a href="#table-list" class="pageSection" style="color:white;text-decoration: none">OBSERVATIONS</a></li>
+         <li style="margin-left: 450px;margin-top: 8px"><a href="#photometry" class="pageSection" style="color:white;text-decoration: none">PHOTOMETRY</a></li>
+         <li style="margin-top: 8px"><a href="#table-list" class="pageSection" style="color:white;text-decoration: none">OBSERVATIONS</a></li>
          <li style="margin-top: 8px"><a href="#hr-diagram" class="pageSection" style="color:white;text-decoration: none">DIAGRAMS</a></li>
          <li style="margin-top: 8px"><a href="#search" class="pageSection" style="color:white;text-decoration: none">SEARCH</a></li>
      </ul>
  </div>
 
  <div id="carousel-example-generic" style="position: relative" class="carousel slide" data-ride="carousel" data-interval="5000">
-     <ol class="carousel-indicators">
+     <ol style="padding-left: 390px" class="carousel-indicators">
          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-         <li data-target="#carousel-example-generic" data-slide-to="2"></li>
      </ol>
 
      <div class="carousel-inner">
          <div class="item active">
-             <img src="images/bootstrap.png" alt="...">
+             <img src="images/bootstrap3.png" alt="...">
              <div class="carousel-caption">
-                 <h3>Caption Text</h3>
+                 <table ng-repeat="statistics in Statistics" class="topTable" style="width: 1400px;margin-left:-60px;margin-bottom:0px;">
+                     <tr>
+                         <td style="width: 360px" rowspan="2">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 Science</div>
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 This is a concept application created
+                                 to integrate amateur astronomers who
+                                 are interested in the field of home made science.
+
+                             </div>
+                         </td>
+                         <td style="width:135px;text-align: right;">
+                             <div>
+                                 <img src="images/group.png" alt="...">
+                             </div>
+                         </td>
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap">
+                                     {{statistics.numberOfUsers}}
+                                 </div>
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     NUMBER OF USERS
+                                 </div>
+                         </td>
+                         <td style="width:135px;text-align: right;">
+                             <div>
+                                 <img src="images/icon_star_alt.png" alt="...">
+                             </div>
+                         </td>
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     {{statistics.numberOfObjects}}
+                                 </div>
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     OBJECTS OBSERVED
+                                 </div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td style="width:135px;text-align: right;">
+                             <div>
+                                 <img src="images/document.png" alt="...">
+                             </div>
+                         </td>
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     {{statistics.numberOfFiles}}
+                                 </div>
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     TIME SERIES LOADED
+                                 </div>
+                         </td>
+                         <td style="width:135px;text-align: right;">
+                             <div>
+                                 <img src="images/icon_creditcard.png" alt="...">
+                             </div>
+                         </td>
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                 0
+                                 </div>
+                                 <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                     PUBLIC MONEY CONSUMED
+                                 </div>
+                         </td>
+                     </tr>
+                 </table>
              </div>
          </div>
          <div class="item">
-             <img src="images/bootstrap.png" alt="...">
+             <img src="images/bootstrap3.png" alt="...">
              <div class="carousel-caption">
-                 <h3>Caption Text</h3>
-             </div>
-         </div>
-         <div class="item">
-             <img src="images/bootstrap.png" alt="...">
-             <div class="carousel-caption">
-                 <h3>Caption Text</h3>
+                 <table class="topTable" style="width: 800px;margin-left:-120px">
+                     <tr>
+                         <td style="width:460px;">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 News</div>
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 A bunch of useful infos about incoming<br>
+                                 changes. For more informations be sure<br>
+                                 to subscribe!<br>
+                             </div>
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;">
+                             <div>
+                                 <img src="images/icon_calendar.png" alt="...">
+                             </div>
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
+                             <div id="date" style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                             </div>
+                             <script type="text/javascript">
+                                 var day_start=new Date();
+                                 var day_end=new Date("Dec 31 2016");
+                                 var total_days = (day_end - day_start) / (1000 * 60 * 60 * 24);
+                                 document.getElementById("date").innerHTML=Math.round(total_days);
+                             </script>
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                 DAYS TO RELEASE
+                             </div>
+                         </td>
+                     </tr>
+                 </table>
              </div>
          </div>
      </div>
@@ -94,55 +198,67 @@
    <table class="menu">
      <tr>
        <td>
-          <div class="start" style="margin-right: 65px;height: 180px;margin-bottom:100px;">
+          <div class="start" style="margin-right: 65px;height: 200px;margin-bottom:80px;">
             <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:white;color: black;width: 225px;">
-              <li style="text-decoration: none;padding-left:5px;padding: 10px 15px;">
-                  <b>1. Login or Sign up</b></li>
+              <li style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                  <img src="images/user.png" alt="...">
+                  Login or Sign up</li>
              </ul>
             <div style="padding: 0px 15px;">
-            <p>Before any data processing can be started an existing user needs to <a href="#login" class="pageSection">Login</a> to the service.
-            New user has to <a href="#register" class="pageSection">Sign up</a> firstly.</p>
+            <p>Before any data processing can be started an existing user needs to <a href="#login" ng-click="loginModal()" ng-show="!isUserLoggedIn">Login</a>
+                <a style="text-decoration: none !important;" ng-show="isUserLoggedIn">Login</a> to the service.
+            New user has to <a href="#register" ng-click="registerModal()" ng-show="!isUserLoggedIn">Sign up</a>
+                <a style="text-decoration: none !important;" ng-show="isUserLoggedIn">Sign up</a> firstly.</p>
             </div>
           </div>
        </td>
        <td>
-          <div class="start" style="margin-right: 65px;height: 280px;">
+          <div class="start" style="margin-right: 65px;height: 245px;margin-bottom:35px;">
              <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:white;color: white;width: 225px;">
-               <li style="color:white;text-decoration: none;padding-left:5px;padding: 10px 15px;">
-                   <b>2. Load data</b></li>
+               <li style="color:white;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                   <img src="images/image.png" alt="...">
+                   Photometry</li>
              </ul>
              <div style="padding: 0px 15px;">
-             <p>User can load new data or modify/remove existing data. System allows .csv files (flux, time) without column headers.
-             Please see <a href="#faq" class="faqs">FAQ</a> section. </p><br>
+             <p>User can perform simple photometry by means of aperture photometry. That result can be further on loaded to the system.</p>
              </div>
-             <div style="text-align: center">
-               <a href="#table-list" id="table-list" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
-             </div>
+              <div style="text-align: center">
+                  <a href="#photometry" id="photometry" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Photometry</a>
+              </div>
           </div>
        </td>
        <td>
-          <div class="start" style="margin-right: 65px;height:230px;margin-bottom:50px;">
+          <div class="start" style="margin-right: 65px;height:270px;margin-bottom:10px;">
              <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:white;color: white;width: 225px;">
-               <li style="color:white;text-decoration: none;padding: 10px 15px;">
-                   <b>3. Process data</b></li>
+               <li style="color:white;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                   <img src="images/upload.png" alt="...">
+                   Process data</li>
              </ul>
              <div style="padding: 0px 15px;">
-             <p>Once user is done with data loading it is time to process data. Be careful all observations marked as "verified"
-             will appear not only in users diagrams but also in global diagrams.</p>
+             <p>User can load new data or modify/remove existing data. System allows .csv files. Please see <a href=".faq" class="faqs">FAQ</a> section.
+                 User can process data when loading is done.</p>
              </div>
+              <div style="text-align: center">
+                  <a href="#table-list" id="table-list" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
+              </div>
           </div>
          </td>
        <td>
-          <div class="start" style="margin-right: 0px;height:230px;margin-bottom:50px;">
+          <div class="start" style="margin-right: 0px;height:225px;margin-bottom:55px;">
              <ul style="list-style-type: none;margin: 0;overflow: hidden;background-color:white;color: white;width: 225px;">
-               <li style="color:white;text-decoration: none;padding-left:5px;padding: 10px 15px;">
-                   <b>4. Verify results</b></li>
+               <li style="color:white;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                   <img src="images/chart-line.png" alt="...">
+                   Verify results</li>
              </ul>
              <div style="padding: 0px 15px;">
              <p>Processing of data usually takes few seconds. When this is done its time to verify your results in diagrams.</p>
-             </div><br>
+             </div>
              <div style="text-align: center">
-               <a href="#hr-diagram" id="hr-diagram" style="color:white;text-decoration: none" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
+               <a href="#hr-diagram" id="hr-diagram" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
              </div>
           </div>
        </td>
@@ -156,47 +272,82 @@
    <div ng-view></div>
  </div>
 
- <div id="faq" class="faq" style="max-width: 1100px;height: 125px;margin: 100px auto;border-style: solid;border-width: 0px;border-color: #e1e1e1;background-color:white;width:100%;">
-     <div style="background-color: #efefef;" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+ <div id="faq" class="faq" style="max-width: 1100px;height: 230px;margin: 100px auto;border-style: solid;border-width: 0px;border-color: #e1e1e1;background-color:white;width:100%;">
+     <div style="background-color: #efefef;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+         FREQUENTLY ASKED QUESTIONS
+     </div>
+     <div style="background-color: #efefef;text-align: left;" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
          <div class="panel panel-default">
-             <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingOne">
+             <div style="background-color: #4d9dc2;color: white;" class="panel-heading" role="tab" id="headingOne">
                  <h4 class="panel-title">
-                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                         Collapsible Group Item 1
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                         What kind of file/data should I load to the system?
                      </a>
                  </h4>
              </div>
-             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+             <div id="collapseOne" class="collapseOne collapse" role="tabpanel" aria-labelledby="headingOne">
                  <div class="panel-body">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                        System allows two columns .csv file without column headers. First column is an absolute magnitude, the second one is a JulianDate.
                  </div>
              </div>
          </div>
          <div class="panel panel-default">
              <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingTwo">
                  <h4 class="panel-title">
-                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                         Collapsible Group Item 2
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                         I have already done photometry by myself and I have .csv file. Can I skip 'Photometry' step in order to process data?
                      </a>
                  </h4>
              </div>
-             <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+             <div id="collapseTwo" class="collapseTwo collapse" role="tabpanel" aria-labelledby="headingTwo">
                  <div class="panel-body">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                     Yes. 'Photometry' step is optional. If you already done photometry and have correct .csv file you can load it to the system and process data.
                  </div>
              </div>
          </div>
          <div class="panel panel-default">
              <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingThree">
                  <h4 class="panel-title">
-                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                         Collapsible Group Item 3
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                         Why I can't see new observation I have just added?
                      </a>
                  </h4>
              </div>
-             <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+             <div id="collapseThree" class="collapseThree collapse" role="tabpanel" aria-labelledby="headingThree">
                  <div class="panel-body">
-                     Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                     Everytime user is adding, removing or updating observation it is not immediately added to the list of observation. This give a time for user to revoke changes.
+                     To see changes in personal list and diagrams user needs to [Process] data firstly.
+                 </div>
+             </div>
+         </div>
+         <div class="panel panel-default">
+             <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingFour">
+                 <h4 class="panel-title">
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                         Newly processed observation is visible only in personal diagrams not in global.
+                     </a>
+                 </h4>
+             </div>
+             <div id="collapseFour" class="collapseFour collapse" role="tabpanel" aria-labelledby="headingFour">
+                 <div class="panel-body">
+                     User who is sure about the quality of the observation and performed photometry can mark [New Observation] or existing one
+                     as 'Verified'. That flag causes appearance of the observation in the global diagrams. If [No] is selected or nothing is selected then
+                     observation appears only in personal diagrams.
+                  </div>
+             </div>
+         </div>
+         <div class="panel panel-default">
+             <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingFive">
+                 <h4 class="panel-title">
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseFive" aria-expanded="false" aria-controls="collapseThree">
+                         I can't find object in the 'Search' area using popular name e.g. 'Proxima Centauri'.
+                     </a>
+                 </h4>
+             </div>
+             <div id="collapseFive" class="collapseFive collapse" role="tabpanel" aria-labelledby="headingFive">
+                 <div class="panel-body">
+                     This is because system accepts only names present in the listed catalogs. E.g. comet 'Schwassmann-Wachmann' will not be found because it's catalogs name is '73P/Schwassmann-Wachmann'.
                  </div>
              </div>
          </div>
@@ -206,27 +357,119 @@
 
  <div id="newsletter" class="newsletter">
    <p>
-       Latest news about tech, apps and others right to your inbox.<br>
-       Working newsletter, give it a try
+       Please subscribe if you want to get latest news about new<br> functionalities and updates to existing ones.
    </p>
-     <div ng-controller="subscribeCtrl">
-             <form name="subscribe" role="form" novalidate ng-submit="subscribe()" class="form-inline">
+             <form name="subscribe" role="form" novalidate ng-submit="addSubscriber()" class="form-inline">
                  <div class="input-group input-group-lg">
-                     <input style="background-color: #2d2d2d;border: none;display:" type="email" class="form-control" placeholder="youremail@domain.com" name="email" ng-model="email"/>
+                     <input style="background-color: #2d2d2d;border: none;display:" type="email" class="form-control customInputSubscribe" placeholder="youremail@domain.com" name="email" ng-model="email"/>
                  </div>
                  <div style="margin-left: -55px;margin-bottom: 1px;" class="input-group input-group-lg">
-                     <input type="submit" value="SUBSCRIBE" class="btn btn-primary sharp customSubscribe btnMarginLeft" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                     <input type="submit" value="SUBSCRIBE" class="btn btn-primary sharp customSubscribe btnMarginLeft"  ng-click="submitted=true" ng-keyup="submitted=false"/>
                  </div>
              </form>
          </div>
          <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
- </div>
 
  <div id="bottom" class="bottom">
      <div style="color: white;font-weight: 300;" class="copyright">
          ©2016 ARQONIA. All Rights Reserved.
      </div>
  </div>
+
+
+ <script type="text/ng-template" id="loginModalContent.html">
+     <div class="modal-header">
+         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Login</h3>
+     </div>
+     <table class="main">
+         <tr>
+             <td style="width:60%;vertical-align: topfont-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                 <form name="loginForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="loginForm.$valid && loginUser()">
+                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="email" class="form-control" placeholder="Email" name="email" ng-model="email" required/>
+                                 <div ng-messages="loginForm.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required/>
+                                 <div ng-messages="loginForm.password.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div style="color:maroon" role="alert" ng-if='errorFlag'>Wrong credentials</div>
+                         </div>
+                     </div>
+                     <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                         <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                         <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                     </div>
+                 </form>
+             </td>
+         </tr>
+         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
+     </table>
+ </script>
+
+ <script type="text/ng-template" id="registerModalContent.html">
+     <div class="modal-header">
+         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Register</h3>
+     </div>
+     <table class="main">
+         <tr>
+             <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                 <form name="registerForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="registerForm.$valid && addUser()">
+                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="name" class="form-control" placeholder="Full name" name="name" ng-model="name" required/>
+                                 <div ng-messages="registerForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="email" class="form-control" placeholder="Email" name="email" ng-model="email" required/>
+                                 <div ng-messages="registerForm.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required/>
+                                 <div ng-messages="registerForm.password.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div style="color:maroon" role="alert" ng-if='errorFlag'>User exists</div>
+                         </div>
+                     </div>
+                     <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                         <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                         <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                     </div>
+                 </form>
+             </td>
+         </tr>
+         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
+     </table>
+ </script>
 
  <script>
      $(document).ready(function(){
@@ -254,6 +497,13 @@
     });
 
     //scroll to id="main"
+    $('#photometry').click(function (){
+        $('html, body').animate({
+            scrollTop: $("#main").offset().top
+        }, 2000);
+    });
+
+    //scroll to id="main"
     $('#table-list').click(function (){
         $('html, body').animate({
             scrollTop: $("#main").offset().top
@@ -270,7 +520,7 @@
     //scroll to id="faq"
     $('.faqs').click(function (){
         $('html, body').animate({
-            scrollTop: $(".bottom").offset().top
+            scrollTop: $(".faq").offset().top
         }, 2000);
         return false;
     });
@@ -280,6 +530,7 @@
 	})
 });
  </script>
+
 </body>
 </html>
 

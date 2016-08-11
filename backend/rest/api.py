@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
-from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram
-from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails
+from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram, json_statistics
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber
 from procRunner import procRunner, deleteObservation
 import os
 import ConfigParser
@@ -45,17 +45,21 @@ json_data()
 json_load()
 json_diagram()
 json_hrdiagram()
+json_statistics()
 
 Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
 ObservationsDiagram = json_diagram.jsonDiagram
 ObservationsHRDiagram = json_hrdiagram.jsonHRDiagram
+Statistics = json_statistics.jsonStatistics
+
 
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
         'observationsDiagram': ObservationsDiagram,
-        'observationsHRDiagram': ObservationsHRDiagram
+        'observationsHRDiagram': ObservationsHRDiagram,
+        'statistics': Statistics
         }
 
 
@@ -174,6 +178,16 @@ class RestSearch(Resource):
         print details
         return jsonify(details)
 
+class RestStatistics(Resource):
+    def get(self):
+        return REST["statistics"]
+
+class RestSubscribe(Resource):
+    def post(self):
+        args = parser.parse_args()
+        addSubscriber(args['email'])
+        return 201
+
 
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
@@ -185,6 +199,8 @@ api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestLogin, '/login')
 api.add_resource(RestSearch, '/search')
+api.add_resource(RestStatistics, '/statistics')
+api.add_resource(RestSubscribe, '/subscribe')
 
 # Handling COR requests
 @app.after_request

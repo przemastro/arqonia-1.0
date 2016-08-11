@@ -459,6 +459,26 @@ def verifyCredentials(email, password):
         cnx.close()
 
 
+#----------------------------------------------------add subscriber-----------------------------------------------------
+def addSubscriber(email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+
+        insert_NewSubscriber = ("insert into data.subscribeList values('"+email+"')")
+        cursor.execute(insert_NewSubscriber)
+        cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in addUser function'
+    else:
+        cnx.close()
+
+
 #--------------------------------------------------Return object details------------------------------------------------
 def objectDetails(name):
     try:

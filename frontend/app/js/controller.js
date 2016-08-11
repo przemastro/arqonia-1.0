@@ -433,8 +433,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', 'getObservationsDiagram', (function ($scope, $log, ObservationsHRDiagram,
-                        ObservationsDiagram) {
+    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', 'getObservationsDiagram',
+                                  (function ($scope, $log, ObservationsHRDiagram, ObservationsDiagram) {
 
 
       $scope.ob = ObservationsHRDiagram.query;
@@ -757,7 +757,120 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl
-	astroApp.controller('mainCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
-	   $scope.message = 'Home made HR diagram';
-	   $scope.isUserLoggedIn = $cookies.get('cook');
+	astroApp.controller('mainCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe',
+	                       function ($rootScope, $scope, $log, Login, $cookies, Statistics, $uibModal, Subscribe) {
+	   $rootScope.isUserLoggedIn = $cookies.get('cook');
+       $scope.Statistics = Statistics.query();
+       $log.debug($scope.Statistics);
+
+              //Login Modal
+              $scope.loginModal = function () {
+                   var modalInstance = $uibModal.open({
+                     animation: $scope.animationsEnabled,
+                     templateUrl: 'loginModalContent.html',
+                     controller: 'ModalLoginCtrl',
+                   });
+              };
+
+              //Register Modal
+              $scope.registerModal = function () {
+                   var modalInstance = $uibModal.open({
+                     animation: $scope.animationsEnabled,
+                     templateUrl: 'registerModalContent.html',
+                     controller: 'ModalRegisterCtrl',
+                   });
+              };
+
+       $scope.addSubscriber = function(){
+          $log.debug($scope.email)
+      	  Subscribe.save({email:$scope.email}, function(response){
+      	  $scope.message = response[Object.keys(response)[0]];
+      	  });
+       }
 	}]);
+
+	astroApp.controller('ModalLoginCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
+	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
+
+      $rootScope.errorFlag = false
+      //[Submit]
+      $scope.loginUser = function(){
+          var password = sjcl.encrypt("password", $scope.password)
+
+   		  Login.update({email:$scope.email,password:password}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+   		  $log.debug($scope.message)
+          if($scope.message == "Wrong credentials"){
+   		     $rootScope.isUserLoggedIn = false
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+   		     $cookies.put('cook', true);
+   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
+   		     $rootScope.errorFlag = false
+   		     $rootScope.loggedInUser = $scope.message
+   		     $location.path("main");
+   		     $scope.spinneractive = false;
+
+   	         $rootScope.$on('us-spinner:spin', function(event, key) {
+               $scope.spinneractive = true;
+             });
+
+             $rootScope.$on('us-spinner:stop', function(event, key) {
+               $scope.spinneractive = false;
+             });
+             $uibModalInstance.dismiss();
+   		     }
+   		  });
+      };
+
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }]);
+
+      astroApp.controller('ModalRegisterCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
+	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
+
+      $rootScope.errorFlag = false
+      //[Submit]
+      $scope.addUser = function(){
+          var password = sjcl.encrypt("password", $scope.password)
+
+   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+   		  $log.debug($scope.message)
+          if($scope.message == "User exists"){
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+
+   		     $rootScope.errorFlag = false
+   		     $location.path("login");
+
+             $scope.spinneractive = false;
+   	         $rootScope.$on('us-spinner:spin', function(event, key) {
+               $scope.spinneractive = true;
+             });
+
+             $rootScope.$on('us-spinner:stop', function(event, key) {
+               $scope.spinneractive = false;
+             });
+             $uibModalInstance.dismiss();
+   		     }
+   		  });
+      };
+
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }]);
+

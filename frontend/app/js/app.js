@@ -17,6 +17,12 @@
 				controller  : 'mainCtrl'
 			})
 
+			.when('/photometry', {
+				templateUrl : 'pages/photometry.html',
+				controller  : 'photometryCtrl'
+			})
+
+
 			.when('/table-list', {
 				templateUrl : 'pages/table-list.html',
 				controller  : 'tableListCtrl'

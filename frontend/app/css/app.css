@@ -224,6 +224,16 @@ p {
     border-bottom: 0px;
 }
 
+
+.topTable {
+    border-collapse: collapse;
+    max-width: 1500px;
+    margin: 5px 5px 5px 8px;
+    display:inline-block;
+}
+
+
+
 .tableList {
     border-collapse: collapse;
     width: 100%;
@@ -353,10 +363,26 @@ p {
     color: #ffffff;
 }
 
+.column {
+     width:300px;
+     float:left;
+     position:relative;
+}
+
+.column2 {
+     width:300px;
+     float:right;
+     position:absolute;
+}
+
 .custom {
     width: 90px !important;
     height: 33px !important;
 
+}
+
+.customHeight {
+    height: 34px !important;
 }
 
 .customLong {
@@ -365,7 +391,12 @@ p {
 }
 
 .customSubscribe {
-    width: 110px !important;
+    width: 120px !important;
+    height: 46px !important;
+}
+
+.customInputSubscribe {
+    width: 260px !important;
     height: 46px !important;
 }
 
