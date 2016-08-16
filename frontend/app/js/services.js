@@ -58,18 +58,60 @@ services.factory('getObservations', ['$resource',
     });
 }]);
 
-//Diagram data
-services.factory('getObservationsDiagram', ['$resource',
+//Diagram data Range
+services.factory('getObservationsBVDiagramRange', ['$resource',
     function ($resource) {
-    return $resource(__env.apiUrlService+'/observationsDiagram', {}, {
+    return $resource(__env.apiUrlService+'/observationsBVDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsUBDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsUBDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsRIDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsRIDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsVIDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsVIDiagramRange', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
 
 //HR-Diagram data
-services.factory('getObservationsHRDiagram', ['$resource',
+services.factory('getObservationsBVDiagram', ['$resource',
     function ($resource) {
-    return $resource(__env.apiUrlService+'/observationsHRDiagram', {}, {
+    return $resource(__env.apiUrlService+'/observationsBVDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsUBDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsUBDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsRIDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsRIDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsVIDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsVIDiagram', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);

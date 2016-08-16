@@ -33,6 +33,16 @@
 				controller  : 'hrDiagramCtrl',
 			})
 
+			.when('/lc-diagram', {
+				templateUrl : 'pages/lc-diagram.html',
+				controller  : 'lcDiagramCtrl',
+			})
+
+			.when('/diagram', {
+				templateUrl : 'pages/diagrams.html',
+				controller  : 'DiagramCtrl',
+			})
+
 			.when('/admin', {
 				templateUrl : 'pages/admin.html',
 				controller  : 'adminCtrl',
@@ -42,7 +52,7 @@
 				templateUrl : 'pages/search.html',
 				controller  : 'searchCtrl',
 			})
-
+/*
 			.when('/login', {
 				templateUrl : 'pages/login.html',
 				controller  : 'loginCtrl',
@@ -52,7 +62,7 @@
 				templateUrl : 'pages/register.html',
 				controller  : 'registerCtrl',
 			})
-
+*/
 			.when('/logout', {
 				templateUrl : 'pages/logout.html',
 				controller  : 'logoutCtrl',

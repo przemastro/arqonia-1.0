@@ -148,6 +148,15 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
           });
        }
+
+       //Generate Modal
+       $scope.generateModal = function () {
+            var modalInstance = $uibModal.open({
+              animation: $scope.animationsEnabled,
+              templateUrl: 'generateModalContent.html',
+              controller: 'ModalGenerateCtrl',
+            });
+       };
     }]);
 
     astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', function ($scope, $log, $uibModalInstance, NewObservation, fileUpload) {
@@ -428,17 +437,71 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
+	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
+	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
+
+      $rootScope.errorFlag = false
+      //[Submit]
+      $scope.generateCatalog = function(){
+
+}
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }]);
+
+
 //---------------------------------------------------------Diagrams-----------------------------------------------------
+
+	astroApp.controller('DiagramCtrl', function($scope) {
+	});
+
+    //lcDiagramCtrl
+	astroApp.controller('lcDiagramCtrl', function($scope) {
+	});
+
     //hrDiagramCtrl
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsHRDiagram', 'getObservationsDiagram',
-                                  (function ($scope, $log, ObservationsHRDiagram, ObservationsDiagram) {
+    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsBVDiagram', 'getObservationsBVDiagramRange',
+                                     'getObservationsUBDiagram', 'getObservationsUBDiagramRange', 'getObservationsRIDiagram', 'getObservationsRIDiagramRange',
+                                     'getObservationsVIDiagram', 'getObservationsVIDiagramRange',
+                                  (function ($scope, $log, ObservationsBVDiagram, ObservationsBVDiagramRange, ObservationsUBDiagram, ObservationsUBDiagramRange,
+                                  ObservationsRIDiagram, ObservationsRIDiagramRange,ObservationsVIDiagram, ObservationsVIDiagramRange) {
 
+    $scope.HRTitle = true;
+    $scope.hrDiagrams = ['B-V CMD', 'U-B CMD', 'R-I CMD', 'V-I CMD'];
 
-      $scope.ob = ObservationsHRDiagram.query;
-      $scope.obRange = ObservationsDiagram.query;
+    $scope.selectedDiagramValue = '';
+
+    $scope.selectDiagram = function (value) {
+      $scope.selectedDiagramValue = value;
+      $scope.HRTitle = false;
+
+      console.log($scope.selectedDiagramValue)
+      var cutString = value.substring(0, 3);
+      if (cutString == "B-V") {
+         $scope.ob = ObservationsBVDiagram.query;
+         $scope.obRange = ObservationsBVDiagramRange.query;
+         var observationsHRDiagram = ObservationsBVDiagram;
+      }
+      else if (cutString == "U-B") {
+         $scope.ob = ObservationsUBDiagram.query;
+         $scope.obRange = ObservationsUBDiagramRange.query;
+         var observationsHRDiagram = ObservationsUBDiagram;
+      }
+      else if (cutString == "R-I") {
+         $scope.ob = ObservationsRIDiagram.query;
+         $scope.obRange = ObservationsRIDiagramRange.query;
+         var observationsHRDiagram = ObservationsRIDiagram;
+      }
+      else if (cutString == "V-I") {
+         $scope.ob = ObservationsVIDiagram.query;
+         $scope.obRange = ObservationsVIDiagramRange.query;
+         var observationsHRDiagram = ObservationsVIDiagram;
+      }
 
       $log.debug($scope.XMax)
 
@@ -476,14 +539,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                         },
                         duration: 350,
                         xAxis: {
-                            axisLabel: 'B - V',
+                            axisLabel: cutString,
                             tickFormat: function(d){
                                 return d3.format('.02f')(d);
                             },
                             ticks: 5
                         },
                         yAxis: {
-                            axisLabel: 'V',
+                            axisLabel: cutString.substring(2,3),
                             tickFormat: function(d){
                                 return d3.format('.02f')(d);
                             },
@@ -505,25 +568,46 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
             });
          //The magic
+
          $scope.data = generateData();
-         //$log.debug('test');
+
          function generateData() {
+
              var data = [],
                   shapes = ['circle'],
                   random = d3.random.normal();
                $scope.ob(function(observationsHRDiagram) {
+
+                     if (cutString == "B-V") {
+                        $scope.starNames = observationsHRDiagram[0].starNames;
+                        $scope.ObservationsDifference = observationsHRDiagram[0].bvObservationsDifference;
+                        $scope.FilterObservations = observationsHRDiagram[0].vObservations;
+                     }
+                     else if (cutString == "U-B") {
+                        $scope.starNames = observationsHRDiagram[0].starNames;
+                        $scope.ObservationsDifference = observationsHRDiagram[0].ubObservationsDifference;
+                        $scope.FilterObservations = observationsHRDiagram[0].bObservations;
+                     }
+                     else if (cutString == "R-I") {
+                        $scope.starNames = observationsHRDiagram[0].starNames;
+                        $scope.ObservationsDifference = observationsHRDiagram[0].riObservationsDifference;
+                        $scope.FilterObservations = observationsHRDiagram[0].iObservations;
+                     }
+                     else if (cutString == "V-I") {
+                        $scope.starNames = observationsHRDiagram[0].starNames;
+                        $scope.ObservationsDifference = observationsHRDiagram[0].viObservationsDifference;
+                        $scope.FilterObservations = observationsHRDiagram[0].iObservations;
+                     }
+
                var i = 0
-               $scope.starNames = observationsHRDiagram[0].starNames;
-               $scope.bvObservationsDifference = observationsHRDiagram[0].bvObservationsDifference;
-               $scope.vObservations = observationsHRDiagram[0].vObservations;
                         angular.forEach($scope.starNames, function(value, index){
                                 data.push({
                                     key: value,
                                     values: []
                                 });
                                 data[i].values.push({
-                                    x: $scope.bvObservationsDifference[i]
-                                    , y: $scope.vObservations[i]
+                                    x: $scope.ObservationsDifference[i]
+                                    , y: $scope.FilterObservations[i]
                                     , size: 2
                                     , shape: shapes[1]
                                 });
@@ -534,7 +618,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              return data;
          }
          $scope.exampleData = $scope.data;
-     })]);
+     }})]);
 
 
 

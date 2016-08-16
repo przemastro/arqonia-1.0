@@ -49,16 +49,29 @@ json_statistics()
 
 Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
-ObservationsDiagram = json_diagram.jsonDiagram
-ObservationsHRDiagram = json_hrdiagram.jsonHRDiagram
+ObservationsBVDiagramRange = json_diagram.jsonBVDiagramRange
+ObservationsUBDiagramRange = json_diagram.jsonUBDiagramRange
+ObservationsRIDiagramRange = json_diagram.jsonRIDiagramRange
+ObservationsVIDiagramRange = json_diagram.jsonVIDiagramRange
+
+ObservationsBVDiagram = json_hrdiagram.jsonBVDiagram
+ObservationsUBDiagram = json_hrdiagram.jsonUBDiagram
+ObservationsRIDiagram = json_hrdiagram.jsonRIDiagram
+ObservationsVIDiagram = json_hrdiagram.jsonVIDiagram
 Statistics = json_statistics.jsonStatistics
 
 
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
-        'observationsDiagram': ObservationsDiagram,
-        'observationsHRDiagram': ObservationsHRDiagram,
+        'observationsBVDiagramRange': ObservationsBVDiagramRange,
+        'observationsUBDiagramRange': ObservationsUBDiagramRange,
+        'observationsRIDiagramRange': ObservationsRIDiagramRange,
+        'observationsVIDiagramRange': ObservationsVIDiagramRange,
+        'observationsBVDiagram': ObservationsBVDiagram,
+        'observationsUBDiagram': ObservationsUBDiagram,
+        'observationsRIDiagram': ObservationsRIDiagram,
+        'observationsVIDiagram': ObservationsVIDiagram,
         'statistics': Statistics
         }
 
@@ -132,14 +145,37 @@ class RestDeleteObservation(Resource):
 
 
 
-class RestObservationHRDiagram(Resource):
+class RestObservationBVDiagram(Resource):
     def get(self):
-            return REST["observationsHRDiagram"]
+            return REST["observationsBVDiagram"]
 
-
-class RestObservationDiagram(Resource):
+class RestObservationUBDiagram(Resource):
     def get(self):
-            return REST["observationsDiagram"]
+        return REST["observationsUBDiagram"]
+
+class RestObservationVIDiagram(Resource):
+    def get(self):
+        return REST["observationsVIDiagram"]
+
+class RestObservationRIDiagram(Resource):
+    def get(self):
+        return REST["observationsRIDiagram"]
+
+class RestObservationBVDiagramRange(Resource):
+    def get(self):
+            return REST["observationsBVDiagramRange"]
+
+class RestObservationUBDiagramRange(Resource):
+    def get(self):
+        return REST["observationsUBDiagramRange"]
+
+class RestObservationRIDiagramRange(Resource):
+    def get(self):
+        return REST["observationsRIDiagramRange"]
+
+class RestObservationVIDiagramRange(Resource):
+    def get(self):
+        return REST["observationsVIDiagramRange"]
 
 class RestFileUpload(Resource):
     def post(self):
@@ -193,8 +229,14 @@ api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
-api.add_resource(RestObservationDiagram, '/observationsDiagram')
-api.add_resource(RestObservationHRDiagram, '/observationsHRDiagram')
+api.add_resource(RestObservationBVDiagramRange, '/observationsBVDiagramRange')
+api.add_resource(RestObservationUBDiagramRange, '/observationsUBDiagramRange')
+api.add_resource(RestObservationRIDiagramRange, '/observationsRIDiagramRange')
+api.add_resource(RestObservationVIDiagramRange, '/observationsVIDiagramRange')
+api.add_resource(RestObservationBVDiagram, '/observationsBVDiagram')
+api.add_resource(RestObservationUBDiagram, '/observationsUBDiagram')
+api.add_resource(RestObservationRIDiagram, '/observationsRIDiagram')
+api.add_resource(RestObservationVIDiagram, '/observationsVIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestLogin, '/login')

@@ -1,4 +1,4 @@
-<body ng-controller = "hrDiagramCtrl" ng-app = "astroApp">
+<body ng-controller = "lcDiagramCtrl" ng-app = "astroApp">
 <div style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
 
     <div class="btn-group dropdown">
@@ -15,23 +15,6 @@
                                           font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
                href="#lc-diagram" style="color:white;text-decoration: none">Light Curves</a>
         </ul>
-    </div>
-    <div class="btn-group dropdown">
-        <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary customHeight">CMD Diagram</button>
-        <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
-            <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <ul class="dropdown-menu">
-            <li ng-repeat="diagram in hrDiagrams"><a ng-click="selectDiagram(diagram)">{{diagram}}</a></li>
-        </ul>
-    </div>
-
-    <div id="chart" align="center" ng-controller="cmdCtrl" class="with-3d-shadow with-transitions" ng-class="{disabled: params.disabled}" style="overflow-x:auto;">
-       <div style="text-align: center;" style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
-            class="title h4" ng-show="HRTitle==true">Please select Color Magnitude Diagram from available dropdown list</div>
-       <nvd3 options="options" ng-show="HRTitle!=true" data="exampleData"></nvd3>
     </div>
 </div>
 </body>

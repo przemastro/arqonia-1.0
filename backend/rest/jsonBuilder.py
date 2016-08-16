@@ -173,20 +173,55 @@ def json_diagram():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromHrDiagramAvg'))
-        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromHrDiagramAvg'))
+        #B-V
+        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromBVDiagramAvg'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromBVDiagramAvg'))
         get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
-
         XMax = fetch_one(get_XMax)
         XMin = fetch_one(get_XMin)
         YMax = fetch_one(get_YMax)
         YMin = fetch_one(get_YMin)
-
         observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_diagram.jsonBVDiagramRange = observationsDiagram
+
+        #U-B
+        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromUBDiagramAvg'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromUBDiagramAvg'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromBPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromBPhotometrySorted'))
+        XMax = fetch_one(get_XMax)
+        XMin = fetch_one(get_XMin)
+        YMax = fetch_one(get_YMax)
+        YMin = fetch_one(get_YMin)
+        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_diagram.jsonUBDiagramRange = observationsDiagram
+
+        #R-I
+        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromRIDiagramAvg'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromRIDiagramAvg'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromIPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromIPhotometrySorted'))
+        XMax = fetch_one(get_XMax)
+        XMin = fetch_one(get_XMin)
+        YMax = fetch_one(get_YMax)
+        YMin = fetch_one(get_YMin)
+        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_diagram.jsonRIDiagramRange = observationsDiagram
+
+        #V-I
+        get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromVIDiagramAvg'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromVIDiagramAvg'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromIPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromIPhotometrySorted'))
+        XMax = fetch_one(get_XMax)
+        XMin = fetch_one(get_XMin)
+        YMax = fetch_one(get_YMax)
+        YMin = fetch_one(get_YMin)
+        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_diagram.jsonVIDiagramRange = observationsDiagram
 
         cursor.close()
-        json_diagram.jsonDiagram = observationsDiagram
 
     except:
         print 'errors json_diagram function'
@@ -199,21 +234,51 @@ def json_hrdiagram():
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
+        #B-V
         get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
-        get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromHrDiagramAvg'))
-        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromHrDiagramAvg'))
-
-
+        get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvg'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromBVDiagramAvg'))
         VObservations = fetch_all(get_VObservations)
         BVObservationsDifference = fetch_all(get_BVObservationsDifference)
         StarNames = fetch_all(get_StarNames)
-
-
         observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations,
                                   'starNames': StarNames}]
+        json_hrdiagram.jsonBVDiagram = observationsHRDiagram
+
+        #U-B
+        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySorted'))
+        get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvg'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromUBDiagramAvg'))
+        BObservations = fetch_all(get_BObservations)
+        UBObservationsDifference = fetch_all(get_UBObservationsDifference)
+        StarNames = fetch_all(get_StarNames)
+        observationsHRDiagram = [{'ubObservationsDifference': UBObservationsDifference, 'bObservations': BObservations,
+                                  'starNames': StarNames}]
+        json_hrdiagram.jsonUBDiagram = observationsHRDiagram
+
+        #R-I
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
+        get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvg'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromRIDiagramAvg'))
+        IObservations = fetch_all(get_IObservations)
+        RIObservationsDifference = fetch_all(get_RIObservationsDifference)
+        StarNames = fetch_all(get_StarNames)
+        observationsHRDiagram = [{'riObservationsDifference': RIObservationsDifference, 'iObservations': IObservations,
+                                  'starNames': StarNames}]
+        json_hrdiagram.jsonRIDiagram = observationsHRDiagram
+
+        #V-I
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
+        get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvg'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromVIDiagramAvg'))
+        IObservations = fetch_all(get_IObservations)
+        VIObservationsDifference = fetch_all(get_VIObservationsDifference)
+        StarNames = fetch_all(get_StarNames)
+        observationsHRDiagram = [{'viObservationsDifference': VIObservationsDifference, 'iObservations': IObservations,
+                                  'starNames': StarNames}]
+        json_hrdiagram.jsonVIDiagram = observationsHRDiagram
 
         cursor.close()
-        json_hrdiagram.jsonHRDiagram = observationsHRDiagram
 
     except:
         print 'errors in json_hrdiagram function'

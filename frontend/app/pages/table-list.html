@@ -25,9 +25,6 @@
                                <label class="btn btn-default pull-left btnMarginRight custom">
                                    <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
                                </label>
-                               <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                   <div ng-message="required">This field is required</div>
-                               </div>
                            </div>
                            <div class="form-group">
                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name </label>
@@ -97,9 +94,6 @@
                                <label class="btn btn-default pull-left btnMarginRight customYesNo">
                                    <input type="radio" class="form-control" ng-model="radio" name="radio" required> No </input>
                                </label>
-                               <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                   <div ng-message="required">This field is required</div>
-                               </div>
                            </div>
                        </div>
                        <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
@@ -159,9 +153,6 @@
                                 <label class="btn btn-default pull-left btnMarginRight custom">
                                     <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
                                 </label>
-                                <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Object Name</label>
@@ -228,9 +219,6 @@
                                 <label class="btn btn-default pull-left btnMarginRight customYesNo">
                                     <input type="radio" class="form-control" ng-model="radio" name="radio" required> No </input>
                                 </label>
-                                <div ng-messages="newObservationForm.radio.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                </div>
                             </div>
                         </div>
                         <div class="modal-footer" style="padding-right:100px;border-top: 0px;border-bottom: 0px;">
@@ -377,12 +365,58 @@
           </div>
       </script>
 
+
+      <!--Generate Catalog Modal-->
+      <script type="text/ng-template" id="generateModalContent.html">
+          <div class="modal-header">
+              <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Generate Catalog</h3>
+          </div>
+          <table class="main">
+              <tr>
+                  <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
+                      <form name="generateForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="generateForm.$valid && addRow()">
+                          <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                              <div style="padding-left: 94px" class="form-group" data-toggle="buttons">
+                                  <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
+                                      <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
+                                  </label>
+                                  <label class="btn btn-default pull-left btnMarginRight customLong">
+                                      <input type="radio" class="form-control" ng-model="planetoid" name="radio" required> Planetoid </input>
+                                  </label>
+                                  <label class="btn btn-default pull-left btnMarginRight custom">
+                                      <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
+                                  </label>
+                              </div>
+                              <div class="form-group">
+                                  <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Catalog Name</label>
+                                  <div class="col-md-7">
+                                      <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="" required/>
+                                      <div ng-messages="generateForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                          <div ng-message="required">This field is required</div>
+                                          <div ng-message="maxlength">This field is too long</div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                              <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Generate" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                              <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                          </div>
+                      </form>
+                  </td>
+              </tr>
+          </table>
+      </script>
+
       <!--Observations Table-->
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
             <td style="border-bottom: 0px;padding-right:10px;padding-left:0px"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"><input style="background-color: #4d9dc2;border: 0px" type="button" value="New Observation" class="btn btn-primary sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
-            <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input style="border: 0px" type="button" value="Generate Catalog" class="btn btn-success sharp customHeight" ng-click="generateCatalog()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input style="border: 0px" type="button" value="Generate Catalog" class="btn btn-success sharp customHeight" ng-click="generateModal()" ng-show="isUserLoggedIn"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
