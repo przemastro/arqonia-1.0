@@ -86,7 +86,7 @@ li a {
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 10px 16px;
     text-decoration: none;
 }
 
@@ -321,14 +321,14 @@ p {
 #chart {
     padding: 20px;
     border-style: solid;
-    border-width: 2px;
+    border-width: 0px;
     border-color: #2c3e50;
     width: 650px;
     margin: auto;
 }
 
 .tick {
-  opacity: 0;
+  opacity: 10;
 }
 
 .tick line {
@@ -514,4 +514,8 @@ p {
     padding: 15px 0;
     background-color: #323232;
     font-size: 12px;
+}
+
+.dropdown-menu{
+    display: inline;
 }

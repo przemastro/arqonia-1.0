@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
-from jsonBuilder import json_data, json_load, json_diagram, json_hrdiagram, json_statistics
+from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, json_lcDiagramRange, json_lcDiagram
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber
 from procRunner import procRunner, deleteObservation
 import os
@@ -43,24 +43,37 @@ serverService = config.get('Server', 'server.service');
 
 json_data()
 json_load()
-json_diagram()
+json_hrDiagramRange()
 json_hrdiagram()
 json_statistics()
+json_lcDiagramRange()
+json_lcDiagram()
 
 Observations = json_data.jsonData
 LastLoad = json_load.jsonLastLoad
-ObservationsBVDiagramRange = json_diagram.jsonBVDiagramRange
-ObservationsUBDiagramRange = json_diagram.jsonUBDiagramRange
-ObservationsRIDiagramRange = json_diagram.jsonRIDiagramRange
-ObservationsVIDiagramRange = json_diagram.jsonVIDiagramRange
+ObservationsBVDiagramRange = json_hrDiagramRange.jsonBVDiagramRange
+ObservationsUBDiagramRange = json_hrDiagramRange.jsonUBDiagramRange
+ObservationsRIDiagramRange = json_hrDiagramRange.jsonRIDiagramRange
+ObservationsVIDiagramRange = json_hrDiagramRange.jsonVIDiagramRange
 
 ObservationsBVDiagram = json_hrdiagram.jsonBVDiagram
 ObservationsUBDiagram = json_hrdiagram.jsonUBDiagram
 ObservationsRIDiagram = json_hrdiagram.jsonRIDiagram
 ObservationsVIDiagram = json_hrdiagram.jsonVIDiagram
+
 Statistics = json_statistics.jsonStatistics
 
+ObservationsLCUDiagramRange = json_lcDiagramRange.jsonLCUDiagramRange
+ObservationsLCVDiagramRange = json_lcDiagramRange.jsonLCVDiagramRange
+ObservationsLCBDiagramRange = json_lcDiagramRange.jsonLCBDiagramRange
+ObservationsLCRDiagramRange = json_lcDiagramRange.jsonLCRDiagramRange
+ObservationsLCIDiagramRange = json_lcDiagramRange.jsonLCIDiagramRange
 
+ObservationsLCUDiagram = json_lcDiagram.jsonLCUDiagram
+ObservationsLCVDiagram = json_lcDiagram.jsonLCVDiagram
+ObservationsLCBDiagram = json_lcDiagram.jsonLCBDiagram
+ObservationsLCRDiagram = json_lcDiagram.jsonLCRDiagram
+ObservationsLCIDiagram = json_lcDiagram.jsonLCIDiagram
 
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
@@ -72,7 +85,17 @@ REST = {'observations': Observations,
         'observationsUBDiagram': ObservationsUBDiagram,
         'observationsRIDiagram': ObservationsRIDiagram,
         'observationsVIDiagram': ObservationsVIDiagram,
-        'statistics': Statistics
+        'statistics': Statistics,
+        'observationsLCUDiagramRange': ObservationsLCUDiagramRange,
+        'observationsLCVDiagramRange': ObservationsLCVDiagramRange,
+        'observationsLCBDiagramRange': ObservationsLCBDiagramRange,
+        'observationsLCRDiagramRange': ObservationsLCRDiagramRange,
+        'observationsLCIDiagramRange': ObservationsLCIDiagramRange,
+        'observationsLCUDiagram': ObservationsLCUDiagram,
+        'observationsLCVDiagram': ObservationsLCVDiagram,
+        'observationsLCBDiagram': ObservationsLCBDiagram,
+        'observationsLCRDiagram': ObservationsLCRDiagram,
+        'observationsLCIDiagram': ObservationsLCIDiagram
         }
 
 
@@ -144,7 +167,7 @@ class RestDeleteObservation(Resource):
             return 201
 
 
-
+#HR Diagrams Data
 class RestObservationBVDiagram(Resource):
     def get(self):
             return REST["observationsBVDiagram"]
@@ -161,6 +184,7 @@ class RestObservationRIDiagram(Resource):
     def get(self):
         return REST["observationsRIDiagram"]
 
+#HR Diagrams Range
 class RestObservationBVDiagramRange(Resource):
     def get(self):
             return REST["observationsBVDiagramRange"]
@@ -176,6 +200,50 @@ class RestObservationRIDiagramRange(Resource):
 class RestObservationVIDiagramRange(Resource):
     def get(self):
         return REST["observationsVIDiagramRange"]
+
+
+#LC Diagrams Data
+class RestObservationLCUDiagram(Resource):
+    def get(self):
+        return REST["observationsLCUDiagram"]
+
+class RestObservationLCVDiagram(Resource):
+    def get(self):
+        return REST["observationsLCVDiagram"]
+
+class RestObservationLCBDiagram(Resource):
+    def get(self):
+        return REST["observationsLCBDiagram"]
+
+class RestObservationLCRDiagram(Resource):
+    def get(self):
+        return REST["observationsLCRDiagram"]
+
+class RestObservationLCIDiagram(Resource):
+    def get(self):
+        return REST["observationsLCIDiagram"]
+
+#LC Diagrams Range
+class RestObservationLCUDiagramRange(Resource):
+    def get(self):
+        return REST["observationsLCUDiagramRange"]
+
+class RestObservationLCVDiagramRange(Resource):
+    def get(self):
+        return REST["observationsLCVDiagramRange"]
+
+class RestObservationLCBDiagramRange(Resource):
+    def get(self):
+        return REST["observationsLCBDiagramRange"]
+
+class RestObservationLCRDiagramRange(Resource):
+    def get(self):
+        return REST["observationsLCRDiagramRange"]
+
+class RestObservationLCIDiagramRange(Resource):
+    def get(self):
+        return REST["observationsLCIDiagramRange"]
+
 
 class RestFileUpload(Resource):
     def post(self):
@@ -237,6 +305,16 @@ api.add_resource(RestObservationBVDiagram, '/observationsBVDiagram')
 api.add_resource(RestObservationUBDiagram, '/observationsUBDiagram')
 api.add_resource(RestObservationRIDiagram, '/observationsRIDiagram')
 api.add_resource(RestObservationVIDiagram, '/observationsVIDiagram')
+api.add_resource(RestObservationLCUDiagramRange, '/observationsLCUDiagramRange')
+api.add_resource(RestObservationLCVDiagramRange, '/observationsLCVDiagramRange')
+api.add_resource(RestObservationLCBDiagramRange, '/observationsLCBDiagramRange')
+api.add_resource(RestObservationLCRDiagramRange, '/observationsLCRDiagramRange')
+api.add_resource(RestObservationLCIDiagramRange, '/observationsLCIDiagramRange')
+api.add_resource(RestObservationLCUDiagram, '/observationsLCUDiagram')
+api.add_resource(RestObservationLCVDiagram, '/observationsLCVDiagram')
+api.add_resource(RestObservationLCBDiagram, '/observationsLCBDiagram')
+api.add_resource(RestObservationLCRDiagram, '/observationsLCRDiagram')
+api.add_resource(RestObservationLCIDiagram, '/observationsLCIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestLogin, '/login')

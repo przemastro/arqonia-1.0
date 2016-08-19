@@ -58,7 +58,79 @@ services.factory('getObservations', ['$resource',
     });
 }]);
 
-//Diagram data Range
+//LC Diagram data Range
+services.factory('getObservationsLCUDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCUDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCVDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCVDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCBDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCBDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCRDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCRDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCIDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCIDiagramRange', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+//LC-Diagram data
+services.factory('getObservationsLCUDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCUDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCVDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCVDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCBDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCBDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCRDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCRDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+services.factory('getObservationsLCIDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/observationsLCIDiagram', {}, {
+        query: {method:'GET', isArray:true}
+    });
+}]);
+
+//HR Diagram data Range
 services.factory('getObservationsBVDiagramRange', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/observationsBVDiagramRange', {}, {

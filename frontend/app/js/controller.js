@@ -461,6 +461,235 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('lcDiagramCtrl', function($scope) {
 	});
 
+
+    astroApp.controller("lcCtrl", ['$rootScope', '$log', 'getObservationsLCUDiagramRange', 'getObservationsLCUDiagram',
+                                   'getObservationsLCVDiagramRange', 'getObservationsLCVDiagram','getObservationsLCBDiagramRange', 'getObservationsLCBDiagram',
+                                   'getObservationsLCRDiagramRange', 'getObservationsLCRDiagram','getObservationsLCIDiagramRange', 'getObservationsLCIDiagram',
+                                  (function ($scope, $log, ObservationsLCUDiagramRange, ObservationsLCUDiagram, ObservationsLCVDiagramRange, ObservationsLCVDiagram,
+                                  ObservationsLCBDiagramRange, ObservationsLCBDiagram, ObservationsLCRDiagramRange, ObservationsLCRDiagram,
+                                  ObservationsLCIDiagramRange, ObservationsLCIDiagram) {
+
+    $scope.lcFilters = ['U Photometry', 'V Photometry', 'B Photometry', 'R Photometry', 'I Photometry'];
+
+    $scope.selectedFilterValue = '';
+    $scope.selectedFilter = false;
+    $scope.selectFilter = function (filter) {
+      $scope.selectedFilterValue = filter;
+
+      console.log($scope.selectedFilterValue)
+      $scope.cutString = filter.substring(0, 1);
+      if ($scope.cutString == "U") {
+         $scope.obRange = ObservationsLCUDiagramRange.query;
+         $scope.selectedFilter = true;
+         $scope.obRange(function(observationsDiagram) {
+             $scope.starNames = observationsDiagram[0].StarNames;
+             console.log($scope.starNames);
+             });
+      }
+      else if ($scope.cutString == "V") {
+         $scope.obRange = ObservationsLCVDiagramRange.query;
+         $scope.selectedFilter = true;
+         $scope.obRange(function(observationsDiagram) {
+             $scope.starNames = observationsDiagram[0].StarNames;
+             console.log($scope.starNames);
+             });
+      }
+      else if ($scope.cutString == "B") {
+         $scope.obRange = ObservationsLCBDiagramRange.query;
+         $scope.selectedFilter = true;
+         $scope.obRange(function(observationsDiagram) {
+             $scope.starNames = observationsDiagram[0].StarNames;
+             console.log($scope.starNames);
+             });
+      }
+      else if ($scope.cutString == "R") {
+         $scope.obRange = ObservationsLCRDiagramRange.query;
+         $scope.selectedFilter = true;
+         $scope.obRange(function(observationsDiagram) {
+             $scope.starNames = observationsDiagram[0].StarNames;
+             console.log($scope.starNames);
+             });
+      }
+      else if ($scope.cutString == "I") {
+         $scope.obRange = ObservationsLCIDiagramRange.query;
+         $scope.selectedFilter = true;
+         $scope.obRange(function(observationsDiagram) {
+             $scope.starNames = observationsDiagram[0].StarNames;
+             console.log($scope.starNames);
+             });
+      }
+      }
+      $scope.selectedObjectValue = '';
+
+      $scope.selectObject = function (object) {
+        $scope.selectedObjectValue = object;
+
+        if ($scope.cutString == "U") {
+           $scope.ob = ObservationsLCUDiagram.query;
+           $scope.obRange = ObservationsLCUDiagramRange.query;
+           var observationsLCDiagram = ObservationsLCUDiagram;
+        }
+        else if ($scope.cutString == "V") {
+           $scope.ob = ObservationsLCVDiagram.query;
+           $scope.obRange = ObservationsLCVDiagramRange.query;
+           var observationsLCDiagram = ObservationsLCVDiagram;
+        }
+        else if ($scope.cutString == "B") {
+           $scope.ob = ObservationsLCBDiagram.query;
+           $scope.obRange = ObservationsLCBDiagramRange.query;
+           var observationsLCDiagram = ObservationsLCBDiagram;
+        }
+        else if ($scope.cutString == "R") {
+           $scope.ob = ObservationsLCRDiagram.query;
+           $scope.obRange = ObservationsLCRDiagramRange.query;
+           var observationsLCDiagram = ObservationsLCRDiagram;
+        }
+        else if ($scope.cutString == "I") {
+           $scope.ob = ObservationsLCIDiagram.query;
+           $scope.obRange = ObservationsLCIDiagramRange.query;
+           var observationsLCDiagram = ObservationsLCIDiagram;
+        }
+
+        $scope.obRange(function(observationsDiagram) {
+        $scope.XMax = 0;
+        $scope.XMin = 0;
+        $scope.YMax = 0;
+        $scope.YMin = 0;
+           //Range of data
+            $scope.XMaxAll = observationsDiagram[0].XMax;
+            $scope.XMinAll = observationsDiagram[0].XMin;
+            $scope.YMaxAll = observationsDiagram[0].YMax;
+            $scope.YMinAll = observationsDiagram[0].YMin;
+        $scope.starNames = observationsDiagram[0].StarNames;
+        var i = 0;
+        angular.forEach($scope.starNames, function(value, index){
+          if(value == $scope.selectedObjectValue) {
+            $scope.XMax = $scope.XMaxAll[i];
+            $scope.XMin = $scope.XMinAll[i];
+            $scope.YMax = $scope.YMaxAll[i];
+            $scope.YMin = $scope.YMinAll[i];
+          }
+          i++;
+        });
+           //Diagram options
+           var myColors = ["#000000"];
+           $scope.options = {
+                      chart: {
+                          type: 'scatterChart',
+                          height: 350,
+                          width: 600,
+                          color: d3.scale.category10().range(myColors),
+                          scatter: {
+                              onlyCircles: true
+                          },
+                          showLegend: false,
+                          showDistX: false,
+                          showDistY: false,
+                          showXAxis: true,
+                          showYAxis: true,
+                          yDomain: [$scope.YMax,$scope.YMin],
+                          xDomain: [$scope.XMin,$scope.XMax],
+                          tooltipContent: function(key) {
+                              return '<h3>' + key + '</h3>';
+                          },
+                          duration: 350,
+                          xAxis: {
+                              axisLabel: 'JD',
+                              tickFormat: function(d){
+                                  return d3.format('.02f')(d);
+                              },
+                              ticks: 5
+                          },
+                          yAxis: {
+                              axisLabel: $scope.cutString,
+                              tickFormat: function(d){
+                                  return d3.format('.02f')(d);
+                              },
+                              axisLabelDistance: -5,
+                              ticks: 10
+                          },
+                          zoom: {
+                              enabled: true,
+                              scaleExtent: [1, 10],
+                              useFixedDomain: false,
+                              useNiceScale: false,
+                              horizontalOff: false,
+                              verticalOff: false,
+                              unzoomEventType: 'dblclick.zoom'
+                          }
+                      }
+                  };
+                  return $scope.option
+              });
+           //The magic
+           $scope.data = generateData();
+
+           function generateData() {
+               var data = [],
+                    shapes = ['circle'],
+                    random = d3.random.normal();
+
+                 $scope.ob(function(observationsLCDiagram) {
+                       if ($scope.cutString == "U") {
+                          $scope.starNames = observationsLCDiagram[0].starNames;
+                          $scope.ObservationsTimes = observationsLCDiagram[0].uTimes;
+                          $scope.Observations = observationsLCDiagram[0].uObservations;
+                       }
+                       else if ($scope.cutString == "V") {
+                          $scope.starNames = observationsLCDiagram[0].starNames;
+                          $scope.ObservationsTimes = observationsLCDiagram[0].vTimes;
+                          $scope.Observations = observationsLCDiagram[0].vObservations;
+                       }
+                       else if ($scope.cutString == "B") {
+                          $scope.starNames = observationsLCDiagram[0].starNames;
+                          $scope.ObservationsTimes = observationsLCDiagram[0].bTimes;
+                          $scope.Observations = observationsLCDiagram[0].bObservations;
+                       }
+                       else if ($scope.cutString == "R") {
+                          $scope.starNames = observationsLCDiagram[0].starNames;
+                          $scope.ObservationsTimes = observationsLCDiagram[0].rTimes;
+                          $scope.Observations = observationsLCDiagram[0].rObservations;
+                       }
+                       else if ($scope.cutString == "I") {
+                          $scope.starNames = observationsLCDiagram[0].starNames;
+                          $scope.ObservationsTimes = observationsLCDiagram[0].iTimes;
+                          $scope.Observations = observationsLCDiagram[0].iObservations;
+                       }
+
+                 var i = 0
+                 var j = 0
+                          console.log($scope.selectedObjectValue);
+                          angular.forEach($scope.starNames, function(value, index){
+                                  if(value == $scope.selectedObjectValue) {
+                                     data.push({
+                                         key: index,
+                                         values: []
+                                     });
+                                     data[i].values.push({
+                                         x: $scope.ObservationsTimes[j]
+                                         , y: $scope.Observations[j]
+                                         , size: 2
+                                         , shape: shapes[1]
+                                     });
+                                     i++;
+                                     j++;
+                                  }
+                                  else {
+                                     j++;
+                                  }
+                           })
+                 return $scope.starNames, data;
+               });
+
+               console.log(data);
+               return data;
+           }
+
+           $scope.exampleData = $scope.data;
+     }})]);
+
+
+
     //hrDiagramCtrl
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
@@ -517,7 +746,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.YMin = observationsDiagram[0].YMin;
 
          //Diagram options
-         var myColors = ["#000000"];
+         var myColors = ["yellow"];
          $scope.options = {
                     chart: {
                         type: 'scatterChart',
@@ -554,7 +783,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                             ticks: 10
                         },
                         zoom: {
-                            enabled: true,
+                            enabled: false,
                             scaleExtent: [1, 10],
                             useFixedDomain: false,
                             useNiceScale: false,
@@ -613,6 +842,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                 });
                                 i++;
                          })
+                         console.log(data);
                return $scope.starNames, data;
              });
              return data;

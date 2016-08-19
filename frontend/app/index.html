@@ -5,8 +5,7 @@
    <title>Arqonia</title>
    <link rel="stylesheet" href="css/app.css">
    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-   <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.min.css">
-   <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.min.css"/>
+   <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css"/>
    <script src="bower_components/jquery/dist/jquery.min.js"></script>
    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
    <script src="bower_components/angular/angular.min.js"></script>
@@ -258,7 +257,7 @@
              <p>Processing of data usually takes few seconds. When this is done its time to verify your results in diagrams.</p>
              </div>
              <div style="text-align: center">
-               <a href="#hr-diagram" id="hr-diagram" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
+               <a href="#diagram" id="diagram" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
              </div>
           </div>
        </td>
@@ -511,7 +510,7 @@
     });
 
     //scroll to id="main"
-    $('#hr-diagram').click(function (){
+    $('#diagram').click(function (){
         $('html, body').animate({
             scrollTop: $("#main").offset().top
         }, 2000);

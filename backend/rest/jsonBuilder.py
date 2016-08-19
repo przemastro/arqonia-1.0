@@ -168,7 +168,7 @@ def json_load():
         cnx.close()
 
 
-def json_diagram():
+def json_hrDiagramRange():
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
@@ -183,7 +183,7 @@ def json_diagram():
         YMax = fetch_one(get_YMax)
         YMin = fetch_one(get_YMin)
         observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_diagram.jsonBVDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonBVDiagramRange = observationsDiagram
 
         #U-B
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromUBDiagramAvg'))
@@ -195,7 +195,7 @@ def json_diagram():
         YMax = fetch_one(get_YMax)
         YMin = fetch_one(get_YMin)
         observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_diagram.jsonUBDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonUBDiagramRange = observationsDiagram
 
         #R-I
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromRIDiagramAvg'))
@@ -207,7 +207,7 @@ def json_diagram():
         YMax = fetch_one(get_YMax)
         YMin = fetch_one(get_YMin)
         observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_diagram.jsonRIDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonRIDiagramRange = observationsDiagram
 
         #V-I
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromVIDiagramAvg'))
@@ -219,12 +219,12 @@ def json_diagram():
         YMax = fetch_one(get_YMax)
         YMin = fetch_one(get_YMin)
         observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_diagram.jsonVIDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonVIDiagramRange = observationsDiagram
 
         cursor.close()
 
     except:
-        print 'errors json_diagram function'
+        print 'errors json_hrDiagramRange function'
     else:
         cnx.close()
 
@@ -284,6 +284,156 @@ def json_hrdiagram():
         print 'errors in json_hrdiagram function'
     else:
         cnx.close()
+
+def json_lcDiagramRange():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        #U
+        get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromUPhotometrySorted'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromUPhotometrySorted'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromUPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromUPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromUPhotometrySorted'))
+
+        XMax = fetch_all(get_XMax)
+        XMin = fetch_all(get_XMin)
+        YMax = fetch_all(get_YMax)
+        YMin = fetch_all(get_YMin)
+        StarNames = fetch_all(get_StarNames)
+        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_lcDiagramRange.jsonLCUDiagramRange = observationsDiagram
+
+        #V
+        get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromVPhotometrySorted'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromVPhotometrySorted'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromVPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromVPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromVPhotometrySorted'))
+
+        XMax = fetch_all(get_XMax)
+        XMin = fetch_all(get_XMin)
+        YMax = fetch_all(get_YMax)
+        YMin = fetch_all(get_YMin)
+        StarNames = fetch_all(get_StarNames)
+        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_lcDiagramRange.jsonLCVDiagramRange = observationsDiagram
+
+        #B
+        get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromBPhotometrySorted'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromBPhotometrySorted'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromBPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromBPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromBPhotometrySorted'))
+
+        XMax = fetch_all(get_XMax)
+        XMin = fetch_all(get_XMin)
+        YMax = fetch_all(get_YMax)
+        YMin = fetch_all(get_YMin)
+        StarNames = fetch_all(get_StarNames)
+        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_lcDiagramRange.jsonLCBDiagramRange = observationsDiagram
+
+        #R
+        get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromRPhotometrySorted'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromRPhotometrySorted'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromRPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromRPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromRPhotometrySorted'))
+
+        XMax = fetch_all(get_XMax)
+        XMin = fetch_all(get_XMin)
+        YMax = fetch_all(get_YMax)
+        YMin = fetch_all(get_YMin)
+        StarNames = fetch_all(get_StarNames)
+        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_lcDiagramRange.jsonLCRDiagramRange = observationsDiagram
+
+        #I
+        get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromIPhotometrySorted'))
+        get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromIPhotometrySorted'))
+        get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromIPhotometrySorted'))
+        get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromIPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromIPhotometrySorted'))
+
+        XMax = fetch_all(get_XMax)
+        XMin = fetch_all(get_XMin)
+        YMax = fetch_all(get_YMax)
+        YMin = fetch_all(get_YMin)
+        StarNames = fetch_all(get_StarNames)
+        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
+        json_lcDiagramRange.jsonLCIDiagramRange = observationsDiagram
+
+        cursor.close()
+
+    except:
+        print 'errors json_lcDiagramRange function'
+    else:
+        cnx.close()
+
+def json_lcDiagram():
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        #U
+        get_UObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromUPhotometrySorted'))
+        get_UTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromUPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromUPhotometrySorted'))
+        UObservations = fetch_all(get_UObservations)
+        UTimes = fetch_all(get_UTimes)
+        StarNames = fetch_all(get_StarNames)
+        observationsLCDiagram = [{'starNames': StarNames, 'uObservations': UObservations, 'uTimes': UTimes}]
+        json_lcDiagram.jsonLCUDiagram = observationsLCDiagram
+
+        #V
+        get_VObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromVPhotometrySorted'))
+        get_VTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromVPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromVPhotometrySorted'))
+        VObservations = fetch_all(get_VObservations)
+        VTimes = fetch_all(get_VTimes)
+        StarNames = fetch_all(get_StarNames)
+        observationsLCDiagram = [{'starNames': StarNames, 'vObservations': VObservations, 'vTimes': VTimes}]
+        json_lcDiagram.jsonLCVDiagram = observationsLCDiagram
+
+        #B
+        get_BObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromBPhotometrySorted'))
+        get_BTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromBPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromBPhotometrySorted'))
+        BObservations = fetch_all(get_BObservations)
+        BTimes = fetch_all(get_BTimes)
+        StarNames = fetch_all(get_StarNames)
+        observationsLCDiagram = [{'starNames': StarNames, 'bObservations': BObservations, 'bTimes': BTimes}]
+        json_lcDiagram.jsonLCBDiagram = observationsLCDiagram
+
+        #R
+        get_RObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromRPhotometrySorted'))
+        get_RTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromRPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromRPhotometrySorted'))
+        RObservations = fetch_all(get_RObservations)
+        RTimes = fetch_all(get_RTimes)
+        StarNames = fetch_all(get_StarNames)
+        observationsLCDiagram = [{'starNames': StarNames, 'rObservations': RObservations, 'rTimes': RTimes}]
+        json_lcDiagram.jsonLCRDiagram = observationsLCDiagram
+
+        #I
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromIPhotometrySorted'))
+        get_ITimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromIPhotometrySorted'))
+        get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromIPhotometrySorted'))
+        IObservations = fetch_all(get_IObservations)
+        ITimes = fetch_all(get_ITimes)
+        StarNames = fetch_all(get_StarNames)
+        observationsLCDiagram = [{'starNames': StarNames, 'iObservations': IObservations, 'iTimes': ITimes}]
+        json_lcDiagram.jsonLCIDiagram = observationsLCDiagram
+
+        cursor.close()
+
+    except:
+        print 'errors in json_lcDiagram function'
+    else:
+        cnx.close()
+
 
 def json_statistics():
     try:
