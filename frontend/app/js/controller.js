@@ -38,9 +38,33 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     }]);
 
     //ModalCtrl
-    astroApp.controller('ModalCtrl', ['$scope', '$uibModal', function ($scope, $uibModal) {
+    astroApp.controller('ModalCtrl', ['$scope', 'usSpinnerService', '$uibModal', 'processData', '$window', '$timeout', '$cookies',
+                       function ($scope, usSpinnerService, $uibModal, ProcessData, $window, $timeout, $cookies) {
 
        $scope.animationsEnabled = true;
+
+       //Process Data
+       $scope.startSpin = function() {
+         if (!$scope.spinneractive) {
+           usSpinnerService.spin('spinner-1');
+           //Call processData service
+   	    ProcessData.query(function(response){
+   	      $scope.message = response.message;
+   	   });
+         }
+         $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
+             $scope.showSuccessAlert = true;
+             // switch flag
+             $scope.switchBool = function (value) {
+                 $scope[value] = !$scope[value];
+             };
+         $timeout(function(){
+            $scope.showSuccessAlert = false;
+            }, 15000);
+         $timeout(function(){
+            $window.location.reload();
+            }, 25000);
+       };
 
        //New Observation Modal
        $scope.addObservation = function () {
@@ -163,6 +187,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       //[Submit]
       $scope.addRow = function(){
+          console.log($scope.objectValue);
+          console.log($scope.radioValue);
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
@@ -212,7 +238,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           //Call postObservation service...
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
-   		                     rFileName:file4.name,iFileName:file5.name}, function(response){
+   		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
+   		                     verified:$scope.radioValue}, function(response){
    		  $scope.message = response.message;
    		  $log.debug($scope.message);
    		  });
@@ -331,7 +358,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.name,startDate:$scope.startDate,
    		                            endDate:$scope.endDate,
    		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
-   		                            rFileName:file4.name,iFileName:file5.name}, function(response){
+   		                            rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
+                                    verified:$scope.radioValue}, function(response){
    		  $scope.message = response.message;
    		  });
    		  //...and close modal

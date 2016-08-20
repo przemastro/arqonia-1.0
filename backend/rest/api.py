@@ -121,6 +121,8 @@ parser.add_argument('iFileName', type=str)
 parser.add_argument('id', type=str)
 parser.add_argument('email', type=str)
 parser.add_argument('password', type=str)
+parser.add_argument('objectType', type=str)
+parser.add_argument('verified', type=str)
 
 
 
@@ -134,14 +136,15 @@ class RestObservation(Resource):
     def post(self):
             args = parser.parse_args()
             json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
-                        args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'])
+                        args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
+                        args['objectType'], args['verified'])
             return 201
-
 
     def put(self):
             args = parser.parse_args()
             updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
-                              args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'])
+                              args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
+                              args['objectType'], args['verified'])
             return 201
 
 
