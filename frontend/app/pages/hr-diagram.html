@@ -8,12 +8,8 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <a style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
-               href="#hr-diagram" style="color:white;text-decoration: none">HR-DIAGRAMS</a>
-            <a style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
-               href="#lc-diagram" style="color:white;text-decoration: none">Light Curves</a>
+            <li><a href="#hr-diagram" style="text-align:left">HR-Diagrams</a></li>
+            <li><a href="#lc-diagram" style="text-align:left">Light Curves</a></li>
         </ul>
     </div>
     <div class="btn-group dropdown">
@@ -22,8 +18,8 @@
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
-        <ul class="dropdown-menu">
-            <li ng-repeat="diagram in hrDiagrams"><a ng-click="selectDiagram(diagram)">{{diagram}}</a></li>
+        <ul class="dropdown-menu" style="max-height: 300px;overflow-y: auto;">
+            <li ng-repeat="diagram in hrDiagrams track by $index"><a href style="text-align:left" ng-click="selectDiagram(diagram)">{{diagram}}</a></li>
         </ul>
     </div>
 
@@ -31,7 +27,8 @@
        <div style="text-align: center;" style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
                                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
             class="title h4" ng-show="HRTitle==true">Please select Color Magnitude Diagram from available dropdown list</div>
-            <div ng-show="HRTitle!=true" style="background-color:black;width:515px;height:505px">
+            <div class="hr" ng-show="HRTitle!=true" style="background-color:white;width:520px;height:510px;border-style: solid;
+                                                           border-width: 2px;border-color: black;padding-right:10px;">
                 <nvd3 style="position:relative;  display: inline-block;left:-70px;" options="options" ng-show="HRTitle!=true" data="exampleData">
                 </nvd3>
             </div>

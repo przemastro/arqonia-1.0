@@ -8,15 +8,11 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <a style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
-               href="#hr-diagram" style="color:white;text-decoration: none">HR-DIAGRAMS</a>
-            <a style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
-               href="#lc-diagram" style="color:white;text-decoration: none">Light Curves</a>
+            <li><a href="#hr-diagram" style="text-align:left">HR-Diagrams</a></li>
+            <li><a href="#lc-diagram" style="text-align:left">Light Curves</a></li>
         </ul>
     </div>
-    <table class="search" style="background-color: white;" ng-show="(stars!=true && comets!=true && planetoids!=true)">
+    <table class="search" style="background-color: white;">
         <tr><td style="height: 80px;width:500px;"></td>
             <td style="height: 80px;"></td></tr>
         <tr>
@@ -28,10 +24,12 @@
                                           font-size: 1.9rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">Color Magnitude Diagrams</li>
                         </ul>
                         <p style="width:500px;">
-                                V vs. B-V: Generated only if photometry was done in both B and V filters.
-                            <br>B  vs. U-B: Generated only if photometry was done in both U and B filters.
-                            <br>I  vs. R-I: Generated only if photometry was done in both R and I filters.
-                            <br>I  vs. V-I: Generated only if photometry was done in both V and I filters.
+                                Color Magnitude Diagrams (CMD) version of Hertzsprung-Russell (HR) diagrams
+                                are available in following filters combinations:<br><br>
+                                V vs. B-V. Generated only if photometry was done in both B and V filters.
+                            <br>B  vs. U-B. Generated only if photometry was done in both U and B filters.
+                            <br>I  vs. R-I. Generated only if photometry was done in both R and I filters.
+                            <br>I  vs. V-I. Generated only if photometry was done in both V and I filters.
                         </p>
                     </div>
                 </div>
@@ -44,7 +42,8 @@
                                           font-size: 1.9rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">Light Curves</li>
                         </ul>
                         <p>For each object with photometry in UVBRI filters <br>
-                        diagrams Flux vs. JD are generated.</p>
+                           diagrams Flux vs. JD are generated. At least one observation needs to be present in
+                            order to generate plot. Flux is the absolute magnitude. JD is the standard Julian Date.</p>
                     </div>
                 </div>
             </td>

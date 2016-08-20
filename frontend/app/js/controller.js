@@ -469,11 +469,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                   ObservationsLCBDiagramRange, ObservationsLCBDiagram, ObservationsLCRDiagramRange, ObservationsLCRDiagram,
                                   ObservationsLCIDiagramRange, ObservationsLCIDiagram) {
 
+    $scope.LCTitle = true;
     $scope.lcFilters = ['U Photometry', 'V Photometry', 'B Photometry', 'R Photometry', 'I Photometry'];
 
     $scope.selectedFilterValue = '';
     $scope.selectedFilter = false;
     $scope.selectFilter = function (filter) {
+      $scope.LCTitle = true;
       $scope.selectedFilterValue = filter;
 
       console.log($scope.selectedFilterValue)
@@ -522,6 +524,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.selectedObjectValue = '';
 
       $scope.selectObject = function (object) {
+        $scope.LCTitle = false;
         $scope.selectedObjectValue = object;
 
         if ($scope.cutString == "U") {
@@ -560,6 +563,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             $scope.XMinAll = observationsDiagram[0].XMin;
             $scope.YMaxAll = observationsDiagram[0].YMax;
             $scope.YMinAll = observationsDiagram[0].YMin;
+
         $scope.starNames = observationsDiagram[0].StarNames;
         var i = 0;
         angular.forEach($scope.starNames, function(value, index){
@@ -576,8 +580,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
            $scope.options = {
                       chart: {
                           type: 'scatterChart',
-                          height: 350,
-                          width: 600,
+                          height: 450,
+                          width: 850,
                           color: d3.scale.category10().range(myColors),
                           scatter: {
                               onlyCircles: true
@@ -594,19 +598,19 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                           },
                           duration: 350,
                           xAxis: {
-                              axisLabel: 'JD',
+                              axisLabel: 'Julian Date',
                               tickFormat: function(d){
                                   return d3.format('.02f')(d);
                               },
-                              ticks: 5
+                              ticks: 7
                           },
                           yAxis: {
-                              axisLabel: $scope.cutString,
+                              axisLabel: 'Flux '+$scope.cutString+' (mag)',
                               tickFormat: function(d){
                                   return d3.format('.02f')(d);
                               },
                               axisLabelDistance: -5,
-                              ticks: 10
+                              ticks: 6
                           },
                           zoom: {
                               enabled: true,
@@ -671,6 +675,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                          , size: 2
                                          , shape: shapes[1]
                                      });
+                                     $scope.starName = value;
                                      i++;
                                      j++;
                                   }
@@ -678,6 +683,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                      j++;
                                   }
                            })
+                           $scope.obRange(function(observationsDiagram) {
+                              $scope.starNames = observationsDiagram[0].StarNames;
+                           });
                  return $scope.starNames, data;
                });
 
@@ -746,7 +754,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.YMin = observationsDiagram[0].YMin;
 
          //Diagram options
-         var myColors = ["yellow"];
+         var myColors = ["black"];
          $scope.options = {
                     chart: {
                         type: 'scatterChart',
@@ -768,14 +776,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                         },
                         duration: 350,
                         xAxis: {
-                            axisLabel: cutString,
+                            axisLabel: 'Color '+cutString,
                             tickFormat: function(d){
                                 return d3.format('.02f')(d);
                             },
-                            ticks: 5
+                            ticks: 8
                         },
                         yAxis: {
-                            axisLabel: cutString.substring(2,3),
+                            axisLabel: 'Absolute Magnitude '+cutString.substring(2,3)+' (mag)',
                             tickFormat: function(d){
                                 return d3.format('.02f')(d);
                             },
@@ -993,14 +1001,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
-
-   	         $rootScope.$on('us-spinner:spin', function(event, key) {
-               $scope.spinneractive = true;
-             });
-
-             $rootScope.$on('us-spinner:stop', function(event, key) {
-               $scope.spinneractive = false;
-             });
+             usSpinnerService.stop('spinner-1');
    		     }
    		  });
       };
@@ -1035,13 +1036,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $location.path("login");
 
              $scope.spinneractive = false;
-   	         $rootScope.$on('us-spinner:spin', function(event, key) {
-               $scope.spinneractive = true;
-             });
-
-             $rootScope.$on('us-spinner:stop', function(event, key) {
-               $scope.spinneractive = false;
-             });
+             usSpinnerService.stop('spinner-1');
    		     }
    		  });
       };
@@ -1064,6 +1059,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                usSpinnerService.spin('spinner-1');
              };
              $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
        $location.path("main");
     }]);
 
@@ -1128,14 +1124,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
-
-   	         $rootScope.$on('us-spinner:spin', function(event, key) {
-               $scope.spinneractive = true;
-             });
-
-             $rootScope.$on('us-spinner:stop', function(event, key) {
-               $scope.spinneractive = false;
-             });
+             usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     }
    		  });
@@ -1170,13 +1159,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $location.path("login");
 
              $scope.spinneractive = false;
-   	         $rootScope.$on('us-spinner:spin', function(event, key) {
-               $scope.spinneractive = true;
-             });
-
-             $rootScope.$on('us-spinner:stop', function(event, key) {
-               $scope.spinneractive = false;
-             });
+             usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     }
    		  });

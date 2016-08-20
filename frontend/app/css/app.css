@@ -328,10 +328,10 @@ p {
 }
 
 .tick {
-  opacity: 10;
+  opacity: 1;
 }
 
-.tick line {
+.hr .tick line {
   display: none;
 }
 
@@ -518,4 +518,43 @@ p {
 
 .dropdown-menu{
     display: inline;
+}
+
+.dropdown-menu li {
+    display: inline;
+    width: 120px;
+    text-decoration: none;
+    padding: 0px 0px;
+    font-family: inherit;
+    font-weight: normal;
+    font-size: 1.4rem;
+    text-rendering: optimizeLegibility;
+    color: #4c4c4c;
+    font-style: bold;
+    margin-left: -10px;
+}
+
+.dropdown-menu li a:hover:not(.active) {
+    text-decoration: none;
+    background-color: #efefef;
+    width:200px;
+}
+
+
+
+.nvd3-svg {
+    height: 650px !important;
+    width: 860px !important;
+}
+
+.hr .nv-axisMaxMin .nv-axisMaxMin-y .nv-axisMin-y {
+    stroke-opacity: 0;
+}
+
+.hr .nvd3 .nv-axis.nv-x path.domain {
+    stroke-opacity: 0;
+}
+
+.hr .nvd3 .nv-axis path.domain {
+    stroke-opacity: 0;
 }
