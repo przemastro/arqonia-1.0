@@ -447,8 +447,10 @@ p {
 	position:fixed;
 	top:530px;
 	right:-15px;
+    float: right;
 	display:none;
 	background: url('images\arrow_up.png') no-repeat 0px 20px;
+	z-index: 1;
 }
 .scrollToTop:hover{
 	text-decoration:none;
@@ -461,7 +463,6 @@ p {
 }
 
 .newsletter {
-    max-width: 1800px;
     background-color: #49494b;
     height: 300px;
     margin-top: 150px;

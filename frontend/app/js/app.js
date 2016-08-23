@@ -22,6 +22,10 @@
 				controller  : 'photometryCtrl'
 			})
 
+			.when('/reduction', {
+				templateUrl : 'pages/reduction.html',
+				controller  : 'reductionCtrl'
+			})
 
 			.when('/table-list', {
 				templateUrl : 'pages/table-list.html',
