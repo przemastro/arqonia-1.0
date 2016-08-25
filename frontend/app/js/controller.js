@@ -183,7 +183,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        };
     }]);
 
-    astroApp.controller('ModalInstanceCtrl', ['$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', function ($scope, $log, $uibModalInstance, NewObservation, fileUpload) {
+    astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
+                                     function ($rootScope, $scope, $log, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
       //[Submit]
       $scope.addRow = function(){
@@ -245,7 +246,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
+   		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
+              $rootScope.showSuccessAlert = true;
+              // switch flag
+              console.log($scope.successTextAlert);
+              $rootScope.switchBool = function (value) {
+                  $rootScope[value] = !$rootScope[value];
+              };
+          $timeout(function(){
+             $rootScope.showSuccessAlert = false;
+             }, 5000);
       };
+      console.log($rootScope.showSuccessAlert);
 
       //[Cancel]
       $scope.cancel = function () {
@@ -253,7 +265,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
-    astroApp.controller('ModalInstanceRemoveCtrl', ['$scope', '$log', '$uibModalInstance', 'removeObservation', 'removePhotometry', function ($scope, $log, $uibModalInstance, RemoveObservation, removePhotometry) {
+    astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies',
+                                           function ($rootScope, $scope, $log, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
 
       $scope.ob = $scope.observations;
 
@@ -273,11 +286,22 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         });
         //...and close modal
         $uibModalInstance.dismiss();
+        $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
+               $rootScope.showSuccessAlert = true;
+               // switch flag
+               console.log($scope.successTextAlert);
+               $rootScope.switchBool = function (value) {
+                   $rootScope[value] = !$rootScope[value];
+               };
+           $timeout(function(){
+              $rootScope.showSuccessAlert = false;
+              }, 5000);
         return true;
       };
     }]);
 
-    astroApp.controller('ModalInstanceEditCtrl', ['$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', function ($scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload) {
+    astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
+                                         function ($rootScope, $scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
       $scope.ob = $scope.observations;
       //edit photometry is an observation.id so I can keep the correct index of an observation in table list
       $scope.editPhotometry = editPhotometry;
@@ -364,6 +388,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
+          $rootScope.successTextAlert = "Observation has been updated in the staging area.";
+               $rootScope.showSuccessAlert = true;
+               // switch flag
+               console.log($scope.successTextAlert);
+               $rootScope.switchBool = function (value) {
+                   $rootScope[value] = !$rootScope[value];
+               };
+           $timeout(function(){
+              $rootScope.showSuccessAlert = false;
+              }, 5000);
        };
 
       //[Cancel]
