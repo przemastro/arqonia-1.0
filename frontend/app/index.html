@@ -37,9 +37,12 @@
     <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: #4c4c4c;background-color: #efefef;">
         <li style="float:right"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
         <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 0px 0px;padding-right:0px;" ng-show="!isUserLoggedIn">|</li>
-        <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
-        <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;">Logout</a></li>
-        <li style="float:right"><a href="#admin" class="pageSection" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
+        <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
+                                   style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
+        <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            Logout</a></li>
+        <li style="float:right"><a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
     </ul>
 </div>
 
@@ -60,6 +63,7 @@
      <ol align="center" style="margin: auto" class="carousel-indicators">
          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+         <li data-target="#carousel-example-generic" data-slide-to="2"></li>
      </ol>
 
      <div align="center" class="carousel-inner" style="max-width: 100%;width:5800px;max-height: 100%;height:250px;">
@@ -153,7 +157,7 @@
                      <tr>
                          <td style="width:460px;">
                              <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;margin-top:-60px">
                                  News</div>
                              <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
                                              font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
@@ -180,6 +184,48 @@
                              <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
                                              font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                  DAYS TO RELEASE
+                             </div>
+                         </td>
+                     </tr>
+                 </table>
+             </div>
+         </div>
+         <div class="item">
+             <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:280px;">
+             <div class="carousel-caption">
+                 <table class="topTable" style="width: 800px;margin-left:-120px">
+                     <tr>
+                         <td style="width:460px;">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;margin-top:-100px">
+                                 Team</div>
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 Nothing can happen without good team.
+                                 <br>
+                             </div>
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;">
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:75px">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
+                                 Przemysław Jagodziński<br>
+                                 Remigiusz Pospieszyński
+                             </div>
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
+                                 - <br>
+                                 -
+                             </div>
+                         </td>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
+                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
+                                 FOUNDER & HEAD OF ENGINEERING <br>
+                                 DEVOPS & SCIENCE CONSULTANT
                              </div>
                          </td>
                      </tr>

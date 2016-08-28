@@ -926,13 +926,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 	astroApp.controller('adminCtrl', ['$rootScope', '$cookies', function($scope, $cookies) {
 	   $scope.message = 'Admin Panel';
-	   $scope.isUserLoggedIn = $cookies.get('cook');
+	   $scope.isAdminLoggedIn = $cookies.get('admin');
 	}]);
 
 	astroApp.controller('processCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'processData', 'getProcessedData', '$window', '$timeout', '$cookies',
       function($scope, usSpinnerService, $rootScope, ProcessData, GetProcessedData, $window, $timeout, $cookies) {
         $scope.message = 'Admin Panel';
-        $scope.isUserLoggedIn = $cookies.get('cook');
+        $scope.isAdminLoggedIn = $cookies.get('admin');
         $scope.displayedObservations = [];
         //Call getProcessedData service
         $scope.observations = GetProcessedData.query();
@@ -982,6 +982,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('searchCtrl', ['$rootScope', '$cookies', function($scope, $cookies) {
 	   $scope.message = 'Search';
 	   $scope.isUserLoggedIn = $cookies.get('cook');
+	   $scope.isAdminLoggedIn = $cookies.get('admin');
 	   $scope.search = false
 	   $scope.stars = false
        $scope.comets = false
@@ -1048,18 +1049,37 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
    		  Login.update({email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
-   		  $log.debug($scope.message)
+   		  $log.debug($scope.email);
           if($scope.message == "Wrong credentials"){
-   		     $rootScope.isUserLoggedIn = false
-   		     $rootScope.errorFlag = true
+   		     $rootScope.isUserLoggedIn = false;
+   		     $rootScope.isAdminLoggedIn = false;
+   		     $rootScope.errorFlag = true;
    		     }
-   		  else {
+   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@admin.com")){
+   		     console.log("user");
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
    		     $cookies.put('cook', true);
+   		     $cookies.put('admin', false);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
-   		     $rootScope.errorFlag = false
+   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
+   		     $rootScope.errorFlag = false;
+   		     $rootScope.loggedInUser = $scope.message
+   		     $location.path("main");
+   		     $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
+   		     }
+   		  else {
+   		     console.log("admin2");
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+   		     $cookies.put('cook', true);
+   		     $cookies.put('admin', true);
+   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
+   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
+   		     $rootScope.errorFlag = false;
    		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
@@ -1111,12 +1131,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('logoutCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
+	   $cookies.remove("admin");
 	}]);
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', '$log', 'login', '$cookies', '$location',
     function ($scope, usSpinnerService, $log, Login, $cookies, $location) {
        $scope.isUserLoggedIn = false;
-       console.log($scope.isUserLoggedIn);
+       $scope.isAdminLoggedIn = false;
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
@@ -1132,12 +1153,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('mainCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe',
 	                       function ($rootScope, $scope, $log, Login, $cookies, Statistics, $uibModal, Subscribe) {
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
+	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
        $scope.Statistics = Statistics.query();
        $log.debug($scope.Statistics);
 
               //Login Modal
               $scope.loginModal = function () {
-                   var modalInstance = $uibModal.open({
+                       var modalInstance = $uibModal.open({
                      animation: $scope.animationsEnabled,
                      templateUrl: 'loginModalContent.html',
                      controller: 'ModalLoginCtrl',
@@ -1171,22 +1193,41 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
    		  Login.update({email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
-   		  $log.debug($scope.message)
           if($scope.message == "Wrong credentials"){
-   		     $rootScope.isUserLoggedIn = false
-   		     $rootScope.errorFlag = true
+   		     $rootScope.isUserLoggedIn = false;
+   		     $rootScope.isAdminLoggedIn = false;
+   		     $rootScope.errorFlag = true;
+   		     }
+   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@admin.com")){
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+   		     $cookies.put('cook', true);
+   		     $cookies.put('admin', false);
+   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
+   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
+   		     $rootScope.errorFlag = false;
+   		     $rootScope.loggedInUser = $scope.message
+   		     $location.path("main");
+   		     $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
+             console.log($rootScope.isAdminLoggedIn);
+             $uibModalInstance.dismiss();
    		     }
    		  else {
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
    		     $cookies.put('cook', true);
+   		     $cookies.put('admin', true);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
-   		     $rootScope.errorFlag = false
+   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
+   		     $rootScope.errorFlag = false;
    		     $rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
+             console.log($rootScope.isAdminLoggedIn);
              $uibModalInstance.dismiss();
    		     }
    		  });
