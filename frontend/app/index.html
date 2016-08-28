@@ -35,14 +35,14 @@
  <body ng-controller="mainCtrl" style="background-color: #efefef;overflow-x:hidden;">
 <div align="center" style="margin:auto;position:relative;">
     <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: #4c4c4c;background-color: #efefef;">
-        <li style="float:right"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
-        <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 0px 0px;padding-right:0px;" ng-show="!isUserLoggedIn">|</li>
-        <li style="float:right"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
+        <li style="float:right;font-size: 1.6rem;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
+        <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 0px 0px;padding-right:0px;font-size: 1.8rem;" ng-show="!isUserLoggedIn">|</li>
+        <li style="float:right;font-size: 1.6rem;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
                                    style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;padding-right:5px;">Login</a></li>
-        <li style="float:right"><a href="#logout" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;">
-            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+        <li style="float:right;font-size: 1.6rem;"><a href="#logout" ng-show="isUserLoggedIn" style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;">
+            <span style="font-size: 1.8rem;" class="glyphicon glyphicon-user" aria-hidden="true"></span>
             Logout</a></li>
-        <li style="float:right"><a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
+        <li style="float:right;font-size: 1.6rem;"><a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 0px 16px;">Admin Panel</a></li>
     </ul>
 </div>
 
