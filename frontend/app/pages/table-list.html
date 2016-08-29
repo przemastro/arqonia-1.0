@@ -22,8 +22,10 @@
                            </div>
                            <div class="form-group">
                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name </label>
-                              <div class="col-md-7">
-                                  <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="e.g. Vega" required/>
+                              <div class="col-md-5">
+                                  <p class="input-group myInput">
+                                     <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="e.g. Vega" required/>
+                                  </p>
                                   <div ng-messages="newObservationForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                       <div ng-message="required">This field is required</div>
                                       <div ng-message="maxlength">This field is too long</div>
@@ -31,16 +33,40 @@
                               </div>
                            </div>
                            <div class="form-group">
-                              <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Start Date</label>
-                              <div class="col-md-7">
-                                  <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
-                                  <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                      <div ng-message="required">This field is required</div>
-                                      <div ng-message="maxlength">This field is too long</div>
-                                  </div>
-                              </div>
+                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Start Date</label>
+                               <div class="row">
+                                   <div class="col-md-5">
+                                       <p class="input-group myInput">
+                                           <input type="text" class="form-control" show-button-bar="false" uib-datepicker-popup="{{format}}" name="startDate" ng-model="startDate" ng-maxlength="100" placeholder="YYYY-MM-DD" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+                                              <span class="input-group-btn">
+                                                 <button type="button" class="btn btn-default myBtn" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                              </span>
+                                       </p>
+                                       <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                           <div ng-message="required">This field is required</div>
+                                           <div ng-message="maxlength">This field is too long</div>
+                                       </div>
+                                   </div>
+                               </div>
                            </div>
                            <div class="form-group">
+                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">End Date</label>
+                               <div class="row">
+                                   <div class="col-md-7">
+                                       <p class="input-group myInput">
+                                           <input type="text" class="form-control" uib-datepicker-popup="{{format}}" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+                                              <span class="input-group-btn">
+                                                 <button type="button" class="btn btn-default myBtn" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                              </span>
+                                       </p>
+                                       <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                           <div ng-message="required">This field is required</div>
+                                           <div ng-message="maxlength">This field is too long</div>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                           <!--<div class="form-group">
                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">End Date</label>
                               <div class="col-md-7">
                                   <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
@@ -49,7 +75,7 @@
                                       <div ng-message="maxlength">This field is too long</div>
                                   </div>
                               </div>
-                           </div>
+                           </div>-->
                            <div class="form-group">
                               <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">U Photometry</label>
                               <div class="col-md-7">
