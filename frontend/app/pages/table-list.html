@@ -1,4 +1,28 @@
 <body ng-app = "astroApp" ng-controller="tableListCtrl">
+<style>
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 350px !important;
+    max-width: 400px !important;
+    padding: 2px 0px !important;
+    margin: 2px 0 0 auto;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 0px solid #ccc !important;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 0px 0px rgba(0,0,0,.175) !important;
+</style>
 <div ng-controller="tableCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
   <div ng-controller="ModalCtrl">
 
