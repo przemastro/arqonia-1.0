@@ -13,6 +13,7 @@
    <script src="bower_components/angular-route/angular-route.min.js"></script>
    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
    <script src="bower_components/angular-modal-service/dst/angular-modal-service.min.js"></script>
+   <script src="bower_components/ng-csv/build/ng-csv.min.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
    <script src="js/env.js"></script>
@@ -36,7 +37,7 @@
 
  <body ng-controller="mainCtrl" style="background-color: #efefef;overflow-x:hidden;">
 <div align="center" style="margin:auto;position:relative;">
-    <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;color: #4c4c4c;background-color: #efefef;">
+    <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;padding-top:3px;overflow: hidden;color: #4c4c4c;background-color: #efefef;">
         <li style="float:right;font-size: 1.6rem;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()" style="color:#4c4c4c;text-decoration: none;padding: 0px 5px;padding-right:10px;">Sign up</a></li>
         <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 0px 0px;padding-right:0px;font-size: 1.8rem;" ng-show="!isUserLoggedIn">|</li>
         <li style="float:right;font-size: 1.6rem;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
