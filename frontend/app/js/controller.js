@@ -187,9 +187,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                      function ($rootScope, $scope, $log, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
-      //DatePicker
-
-
+  //DatePicker
   $scope.inlineOptions = {
     customClass: getDayClass,
     minDate: new Date(),
@@ -227,7 +225,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     $scope.startDate = new Date(year, month, day);
   };
 
-  $scope.formats = ['yyyy-MM-dd'];
+  $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
   $scope.format = $scope.formats[0];
   $scope.altInputFormats = ['M!/d!/yyyy'];
 
@@ -274,8 +272,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 //end datepicker
 
+
       //[Submit]
       $scope.addRow = function(){
+      console.log('Dates2');
+      console.log($scope.startDate);
+      console.log($scope.endDate);
+
+
           console.log($scope.objectValue);
           console.log($scope.radioValue);
           var file = $scope.myFile;
@@ -392,6 +396,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
                                          function ($rootScope, $scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
+
+
+
       $scope.ob = $scope.observations;
       //edit photometry is an observation.id so I can keep the correct index of an observation in table list
       $scope.editPhotometry = editPhotometry;
@@ -420,8 +427,105 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       			}
       		}
 
+
+//DatePicker
+
+ $scope.startDate = new Date($scope.startDate);
+ $scope.endDate = new Date($scope.endDate);
+
+      console.log('Dates1');
+      console.log($scope.startDate);
+      console.log($scope.endDate);
+
+  $scope.inlineOptions = {
+    customClass: getDayClass,
+    minDate: new Date(),
+    showWeeks: true
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yyyy',
+    maxDate: new Date(2020, 5, 22),
+    minDate: new Date(),
+    startingDay: 1
+  };
+
+
+  $scope.toggleMin = function() {
+    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+  };
+
+  $scope.toggleMin();
+
+  $scope.open1 = function() {
+    $scope.popup1.opened = true;
+  };
+
+  $scope.open2 = function() {
+    $scope.popup2.opened = true;
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.endDate = new Date(year, month, day);
+  };
+
+  $scope.setDate = function(year, month, day) {
+    $scope.startDate = new Date(year, month, day);
+  };
+
+  $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
+  $scope.format = $scope.formats[0];
+  $scope.altInputFormats = ['M!/d!/yyyy'];
+
+  $scope.popup1 = {
+    opened: false
+  };
+
+  $scope.popup2 = {
+    opened: false
+  };
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 1);
+  $scope.events = [
+    {
+      date: tomorrow,
+      status: 'full'
+    },
+    {
+      date: afterTomorrow,
+      status: 'partially'
+    }
+  ];
+
+  function getDayClass(data) {
+    var date = data.date,
+      mode = data.mode;
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+
+      for (var i = 0; i < $scope.events.length; i++) {
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+
+    return '';
+  }
+
+//end datepicker
+
       //[Submit]
       $scope.updateRow = function(){
+      console.log('Dates2');
+      console.log($scope.startDate);
+      console.log($scope.endDate);
 
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal

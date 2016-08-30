@@ -9,7 +9,7 @@
     float: left;
     min-width: 350px !important;
     max-width: 400px !important;
-    padding: 2px 0px !important;
+    padding: 2px 12px !important;
     margin: 2px 0 0 auto;
     font-size: 14px;
     text-align: left;
@@ -39,7 +39,7 @@
                            font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
                        <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
-                           <div class="btn-group" style="margin-bottom: 15px;margin-left: -45px;">
+                           <div class="btn-group" style="margin-bottom: 15px;margin-left: -50px;">
                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Star</label>
                                <label class="btn btn-default pull-left btnMarginRight customLong" ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Planetoid</label>
                                <label class="btn btn-default pull-left btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Comet</label>
@@ -68,7 +68,6 @@
                                        </p>
                                        <div ng-messages="newObservationForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                            <div ng-message="required">This field is required</div>
-                                           <div ng-message="maxlength">This field is too long</div>
                                        </div>
                                    </div>
                                </div>
@@ -78,28 +77,17 @@
                                <div class="row">
                                    <div class="col-md-7">
                                        <p class="input-group myInput">
-                                           <input type="text" class="form-control" uib-datepicker-popup="{{format}}" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+                                           <input type="text" class="form-control" show-button-bar="false" uib-datepicker-popup="{{format}}" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
                                               <span class="input-group-btn">
                                                  <button type="button" class="btn btn-default myBtn" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
                                               </span>
                                        </p>
                                        <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                            <div ng-message="required">This field is required</div>
-                                           <div ng-message="maxlength">This field is too long</div>
                                        </div>
                                    </div>
                                </div>
                            </div>
-                           <!--<div class="form-group">
-                              <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">End Date</label>
-                              <div class="col-md-7">
-                                  <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-maxlength="100" placeholder="YYYY-MM-DD HH:MM:SS" required/>
-                                  <div ng-messages="newObservationForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                      <div ng-message="required">This field is required</div>
-                                      <div ng-message="maxlength">This field is too long</div>
-                                  </div>
-                              </div>
-                           </div>-->
                            <div class="form-group">
                               <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">U Photometry</label>
                               <div class="col-md-7">
@@ -132,7 +120,7 @@
                            </div>
                            <div class="form-group" data-toggle="buttons">
                                <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
-                               <div class="btn-group" style="margin-left: -200px">
+                               <div class="btn-group" style="margin-left: -210px">
                                    <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'Yes'" uncheckable>Yes</label>
                                    <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'No'" uib-uncheckable="uncheckable">No</label>
                                </div>
@@ -185,37 +173,57 @@
                            font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
-                            <div class="btn-group" style="margin-bottom: 15px;margin-left: -45px;">
+                            <div class="btn-group" style="margin-bottom: 15px;margin-left: -50px;">
                                 <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Star</label>
                                 <label class="btn btn-default pull-left btnMarginRight customLong" ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Planetoid</label>
                                 <label class="btn btn-default pull-left btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Comet</label>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Object Name</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
-                                    <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" ng-change='changeName()' required/>
-                                    <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                        <div ng-message="required">This field is required</div>
+                                <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name</label>
+                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry">
+                                    <div class="col-md-5">
+                                        <p class="input-group myInput">
+                                            <input type="text" class="form-control" name="name" ng-model="name"  ng-init="name='{{observation.name}}'" value="{{observation.name}}" ng-change='changeName()' required/>
+                                        </p>
+                                        <div ng-messages="editForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                            <div ng-message="required">This field is required</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Start Date</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
-                                    <input type="text" class="form-control" name="startDate" ng-model="startDate" ng-init="startDate='{{observation.startDate}}'" value="{{observation.startDate}}" ng-change='changeStartDate()' required/>
-                                    <div ng-messages="editForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                        <div ng-message="required">This field is required</div>
+                                <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Start Date</label>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <p class="input-group myInput">
+                                               <input type="text" class="form-control" show-button-bar="false" uib-datepicker-popup="{{format}}" name="startDate" ng-model="startDate"
+                                                      is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+                                               <span class="input-group-btn">
+                                                   <button type="button" class="btn btn-default myBtn" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                               </span>
+                                            </p>
+                                            <div ng-messages="editForm.startDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label">End Date</label>
-                                <div ng-repeat="observation in ob" ng-if="$index == editPhotometry" class="col-md-7">
-                                    <input type="text" class="form-control" name="endDate" ng-model="endDate" ng-init="endDate='{{observation.endDate}}'" value="{{observation.endDate}}" ng-change='changeEndDate()' required/>
-                                    <div ng-messages="editForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                        <div ng-message="required">This field is required</div>
+                                <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">End Date</label>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <p class="input-group myInput">
+                                                <input type="text" class="form-control" show-button-bar="false" uib-datepicker-popup="{{format}}" name="endDate" ng-model="endDate"
+                                                       is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" required/>
+                                               <span class="input-group-btn">
+                                                   <button type="button" class="btn btn-default myBtn" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                               </span>
+                                            </p>
+                                            <div ng-messages="editForm.endDate.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                                <div ng-message="required">This field is required</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-4 control-label">U Photometry</label>
@@ -249,7 +257,7 @@
                             </div>
                             <div class="form-group" data-toggle="buttons">
                                 <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
-                                <div class="btn-group" style="margin-left: -200px">
+                                <div class="btn-group" style="margin-left: -210px">
                                     <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'Yes'" uncheckable>Yes</label>
                                     <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'No'" uib-uncheckable="uncheckable">No</label>
                                 </div>
