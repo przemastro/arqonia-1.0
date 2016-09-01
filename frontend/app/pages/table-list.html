@@ -448,10 +448,10 @@
                               </div>
                           </div>
                           <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
-                              <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Load Data" class="btn btn-primary sharp customHeight" ng-disabled="loadFlag" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                              <input ng-csv="getArray" lazy-load="true" filename="{{ filename }}.csv" field-separator="{{separator}}" style="border: 0px"
-                                     type="submit" value="Generate" class="btn btn-success sharp customHeight" ng-click="generate()" ng-disabled="generateFlag"/>
-                              <button type="button" ng-click="cancel()" class="btn btn-default sharp customHeight" data-dismiss="modal">Close</button>
+                              <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Load Data" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                              <input ng-csv="getArray" csv-header="getHeader()" lazy-load="true" filename="{{ filename }}.csv" field-separator="{{separator}}" style="border: 0px"
+                                     type="submit" value="Generate" class="btn btn-success sharp" ng-click="generate()" ng-disabled="generateFlag"/>
+                              <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
                           </div>
                       </form>
                   </td>

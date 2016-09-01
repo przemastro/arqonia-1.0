@@ -248,6 +248,6 @@ services.factory('updateObservation', ['$resource',
 services.factory('searchCatalogData', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/catalog', {}, {
-        update: {method:'PUT', isArray:false}
+        update: {method:'PUT', isArray:true}
     });
 }]);

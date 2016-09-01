@@ -1142,63 +1142,91 @@ def objectDetails(name):
 
 
 #--------------------------------------------------Return personal catalog----------------------------------------------
-def catalogData(objectType):
+def catalogData(objectType, abbreviation):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
         objectType = str(objectType)
+        abbreviation = str(abbreviation)
 
+        if(abbreviation=='None'):
+            abbreviation=''
 
 
         controller = ''
         print objectType
         if(objectType == 'Star'):
            #B-V
-           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar'))
+           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
            BVObservationsDifference = fetch_all(get_BVObservationsDifference)
-
            #U-B
-           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar'))
+           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
            UBObservationsDifference = fetch_all(get_UBObservationsDifference)
-
            #R-I
-           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar'))
+           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
            RIObservationsDifference = fetch_all(get_RIObservationsDifference)
-
            #V-I
-           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar'))
+           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
            VIObservationsDifference = fetch_all(get_VIObservationsDifference)
 
 
-           #U
-           get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
-           UObservations = fetch_all(get_UObservations)
+        #U
+        get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        UObservations = fetch_all(get_UObservations)
+        #V
+        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        VObservations = fetch_all(get_VObservations)
+        #B
+        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        BObservations = fetch_all(get_BObservations)
+        #R
+        get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        RObservations = fetch_all(get_RObservations)
+        #I
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        IObservations = fetch_all(get_IObservations)
+        #ObjectNames
+        get_ObjectNames = (queries.get('DatabaseQueries', 'database.getObjectNamesForCatalog') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        ObjectNames = fetch_all(get_ObjectNames)
+        jsonRange = len(UObservations)
 
-           #V
-           get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
-           VObservations = fetch_all(get_VObservations)
+        if(objectType == 'Star'):
+            controller = ''
+            #to create array of objectc if we have only one observation
+            if (jsonRange == 1):
+                controller = str({'01id': "", '02objectNames': "",
+                                  '03uObservations': "", '04vObservations': "", '05bObservations': "",
+                                  '06rObservations': "", '07iObservations': "",
+                                  '08bvObservationsDifference': "", '09ubObservationsDifference': "",
+                                  '10riObservationsDifference': "",'11viObservationsDifference': ""}) + ',' + controller
+            for counter in range(0,jsonRange):
+                i = counter + 1
+                catalogData = {'01id': abbreviation+str(i), '02objectNames': ObjectNames[counter],
+                               '03uObservations': UObservations[counter], '04vObservations': VObservations[counter], '05bObservations': BObservations[counter],
+                              '06rObservations': RObservations[counter], '07iObservations': IObservations[counter],
+                              '08bvObservationsDifference': BVObservationsDifference[counter], '09ubObservationsDifference': UBObservationsDifference[counter],
+                              '10riObservationsDifference': RIObservationsDifference[counter],'11viObservationsDifference': VIObservationsDifference[counter]}
+                controller = str(catalogData) + ',' + controller
+        else:
+            controller = ''
+            #to create array of objectc if we have only one observation
+            if (jsonRange == 1):
+                controller = str({'1id': "", '2objectNames': "",
+                                  '3uObservations': "", '4vObservations': "", '5bObservations': "",
+                                  '6rObservations': "", '7iObservations': ""}) + ',' + controller
+            for counter in range(0,jsonRange):
+                i = counter + 1
+                catalogData = {'1id': abbreviation+str(i), '2objectNames': ObjectNames[counter],
+                               '3uObservations': UObservations[counter], '4vObservations': VObservations[counter], '5bObservations': BObservations[counter],
+                               '6rObservations': RObservations[counter], '7iObservations': IObservations[counter]}
+                controller = str(catalogData) + ',' + controller
 
-           #B
-           get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
-           BObservations = fetch_all(get_BObservations)
-
-           #R
-           get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
-           RObservations = fetch_all(get_RObservations)
-
-           #I
-           get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
-           IObservations = fetch_all(get_IObservations)
+        controller = ast.literal_eval(controller[:-1])
+        controller = json.dumps(controller, skipkeys=True)
+        print controller
 
 
-           catalogData = {'uObservations': UObservations, 'vObservations': VObservations, 'bObservations': BObservations, 'rObservations': RObservations, 'iObservations': IObservations}#,
-                                     #'bvObservationsDifference': BVObservationsDifference, 'ubObservationsDifference': UBObservationsDifference, 'riObservationsDifference': RIObservationsDifference,
-                                     #'viObservationsDifference': VIObservationsDifference}]
-
-
-           print catalogData
-
-        #elif(objectType == 'Comet' or objectType == 'Planetoid'):
+        catalogData = json.loads(controller)
 
         return catalogData
         cursor.close()

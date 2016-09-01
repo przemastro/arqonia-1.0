@@ -123,7 +123,7 @@ parser.add_argument('email', type=str)
 parser.add_argument('password', type=str)
 parser.add_argument('objectType', type=str)
 parser.add_argument('verified', type=str)
-
+parser.add_argument('abbreviation', type=str)
 
 
 class Rest(Resource):
@@ -299,7 +299,7 @@ class RestSubscribe(Resource):
 class RestCatalog(Resource):
     def put(self):
         args = parser.parse_args()
-        catalog = catalogData(args['objectType'])
+        catalog = catalogData(args['objectType'], args['abbreviation'])
         print catalogData
         return jsonify(catalog)
 

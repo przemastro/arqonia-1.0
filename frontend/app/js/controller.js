@@ -709,32 +709,57 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             //Call searchCatalogData service
             console.log('test');
             console.log($scope.objectValue);
-   		    SearchCatalogData.update({objectType:$scope.objectValue}, function(response){
+   		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation}, function(response){
+   		      var globalObject = [];
+   		          if(response.length==2) {
+   		             var len = 1;
+   		          }
+   		          else {
+   		             var len = response.length;
+   		          }
+                  for(var i = 0; i < len; i++) {
+                  var newObject = {}
+                          angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                  newObject[key] = value;
+                           });
+                           globalObject.push(newObject);
+                     }
 
-   		    var object = response[Object.keys(response)[0]];
-   		    console.log(object);
-   		      /*if (object.type == "Star") {
-                 $scope.Data = response
-                 console.log($scope.Data);
-   		         usSpinnerService.stop('spinner-1');
-                 $rootScope.stars = true
-              }*/
+            console.log('test');
+            console.log(globalObject);
+
+            $scope.loadFlag = true;
+            $scope.getArray = globalObject;
+            if ($scope.objectValue == "Star" && response != null) {
+                $scope.getHeader = function () {
+                      return ["Catalog Number", "Object Name", "U", "V", "B", "R", "I", "B-V", "U-B", "R-I", "V-I"]
+                      };
+                $scope.generateFlag = false;
+            }
+            else if (($scope.objectValue == "Comet" || $scope.objectValue == "Planetoid") && response != null){
+                $scope.getHeader = function () {
+                      return ["Catalog Number", "Object Name", "U", "V", "B", "R", "I"]
+                      };
+                $scope.generateFlag = false;
+            }
+            else {
+                $scope.getHeader = function () {
+                      return ["Catalog Number", "Object Name", "U", "V", "B", "R", "I"]
+                      };
+                $scope.generateFlag = true;
+            }
+            usSpinnerService.stop('spinner-1');
    		   });
         };
 
 
-      $scope.loadFlag = true;
-      $scope.generateFlag = false;
-                  $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
-                  $scope.getHeader = function () {return ["A", "B"]};
+
       }
 
       //[Generate]
-      $scope.generateCatalog = function(){
-      console.log('test2');
-
-       console.log($scope.getArray);
-};
+      $scope.generate = function(){
+             $uibModalInstance.dismiss();
+      };
           //[Cancel]
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
