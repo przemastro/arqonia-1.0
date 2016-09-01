@@ -243,3 +243,11 @@ services.factory('updateObservation', ['$resource',
         update: {method:'PUT'}
     });
 }]);
+
+//Trigger SQL Catalog values queries
+services.factory('searchCatalogData', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/catalog', {}, {
+        update: {method:'PUT', isArray:false}
+    });
+}]);

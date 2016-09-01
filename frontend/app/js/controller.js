@@ -693,14 +693,48 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
-	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
-	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
+	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location', 'searchCatalogData',
+	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location, SearchCatalogData) {
 
-      $rootScope.errorFlag = false
-      //[Submit]
+      $rootScope.errorFlag = false;
+      $scope.loadFlag = false;
+      $scope.generateFlag = true;
+
+
+      //[Validate]
+      $scope.loadData = function() {
+
+          if (!$scope.spinneractive) {
+            usSpinnerService.spin('spinner-1');
+            //Call searchCatalogData service
+            console.log('test');
+            console.log($scope.objectValue);
+   		    SearchCatalogData.update({objectType:$scope.objectValue}, function(response){
+
+   		    var object = response[Object.keys(response)[0]];
+   		    console.log(object);
+   		      /*if (object.type == "Star") {
+                 $scope.Data = response
+                 console.log($scope.Data);
+   		         usSpinnerService.stop('spinner-1');
+                 $rootScope.stars = true
+              }*/
+   		   });
+        };
+
+
+      $scope.loadFlag = true;
+      $scope.generateFlag = false;
+                  $scope.getArray = [{a: 1, b:2}, {a:3, b:4}];
+                  $scope.getHeader = function () {return ["A", "B"]};
+      }
+
+      //[Generate]
       $scope.generateCatalog = function(){
+      console.log('test2');
 
-}
+       console.log($scope.getArray);
+};
           //[Cancel]
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

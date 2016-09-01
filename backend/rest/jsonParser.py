@@ -1140,6 +1140,74 @@ def objectDetails(name):
     else:
         cnx.close()
 
+
+#--------------------------------------------------Return personal catalog----------------------------------------------
+def catalogData(objectType):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        objectType = str(objectType)
+
+
+
+        controller = ''
+        print objectType
+        if(objectType == 'Star'):
+           #B-V
+           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar'))
+           BVObservationsDifference = fetch_all(get_BVObservationsDifference)
+
+           #U-B
+           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar'))
+           UBObservationsDifference = fetch_all(get_UBObservationsDifference)
+
+           #R-I
+           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar'))
+           RIObservationsDifference = fetch_all(get_RIObservationsDifference)
+
+           #V-I
+           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar'))
+           VIObservationsDifference = fetch_all(get_VIObservationsDifference)
+
+
+           #U
+           get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
+           UObservations = fetch_all(get_UObservations)
+
+           #V
+           get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
+           VObservations = fetch_all(get_VObservations)
+
+           #B
+           get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
+           BObservations = fetch_all(get_BObservations)
+
+           #R
+           get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
+           RObservations = fetch_all(get_RObservations)
+
+           #I
+           get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by so.ObjectName")
+           IObservations = fetch_all(get_IObservations)
+
+
+           catalogData = {'uObservations': UObservations, 'vObservations': VObservations, 'bObservations': BObservations, 'rObservations': RObservations, 'iObservations': IObservations}#,
+                                     #'bvObservationsDifference': BVObservationsDifference, 'ubObservationsDifference': UBObservationsDifference, 'riObservationsDifference': RIObservationsDifference,
+                                     #'viObservationsDifference': VIObservationsDifference}]
+
+
+           print catalogData
+
+        #elif(objectType == 'Comet' or objectType == 'Planetoid'):
+
+        return catalogData
+        cursor.close()
+    except:
+        print 'errors in catalogData function'
+    else:
+        cnx.close()
+
+
 def calculate_starsParameters(ra, de, code, name, Umag, Vmag, Bmag, BV, UB, RI, VI, SpType):
     details = {"type": "Star", "ra": ra, "de": de, "code": code, "name": name, "Umag": Umag, "Vmag": Vmag, "Bmag": Bmag, "BV": BV, "UB": UB, "RI": RI, "VI": VI, "SpType": SpType}
     return details
@@ -1153,3 +1221,24 @@ def calculate_planetoidsParameters(name, number, h, epoch, m, perihelion, longit
     details = {"type": "Planetoid", "name": name, "number": number, "h": h, "epoch": epoch, "m": m, "perihelion": perihelion,
                "longitude": longitude, "inclination": inclination, "e": e, "n": n, "a": a}
     return details
+
+def fetch_one(get_value):
+    cursor.execute(get_value)
+    Value = cursor.fetchone()
+    Value = Value[0]
+    return Value
+
+
+def fetch_all(get_value):
+    cursor.execute(get_value)
+    Value = cursor.fetchall()
+    Value = [oc[0] for oc in Value]
+    return Value
+
+
+def fetch_all_replace(get_value):
+    cursor.execute(get_value)
+    Value = cursor.fetchall()
+    Value = [u[0] for u in Value]
+    Value = ans = ' '.join(Value).replace(' ', '\n')
+    return Value

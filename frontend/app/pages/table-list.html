@@ -419,24 +419,28 @@
               <tr>
                   <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
                            font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
-                      <form name="generateForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="generateForm.$valid && addRow()">
+                      <form name="generateForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="loadData()">
                           <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
-                              <div style="padding-left: 94px" class="form-group" data-toggle="buttons">
-                                  <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom">
-                                      <input type="radio" class="form-control" ng-model="star" name="radio" required> Star </input>
-                                  </label>
-                                  <label class="btn btn-default pull-left btnMarginRight customLong">
-                                      <input type="radio" class="form-control" ng-model="planetoid" name="radio" required> Planetoid </input>
-                                  </label>
-                                  <label class="btn btn-default pull-left btnMarginRight custom">
-                                      <input type="radio" class="form-control" ng-model="comet" name="radio" required> Comet </input>
-                                  </label>
+                              <div class="btn-group" style="margin-bottom: 15px;margin-left: -50px;">
+                                  <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Star</label>
+                                  <label class="btn btn-default pull-left btnMarginRight customLong" ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Planetoid</label>
+                                  <label class="btn btn-default pull-left btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Comet</label>
                               </div>
                               <div class="form-group">
                                   <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Catalog Name</label>
                                   <div class="col-md-7">
-                                      <input type="text" class="form-control" name="name" ng-model="name" ng-maxlength="100" placeholder="" required/>
-                                      <div ng-messages="generateForm.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                      <input type="text" id="filename" class="form-control" name="filename" ng-model="filename" ng-maxlength="100" placeholder="" required/>
+                                      <div ng-messages="generateForm.filename.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                          <div ng-message="required">This field is required</div>
+                                          <div ng-message="maxlength">This field is too long</div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Catalog Abbreviation</label>
+                                  <div class="col-md-7">
+                                      <input type="text" class="form-control" name="abbreviation" ng-model="abbreviation" ng-maxlength="100" placeholder="" required/>
+                                      <div ng-messages="generateForm.abbreviation.$error" style="color:maroon" role="alert" ng-if='submitted'>
                                           <div ng-message="required">This field is required</div>
                                           <div ng-message="maxlength">This field is too long</div>
                                       </div>
@@ -444,8 +448,10 @@
                               </div>
                           </div>
                           <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
-                              <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Generate" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
-                              <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                              <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Load Data" class="btn btn-primary sharp customHeight" ng-disabled="loadFlag" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                              <input ng-csv="getArray" lazy-load="true" filename="{{ filename }}.csv" field-separator="{{separator}}" style="border: 0px"
+                                     type="submit" value="Generate" class="btn btn-success sharp customHeight" ng-click="generate()" ng-disabled="generateFlag"/>
+                              <button type="button" ng-click="cancel()" class="btn btn-default sharp customHeight" data-dismiss="modal">Close</button>
                           </div>
                       </form>
                   </td>
