@@ -1526,3 +1526,47 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             $uibModalInstance.dismiss('cancel');
           };
         }]);
+
+
+
+//-----------------------------------------------------Reduction--------------------------------------------------------
+
+    //loginCtrl
+	astroApp.controller('reductionCtrl', function($scope) {
+	});
+
+    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$log', (function ($rootScope, $scope, $log) {
+
+        $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
+        $rootScope.images = ['1', '2', '3', '4', '5'];
+        $rootScope.selectType = "SELECT IMAGE TYPE";
+
+        $rootScope.carouselFlag = false;
+        $rootScope.selectImageType = function (value) {
+        console.log(value);
+          $rootScope.carouselFlag = true;
+          $scope.selectedImageType = value;
+          if($scope.selectedImageType == "Dark Frames") {
+                $rootScope.selectType = "DARK FRAMES";
+             // Remove the owl-loaded class after initialisation
+                var $owl = $('.owl-carousel');
+                $owl.owlCarousel().removeClass('owl-loaded');
+
+
+            function sleep (time) {
+              return new Promise((resolve) => setTimeout(resolve, time));
+            }
+
+            sleep(1000).then(() => {
+                console.log('tutaj');
+
+                // Show the carousel and trigger refresh
+                $owl.show(function() {
+                  $(this).addClass('owl-loaded').trigger('refresh.owl.carousel');
+                })
+                $rootScope.images = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
+                             })
+
+             }
+        }
+     })]);
