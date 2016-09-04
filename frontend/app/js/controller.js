@@ -1535,10 +1535,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('reductionCtrl', function($scope) {
 	});
 
-    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$log', (function ($rootScope, $scope, $log) {
+    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$log', '$timeout', '$window',
+                        (function ($rootScope, $scope, $log, $timeout, $window) {
+
+        $scope.uploadFlag = true;
 
         $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
-        $rootScope.images = ['1', '2', '3', '4', '5'];
+        $rootScope.images = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
+                             '16', '17', '18', '19', '20', '21'];
         $rootScope.selectType = "SELECT IMAGE TYPE";
 
         $rootScope.carouselFlag = false;
@@ -1547,26 +1551,56 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $rootScope.carouselFlag = true;
           $scope.selectedImageType = value;
           if($scope.selectedImageType == "Dark Frames") {
+            $scope.uploadFlag = false;
                 $rootScope.selectType = "DARK FRAMES";
-             // Remove the owl-loaded class after initialisation
-                var $owl = $('.owl-carousel');
-                $owl.owlCarousel().removeClass('owl-loaded');
 
 
             function sleep (time) {
               return new Promise((resolve) => setTimeout(resolve, time));
             }
+            //delete $rootScope.images;
+            //$rootScope.images = ['1', '2', '3'];
 
-            sleep(1000).then(() => {
-                console.log('tutaj');
 
-                // Show the carousel and trigger refresh
-                $owl.show(function() {
-                  $(this).addClass('owl-loaded').trigger('refresh.owl.carousel');
-                })
-                $rootScope.images = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
-                             })
+            /*sleep(100).then(() => {
+               $(function() {
+                 delete $rootScope.images;
+                 $rootScope.images = ['1', '2', '3'];
+                 console.log('tutaj');
+               });
+            });
+            $( ".owl-wrapper-outer" ).remove();
+            $(window).trigger('resize');
 
-             }
+            var carousel = Object.create(Carousel);
+
+            sleep(100).then(() => {
+            carousel.init(options, this);})*/
+
+          }
+
+          if($scope.selectedImageType == "Flat Fields") {
+                $rootScope.selectType = "FLAT FIELDS";
+                $scope.uploadFlag = false;
+
+          }
+
+          if($scope.selectedImageType == "Raw Images") {
+                $rootScope.selectType = "RAW IMAGES";
+                $scope.uploadFlag = false;
+
+          }
+
+          if($scope.selectedImageType == "Bias Frames") {
+                $rootScope.selectType = "BIAS FRAMES";
+                $scope.uploadFlag = false;
+
+          }
+
+          if($scope.selectedImageType == "Processed Images") {
+                $rootScope.selectType = "PROCESSED IMAGES";
+                $scope.uploadFlag = true;
+
+          }
         }
      })]);

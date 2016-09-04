@@ -1,30 +1,29 @@
 <body ng-controller = "reductionCtrl" ng-app = "astroApp">
 <div ng-controller = "dataReductionCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
-    <table style="max-width: 1075px; margin: 10px auto" st-table="displayedObservations" st-safe-src="observations" class="tableList">
+    <table style="max-width: 1070px; margin: 10px" st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
-            <td colspan="3" style="vertical-align: top;padding-left:0px;height:480px;border-style: solid;border-width: 1px;border-color: #e1e1e1;width:50%;margin-bottom: 7px;">
-                <div style="max-width:500px" id="sync1" class="owl-carousel">
-                    <div class="item"><h1>1</h1></div>
-                    <div class="item"><h1>2</h1></div>
-                    <div class="item"><h1>3</h1></div>
-                    <div class="item"><h1>4</h1></div>
-                    <div class="item"><h1>5</h1></div>
-                    <div class="item"><h1>6</h1></div>
-                    <div class="item"><h1>7</h1></div>
-                    <div class="item"><h1>8</h1></div>
-                    <div class="item"><h1>9</h1></div>
-                    <div class="item"><h1>10</h1></div>
-                    <div class="item"><h1>11</h1></div>
-                    <div class="item"><h1>12</h1></div>
-                    <div class="item"><h1>13</h1></div>
-                    <div class="item"><h1>14</h1></div>
-                    <div class="item"><h1>15</h1></div>
-                    <div class="item"><h1>16</h1></div>
-                    <div class="item"><h1>17</h1></div>
-                    <div class="item"><h1>18</h1></div>
+            <td colspan="3" style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 0px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;max-width:495px">
+                <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel">
+                    <div ng-repeat="image in images">
+                        <div style="width:500px;height:490px;margin: 0px;" class="owl-items">
+                            <div style="padding:0px;padding-right: 0px;" class="item">
+                                <img width="530px" height="460px" src="fits/vega.jpg" alt="...">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </td>
-            <td colspan="3" style="vertical-align: top;padding-left:0px;height:430px;border-style: solid;border-width: 1px;border-color: #e1e1e1;width:50%;margin-bottom: 7px;">Image Placeholder</td>
+            <td colspan="3" style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 0px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;max-width:500px">
+                <div style="max-width:530px;padding:0px">
+                        <div style="max-width:500px;height:440px;margin: 0px;" class="owl-items">
+                            <div style="padding:0px;padding-left: 15px" class="item">
+                                <img width="530px" height="460px" src="fits/vega.jpg" alt="...">
+                            </div>
+                        </div>
+                </div>
+            </td>
         </tr>
         <tr>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:20%">
@@ -40,24 +39,31 @@
                 </div>
             </td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:15%;">
-                <label style="background-color: rgb(77, 157, 194);border:0px;" class="btn btn-primary btn-file sharp customHeight"> Browse
-                   <input style="display:none;" type="file" file-model = "myFile2" name="vFileName" multiple />
+                <label style="background-color: rgb(77, 157, 194);border:0px;" class="btn btn-primary btn-file sharp customHeight" ng-disabled="uploadFlag"> Browse
+                   <input style="display:none;" type="file" file-model = "myFile2" name="vFileName" multiple ng-disabled="uploadFlag"/>
                 </label>
             </td>
-            <td colspan="2" style="border-bottom: 0px;padding-right:0px;margin-bottom: 7px;width:20%;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+            <td colspan="2" style="border-bottom: 0px;padding-right:0px;margin-bottom: 7px;width:25%;text-decoration: none;padding: 0px 0px;font-family: inherit;font-weight: normal;
                                           font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">{{selectType}}</td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:15%"><input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:20%"><input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
         </tr>
     </table>
-    <div style="position:relative;bottom:0px;margin:10px">
+    <div style="position:relative;bottom:0px;margin:10px;margin-top:-10px">
         <div  id="sync2" class="owl-carousel">
             <div ng-repeat="image in images">
-                <div class="owl-items"><div class="item"><h1>{{image}}</h1></div></div>
+                <div style="width:80px;height:81px;margin: 1px auto;" class="owl-items">
+                    <div style="padding:1px;padding-right: 1px" class="item">
+                        <img width="68" height="80" src="fits/vega.jpg" alt="..." style="opacity: 0.5;">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 <script>
 
@@ -135,5 +141,13 @@
       }
 
     });
+</script>
+
+<script>
+    $('.fade_hov').hover(function(){
+                    $(this).siblings().addClass('fade');
+            }, function(){
+                    $(this).siblings().removeClass('fade');
+            });
 </script>
 </body>
