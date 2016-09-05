@@ -14,6 +14,7 @@ cursor = cnx.cursor()
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+#--------------------------------------run DB bi.observationsDelta procedure--------------------------------------------
 def procRunner():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -34,11 +35,6 @@ def procRunner():
             get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i+" order by id desc")
             Log = str(fetch_one(get_Log))
             if(Log):
-                #fn = open('api.py', 'a')
-                #fn.write(" ")
-                #fn.seek(-1, os.SEEK_END)
-                #fn.truncate()
-                #fn.close()
                 break
             else:
                 continue
@@ -48,6 +44,7 @@ def procRunner():
     else:
         cnx.close()
 
+#--------------------------------------------------------Remove Observation---------------------------------------------
 def deleteObservation(id):
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -64,7 +61,7 @@ def deleteObservation(id):
     else:
         cnx.close()
 
-
+#-----------------------------------------------------------------------------------------------------------------------
 def fetch_one(get_value):
     cursor.execute(get_value)
     Value = cursor.fetchone()

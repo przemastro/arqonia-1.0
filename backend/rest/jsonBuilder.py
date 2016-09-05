@@ -11,7 +11,7 @@ queries.read('../resources/queries.properties')
 cnx = pyodbc.connect(dbAddress)
 cursor = cnx.cursor()
 
-
+#-------------------------------------------table-list observations data------------------------------------------------
 def json_data():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -21,46 +21,26 @@ def json_data():
         getIds = fetch_all(get_IdFromObservationsSorted)
 
         controller = ''
-
         for counter in getIds:
             id = str(counter)
             get_objectName = (queries.get('DatabaseQueries', 'database.getStarNameFromObservationsSorted') + id)
             get_StartDate = (queries.get('DatabaseQueries', 'database.getStartDateFromObservationsSorted') + id)
             get_EndDate = (queries.get('DatabaseQueries', 'database.getEndDateFromObservationsSorted') + id)
-            get_UPhotometryFlag = (
-            queries.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
-            get_UPhotometryFlux = (
-            queries.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
-            get_UPhotometryTime = (
-            queries.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
-            get_VPhotometryFlag = (
-            queries.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
-            get_VPhotometryFlux = (
-            queries.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
-            get_VPhotometryTime = (
-            queries.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
-            get_BPhotometryFlag = (
-            queries.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
-            get_BPhotometryFlux = (
-            queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
-            get_BPhotometryTime = (
-            queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
-            get_RPhotometryFlag = (
-            queries.get('DatabaseQueries', 'database.getRPhotometryFlagFromRPhotometrySorted') + id)
-            get_RPhotometryFlux = (
-            queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
-            get_RPhotometryTime = (
-            queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
-            get_IPhotometryFlag = (
-            queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
-            get_IPhotometryFlux = (
-            queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
-            get_IPhotometryTime = (
-            queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
-
-            objectName = str(fetch_one(get_objectName))
-            StartDate = str(fetch_one(get_StartDate))
-            EndDate = str(fetch_one(get_EndDate))
+            get_UPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
+            get_UPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
+            get_UPhotometryTime = (queries.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
+            get_VPhotometryFlag = (queries.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
+            get_VPhotometryFlux = (queries.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
+            get_VPhotometryTime = (queries.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
+            get_BPhotometryFlag = (queries.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
+            get_BPhotometryFlux = (queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
+            get_BPhotometryTime = (queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
+            get_RPhotometryFlag = (queries.get('DatabaseQueries', 'database.getRPhotometryFlagFromRPhotometrySorted') + id)
+            get_RPhotometryFlux = (queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
+            get_RPhotometryTime = (queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
+            get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
+            get_IPhotometryFlux = ( queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
+            get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
 
             UPhotometry = str(fetch_one(get_UPhotometryFlag))
             if UPhotometry != 'null' and UPhotometry != '0':
@@ -112,17 +92,12 @@ def json_data():
                 IPhotometryFlux = 'No data available'
                 IPhotometryTime = 'No data available'
 
-            object = {'id': id, 'name': objectName, 'startDate': StartDate, 'endDate': EndDate,
-                      'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux,
-                      'uPhotometryTime': UPhotometryTime,
-                      'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux,
-                      'vPhotometryTime': VPhotometryTime,
-                      'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux,
-                      'bPhotometryTime': BPhotometryTime,
-                      'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux,
-                      'rPhotometryTime': RPhotometryTime,
-                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux,
-                      'iPhotometryTime': IPhotometryTime}
+            object = {'id': id, 'name': str(fetch_one(get_objectName)), 'startDate': str(fetch_one(get_StartDate)), 'endDate': str(fetch_one(get_EndDate)),
+                      'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux, 'uPhotometryTime': UPhotometryTime,
+                      'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux, 'vPhotometryTime': VPhotometryTime,
+                      'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux, 'bPhotometryTime': BPhotometryTime,
+                      'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux, 'rPhotometryTime': RPhotometryTime,
+                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime}
 
             controller = str(object) + ',' + controller
 
@@ -138,26 +113,19 @@ def json_data():
     else:
         cnx.close()
 
-
+#------------------------------------------------------Admin Panel data-------------------------------------------------
 def json_load():
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
-        get_LastLoadObservationId = (
-        queries.get('DatabaseQueries', 'database.getLastLoadObservationIdFromStagingObservations'))
+        get_LastLoadObservationId = (queries.get('DatabaseQueries', 'database.getLastLoadObservationIdFromStagingObservations'))
         get_LastLoadStarName = (queries.get('DatabaseQueries', 'database.getLastLoadStarNameFromStagingObservations'))
         get_LastLoadStartDate = (queries.get('DatabaseQueries', 'database.getLastLoadStartDateFromStagingObservations'))
         get_LastLoadEndDate = (queries.get('DatabaseQueries', 'database.getLastLoadEndDateFromStagingObservations'))
 
-        LastLoadObservationId = fetch_one(get_LastLoadObservationId)
-        LastLoadStarName = fetch_one(get_LastLoadStarName)
-        LastLoadStartDate = fetch_one(get_LastLoadStartDate)
-        LastLoadEndDate = fetch_one(get_LastLoadEndDate)
-
-        lastLoad = [
-            {'observationId': LastLoadObservationId, 'starName': LastLoadStarName, 'startDate': LastLoadStartDate,
-             'endDate': LastLoadEndDate}]
+        lastLoad = [{'observationId': fetch_one(get_LastLoadObservationId), 'starName': fetch_one(get_LastLoadStarName),
+                     'startDate': fetch_one(get_LastLoadStartDate), 'endDate': fetch_one(get_LastLoadEndDate)}]
 
         cursor.close()
         json_load.jsonLastLoad = lastLoad
@@ -167,7 +135,7 @@ def json_load():
     else:
         cnx.close()
 
-
+#-----------------------------------------------------HR Diagram Range--------------------------------------------------
 def json_hrDiagramRange():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -178,48 +146,28 @@ def json_hrDiagramRange():
         get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromBVDiagramAvg'))
         get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromVPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromVPhotometrySorted'))
-        XMax = fetch_one(get_XMax)
-        XMin = fetch_one(get_XMin)
-        YMax = fetch_one(get_YMax)
-        YMin = fetch_one(get_YMin)
-        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_hrDiagramRange.jsonBVDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonBVDiagramRange = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         #U-B
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromUBDiagramAvg'))
         get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromUBDiagramAvg'))
         get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromBPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromBPhotometrySorted'))
-        XMax = fetch_one(get_XMax)
-        XMin = fetch_one(get_XMin)
-        YMax = fetch_one(get_YMax)
-        YMin = fetch_one(get_YMin)
-        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_hrDiagramRange.jsonUBDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonUBDiagramRange = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         #R-I
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromRIDiagramAvg'))
         get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromRIDiagramAvg'))
         get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromIPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromIPhotometrySorted'))
-        XMax = fetch_one(get_XMax)
-        XMin = fetch_one(get_XMin)
-        YMax = fetch_one(get_YMax)
-        YMin = fetch_one(get_YMin)
-        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_hrDiagramRange.jsonRIDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonRIDiagramRange = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         #V-I
         get_XMax = (queries.get('DatabaseQueries', 'database.getXMaxFromVIDiagramAvg'))
         get_XMin = (queries.get('DatabaseQueries', 'database.getXMinFromVIDiagramAvg'))
         get_YMax = (queries.get('DatabaseQueries', 'database.getYMaxFromIPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getYMinFromIPhotometrySorted'))
-        XMax = fetch_one(get_XMax)
-        XMin = fetch_one(get_XMin)
-        YMax = fetch_one(get_YMax)
-        YMin = fetch_one(get_YMin)
-        observationsDiagram = [{'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_hrDiagramRange.jsonVIDiagramRange = observationsDiagram
+        json_hrDiagramRange.jsonVIDiagramRange = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         cursor.close()
 
@@ -228,7 +176,7 @@ def json_hrDiagramRange():
     else:
         cnx.close()
 
-
+#--------------------------------------------------------HR Diagram data------------------------------------------------
 def json_hrdiagram():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -238,45 +186,25 @@ def json_hrdiagram():
         get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
         get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromBVDiagramAvg'))
-        VObservations = fetch_all(get_VObservations)
-        BVObservationsDifference = fetch_all(get_BVObservationsDifference)
-        StarNames = fetch_all(get_StarNames)
-        observationsHRDiagram = [{'bvObservationsDifference': BVObservationsDifference, 'vObservations': VObservations,
-                                  'starNames': StarNames}]
-        json_hrdiagram.jsonBVDiagram = observationsHRDiagram
+        json_hrdiagram.jsonBVDiagram = [{'bvObservationsDifference': fetch_all(get_BVObservationsDifference), 'vObservations': fetch_all(get_VObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #U-B
         get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySorted'))
         get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromUBDiagramAvg'))
-        BObservations = fetch_all(get_BObservations)
-        UBObservationsDifference = fetch_all(get_UBObservationsDifference)
-        StarNames = fetch_all(get_StarNames)
-        observationsHRDiagram = [{'ubObservationsDifference': UBObservationsDifference, 'bObservations': BObservations,
-                                  'starNames': StarNames}]
-        json_hrdiagram.jsonUBDiagram = observationsHRDiagram
+        json_hrdiagram.jsonUBDiagram = [{'ubObservationsDifference': fetch_all(get_UBObservationsDifference), 'bObservations': fetch_all(get_BObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #R-I
         get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
         get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromRIDiagramAvg'))
-        IObservations = fetch_all(get_IObservations)
-        RIObservationsDifference = fetch_all(get_RIObservationsDifference)
-        StarNames = fetch_all(get_StarNames)
-        observationsHRDiagram = [{'riObservationsDifference': RIObservationsDifference, 'iObservations': IObservations,
-                                  'starNames': StarNames}]
-        json_hrdiagram.jsonRIDiagram = observationsHRDiagram
+        json_hrdiagram.jsonRIDiagram = [{'riObservationsDifference': fetch_all(get_RIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #V-I
         get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
         get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromVIDiagramAvg'))
-        IObservations = fetch_all(get_IObservations)
-        VIObservationsDifference = fetch_all(get_VIObservationsDifference)
-        StarNames = fetch_all(get_StarNames)
-        observationsHRDiagram = [{'viObservationsDifference': VIObservationsDifference, 'iObservations': IObservations,
-                                  'starNames': StarNames}]
-        json_hrdiagram.jsonVIDiagram = observationsHRDiagram
+        json_hrdiagram.jsonVIDiagram = [{'viObservationsDifference': fetch_all(get_VIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]
 
         cursor.close()
 
@@ -285,6 +213,7 @@ def json_hrdiagram():
     else:
         cnx.close()
 
+#---------------------------------------------------LC Diagram range----------------------------------------------------
 def json_lcDiagramRange():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -296,14 +225,7 @@ def json_lcDiagramRange():
         get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromUPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromUPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromUPhotometrySorted'))
-
-        XMax = fetch_all(get_XMax)
-        XMin = fetch_all(get_XMin)
-        YMax = fetch_all(get_YMax)
-        YMin = fetch_all(get_YMin)
-        StarNames = fetch_all(get_StarNames)
-        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_lcDiagramRange.jsonLCUDiagramRange = observationsDiagram
+        json_lcDiagramRange.jsonLCUDiagramRange = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
 
         #V
         get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromVPhotometrySorted'))
@@ -311,14 +233,7 @@ def json_lcDiagramRange():
         get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromVPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromVPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromVPhotometrySorted'))
-
-        XMax = fetch_all(get_XMax)
-        XMin = fetch_all(get_XMin)
-        YMax = fetch_all(get_YMax)
-        YMin = fetch_all(get_YMin)
-        StarNames = fetch_all(get_StarNames)
-        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_lcDiagramRange.jsonLCVDiagramRange = observationsDiagram
+        json_lcDiagramRange.jsonLCVDiagramRange = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
 
         #B
         get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromBPhotometrySorted'))
@@ -326,14 +241,7 @@ def json_lcDiagramRange():
         get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromBPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromBPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromBPhotometrySorted'))
-
-        XMax = fetch_all(get_XMax)
-        XMin = fetch_all(get_XMin)
-        YMax = fetch_all(get_YMax)
-        YMin = fetch_all(get_YMin)
-        StarNames = fetch_all(get_StarNames)
-        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_lcDiagramRange.jsonLCBDiagramRange = observationsDiagram
+        json_lcDiagramRange.jsonLCBDiagramRange = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
 
         #R
         get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromRPhotometrySorted'))
@@ -341,14 +249,7 @@ def json_lcDiagramRange():
         get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromRPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromRPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromRPhotometrySorted'))
-
-        XMax = fetch_all(get_XMax)
-        XMin = fetch_all(get_XMin)
-        YMax = fetch_all(get_YMax)
-        YMin = fetch_all(get_YMin)
-        StarNames = fetch_all(get_StarNames)
-        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_lcDiagramRange.jsonLCRDiagramRange = observationsDiagram
+        json_lcDiagramRange.jsonLCRDiagramRange = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
 
         #I
         get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromIPhotometrySorted'))
@@ -356,14 +257,7 @@ def json_lcDiagramRange():
         get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromIPhotometrySorted'))
         get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromIPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromIPhotometrySorted'))
-
-        XMax = fetch_all(get_XMax)
-        XMin = fetch_all(get_XMin)
-        YMax = fetch_all(get_YMax)
-        YMin = fetch_all(get_YMin)
-        StarNames = fetch_all(get_StarNames)
-        observationsDiagram = [{'StarNames': StarNames,'XMax': XMax, 'XMin': XMin, 'YMax': YMax, 'YMin': YMin}]
-        json_lcDiagramRange.jsonLCIDiagramRange = observationsDiagram
+        json_lcDiagramRange.jsonLCIDiagramRange = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
 
         cursor.close()
 
@@ -372,6 +266,7 @@ def json_lcDiagramRange():
     else:
         cnx.close()
 
+#------------------------------------------------------LC Diagram data--------------------------------------------------
 def json_lcDiagram():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -381,51 +276,31 @@ def json_lcDiagram():
         get_UObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromUPhotometrySorted'))
         get_UTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromUPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromUPhotometrySorted'))
-        UObservations = fetch_all(get_UObservations)
-        UTimes = fetch_all(get_UTimes)
-        StarNames = fetch_all(get_StarNames)
-        observationsLCDiagram = [{'starNames': StarNames, 'uObservations': UObservations, 'uTimes': UTimes}]
-        json_lcDiagram.jsonLCUDiagram = observationsLCDiagram
+        json_lcDiagram.jsonLCUDiagram = [{'starNames': fetch_all(get_StarNames), 'uObservations': fetch_all(get_UObservations), 'uTimes': fetch_all(get_UTimes)}]
 
         #V
         get_VObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromVPhotometrySorted'))
         get_VTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromVPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromVPhotometrySorted'))
-        VObservations = fetch_all(get_VObservations)
-        VTimes = fetch_all(get_VTimes)
-        StarNames = fetch_all(get_StarNames)
-        observationsLCDiagram = [{'starNames': StarNames, 'vObservations': VObservations, 'vTimes': VTimes}]
-        json_lcDiagram.jsonLCVDiagram = observationsLCDiagram
+        json_lcDiagram.jsonLCVDiagram = [{'starNames': fetch_all(get_StarNames), 'vObservations': fetch_all(get_VObservations), 'vTimes': fetch_all(get_VTimes)}]
 
         #B
         get_BObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromBPhotometrySorted'))
         get_BTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromBPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromBPhotometrySorted'))
-        BObservations = fetch_all(get_BObservations)
-        BTimes = fetch_all(get_BTimes)
-        StarNames = fetch_all(get_StarNames)
-        observationsLCDiagram = [{'starNames': StarNames, 'bObservations': BObservations, 'bTimes': BTimes}]
-        json_lcDiagram.jsonLCBDiagram = observationsLCDiagram
+        json_lcDiagram.jsonLCBDiagram = [{'starNames': fetch_all(get_StarNames), 'bObservations': fetch_all(get_BObservations), 'bTimes': fetch_all(get_BTimes)}]
 
         #R
         get_RObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromRPhotometrySorted'))
         get_RTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromRPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromRPhotometrySorted'))
-        RObservations = fetch_all(get_RObservations)
-        RTimes = fetch_all(get_RTimes)
-        StarNames = fetch_all(get_StarNames)
-        observationsLCDiagram = [{'starNames': StarNames, 'rObservations': RObservations, 'rTimes': RTimes}]
-        json_lcDiagram.jsonLCRDiagram = observationsLCDiagram
+        json_lcDiagram.jsonLCRDiagram = [{'starNames': fetch_all(get_StarNames), 'rObservations': fetch_all(get_RObservations), 'rTimes': fetch_all(get_RTimes)}]
 
         #I
         get_IObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromIPhotometrySorted'))
         get_ITimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromIPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromIPhotometrySorted'))
-        IObservations = fetch_all(get_IObservations)
-        ITimes = fetch_all(get_ITimes)
-        StarNames = fetch_all(get_StarNames)
-        observationsLCDiagram = [{'starNames': StarNames, 'iObservations': IObservations, 'iTimes': ITimes}]
-        json_lcDiagram.jsonLCIDiagram = observationsLCDiagram
+        json_lcDiagram.jsonLCIDiagram = [{'starNames': fetch_all(get_StarNames), 'iObservations': fetch_all(get_IObservations), 'iTimes': fetch_all(get_ITimes)}]
 
         cursor.close()
 
@@ -434,7 +309,7 @@ def json_lcDiagram():
     else:
         cnx.close()
 
-
+#------------------------------------------------------Carousel Statistics----------------------------------------------
 def json_statistics():
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -460,6 +335,7 @@ def json_statistics():
         cnx.close()
 
 
+#-----------------------------------------------------------------------------------------------------------------------
 def fetch_one(get_value):
     cursor.execute(get_value)
     Value = cursor.fetchone()

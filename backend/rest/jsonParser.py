@@ -49,36 +49,31 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
      #--uPhotometry
      uFileName = str(uFileName)
      if uFileName != 'None':
-        insert_uFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
-        cursor.execute(insert_uFileName)
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
         cnx.commit()
 
      #--vPhotometry
      vFileName = str(vFileName)
      if vFileName != 'None':
-        insert_vFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
-        cursor.execute(insert_vFileName)
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
         cnx.commit()
 
      #--bPhotometry
      bFileName = str(bFileName)
      if bFileName != 'None':
-        insert_bFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
-        cursor.execute(insert_bFileName)
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
         cnx.commit()
 
      #--rPhotometry
      rFileName = str(rFileName)
      if rFileName != 'None':
-         insert_rFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+rFileName+"', ' ', ' ')")
-         cursor.execute(insert_rFileName)
+         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+rFileName+"', ' ', ' ')")
          cnx.commit()
 
      #--iPhotometry
      iFileName = str(iFileName)
      if iFileName != 'None':
-         insert_iFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+iFileName+"', ' ', ' ')")
-         cursor.execute(insert_iFileName)
+         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+iFileName+"', ' ', ' ')")
          cnx.commit()
 
 
