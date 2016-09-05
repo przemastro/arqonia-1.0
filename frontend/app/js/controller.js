@@ -21,12 +21,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$rootScope', '$log', '$routeParams', 'getObservations', '$cookies',
-                                     function($scope, $log, $routeParams, Observations, $cookies) {
+    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', '$cookies',
+                                     function($scope, $routeParams, Observations, $cookies) {
        //Get data
        $scope.displayedObservations = [];
        $scope.observations = Observations.query();
-       $log.debug($scope.observations);
 
        //Add some animation to the table
        $scope.toggleAnimation = function () {
@@ -34,7 +33,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.itemsByPage=15
        };
        //$scope.isUserLoggedIn = $cookies.get('cook');
-
     }]);
 
     //ModalCtrl
@@ -183,105 +181,96 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        };
     }]);
 
-    astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
-                                     function ($rootScope, $scope, $log, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
+                                     function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
-  //DatePicker
-  $scope.inlineOptions = {
-    customClass: getDayClass,
-    minDate: new Date(),
-    showWeeks: true
-  };
+        //DatePicker
+        $scope.inlineOptions = {
+          customClass: getDayClass,
+          minDate: new Date(),
+          showWeeks: true
+        };
 
-  $scope.dateOptions = {
-    formatYear: 'yyyy',
-    maxDate: new Date(2020, 5, 22),
-    minDate: new Date(),
-    startingDay: 1
-  };
+        $scope.dateOptions = {
+          formatYear: 'yyyy',
+          maxDate: new Date(2020, 5, 22),
+          minDate: new Date(),
+          startingDay: 1
+        };
 
 
-  $scope.toggleMin = function() {
-    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-  };
+        $scope.toggleMin = function() {
+          $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+          $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+        };
 
-  $scope.toggleMin();
+        $scope.toggleMin();
 
-  $scope.open1 = function() {
-    $scope.popup1.opened = true;
-  };
+        $scope.open1 = function() {
+          $scope.popup1.opened = true;
+        };
 
-  $scope.open2 = function() {
-    $scope.popup2.opened = true;
-  };
+        $scope.open2 = function() {
+          $scope.popup2.opened = true;
+        };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.endDate = new Date(year, month, day);
-  };
+        $scope.setDate = function(year, month, day) {
+          $scope.endDate = new Date(year, month, day);
+        };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.startDate = new Date(year, month, day);
-  };
+        $scope.setDate = function(year, month, day) {
+          $scope.startDate = new Date(year, month, day);
+        };
 
-  $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
-  $scope.format = $scope.formats[0];
-  $scope.altInputFormats = ['M!/d!/yyyy'];
+        $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
+        $scope.format = $scope.formats[0];
+        $scope.altInputFormats = ['M!/d!/yyyy'];
 
-  $scope.popup1 = {
-    opened: false
-  };
+        $scope.popup1 = {
+          opened: false
+        };
 
-  $scope.popup2 = {
-    opened: false
-  };
+        $scope.popup2 = {
+          opened: false
+        };
 
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var afterTomorrow = new Date();
-  afterTomorrow.setDate(tomorrow.getDate() + 1);
-  $scope.events = [
-    {
-      date: tomorrow,
-      status: 'full'
-    },
-    {
-      date: afterTomorrow,
-      status: 'partially'
-    }
-  ];
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        $scope.events = [
+          {
+            date: tomorrow,
+            status: 'full'
+          },
+          {
+            date: afterTomorrow,
+            status: 'partially'
+          }
+        ];
 
-  function getDayClass(data) {
-    var date = data.date,
-      mode = data.mode;
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
+        function getDayClass(data) {
+          var date = data.date,
+            mode = data.mode;
+          if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-      for (var i = 0; i < $scope.events.length; i++) {
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+            for (var i = 0; i < $scope.events.length; i++) {
+              var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
+              if (dayToCheck === currentDay) {
+                return $scope.events[i].status;
+              }
+            }
+          }
+
+          return '';
         }
-      }
-    }
-
-    return '';
-  }
-
-//end datepicker
-
 
       //[Submit]
       $scope.addRow = function(){
-      console.log('Dates2');
-      console.log($scope.startDate);
-      console.log($scope.endDate);
 
-
-          console.log($scope.objectValue);
-          console.log($scope.radioValue);
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
@@ -328,22 +317,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              var file5 = 'No file5';
              }
 
-          console.log('test');
-          console.log($scope.endDate);
           //Call postObservation service...
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
    		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
    		                     verified:$scope.radioValue}, function(response){
    		  $scope.message = response.message;
-   		  $log.debug($scope.message);
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
    		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
               $rootScope.showSuccessAlert = true;
               // switch flag
-              console.log($scope.successTextAlert);
               $rootScope.switchBool = function (value) {
                   $rootScope[value] = !$rootScope[value];
               };
@@ -351,16 +336,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $rootScope.showSuccessAlert = false;
              }, 5000);
       };
-      console.log($rootScope.showSuccessAlert);
-
       //[Cancel]
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
     }]);
 
-    astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies',
-                                           function ($rootScope, $scope, $log, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies',
+                                           function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
 
       $scope.ob = $scope.observations;
 
@@ -373,7 +356,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.remove = function () {
         //remove photometry is an observation.id so I can keep the correct index of an observation in table list
         $scope.removePhotometry = removePhotometry;
-        $log.debug($scope.removePhotometry);
         //Call removeObservation service
         RemoveObservation.save({id:removePhotometry}, function(response){
            $scope.message = response.message;
@@ -383,7 +365,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
                $rootScope.showSuccessAlert = true;
                // switch flag
-               console.log($scope.successTextAlert);
                $rootScope.switchBool = function (value) {
                    $rootScope[value] = !$rootScope[value];
                };
@@ -394,8 +375,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
-    astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
-                                         function ($rootScope, $scope, $log, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
+                                         function ($rootScope, $scope, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
 
@@ -419,7 +400,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       		for( var i = 0; i < evaluatedOb; i++ ) {
       			if( $scope.ob[i].id === editPhotometry ) {
       				editPhotometry2 = i;
-      				$log.debug($scope.ob[editPhotometry2].name);
       				$scope.name = $scope.ob[editPhotometry2].name;
       				$scope.startDate = $scope.ob[editPhotometry2].startDate;
       				$scope.endDate = $scope.ob[editPhotometry2].endDate;
@@ -428,104 +408,95 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       		}
 
 
-//DatePicker
+      //DatePicker
 
- $scope.startDate = new Date($scope.startDate);
- $scope.endDate = new Date($scope.endDate);
+       $scope.startDate = new Date($scope.startDate);
+       $scope.endDate = new Date($scope.endDate);
 
-      console.log('Dates1');
-      console.log($scope.startDate);
-      console.log($scope.endDate);
+        $scope.inlineOptions = {
+          customClass: getDayClass,
+          minDate: new Date(),
+          showWeeks: true
+        };
 
-  $scope.inlineOptions = {
-    customClass: getDayClass,
-    minDate: new Date(),
-    showWeeks: true
-  };
-
-  $scope.dateOptions = {
-    formatYear: 'yyyy',
-    maxDate: new Date(2020, 5, 22),
-    minDate: new Date(),
-    startingDay: 1
-  };
+        $scope.dateOptions = {
+          formatYear: 'yyyy',
+          maxDate: new Date(2020, 5, 22),
+          minDate: new Date(),
+          startingDay: 1
+        };
 
 
-  $scope.toggleMin = function() {
-    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-  };
+        $scope.toggleMin = function() {
+          $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+          $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+        };
 
-  $scope.toggleMin();
+        $scope.toggleMin();
 
-  $scope.open1 = function() {
-    $scope.popup1.opened = true;
-  };
+        $scope.open1 = function() {
+          $scope.popup1.opened = true;
+        };
 
-  $scope.open2 = function() {
-    $scope.popup2.opened = true;
-  };
+        $scope.open2 = function() {
+          $scope.popup2.opened = true;
+        };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.endDate = new Date(year, month, day);
-  };
+        $scope.setDate = function(year, month, day) {
+          $scope.endDate = new Date(year, month, day);
+        };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.startDate = new Date(year, month, day);
-  };
+        $scope.setDate = function(year, month, day) {
+          $scope.startDate = new Date(year, month, day);
+        };
 
-  $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
-  $scope.format = $scope.formats[0];
-  $scope.altInputFormats = ['M!/d!/yyyy'];
+        $scope.formats = ['yyyy-MM-dd HH:mm:ss Z'];
+        $scope.format = $scope.formats[0];
+        $scope.altInputFormats = ['M!/d!/yyyy'];
 
-  $scope.popup1 = {
-    opened: false
-  };
+        $scope.popup1 = {
+          opened: false
+        };
 
-  $scope.popup2 = {
-    opened: false
-  };
+        $scope.popup2 = {
+          opened: false
+        };
 
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var afterTomorrow = new Date();
-  afterTomorrow.setDate(tomorrow.getDate() + 1);
-  $scope.events = [
-    {
-      date: tomorrow,
-      status: 'full'
-    },
-    {
-      date: afterTomorrow,
-      status: 'partially'
-    }
-  ];
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var afterTomorrow = new Date();
+        afterTomorrow.setDate(tomorrow.getDate() + 1);
+        $scope.events = [
+          {
+            date: tomorrow,
+            status: 'full'
+          },
+          {
+            date: afterTomorrow,
+            status: 'partially'
+          }
+        ];
 
-  function getDayClass(data) {
-    var date = data.date,
-      mode = data.mode;
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
+        function getDayClass(data) {
+          var date = data.date,
+            mode = data.mode;
+          if (mode === 'day') {
+            var dayToCheck = new Date(date).setHours(0,0,0,0);
 
-      for (var i = 0; i < $scope.events.length; i++) {
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+            for (var i = 0; i < $scope.events.length; i++) {
+              var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
 
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
+              if (dayToCheck === currentDay) {
+                return $scope.events[i].status;
+              }
+            }
+          }
+
+          return '';
         }
-      }
-    }
-
-    return '';
-  }
-
-//end datepicker
 
       //[Submit]
       $scope.updateRow = function(){
-      console.log('Dates2');
-      console.log($scope.startDate);
-      console.log($scope.endDate);
 
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
@@ -585,7 +556,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $rootScope.successTextAlert = "Observation has been updated in the staging area.";
                $rootScope.showSuccessAlert = true;
                // switch flag
-               console.log($scope.successTextAlert);
                $rootScope.switchBool = function (value) {
                    $rootScope[value] = !$rootScope[value];
                };
@@ -602,7 +572,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.editPhotometry = editPhotometry2
     }]);
 
-    astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$log', '$uibModalInstance', 'editUPhotometry', function ($scope, $log, $uibModalInstance, editUPhotometry) {
+    astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$uibModalInstance', 'editUPhotometry', function ($scope, $uibModalInstance, editUPhotometry) {
+
       $scope.ob = $scope.observations;
       $scope.editUPhotometry = editUPhotometry;
       var editUPhotometry2 = -1
@@ -693,8 +664,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
-	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location', 'searchCatalogData',
-	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location, SearchCatalogData) {
+	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location', 'searchCatalogData',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Login, $cookies, $location, SearchCatalogData) {
 
       $rootScope.errorFlag = false;
       $scope.loadFlag = false;
@@ -707,8 +678,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           if (!$scope.spinneractive) {
             usSpinnerService.spin('spinner-1');
             //Call searchCatalogData service
-            console.log('test');
-            console.log($scope.objectValue);
    		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation}, function(response){
    		      var globalObject = [];
    		          if(response.length==2) {
@@ -724,9 +693,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                            });
                            globalObject.push(newObject);
                      }
-
-            console.log('test');
-            console.log(globalObject);
 
             $scope.loadFlag = true;
             $scope.getArray = globalObject;
@@ -760,11 +726,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.generate = function(){
              $uibModalInstance.dismiss();
       };
-          //[Cancel]
-          $scope.cancel = function () {
-            $uibModalInstance.dismiss('cancel');
-          };
-        }]);
+
+      //[Cancel]
+      $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+      };
+    }]);
 
 
 //---------------------------------------------------------Diagrams-----------------------------------------------------
@@ -777,10 +744,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
 
-    astroApp.controller("lcCtrl", ['$rootScope', '$log', 'getObservationsLCUDiagramRange', 'getObservationsLCUDiagram',
+    astroApp.controller("lcCtrl", ['$rootScope', 'getObservationsLCUDiagramRange', 'getObservationsLCUDiagram',
                                    'getObservationsLCVDiagramRange', 'getObservationsLCVDiagram','getObservationsLCBDiagramRange', 'getObservationsLCBDiagram',
                                    'getObservationsLCRDiagramRange', 'getObservationsLCRDiagram','getObservationsLCIDiagramRange', 'getObservationsLCIDiagram',
-                                  (function ($scope, $log, ObservationsLCUDiagramRange, ObservationsLCUDiagram, ObservationsLCVDiagramRange, ObservationsLCVDiagram,
+                                  (function ($scope, ObservationsLCUDiagramRange, ObservationsLCUDiagram, ObservationsLCVDiagramRange, ObservationsLCVDiagram,
                                   ObservationsLCBDiagramRange, ObservationsLCBDiagram, ObservationsLCRDiagramRange, ObservationsLCRDiagram,
                                   ObservationsLCIDiagramRange, ObservationsLCIDiagram) {
 
@@ -789,18 +756,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     $scope.selectedFilterValue = '';
     $scope.selectedFilter = false;
+
+    //select filter from drop down
     $scope.selectFilter = function (filter) {
       $scope.LCTitle = true;
       $scope.selectedFilterValue = filter;
 
-      console.log($scope.selectedFilterValue)
       $scope.cutString = filter.substring(0, 1);
       if ($scope.cutString == "U") {
          $scope.obRange = ObservationsLCUDiagramRange.query;
          $scope.selectedFilter = true;
          $scope.obRange(function(observationsDiagram) {
              $scope.starNames = observationsDiagram[0].StarNames;
-             console.log($scope.starNames);
              });
       }
       else if ($scope.cutString == "V") {
@@ -808,7 +775,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.selectedFilter = true;
          $scope.obRange(function(observationsDiagram) {
              $scope.starNames = observationsDiagram[0].StarNames;
-             console.log($scope.starNames);
              });
       }
       else if ($scope.cutString == "B") {
@@ -816,7 +782,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.selectedFilter = true;
          $scope.obRange(function(observationsDiagram) {
              $scope.starNames = observationsDiagram[0].StarNames;
-             console.log($scope.starNames);
              });
       }
       else if ($scope.cutString == "R") {
@@ -824,7 +789,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.selectedFilter = true;
          $scope.obRange(function(observationsDiagram) {
              $scope.starNames = observationsDiagram[0].StarNames;
-             console.log($scope.starNames);
              });
       }
       else if ($scope.cutString == "I") {
@@ -832,12 +796,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.selectedFilter = true;
          $scope.obRange(function(observationsDiagram) {
              $scope.starNames = observationsDiagram[0].StarNames;
-             console.log($scope.starNames);
              });
       }
       }
       $scope.selectedObjectValue = '';
 
+      //select object from drop down for selected filter
       $scope.selectObject = function (object) {
         $scope.LCTitle = false;
         $scope.selectedObjectValue = object;
@@ -868,6 +832,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
            var observationsLCDiagram = ObservationsLCIDiagram;
         }
 
+        //set range of data
         $scope.obRange(function(observationsDiagram) {
         $scope.XMax = 0;
         $scope.XMin = 0;
@@ -940,7 +905,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                   };
                   return $scope.option
               });
-           //The magic
+           //The magic to populate data with data
            $scope.data = generateData();
 
            function generateData() {
@@ -977,7 +942,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
                  var i = 0
                  var j = 0
-                          console.log($scope.selectedObjectValue);
                           angular.forEach($scope.starNames, function(value, index){
                                   if(value == $scope.selectedObjectValue) {
                                      data.push({
@@ -1004,7 +968,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                  return $scope.starNames, data;
                });
 
-               console.log(data);
                return data;
            }
 
@@ -1017,10 +980,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 	});
 
-    astroApp.controller("cmdCtrl", ['$rootScope', '$log', 'getObservationsBVDiagram', 'getObservationsBVDiagramRange',
+    astroApp.controller("cmdCtrl", ['$rootScope', 'getObservationsBVDiagram', 'getObservationsBVDiagramRange',
                                      'getObservationsUBDiagram', 'getObservationsUBDiagramRange', 'getObservationsRIDiagram', 'getObservationsRIDiagramRange',
                                      'getObservationsVIDiagram', 'getObservationsVIDiagramRange',
-                                  (function ($scope, $log, ObservationsBVDiagram, ObservationsBVDiagramRange, ObservationsUBDiagram, ObservationsUBDiagramRange,
+                                  (function ($scope, ObservationsBVDiagram, ObservationsBVDiagramRange, ObservationsUBDiagram, ObservationsUBDiagramRange,
                                   ObservationsRIDiagram, ObservationsRIDiagramRange,ObservationsVIDiagram, ObservationsVIDiagramRange) {
 
     $scope.HRTitle = true;
@@ -1028,11 +991,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     $scope.selectedDiagramValue = '';
 
+    //select HR diagram type
     $scope.selectDiagram = function (value) {
       $scope.selectedDiagramValue = value;
       $scope.HRTitle = false;
 
-      console.log($scope.selectedDiagramValue)
       var cutString = value.substring(0, 3);
       if (cutString == "B-V") {
          $scope.ob = ObservationsBVDiagram.query;
@@ -1055,8 +1018,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          var observationsHRDiagram = ObservationsVIDiagram;
       }
 
-      $log.debug($scope.XMax)
-
+      //set range of data
       $scope.obRange(function(observationsDiagram) {
       $scope.XMax = 0;
       $scope.XMin = 0;
@@ -1119,7 +1081,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 return $scope.options
 
             });
-         //The magic
+         //The magic to populate data with data
 
          $scope.data = generateData();
 
@@ -1165,7 +1127,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                 });
                                 i++;
                          })
-                         console.log(data);
                return $scope.starNames, data;
              });
              return data;
@@ -1184,6 +1145,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 	astroApp.controller('processCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'processData', 'getProcessedData', '$window', '$timeout', '$cookies',
       function($scope, usSpinnerService, $rootScope, ProcessData, GetProcessedData, $window, $timeout, $cookies) {
+
         $scope.message = 'Admin Panel';
         $scope.isAdminLoggedIn = $cookies.get('admin');
         $scope.displayedObservations = [];
@@ -1242,11 +1204,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.planetoids = false
 	}]);
 
-	astroApp.controller('searchDBCtrl', ['$scope', 'usSpinnerService', '$log', '$rootScope', 'searchData', '$window', '$timeout', '$cookies',
-      function($scope, usSpinnerService, $log, $rootScope, SearchData, $window, $timeout, $cookies) {
+	astroApp.controller('searchDBCtrl', ['$scope', 'usSpinnerService', '$rootScope', 'searchData', '$window', '$timeout', '$cookies',
+      function($scope, usSpinnerService, $rootScope, SearchData, $window, $timeout, $cookies) {
 
         //Call getSearchData service
-
         $scope.startSpin = function() {
 
           if (!$scope.spinneractive) {
@@ -1257,22 +1218,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		    $rootScope.comets = false
    		    $rootScope.planetoids = false
    		    var object = response[Object.keys(response)[0]];
-   		    console.log(object.type);
    		      if (object.type == "Star") {
                  $scope.Data = response
-                 console.log($scope.Data);
    		         usSpinnerService.stop('spinner-1');
                  $rootScope.stars = true
               }
    		      else if (object.type == "Comet") {
                  $scope.Data = response
-                 console.log($scope.Data);
    		         usSpinnerService.stop('spinner-1');
                  $rootScope.comets = true
               }
    		      else if (object.type == "Planetoid") {
                  $scope.Data = response
-                 console.log($scope.Data);
    		         usSpinnerService.stop('spinner-1');
                  $rootScope.planetoids = true
               }
@@ -1286,109 +1243,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 
 
-//----------------------------------------------------------Login-------------------------------------------------------
-
-    //loginCtrl
-	astroApp.controller('loginCtrl', function($scope) {
-	   $scope.message = 'Login';
-	});
-
-    astroApp.controller('logCtrl', ['$rootScope', '$scope', 'usSpinnerService', '$log', 'login', '$cookies', '$location',
-    function ($rootScope, $scope, usSpinnerService, $log, Login, $cookies, $location) {
-      $rootScope.errorFlag = false
-      //[Submit]
-      $scope.loginUser = function(){
-          var password = sjcl.encrypt("password", $scope.password)
-
-   		  Login.update({email:$scope.email,password:password}, function(response){
-   		  $scope.message = response[Object.keys(response)[0]];
-   		  $log.debug($scope.email);
-          if($scope.message == "Wrong credentials"){
-   		     $rootScope.isUserLoggedIn = false;
-   		     $rootScope.isAdminLoggedIn = false;
-   		     $rootScope.errorFlag = true;
-   		     }
-   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@admin.com")){
-   		     console.log("user");
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
-   		     $cookies.put('cook', true);
-   		     $cookies.put('admin', false);
-   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
-   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
-   		     $rootScope.errorFlag = false;
-   		     $rootScope.loggedInUser = $scope.message
-   		     $location.path("main");
-   		     $scope.spinneractive = false;
-             usSpinnerService.stop('spinner-1');
-   		     }
-   		  else {
-   		     console.log("admin2");
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
-   		     $cookies.put('cook', true);
-   		     $cookies.put('admin', true);
-   		     $rootScope.isUserLoggedIn = $cookies.get('cook');
-   		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
-   		     $rootScope.errorFlag = false;
-   		     $rootScope.loggedInUser = $scope.message
-   		     $location.path("main");
-   		     $scope.spinneractive = false;
-             usSpinnerService.stop('spinner-1');
-   		     }
-   		  });
-      };
-    }]);
-
-
-    //registerCtrl
-	astroApp.controller('registerCtrl', function($scope) {
-	   $scope.message = 'Register';
-	});
-
-    astroApp.controller('regCtrl', ['$rootScope', '$scope', 'usSpinnerService', '$log', 'register', '$location',
-    function ($rootScope, $scope, usSpinnerService, $log, Register, $location) {
-
-      $rootScope.errorFlag = false
-      //[Submit]
-      $scope.addUser = function(){
-          var password = sjcl.encrypt("password", $scope.password)
-
-   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
-   		  $scope.message = response[Object.keys(response)[0]];
-   		  $log.debug($scope.message)
-          if($scope.message == "User exists"){
-   		     $rootScope.errorFlag = true
-   		     }
-   		  else {
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
-
-   		     $rootScope.errorFlag = false
-   		     $location.path("login");
-
-             $scope.spinneractive = false;
-             usSpinnerService.stop('spinner-1');
-   		     }
-   		  });
-      };
-
-    }]);
-
 //----------------------------------------------------------Logout-------------------------------------------------------
 
     //logoutCtrl
-	astroApp.controller('logoutCtrl', ['$rootScope', '$log', 'login', '$cookies', function ($scope, $log, Login, $cookies) {
+	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', function ($scope, Login, $cookies) {
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
 	   $cookies.remove("admin");
 	}]);
 
-    astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', '$log', 'login', '$cookies', '$location',
-    function ($scope, usSpinnerService, $log, Login, $cookies, $location) {
+    astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location',
+    function ($scope, usSpinnerService, Login, $cookies, $location) {
        $scope.isUserLoggedIn = false;
        $scope.isAdminLoggedIn = false;
              if (!$scope.spinneractive) {
@@ -1403,12 +1268,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl
-	astroApp.controller('mainCtrl', ['$rootScope', '$scope', '$log', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe',
-	                       function ($rootScope, $scope, $log, Login, $cookies, Statistics, $uibModal, Subscribe) {
+	astroApp.controller('mainCtrl', ['$rootScope', '$scope', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe',
+	                       function ($rootScope, $scope, Login, $cookies, Statistics, $uibModal, Subscribe) {
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
 	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
        $scope.Statistics = Statistics.query();
-       $log.debug($scope.Statistics);
 
               //Login Modal
               $scope.loginModal = function () {
@@ -1429,15 +1293,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
               };
 
        $scope.addSubscriber = function(){
-          $log.debug($scope.email)
       	  Subscribe.save({email:$scope.email}, function(response){
       	  $scope.message = response[Object.keys(response)[0]];
       	  });
        }
 	}]);
 
-	astroApp.controller('ModalLoginCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
-	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
+
+//----------------------------------------------------------Login-------------------------------------------------------
+
+    //loginCtrl
+	astroApp.controller('loginCtrl', function($scope) {
+	   $scope.message = 'Login';
+	});
+	astroApp.controller('ModalLoginCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
 
       $rootScope.errorFlag = false
       //[Submit]
@@ -1464,7 +1334,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
-             console.log($rootScope.isAdminLoggedIn);
              $uibModalInstance.dismiss();
    		     }
    		  else {
@@ -1480,7 +1349,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
-             console.log($rootScope.isAdminLoggedIn);
              $uibModalInstance.dismiss();
    		     }
    		  });
@@ -1490,10 +1358,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
-        }]);
+    }]);
 
-      astroApp.controller('ModalRegisterCtrl', ['$rootScope', '$scope', '$log', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
-	                             function ($rootScope, $scope, $log, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
+
+
+//--------------------------------------------------------Register------------------------------------------------------
+
+	astroApp.controller('registerCtrl', function($scope) {
+	   $scope.message = 'Register';
+	});
+
+    astroApp.controller('ModalRegisterCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
 
       $rootScope.errorFlag = false
       //[Submit]
@@ -1502,7 +1378,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
    		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
-   		  $log.debug($scope.message)
           if($scope.message == "User exists"){
    		     $rootScope.errorFlag = true
    		     }
@@ -1525,18 +1400,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
-        }]);
+     }]);
 
 
 
 //-----------------------------------------------------Reduction--------------------------------------------------------
 
-    //loginCtrl
 	astroApp.controller('reductionCtrl', function($scope) {
 	});
 
-    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$log', '$timeout', '$window',
-                        (function ($rootScope, $scope, $log, $timeout, $window) {
+    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window',
+                        (function ($rootScope, $scope, $timeout, $window) {
 
         $scope.uploadFlag = true;
 
@@ -1547,7 +1421,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
         $rootScope.carouselFlag = false;
         $rootScope.selectImageType = function (value) {
-        console.log(value);
           $rootScope.carouselFlag = true;
           $scope.selectedImageType = value;
           if($scope.selectedImageType == "Dark Frames") {
