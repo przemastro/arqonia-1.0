@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
-from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, json_lcDiagramRange, json_lcDiagram
+from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, json_lcDiagramRange, json_lcDiagram, userObservations
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData
 from procRunner import procRunner, deleteObservation
 import os
@@ -130,6 +130,14 @@ class Rest(Resource):
     def get(self, rest_id):
             abort_if_json_doesnt_exist(rest_id)
             return REST[rest_id]
+
+
+class RestUserObservation(Resource):
+    def put(self):
+        args = parser.parse_args()
+        observations = userObservations(args['email'])
+        print observations
+        return observations
 
 
 class RestObservation(Resource):
@@ -306,6 +314,7 @@ class RestCatalog(Resource):
 
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
+api.add_resource(RestUserObservation, '/userObservations')
 api.add_resource(RestLastObservation, '/lastLoad')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationBVDiagramRange, '/observationsBVDiagramRange')

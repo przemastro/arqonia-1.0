@@ -465,7 +465,7 @@
       </div>
     <table st-table="displayedObservations" st-safe-src="observations" class="tableList">
         <tr>
-            <td style="border-bottom: 0px;padding-right:10px;padding-left:0px"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
+            <td style="border-bottom: 0px;padding-right:10px;padding-left:0px;"><input st-search="" class="form-control" placeholder="search ..." type="text"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"><input style="background-color: #4d9dc2;border: 0px" type="button" value="New Observation" class="btn btn-primary sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:5px;padding-right:0px;"><input style="border: 0px" type="button" value="Generate Catalog" class="btn btn-success sharp customHeight" ng-click="generateModal()" ng-show="isUserLoggedIn"/></td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;"></td>
@@ -479,7 +479,7 @@
             </td>
         </tr>
         <tr>
-            <th style="padding-right:0px;padding-left:10px;white-space: nowrap;"st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
+            <th style="padding-right:0px;padding-left:10px;white-space: nowrap;width:15%"st-sort="name">Object Name<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
             <th style="white-space: nowrap;" st-sort="startDate">Start Date<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
             <th style="white-space: nowrap;" st-sort="endDate">End Date<img src="images/sort-arrow.png" alt="login" style="width:20px;height:20px;padding-left:0px;"/></th>
             <th style="padding-right:0px;padding-left:0px;" title="Ultraviolet magnitude">U</th>
@@ -489,7 +489,7 @@
             <th style="padding-right:0px;padding-left:0px;" title="Infrared magnitude">I</th>
             <th style="width: 100%;" ng-show="!isUserLoggedIn">Owner</th>
         </tr>
-        <tr ng-repeat="observation in displayedObservations" >
+        <tr ng-repeat="observation in displayedObservations | filter:singleOwner" >
             <td style="text-align: left;">{{observation.name}}</td>
             <td style="white-space: nowrap;">{{observation.startDate}}</td>
             <td style="white-space: nowrap;">{{observation.endDate}}</td>
@@ -498,7 +498,7 @@
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.bPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editBPhotometry(observation.id)"/></td>
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.rPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editRPhotometry(observation.id)"/></td>
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.iPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editIPhotometry(observation.id)"/></td>
-            <td style="width: 100%;" ng-show="!isUserLoggedIn"></td>
+            <td style="white-space: nowrap;" ng-show="!isUserLoggedIn">{{observation.owner}}</td>
             <td style="border-bottom: 0px;padding-right:0px;padding-left:0px;margin-bottom: 7px;"><input style="background-color: #4d9dc2;border: 0px" align="right" type="button" value="Edit" class="btn btn-primary custom sharp" ng-click="editObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
             <td style="border-bottom: 0px;padding-right:0px;margin-bottom: 7px;"><input style="border: 0px" align="right" type="button" value="Remove" class="btn btn-danger custom sharp" ng-click="removeObservation(observation.id)" ng-show="isUserLoggedIn"/></td>
         </tr>

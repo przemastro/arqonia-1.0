@@ -21,11 +21,39 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', '$cookies',
-                                     function($scope, $routeParams, Observations, $cookies) {
+    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', 'getUserObservations', '$cookies',
+                                     function($scope, $routeParams, Observations, UserObservations, $cookies) {
+
+       $scope.loggedInUser = $cookies.get('name');
+       $scope.isUserLoggedIn = $cookies.get('cook');
+       $scope.loggedInUserEmail = $cookies.get('email');
+       if(!$scope.isUserLoggedIn) {
        //Get data
-       $scope.displayedObservations = [];
-       $scope.observations = Observations.query();
+          $scope.displayedObservations = [];
+          $scope.observations = Observations.query();
+       }
+       else {
+   		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+
+   		     		      var globalObject = [];
+
+             		      var len = response.length;
+                            for(var i = 0; i < len; i++) {
+                            var newObject = {}
+                                    angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                            newObject[key] = value;
+                                     });
+                                     globalObject.push(newObject);
+                               }
+               console.log('test');
+               console.log(globalObject);
+
+   		  $scope.message = response[Object.keys(response)];
+
+          $scope.displayedObservations = [];
+          $scope.observations = globalObject;
+          })
+       }
 
        //Add some animation to the table
        $scope.toggleAnimation = function () {
@@ -1325,12 +1353,14 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
+             $cookies.put('email', $scope.email);
+             $cookies.put('name', $scope.message);
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', false);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
-   		     $rootScope.loggedInUser = $scope.message
+   		     $rootScope.loggedInUser = $cookies.get('name');
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');

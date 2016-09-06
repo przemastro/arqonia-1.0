@@ -50,11 +50,19 @@ services.factory('subscribe', ['$resource',
 }]);
 
 
-//Table list data
+//Table list data - all
 services.factory('getObservations', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/observations', {}, {
         query: {method:'GET', isArray:true}
+    });
+}]);
+
+//Table list data - user
+services.factory('getUserObservations', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/userObservations', {}, {
+        update: {method:'PUT', isArray:true}
     });
 }]);
 
