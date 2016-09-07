@@ -1141,12 +1141,13 @@ def objectDetails(name):
 
 
 #--------------------------------------------------Return personal catalog----------------------------------------------
-def catalogData(objectType, abbreviation):
+def catalogData(objectType, abbreviation, email):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
         objectType = str(objectType)
         abbreviation = str(abbreviation)
+        email = str(email)
 
         if(abbreviation=='None'):
             abbreviation=''

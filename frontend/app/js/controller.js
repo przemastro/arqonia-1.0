@@ -378,6 +378,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       $scope.ob = $scope.observations;
 
+      console.log('test');
+      console.log($scope.ob[0].name);
+
       //[Cancel]
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
@@ -388,7 +391,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         //remove photometry is an observation.id so I can keep the correct index of an observation in table list
         $scope.removePhotometry = removePhotometry;
         //Call removeObservation service
-        RemoveObservation.save({id:removePhotometry}, function(response){
+        RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.ob[removePhotometry].name}, function(response){
            $scope.message = response.message;
         });
         //...and close modal
@@ -709,7 +712,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           if (!$scope.spinneractive) {
             usSpinnerService.spin('spinner-1');
             //Call searchCatalogData service
-   		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation}, function(response){
+   		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation, email:$scope.loggedInUserEmail}, function(response){
    		      var globalObject = [];
    		          if(response.length==2) {
    		             var len = 1;

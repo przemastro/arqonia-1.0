@@ -146,6 +146,12 @@ class RestObservation(Resource):
             json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
                         args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
                         args['objectType'], args['verified'], args['email'])
+            content = Message("New observation added",
+                              sender="admin@arqonia.com",
+                              recipients=[args['email']])
+            content.body = 'Hi,\n\nYou have added '+args['name']+' to the staging area.' \
+                                           '\n\nBest Regards, \nThe Creator'
+            mail.send(content);
             return 201
 
     def put(self):
@@ -153,6 +159,12 @@ class RestObservation(Resource):
             updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
                               args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
                               args['objectType'], args['verified'], args['email'])
+            content = Message("Existing observation updated",
+                              sender="admin@arqonia.com",
+                              recipients=[args['email']])
+            content.body = 'Hi,\n\nYou have updated '+args['name']+' in the staging area.' \
+                                                                 '\n\nBest Regards, \nThe Creator'
+            mail.send(content);
             return 201
 
 
@@ -165,9 +177,6 @@ class RestLastObservation(Resource):
 
     def put(self):
         procRunner()
-        #if serverService == 'Yes':
-           #shutdown_server()
-        #   time.sleep(1000)
         os.system("forceKill.bat")
         return 201
 
@@ -175,6 +184,12 @@ class RestDeleteObservation(Resource):
     def post(self):
             args = parser.parse_args()
             deleteObservation(args['id'])
+            content = Message("Existing observation removed",
+                              sender="admin@arqonia.com",
+                              recipients=[args['email']])
+            content.body = 'Hi,\n\nYou have removed '+args['name']+' from the staging area.' \
+                                                                   '\n\nBest Regards, \nThe Creator'
+            mail.send(content);
             return 201
 
 
@@ -271,7 +286,7 @@ class RestRegister(Resource):
         msg = addUser(args['name'],args['email'], str(sj))
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
-                      sender="admin@astroApp.com",
+                      sender="admin@arqonia.com",
                       recipients=[args['email']])
             content.body = 'Welcome '+args['name']+',\n\nThank you for joining AstroApp, the biggest astronomical fandom in the Universe.' \
                                                    '\n\nBest Regards, \nThe Creator'
@@ -307,7 +322,7 @@ class RestSubscribe(Resource):
 class RestCatalog(Resource):
     def put(self):
         args = parser.parse_args()
-        catalog = catalogData(args['objectType'], args['abbreviation'])
+        catalog = catalogData(args['objectType'], args['abbreviation'], args['email'])
         print catalogData
         return jsonify(catalog)
 
