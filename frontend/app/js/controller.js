@@ -64,8 +64,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     }]);
 
     //ModalCtrl
-    astroApp.controller('ModalCtrl', ['$scope', 'usSpinnerService', '$uibModal', 'processData', '$window', '$timeout', '$cookies',
-                       function ($scope, usSpinnerService, $uibModal, ProcessData, $window, $timeout, $cookies) {
+    astroApp.controller('ModalCtrl', ['$scope', 'usSpinnerService', '$uibModal', 'processUserData', '$window', '$timeout', '$cookies',
+                       function ($scope, usSpinnerService, $uibModal, ProcessUserData, $window, $timeout, $cookies) {
 
        $scope.animationsEnabled = true;
 
@@ -74,7 +74,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          if (!$scope.spinneractive) {
            usSpinnerService.spin('spinner-1');
            //Call processData service
-   	    ProcessData.query(function(response){
+   	    ProcessUserData.query(function(response){
    	      $scope.message = response.message;
    	   });
          }

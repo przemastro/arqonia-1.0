@@ -180,6 +180,11 @@ class RestLastObservation(Resource):
         os.system("forceKill.bat")
         return 201
 
+class RestUserProcessData(Resource):
+    def put(self):
+        procRunner()
+        return 201
+
 class RestDeleteObservation(Resource):
     def post(self):
             args = parser.parse_args()
@@ -331,6 +336,7 @@ api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
 api.add_resource(RestUserObservation, '/userObservations')
 api.add_resource(RestLastObservation, '/lastLoad')
+api.add_resource(RestUserProcessData, '/processUserData')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestObservationBVDiagramRange, '/observationsBVDiagramRange')
 api.add_resource(RestObservationUBDiagramRange, '/observationsUBDiagramRange')
