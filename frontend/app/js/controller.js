@@ -1355,7 +1355,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.isAdminLoggedIn = false;
    		     $rootScope.errorFlag = true;
    		     }
-   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@admin.com")){
+   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@arqonia.com")){
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
