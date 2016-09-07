@@ -213,6 +213,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                      function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
+
+        console.log($scope.loggedInUserEmail);
+
         //DatePicker
         $scope.inlineOptions = {
           customClass: getDayClass,
@@ -349,7 +352,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
    		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
-   		                     verified:$scope.radioValue}, function(response){
+   		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
    		  $scope.message = response.message;
    		  });
    		  //...and close modal
@@ -576,7 +579,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		                            endDate:$scope.endDate,
    		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
    		                            rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
-                                    verified:$scope.radioValue}, function(response){
+                                    verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
    		  $scope.message = response.message;
    		  });
    		  //...and close modal

@@ -145,14 +145,14 @@ class RestObservation(Resource):
             args = parser.parse_args()
             json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
                         args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
-                        args['objectType'], args['verified'])
+                        args['objectType'], args['verified'], args['email'])
             return 201
 
     def put(self):
             args = parser.parse_args()
             updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
                               args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
-                              args['objectType'], args['verified'])
+                              args['objectType'], args['verified'], args['email'])
             return 201
 
 

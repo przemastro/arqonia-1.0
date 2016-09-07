@@ -18,10 +18,12 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 #----------------------------------------------insert new observation---------------------------------------------------
-def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName, objectType, verified):
+def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName, objectType, verified, email):
  try:
      cnx = pyodbc.connect(dbAddress)
      cursor = cnx.cursor()
+
+     email = str(email)
 
      get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromStagingObservations')
      cursor.execute(get_lastId)
@@ -184,15 +186,16 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
                   iflux = 'NULL'
               j = str(counter + 1)
               observation = "SELECT "+lastId+","+j+",'"+name+"','"+objectType+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+"," \
-                                                                    ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1, '"+verified+"' UNION ALL "
+                                                                    ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1, '"+verified+"',  (select id from data.users where email='"+email+"') UNION ALL "
               insert_observation = insert_observation + observation
+              print insert_observation
 
 
         insert_observation = insert_observation[:-10]
 
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,ObjectName,ObjectType,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
-                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
-                             "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified) select * from cte GO"
+                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
+                             "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
 
 
 
@@ -208,11 +211,12 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
 
 
 #---------------------------------------------Update existing observation----------------------------------------------
-def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName, objectType, verified):
+def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileName, rFileName, iFileName, objectType, verified, email):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
+        email = str(email)
         id = str(id)
         name = str(name)
         startDate = str(startDate)
@@ -382,14 +386,14 @@ def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileN
                     iflux = 'NULL'
                 j = str(counter + 1)
                 observation = "SELECT "+id+","+j+",'"+name+"','"+objectType+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+"," \
-                                                                   ""+btime+","+bflux+","+rtime+","+rflux+","+itime+","+iflux+",'new',1, '"+verified+"' UNION ALL "
+                                                                   ""+btime+","+bflux+","+rtime+","+rflux+","+itime+","+iflux+",'new',1, '"+verified+"', (select id from data.users where email='"+email+"') UNION ALL "
                 insert_observation = insert_observation + observation
 
         insert_observation = insert_observation[:-10]
 
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,ObjectName,ObjectType,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
-                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
-                                                                                      "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified) select * from cte GO"
+                             "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
+                                                                                      "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
 
 
         cursor.execute(insert_observation)
