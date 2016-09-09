@@ -1020,10 +1020,45 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                   (function ($scope, ObservationsBVDiagram, ObservationsBVDiagramRange, ObservationsUBDiagram, ObservationsUBDiagramRange,
                                   ObservationsRIDiagram, ObservationsRIDiagramRange,ObservationsVIDiagram, ObservationsVIDiagramRange) {
 
+           $scope.loggedInUser = $cookies.get('name');
+           $scope.isUserLoggedIn = $cookies.get('cook');
+           $scope.loggedInUserEmail = $cookies.get('email');
+
+
     $scope.HRTitle = true;
     $scope.hrDiagrams = ['B-V CMD', 'U-B CMD', 'R-I CMD', 'V-I CMD'];
 
     $scope.selectedDiagramValue = '';
+
+
+           /*if(!$scope.isUserLoggedIn) {
+           //Get data
+              $scope.bvGlobalObservationsData = ObservationsBVDiagram.query;
+              $scope.observations = Observations.query();
+           }
+           else {
+       		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+
+       		     		      var globalObject = [];
+
+                 		      var len = response.length;
+                                for(var i = 0; i < len; i++) {
+                                var newObject = {}
+                                        angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                                newObject[key] = value;
+                                         });
+                                         globalObject.push(newObject);
+                                   }
+                   console.log('test');
+                   console.log(globalObject);
+
+       		  $scope.message = response[Object.keys(response)];
+
+              $scope.displayedObservations = [];
+              $scope.observations = globalObject;
+              })
+           }*/
+
 
     //select HR diagram type
     $scope.selectDiagram = function (value) {

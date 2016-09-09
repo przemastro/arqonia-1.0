@@ -44,6 +44,37 @@ def procRunner():
     else:
         cnx.close()
 
+#--------------------------------------run DB bi.observationsDeltaPersonalized procedure--------------------------------
+def procPersonalizedRunner(email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        email = str(email)
+
+
+        get_Ids = (queries.get('DatabaseQueries', 'database.getPersonalizedIdsFromStagingObservations') + "'" + email + "' order by id desc")
+        getIds = fetch_all(get_Ids)
+
+        for i in getIds:
+            i=str(i)
+            runObservationsDelta = (queries.get('DatabaseQueries', 'database.runObservationsDeltaPersonalized')+i)
+            cursor.execute(runObservationsDelta)
+            cnx.commit()
+
+        Log = False
+        while(Log != True):
+            get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i+" order by id desc")
+            Log = str(fetch_one(get_Log))
+            if(Log):
+                break
+            else:
+                continue
+        cursor.close()
+    except:
+        print 'errors in procRunner function'
+    else:
+        cnx.close()
+
 #--------------------------------------------------------Remove Observation---------------------------------------------
 def deleteObservation(id):
     try:

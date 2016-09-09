@@ -182,7 +182,8 @@ class RestLastObservation(Resource):
 
 class RestUserProcessData(Resource):
     def put(self):
-        procRunner()
+        args = parser.parse_args()
+        procRunner(args['name'])
         return 201
 
 class RestDeleteObservation(Resource):
