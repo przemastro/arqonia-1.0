@@ -66,6 +66,22 @@ services.factory('getUserObservations', ['$resource',
     });
 }]);
 
+//Trigger SQL HR Diagram Data
+services.factory('getPesronalizedObservationsDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/RestPersonalizedObservationHRDiagram', {}, {
+        update: {method:'PUT', isArray:true}
+    });
+}]);
+
+//Trigger SQL HR Diagram Range
+services.factory('getPesronalizedObservationsDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/RestPersonalizedObservationHRDiagramRange', {}, {
+        update: {method:'PUT', isArray:true}
+    });
+}]);
+
 //LC Diagram data Range
 services.factory('getObservationsLCUDiagramRange', ['$resource',
     function ($resource) {
