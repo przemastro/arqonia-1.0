@@ -1217,6 +1217,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                       $scope.ob = globalObject;
 
                       console.log($scope.starNames);
+                      console.log($scope.ObservationsDifference);
+                      console.log($scope.FilterObservations);
                var i = 0
                         angular.forEach($scope.starNames, function(value, index){
                                 data.push({
@@ -1238,6 +1240,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
          }
          $scope.exampleData = $scope.data;
+         console.log($scope.exampleData);
      }})]);
 
 

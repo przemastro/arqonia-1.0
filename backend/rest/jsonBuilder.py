@@ -291,25 +291,25 @@ def json_hrdiagram():
         cursor = cnx.cursor()
 
         #B-V
-        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySorted'))
+        get_VObservations = (queries.get('DatabaseQueries', 'database.getJoinedVObservationsFromVPhotometrySorted'))
         get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromBVDiagramAvg'))
         json_hrdiagram.jsonBVDiagram = [{'bvObservationsDifference': fetch_all(get_BVObservationsDifference), 'vObservations': fetch_all(get_VObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #U-B
-        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySorted'))
+        get_BObservations = (queries.get('DatabaseQueries', 'database.getJoinedBObservationsFromBPhotometrySorted'))
         get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromUBDiagramAvg'))
         json_hrdiagram.jsonUBDiagram = [{'ubObservationsDifference': fetch_all(get_UBObservationsDifference), 'bObservations': fetch_all(get_BObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #R-I
-        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getJoinedIForRIObservationsFromIPhotometrySorted'))
         get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromRIDiagramAvg'))
         json_hrdiagram.jsonRIDiagram = [{'riObservationsDifference': fetch_all(get_RIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]
 
         #V-I
-        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySorted'))
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getJoinedIForVIObservationsFromIPhotometrySorted'))
         get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvg'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getStarNamesFromVIDiagramAvg'))
         json_hrdiagram.jsonVIDiagram = [{'viObservationsDifference': fetch_all(get_VIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]
@@ -322,7 +322,7 @@ def json_hrdiagram():
         cnx.close()
 
 
-#-----------------------------------------------------HR Diagram Range--------------------------------------------------
+#------------------------------------------------HR User Diagram Range--------------------------------------------------
 def personalizedObservationsHRDiagramRange(hrDiagramType, email):
     try:
         cnx = pyodbc.connect(dbAddress)
@@ -354,9 +354,13 @@ def personalizedObservationsHRDiagramRange(hrDiagramType, email):
         #V-I
         elif(hrDiagramType == 'V-I'):
            get_XMax = (queries.get('DatabaseQueries', 'database.getUserXMaxFromVIDiagramAvg') + "'" + email + "'")
+           print get_XMax
            get_XMin = (queries.get('DatabaseQueries', 'database.getUserXMinFromVIDiagramAvg') + "'" + email + "'")
+           print get_XMin
            get_YMax = (queries.get('DatabaseQueries', 'database.getUserYMaxFromIPhotometrySorted') + "'" + email + "'")
+           print get_YMax
            get_YMin = (queries.get('DatabaseQueries', 'database.getUserYMinFromIPhotometrySorted') + "'" + email + "'")
+           print get_YMin
            data = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         return data
@@ -380,32 +384,29 @@ def personalizedObservationsHRDiagram(hrDiagramType, email):
 
         #B-V
         if(hrDiagramType == 'B-V'):
-           get_VObservations = (queries.get('DatabaseQueries', 'database.getUserVObservationsFromVPhotometrySorted') + "'" + email + "' group by so.ObjectName")
-           print get_VObservations
-           time.sleep(1)
-           print fetch_all(get_VObservations)
+           get_VObservations = (queries.get('DatabaseQueries', 'database.getJoinedUserVObservationsFromVPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           #time.sleep(1)
            get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getUserBVObservationsDifferenceFromBVDiagramAvg') + "'" + email + "'")
-           print fetch_all(get_BVObservationsDifference)
            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserStarNamesFromBVDiagramAvg') + "'" + email + "'")
-           print fetch_all(get_StarNames)
            data = [{'bvObservationsDifference': fetch_all(get_BVObservationsDifference), 'vObservations': fetch_all(get_VObservations), 'starNames': fetch_all(get_StarNames)}]
-           print 'testowo'
-           print data
         #U-B
         elif(hrDiagramType == 'U-B'):
-           get_BObservations = (queries.get('DatabaseQueries', 'database.getUserBObservationsFromBPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           get_BObservations = (queries.get('DatabaseQueries', 'database.getJoinedUserBObservationsFromBPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           #time.sleep(1)
            get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUserUBObservationsDifferenceFromUBDiagramAvg') + "'" + email + "'")
            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserStarNamesFromUBDiagramAvg') + "'" + email + "'")
            data = [{'ubObservationsDifference': fetch_all(get_UBObservationsDifference), 'bObservations': fetch_all(get_BObservations), 'starNames': fetch_all(get_StarNames)}]
         #R-I
         elif(hrDiagramType == 'R-I'):
-           get_IObservations = (queries.get('DatabaseQueries', 'database.getUserIObservationsFromIPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           get_IObservations = (queries.get('DatabaseQueries', 'database.getJoinedUserIForRIObservationsFromIPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           #time.sleep(1)
            get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getUserRIObservationsDifferenceFromRIDiagramAvg') + "'" + email + "'")
            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserStarNamesFromRIDiagramAvg') + "'" + email + "'")
            data = [{'riObservationsDifference': fetch_all(get_RIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]
         #V-I
         elif(hrDiagramType == 'V-I'):
-           get_IObservations = (queries.get('DatabaseQueries', 'database.getUserIObservationsFromIPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           get_IObservations = (queries.get('DatabaseQueries', 'database.getJoinedUserIForVIObservationsFromIPhotometrySorted') + "'" + email + "' group by so.ObjectName")
+           #time.sleep(1)
            get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getUserVIObservationsDifferenceFromVIDiagramAvg') + "'" + email + "'")
            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserStarNamesFromVIDiagramAvg') + "'" + email + "'")
            data = [{'viObservationsDifference': fetch_all(get_VIObservationsDifference), 'iObservations': fetch_all(get_IObservations), 'starNames': fetch_all(get_StarNames)}]

@@ -1157,38 +1157,43 @@ def catalogData(objectType, abbreviation, email):
         print objectType
         if(objectType == 'Star'):
            #B-V
-           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
+           print get_BVObservationsDifference
            BVObservationsDifference = fetch_all(get_BVObservationsDifference)
+           print BVObservationsDifference
            #U-B
-           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
            UBObservationsDifference = fetch_all(get_UBObservationsDifference)
            #R-I
-           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
            RIObservationsDifference = fetch_all(get_RIObservationsDifference)
            #V-I
-           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
            VIObservationsDifference = fetch_all(get_VIObservationsDifference)
 
 
         #U
-        get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         UObservations = fetch_all(get_UObservations)
+        print UObservations
         #V
-        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         VObservations = fetch_all(get_VObservations)
         #B
-        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         BObservations = fetch_all(get_BObservations)
         #R
-        get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         RObservations = fetch_all(get_RObservations)
         #I
-        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         IObservations = fetch_all(get_IObservations)
         #ObjectNames
-        get_ObjectNames = (queries.get('DatabaseQueries', 'database.getObjectNamesForCatalog') + " where ob.ObjectType='" + objectType + "' group by ob.ObjectName")
+        get_ObjectNames = (queries.get('DatabaseQueries', 'database.getObjectNamesForCatalog') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         ObjectNames = fetch_all(get_ObjectNames)
         jsonRange = len(UObservations)
+
+        print jsonRange
 
         if(objectType == 'Star'):
             controller = ''
@@ -1207,6 +1212,7 @@ def catalogData(objectType, abbreviation, email):
                               '08bvObservationsDifference': BVObservationsDifference[counter], '09ubObservationsDifference': UBObservationsDifference[counter],
                               '10riObservationsDifference': RIObservationsDifference[counter],'11viObservationsDifference': VIObservationsDifference[counter]}
                 controller = str(catalogData) + ',' + controller
+                print controller
         else:
             controller = ''
             #to create array of objectc if we have only one observation
