@@ -1031,13 +1031,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                          var tab = {}
                          angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                  tab[j] = value;
-                                 console.log(tab[j]);
                                  j++;
                          });
                       };
                       $scope.starNames = tab[2];
                       $scope.ObservationsTimes = tab[1];
                       $scope.Observations = tab[0];
+
+                      console.log($scope.starNames);
+                      console.log($scope.ObservationsTimes);
+                      console.log($scope.Observations);
+
 
                              var i = 0
                              var j = 0
