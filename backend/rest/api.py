@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, \
-    json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange
+    json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
+    personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData
 from procRunner import procRunner, deleteObservation
 import os
@@ -126,6 +127,7 @@ parser.add_argument('objectType', type=str)
 parser.add_argument('verified', type=str)
 parser.add_argument('abbreviation', type=str)
 parser.add_argument('hrDiagramType', type=str)
+parser.add_argument('filter', type=str)
 
 
 class Rest(Resource):
@@ -206,7 +208,6 @@ class RestPersonalizedObservationHRDiagram(Resource):
     def put(self):
         args = parser.parse_args()
         data = personalizedObservationsHRDiagram(args['hrDiagramType'], args['email'])
-        print data
         return jsonify(data)
 
 
@@ -217,7 +218,23 @@ class RestPersonalizedObservationHRDiagramRange(Resource):
         data = personalizedObservationsHRDiagramRange(args['hrDiagramType'], args['email'])
         return jsonify(data)
 
-#HR Diagrams Data
+#Personalized LC Diagrams Data
+class RestPersonalizedObservationLCDiagram(Resource):
+    def put(self):
+        args = parser.parse_args()
+        data = personalizedLCDiagram(args['filter'], args['email'])
+        print data
+        return jsonify(data)
+
+#Personalized LC Diagrams Range
+class RestPersonalizedObservationLCDiagramRange(Resource):
+    def put(self):
+        args = parser.parse_args()
+        data = personalizedLCDiagramRange(args['filter'], args['email'])
+        print data
+        return jsonify(data)
+
+    #HR Diagrams Data
 class RestObservationBVDiagram(Resource):
     def get(self):
             return REST["observationsBVDiagram"]
@@ -358,6 +375,8 @@ api.add_resource(RestUserProcessData, '/processUserData')
 api.add_resource(RestDeleteObservation, '/deletedObservations')
 api.add_resource(RestPersonalizedObservationHRDiagramRange, '/RestPersonalizedObservationHRDiagramRange')
 api.add_resource(RestPersonalizedObservationHRDiagram, '/RestPersonalizedObservationHRDiagram')
+api.add_resource(RestPersonalizedObservationLCDiagramRange, '/RestPersonalizedLCDiagramRange')
+api.add_resource(RestPersonalizedObservationLCDiagram, '/RestPersonalizedLCDiagram')
 api.add_resource(RestObservationBVDiagramRange, '/observationsBVDiagramRange')
 api.add_resource(RestObservationUBDiagramRange, '/observationsUBDiagramRange')
 api.add_resource(RestObservationRIDiagramRange, '/observationsRIDiagramRange')

@@ -82,6 +82,22 @@ services.factory('getPesronalizedObservationsDiagramRange', ['$resource',
     });
 }]);
 
+//Trigger SQL LC Diagram Data
+services.factory('getPesronalizedLCDiagram', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/RestPersonalizedLCDiagram', {}, {
+        update: {method:'PUT', isArray:true}
+    });
+}]);
+
+//Trigger SQL LC Diagram Range
+services.factory('getPesronalizedLCDiagramRange', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/RestPersonalizedLCDiagramRange', {}, {
+        update: {method:'PUT', isArray:true}
+    });
+}]);
+
 //LC Diagram data Range
 services.factory('getObservationsLCUDiagramRange', ['$resource',
     function ($resource) {
