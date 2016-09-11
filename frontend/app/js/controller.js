@@ -840,17 +840,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }
           }
           else {
-             PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+             PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
                      for(var i = 0; i < response.length; i++) {
                         var j = 0
                         var tab = {}
                         angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                 tab[j] = value;
-                                console.log(tab[j]);
                                 j++;
                         });
                      }
-                     $scope.starNames = tab[2];
+                     $scope.starNames = tab[4];
                      $scope.selectedFilter = true;
                      console.log($scope.starNames);
              })
@@ -986,7 +985,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                       var tab = {}
                       angular.forEach(response[Object.keys(response)[i]], function(value, key){
                               tab[j] = value;
-                              console.log(tab[j]);
                               j++;
                       });
                    }
@@ -995,7 +993,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                $scope.YMaxAll = tab[2];
                $scope.YMinAll = tab[3];
 
-               console.log($scope.XMaxAll);
 
                $scope.starNames = tab[4];
                var i = 0;
@@ -1021,7 +1018,53 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    }
                };
                return $scope.option
-        })}
+           })
+           PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+        //The magic to populate data with data
+                   $scope.data = generateData();
+                   function generateData() {
+                      var data = [],
+                      shapes = ['circle'],
+                      random = d3.random.normal();
+                      for(var i = 0; i < response.length; i++) {
+                         var j = 0
+                         var tab = {}
+                         angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                 tab[j] = value;
+                                 console.log(tab[j]);
+                                 j++;
+                         });
+                      };
+                      $scope.starNames = tab[2];
+                      $scope.ObservationsTimes = tab[1];
+                      $scope.Observations = tab[0];
+
+                             var i = 0
+                             var j = 0
+                             angular.forEach($scope.starNames, function(value, index){
+                                     if(value == $scope.selectedObjectValue) {
+                                        data.push({
+                                            key: index,values: []
+                                        });
+                                        data[i].values.push({
+                                            x: $scope.ObservationsTimes[j], y: $scope.Observations[j], size: 2, shape: shapes[1]
+                                        });
+                                        $scope.starName = value;
+                                        i++;
+                                        j++;
+                                     }
+                                     else {
+                                        j++;
+                                     }
+                             })
+                             //$scope.obRange(function(observationsDiagram) {
+                             //   $scope.starNames = observationsDiagram[0].StarNames;
+                             //});
+                             return $scope.starNames, data;
+                   }
+                   $scope.exampleData = $scope.data;
+        })
+        }
      }})]);
 
 

@@ -524,12 +524,15 @@ def personalizedLCDiagramRange(filter, email):
 
         #U
         if(filter == 'U'):
-            get_XMax = (queries.get('DatabaseQueries', 'database.getLCXMaxFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            get_XMin = (queries.get('DatabaseQueries', 'database.getLCXMinFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            get_YMax = (queries.get('DatabaseQueries', 'database.getLCYMaxFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            get_YMin = (queries.get('DatabaseQueries', 'database.getLCYMinFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            data = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
+            get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
+            print get_XMax
+            get_XMin = (queries.get('DatabaseQueries', 'database.getUserLCXMinFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
+            get_YMax = (queries.get('DatabaseQueries', 'database.getUserLCYMaxFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
+            get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
+            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserLCStarNamesFromUPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
+            time.sleep(1)
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
+            print data
         #V
         elif(filter == 'V'):
             get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromVPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
@@ -537,7 +540,8 @@ def personalizedLCDiagramRange(filter, email):
             get_YMax = (queries.get('DatabaseQueries', 'database.getUserLCYMaxFromVPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromVPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromVPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            data = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
+            time.sleep(1)
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
         #B
         elif(filter == 'B'):
             get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
@@ -545,7 +549,8 @@ def personalizedLCDiagramRange(filter, email):
             get_YMax = (queries.get('DatabaseQueries', 'database.getUserLCYMaxFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            data = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
+            time.sleep(1)
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
         #R
         elif(filter == 'R'):
             get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromRPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
@@ -553,7 +558,8 @@ def personalizedLCDiagramRange(filter, email):
             get_YMax = (queries.get('DatabaseQueries', 'database.getUserLCYMaxFromRPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromRPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromRPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            data = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
+            time.sleep(1)
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
         #I
         elif(filter == 'I'):
             get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromIPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
@@ -561,7 +567,8 @@ def personalizedLCDiagramRange(filter, email):
             get_YMax = (queries.get('DatabaseQueries', 'database.getUserLCYMaxFromIPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromIPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_StarNames = (queries.get('DatabaseQueries', 'database.getLCStarNamesFromIPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
-            data = [{'StarNames': fetch_all(get_StarNames), 'XMax': fetch_all(get_XMax), 'XMin': fetch_all(get_XMin), 'YMax': fetch_all(get_YMax), 'YMin': fetch_all(get_YMin)}]
+            time.sleep(1)
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
 
         return data
         cursor.close()
