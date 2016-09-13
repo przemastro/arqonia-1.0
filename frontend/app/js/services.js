@@ -252,11 +252,11 @@ services.factory('processData', ['$resource',
     });
 }]);
 
-//Trigger SQL process procedure without killing
+//Process personalized data
 services.factory('processUserData', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/processUserData', {}, {
-        query: {method:'PUT', isArray:true}
+        update: {method:'PUT'}
     });
 }]);
 

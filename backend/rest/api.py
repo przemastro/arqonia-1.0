@@ -4,7 +4,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData
-from procRunner import procRunner, deleteObservation
+from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
 import random
@@ -140,7 +140,7 @@ class RestUserObservation(Resource):
     def put(self):
         args = parser.parse_args()
         observations = userObservations(args['email'])
-        print observations
+        #print observations
         return observations
 
 
@@ -187,7 +187,7 @@ class RestLastObservation(Resource):
 class RestUserProcessData(Resource):
     def put(self):
         args = parser.parse_args()
-        procRunner(args['name'])
+        procPersonalizedRunner(args['email'])
         return 201
 
 class RestDeleteObservation(Resource):

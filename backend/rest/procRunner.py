@@ -50,9 +50,11 @@ def procPersonalizedRunner(email):
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
         email = str(email)
+        print email
 
 
         get_Ids = (queries.get('DatabaseQueries', 'database.getPersonalizedIdsFromStagingObservations') + "'" + email + "' order by id desc")
+        print get_Ids
         getIds = fetch_all(get_Ids)
 
         for i in getIds:

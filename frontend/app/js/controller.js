@@ -24,15 +24,29 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', 'getUserObservations', '$cookies',
                                      function($scope, $routeParams, Observations, UserObservations, $cookies) {
 
+       $scope.displayedObservations = [];
+       $scope.observations = [];
+
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
+       $scope.isAdminLoggedIn = $cookies.get('admin');
+       console.log($scope.loggedInUser);
+       console.log($scope.isUserLoggedIn);
+       console.log($scope.loggedInUserEmail);
+       console.log($scope.isAdminLoggedIn);
+
        if(!$scope.isUserLoggedIn) {
        //Get data
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
        }
-       else {
+       else if ($scope.isAdminLoggedIn==='true') {
+       console.log('admin');
+          $scope.displayedObservations = [];
+          $scope.observations = Observations.query();
+                 }
+       else if($scope.isUserLoggedIn) {
    		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
 
    		     		      var globalObject = [];
@@ -45,8 +59,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                      });
                                      globalObject.push(newObject);
                                }
-               console.log('test');
-               console.log(globalObject);
 
    		  $scope.message = response[Object.keys(response)];
 
@@ -68,15 +80,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                        function ($scope, usSpinnerService, $uibModal, ProcessUserData, $window, $timeout, $cookies) {
 
        $scope.animationsEnabled = true;
+       $scope.loggedInUser = $cookies.get('name');
+       $scope.isUserLoggedIn = $cookies.get('cook');
+       $scope.loggedInUserEmail = $cookies.get('email');
 
        //Process Data
        $scope.startSpin = function() {
          if (!$scope.spinneractive) {
            usSpinnerService.spin('spinner-1');
            //Call processData service
-   	    ProcessUserData.query(function(response){
-   	      $scope.message = response.message;
-   	   });
+   	       ProcessUserData.update({email:$scope.loggedInUserEmail}, function(response){
+   	          $scope.message = response.message;
+   	       });
          }
          $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
              $scope.showSuccessAlert = true;
@@ -377,9 +392,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                            function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
 
       $scope.ob = $scope.observations;
-
-      console.log('test');
-      console.log($scope.ob[0].name);
 
       //[Cancel]
       $scope.cancel = function () {
@@ -789,6 +801,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
+       $scope.isAdminLoggedIn = $cookies.get('admin');
+
 
        $scope.LCTitle = true;
        $scope.lcFilters = ['U Photometry', 'V Photometry', 'B Photometry', 'R Photometry', 'I Photometry'];
@@ -802,7 +816,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.selectedFilterValue = filter;
 
           $scope.cutString = filter.substring(0, 1);
-          if(!$scope.isUserLoggedIn) {
+          if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
              if ($scope.cutString == "U") {
                 $scope.obRange = ObservationsLCUDiagramRange.query;
                 $scope.selectedFilter = true;
@@ -862,7 +876,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         $scope.LCTitle = false;
         $scope.selectedObjectValue = object;
 
-        if(!$scope.isUserLoggedIn) {
+        if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
            if ($scope.cutString == "U") {
               $scope.ob = ObservationsLCUDiagram.query;
               $scope.obRange = ObservationsLCUDiagramRange.query;
@@ -1089,6 +1103,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
+       $scope.isAdminLoggedIn = $cookies.get('admin');
+
+       console.log($scope.isUserLoggedIn);
+       console.log($scope.isAdminLoggedIn);
+
+
        function sleep (time) {
            return new Promise((resolve) => setTimeout(resolve, time));
        }
@@ -1108,7 +1128,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          var cutString = value.substring(0, 3);
 
                  //Get global data Range
-                 if(!$scope.isUserLoggedIn) {
+                 if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
                     if (cutString == "B-V") {
                        $scope.ob = ObservationsBVDiagram.query;
                        $scope.obRange = ObservationsBVDiagramRange.query;
@@ -1187,7 +1207,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
               shapes = ['circle'],
               random = d3.random.normal();
               //Get full data
-              if(!$scope.isUserLoggedIn) {
+              if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
                  $scope.ob(function(observationsHRDiagram) {
                      if (cutString == "B-V") {
                         $scope.starNames = observationsHRDiagram[0].starNames;
@@ -1373,6 +1393,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
 	   $cookies.remove("admin");
+	   $cookies.remove("name");
+	   $cookies.remove("email");
+	   //$cookies.put('cook', false);
+       //$cookies.put('admin', false);
 	}]);
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location',
