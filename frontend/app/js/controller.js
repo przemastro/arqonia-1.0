@@ -118,6 +118,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
        //Remove Observation Modal
        $scope.removeObservation = function (removePhotometry) {
+          console.log(removePhotometry);
           var modalInstance = $uibModal.open({
              animation: $scope.animationsEnabled,
              templateUrl: 'removeObservationModal.html',
@@ -392,18 +393,30 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                            function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
 
       $scope.ob = $scope.observations;
+      console.log($scope.ob);
 
       //[Cancel]
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
+      //console.log($scope.ob[removePhotometry].name);
+
+                        angular.forEach($scope.ob, function(value, key){
+
+                           //console.log(value.id);
+                           if(value.id === removePhotometry) {
+                              $scope.removePhotometryName = value.name;
+                              console.log($scope.removePhotometryName);
+                           }
+                        });
 
       //[Yes] - remove
       $scope.remove = function () {
         //remove photometry is an observation.id so I can keep the correct index of an observation in table list
         $scope.removePhotometry = removePhotometry;
+        console.log(removePhotometry);
         //Call removeObservation service
-        RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.ob[removePhotometry].name}, function(response){
+        RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.removePhotometryName}, function(response){
            $scope.message = response.message;
         });
         //...and close modal
