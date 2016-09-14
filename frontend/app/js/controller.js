@@ -15,7 +15,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 
 
-//---------------------------------------------------Table List---------------------------------------------------------
+//-------------------------------------------------Observations---------------------------------------------------------
+
+    //------------------------------------------------Table List--------------------------------------------------------
     //tableListCtrl
 	astroApp.controller('tableListCtrl', function($scope) {
 	});
@@ -24,44 +26,38 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', 'getUserObservations', '$cookies',
                                      function($scope, $routeParams, Observations, UserObservations, $cookies) {
 
+       //Just to clear table when new user is logged in
        $scope.displayedObservations = [];
        $scope.observations = [];
 
+       //Get the cookies of logged in user
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
        $scope.isAdminLoggedIn = $cookies.get('admin');
-       console.log($scope.loggedInUser);
-       console.log($scope.isUserLoggedIn);
-       console.log($scope.loggedInUserEmail);
-       console.log($scope.isAdminLoggedIn);
 
-       if(!$scope.isUserLoggedIn) {
+       //Verify who has logged in and populate table with appropriate data
+       if(!$scope.isUserLoggedIn) { //nobody is logged in
        //Get data
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
        }
-       else if ($scope.isAdminLoggedIn==='true') {
-       console.log('admin');
+       else if ($scope.isAdminLoggedIn==='true') { //Admin
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
-                 }
-       else if($scope.isUserLoggedIn) {
+       }
+       else if($scope.isUserLoggedIn) { //User
    		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
-
-   		     		      var globalObject = [];
-
-             		      var len = response.length;
-                            for(var i = 0; i < len; i++) {
-                            var newObject = {}
-                                    angular.forEach(response[Object.keys(response)[i]], function(value, key){
-                                            newObject[key] = value;
-                                     });
-                                     globalObject.push(newObject);
-                               }
-
+   		     var globalObject = [];
+             var len = response.length;
+             for(var i = 0; i < len; i++) {
+                var newObject = {}
+                angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                     newObject[key] = value;
+                 });
+                 globalObject.push(newObject);
+             }
    		  $scope.message = response[Object.keys(response)];
-
           $scope.displayedObservations = [];
           $scope.observations = globalObject;
           })
@@ -75,10 +71,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        //$scope.isUserLoggedIn = $cookies.get('cook');
     }]);
 
+    //-------------------------------------Edit, Remove, New modal windows initialization-------------------------------
     //ModalCtrl
     astroApp.controller('ModalCtrl', ['$scope', 'usSpinnerService', '$uibModal', 'processUserData', '$window', '$timeout', '$cookies',
                        function ($scope, usSpinnerService, $uibModal, ProcessUserData, $window, $timeout, $cookies) {
 
+       //Get the cookies of a logged in user
        $scope.animationsEnabled = true;
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
@@ -118,7 +116,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
        //Remove Observation Modal
        $scope.removeObservation = function (removePhotometry) {
-          console.log(removePhotometry);
           var modalInstance = $uibModal.open({
              animation: $scope.animationsEnabled,
              templateUrl: 'removeObservationModal.html',
@@ -215,7 +212,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           });
        }
 
-       //Generate Modal
+       //Generate Catalog Modal
        $scope.generateModal = function () {
             var modalInstance = $uibModal.open({
               animation: $scope.animationsEnabled,
@@ -225,14 +222,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        };
     }]);
 
+    //--------------------------------------------New Observation modal's details---------------------------------------
     astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
                                      function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
-
-        console.log($scope.loggedInUserEmail);
-
-        //DatePicker
+        //DatePicker - don't ask me how it works
         $scope.inlineOptions = {
           customClass: getDayClass,
           minDate: new Date(),
@@ -245,7 +240,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           minDate: new Date(),
           startingDay: 1
         };
-
 
         $scope.toggleMin = function() {
           $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
@@ -311,13 +305,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
               }
             }
           }
-
           return '';
         }
 
       //[Submit]
       $scope.addRow = function(){
 
+          //Firstly part responsible for uploading/posting files
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
@@ -389,32 +383,28 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
+    //-------------------------------------------Remove Observation modal's details-------------------------------------
     astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies',
                                            function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
 
       $scope.ob = $scope.observations;
-      console.log($scope.ob);
 
       //[Cancel]
       $scope.cancel = function () {
         $uibModalInstance.dismiss('cancel');
       };
-      //console.log($scope.ob[removePhotometry].name);
 
-                        angular.forEach($scope.ob, function(value, key){
-
-                           //console.log(value.id);
-                           if(value.id === removePhotometry) {
-                              $scope.removePhotometryName = value.name;
-                              console.log($scope.removePhotometryName);
-                           }
-                        });
+      //Just to get appropriate object name to be removed
+      angular.forEach($scope.ob, function(value, key){
+         if(value.id === removePhotometry) {
+            $scope.removePhotometryName = value.name;
+         }
+      });
 
       //[Yes] - remove
       $scope.remove = function () {
         //remove photometry is an observation.id so I can keep the correct index of an observation in table list
         $scope.removePhotometry = removePhotometry;
-        console.log(removePhotometry);
         //Call removeObservation service
         RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.removePhotometryName}, function(response){
            $scope.message = response.message;
@@ -434,9 +424,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
+    //-------------------------------------------Edit Observation modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
                                          function ($rootScope, $scope, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
-
 
 
       $scope.ob = $scope.observations;
@@ -466,8 +456,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       			}
       		}
 
-
-      //DatePicker
+      //DatePicker again
 
        $scope.startDate = new Date($scope.startDate);
        $scope.endDate = new Date($scope.endDate);
@@ -550,13 +539,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
               }
             }
           }
-
           return '';
         }
 
       //[Submit]
       $scope.updateRow = function(){
 
+          //Again part responsible for uploading files
           var file = $scope.myFile;
           //use fileUpload service only if file has been uploaded in modal
           if(file) {
@@ -631,6 +620,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.editPhotometry = editPhotometry2
     }]);
 
+    //-------------------------------------------Edit UPhotometry modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditUPhotometryCtrl',  ['$scope', '$uibModalInstance', 'editUPhotometry', function ($scope, $uibModalInstance, editUPhotometry) {
 
       $scope.ob = $scope.observations;
@@ -650,6 +640,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     }]);
 
+    //-------------------------------------------Edit VPhotometry modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditVPhotometryCtrl', function ($scope, $uibModalInstance, editVPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editVPhotometry = editVPhotometry;
@@ -669,6 +660,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
+    //-------------------------------------------Edit BPhotometry modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditBPhotometryCtrl', function ($scope, $uibModalInstance, editBPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editBPhotometry = editBPhotometry;
@@ -687,6 +679,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
+    //-------------------------------------------Edit RPhotometry modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditRPhotometryCtrl', function ($scope, $uibModalInstance, editRPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editRPhotometry = editRPhotometry;
@@ -705,6 +698,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
+    //-------------------------------------------Edit IPhotometry modal's details---------------------------------------
     astroApp.controller('ModalInstanceEditIPhotometryCtrl', function ($scope, $uibModalInstance, editIPhotometry) {
       $scope.ob = $scope.observations;
       $scope.editIPhotometry = editIPhotometry;
@@ -723,15 +717,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       };
     });
 
+    //-------------------------------------------Generate Catalog modal's details---------------------------------------
 	astroApp.controller('ModalGenerateCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location', 'searchCatalogData',
 	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Login, $cookies, $location, SearchCatalogData) {
 
+      //Get the cookies of a user firstly
       $rootScope.errorFlag = false;
       $scope.loadFlag = false;
       $scope.generateFlag = true;
 
 
-      //[Validate]
+      //Load data from DB when clicking [Load Data] button
       $scope.loadData = function() {
 
           if (!$scope.spinneractive) {
@@ -755,6 +751,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
             $scope.loadFlag = true;
             $scope.getArray = globalObject;
+            //Check what type of object data was returned and generate catalogs headers
             if ($scope.objectValue == "Star" && response != null) {
                 $scope.getHeader = function () {
                       return ["Catalog Number", "Object Name", "U", "V", "B", "R", "I", "B-V", "U-B", "R-I", "V-I"]
@@ -798,6 +795,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('DiagramCtrl', function($scope) {
 	});
 
+    //-----------------------------------------------------Light Curves-------------------------------------------------
     //lcDiagramCtrl
 	astroApp.controller('lcDiagramCtrl', function($scope) {
 	});
@@ -811,6 +809,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                   ObservationsLCBDiagramRange, ObservationsLCBDiagram, ObservationsLCRDiagramRange, ObservationsLCRDiagram,
                                   ObservationsLCIDiagramRange, ObservationsLCIDiagram, PesronalizedLCDiagramRange, PesronalizedLCDiagram, $cookies) {
 
+       //Get the user's cookies
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
@@ -829,6 +828,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.selectedFilterValue = filter;
 
           $scope.cutString = filter.substring(0, 1);
+          //For global data or admin
           if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
              if ($scope.cutString == "U") {
                 $scope.obRange = ObservationsLCUDiagramRange.query;
@@ -866,6 +866,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 });
              }
           }
+          //For logged in gentleman
           else {
              PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
                      for(var i = 0; i < response.length; i++) {
@@ -878,7 +879,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                      }
                      $scope.starNames = tab[4];
                      $scope.selectedFilter = true;
-                     console.log($scope.starNames);
              })
           }
        }
@@ -888,7 +888,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.selectObject = function (object) {
         $scope.LCTitle = false;
         $scope.selectedObjectValue = object;
-
+        //Again global data firstly
         if($scope.isUserLoggedIn!='true' || $scope.isAdminLoggedIn==='true') {
            if ($scope.cutString == "U") {
               $scope.ob = ObservationsLCUDiagram.query;
@@ -1004,8 +1004,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
            }
            $scope.exampleData = $scope.data;
         }
+        //And for logged in user
         else {
-           console.log('personalized');
            PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
                    for(var i = 0; i < response.length; i++) {
                       var j = 0
@@ -1047,7 +1047,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                return $scope.option
            })
            PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
-        //The magic to populate data with data
+            //The magic to populate data with data
                    $scope.data = generateData();
                    function generateData() {
                       var data = [],
@@ -1064,10 +1064,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                       $scope.starNames = tab[2];
                       $scope.ObservationsTimes = tab[1];
                       $scope.Observations = tab[0];
-
-                      console.log($scope.starNames);
-                      console.log($scope.ObservationsTimes);
-                      console.log($scope.Observations);
 
 
                              var i = 0
@@ -1088,9 +1084,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                         j++;
                                      }
                              })
-                             //$scope.obRange(function(observationsDiagram) {
-                             //   $scope.starNames = observationsDiagram[0].StarNames;
-                             //});
                              return $scope.starNames, data;
                    }
                    $scope.exampleData = $scope.data;
@@ -1099,7 +1092,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
      }})]);
 
 
-
+    //------------------------------------------------------HR Diagrams-------------------------------------------------
     //hrDiagramCtrl
 	astroApp.controller('hrDiagramCtrl', function($scope) {
 
@@ -1117,9 +1110,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
        $scope.isAdminLoggedIn = $cookies.get('admin');
-
-       console.log($scope.isUserLoggedIn);
-       console.log($scope.isAdminLoggedIn);
 
 
        function sleep (time) {
@@ -1287,7 +1277,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          }
          $scope.data = generateData();
          $scope.exampleData = $scope.data;
-         console.log($scope.exampleData);
      }})]);
 
 
@@ -1403,13 +1392,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     //logoutCtrl
 	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', function ($scope, Login, $cookies) {
+	   //put the cookie down
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
 	   $cookies.remove("admin");
 	   $cookies.remove("name");
 	   $cookies.remove("email");
-	   //$cookies.put('cook', false);
-       //$cookies.put('admin', false);
 	}]);
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location',
@@ -1601,7 +1589,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                $(function() {
                  delete $rootScope.images;
                  $rootScope.images = ['1', '2', '3'];
-                 console.log('tutaj');
                });
             });
             $( ".owl-wrapper-outer" ).remove();
