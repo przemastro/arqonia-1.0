@@ -28,7 +28,6 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
      get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromStagingObservations')
      cursor.execute(get_lastId)
      lastId = cursor.fetchone()
-     #print lastId
      if lastId is None:
          lastId = 1
      else:
@@ -188,7 +187,6 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
               observation = "SELECT "+lastId+","+j+",'"+name+"','"+objectType+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+"," \
                                                                     ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1, '"+verified+"',  (select id from data.users where email='"+email+"') UNION ALL "
               insert_observation = insert_observation + observation
-              #print insert_observation
 
 
         insert_observation = insert_observation[:-10]
@@ -511,7 +509,6 @@ def objectDetails(name):
 
 
         controller = ''
-        #print objectName
         #Proper Name
         if((cursor.execute("select count(1) from data.HD_name where name = '"+objectName+"'").fetchone())[0]>0):
 
@@ -1123,10 +1120,8 @@ def objectDetails(name):
                 details = calculate_planetoidsParameters(PL[0].strip(), PL[1].strip(), PL[2].strip(), PL[3].strip(), PL[4].strip(),
                                                          PL[5].strip(), PL[6].strip(), PL[7].strip(), PL[8].strip(), PL[9].strip(),
                                                          PL[10].strip())
-                #print details
 
                 controller = str(details) + ',' + controller
-                #print controller
 
             controller = ast.literal_eval(controller[:-1])
             controller = json.dumps(controller, skipkeys=True)
@@ -1154,13 +1149,10 @@ def catalogData(objectType, abbreviation, email):
 
 
         controller = ''
-        #print objectType
         if(objectType == 'Star'):
            #B-V
            get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-           #print get_BVObservationsDifference
            BVObservationsDifference = fetch_all(get_BVObservationsDifference)
-           #print BVObservationsDifference
            #U-B
            get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
            UBObservationsDifference = fetch_all(get_UBObservationsDifference)
@@ -1175,7 +1167,6 @@ def catalogData(objectType, abbreviation, email):
         #U
         get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         UObservations = fetch_all(get_UObservations)
-        #print UObservations
         #V
         get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
         VObservations = fetch_all(get_VObservations)
@@ -1193,11 +1184,10 @@ def catalogData(objectType, abbreviation, email):
         ObjectNames = fetch_all(get_ObjectNames)
         jsonRange = len(UObservations)
 
-        #print jsonRange
 
         if(objectType == 'Star'):
             controller = ''
-            #to create array of objectc if we have only one observation
+            #to create array of objects if we have only one observation
             if (jsonRange == 1):
                 controller = str({'01id': "", '02objectNames': "",
                                   '03uObservations': "", '04vObservations': "", '05bObservations': "",
@@ -1212,7 +1202,6 @@ def catalogData(objectType, abbreviation, email):
                               '08bvObservationsDifference': BVObservationsDifference[counter], '09ubObservationsDifference': UBObservationsDifference[counter],
                               '10riObservationsDifference': RIObservationsDifference[counter],'11viObservationsDifference': VIObservationsDifference[counter]}
                 controller = str(catalogData) + ',' + controller
-                #print controller
         else:
             controller = ''
             #to create array of objectc if we have only one observation
@@ -1229,7 +1218,6 @@ def catalogData(objectType, abbreviation, email):
 
         controller = ast.literal_eval(controller[:-1])
         controller = json.dumps(controller, skipkeys=True)
-        #print controller
 
 
         catalogData = json.loads(controller)

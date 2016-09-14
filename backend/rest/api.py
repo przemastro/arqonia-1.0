@@ -140,7 +140,6 @@ class RestUserObservation(Resource):
     def put(self):
         args = parser.parse_args()
         observations = userObservations(args['email'])
-        #print observations
         return jsonify(observations)
 
 
@@ -223,7 +222,6 @@ class RestPersonalizedObservationLCDiagram(Resource):
     def put(self):
         args = parser.parse_args()
         data = personalizedLCDiagram(args['filter'], args['email'])
-        print data
         return jsonify(data)
 
 #Personalized LC Diagrams Range
@@ -231,7 +229,6 @@ class RestPersonalizedObservationLCDiagramRange(Resource):
     def put(self):
         args = parser.parse_args()
         data = personalizedLCDiagramRange(args['filter'], args['email'])
-        print data
         return jsonify(data)
 
     #HR Diagrams Data
@@ -363,7 +360,6 @@ class RestCatalog(Resource):
     def put(self):
         args = parser.parse_args()
         catalog = catalogData(args['objectType'], args['abbreviation'], args['email'])
-        print catalogData
         return jsonify(catalog)
 
 
