@@ -41,7 +41,7 @@ def json_data():
             get_RPhotometryFlux = (queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
             get_RPhotometryTime = (queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
             get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
-            get_IPhotometryFlux = ( queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
+            get_IPhotometryFlux = (queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
             get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
 
             UPhotometry = str(fetch_one(get_UPhotometryFlag))
@@ -126,9 +126,11 @@ def userObservations(email):
         get_IdFromObservationsSorted = (queries.get('DatabaseQueries', 'database.getUserIdFromObservationsSorted') + "'" + email + "' order by os.id desc");
         getIds = fetch_all(get_IdFromObservationsSorted)
 
+        i = 0
         controller = ''
         for counter in getIds:
             id = str(counter)
+            i = i + 1
             get_observationsOwners = (queries.get('DatabaseQueries', 'database.getUserObservationsOwners') + id + " and us.Email='" + email + "'")
             get_objectName = (queries.get('DatabaseQueries', 'database.getUserStarNameFromObservationsSorted') + id + " and us.Email='" + email + "'")
             get_StartDate = (queries.get('DatabaseQueries', 'database.getUserStartDateFromObservationsSorted') + id + " and us.Email='" + email + "'")
@@ -209,11 +211,18 @@ def userObservations(email):
             controller = str(object) + ',' + controller
             #print controller
 
+        print 'counter'
+        print counter
+
         controller = ast.literal_eval(controller[:-1])
-        controller = json.dumps(controller, skipkeys=True)
+        #controller = json.dumps(controller, skipkeys=True)
 
         cursor.close()
-        observations = json.loads(controller)
+        #observations = json.loads(controller)
+        if(i==1):
+            observations = [controller]
+        else:
+            observations = controller
         return observations
 
     except:
@@ -551,7 +560,7 @@ def personalizedLCDiagramRange(filter, email):
             get_YMin = (queries.get('DatabaseQueries', 'database.getUserLCYMinFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             get_StarNames = (queries.get('DatabaseQueries', 'database.getUserLCStarNamesFromBPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")
             time.sleep(1)
-            #data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
+            data = [{'eStarNames': fetch_all(get_StarNames), 'aXMax': fetch_all(get_XMax), 'bXMin': fetch_all(get_XMin), 'cYMax': fetch_all(get_YMax), 'dYMin': fetch_all(get_YMin)}]
         #R
         elif(filter == 'R'):
             get_XMax = (queries.get('DatabaseQueries', 'database.getUserLCXMaxFromRPhotometrySorted') + "'" + email + "' group by ObjectName order by ObjectName asc")

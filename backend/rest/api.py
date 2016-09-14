@@ -141,7 +141,7 @@ class RestUserObservation(Resource):
         args = parser.parse_args()
         observations = userObservations(args['email'])
         #print observations
-        return observations
+        return jsonify(observations)
 
 
 class RestObservation(Resource):
