@@ -1420,6 +1420,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	                       function ($rootScope, $scope, Login, $cookies, Statistics, $uibModal, Subscribe) {
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
 	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
+	   $rootScope.loggedInUser = $cookies.get('name');
        $scope.Statistics = Statistics.query();
 
               //Login Modal
@@ -1492,10 +1493,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              };
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', true);
+   		     $cookies.put('name', $scope.message);
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
-   		     $rootScope.loggedInUser = $scope.message
+   		     $rootScope.loggedInUser = $cookies.get('name');
+   		     //$rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
