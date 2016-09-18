@@ -1,17 +1,30 @@
 <body ng-controller = "reductionCtrl" ng-app = "astroApp">
 <div ng-controller = "dataReductionCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
-    <table style="max-width: 1070px; margin: 10px" st-table="displayedObservations" st-safe-src="observations" class="tableList">
+    <div style="margin-top: 50px;color:white;" ng-show="!isUserLoggedIn">
+        <table class="menu" style="background-color:white;">
+            <tr>
+                <td>
+                    <div style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                        <div style="padding: 0px 15px;color:white;">
+                            <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                                In order to reduce your frames you must firstly  <a href="#login" ng-click="loginModal()"
+                                style="text-decoration: none !important;">Login</a> to the service.
+                                If you are a new user of the service please <a href="#register" ng-click="registerModal()"
+                                style="text-decoration: none !important;">Sign up</a></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <table style="max-width: 1070px; margin: 10px" st-table="displayedObservations" st-safe-src="observations" class="tableList"  ng-show="isUserLoggedIn">
         <tr>
             <td colspan="3" style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 0px;
                                    border-color: #e1e1e1;margin-bottom: 0px;max-width:495px">
-                <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel">
-                    <div ng-repeat="image in images">
-                        <div style="width:500px;height:490px;margin: 0px;" class="owl-items">
-                            <div style="padding:0px;padding-right: 0px;" class="item">
-                                <img width="530px" height="460px" src="fits/vega.jpg" alt="...">
-                            </div>
-                        </div>
-                    </div>
+                <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel" bind-html-compile="sync1Content">
                 </div>
             </td>
             <td colspan="3" style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 0px;
@@ -19,7 +32,7 @@
                 <div style="max-width:530px;padding:0px">
                         <div style="max-width:500px;height:440px;margin: 0px;" class="owl-items">
                             <div style="padding:0px;padding-left: 15px" class="item">
-                                <img width="530px" height="460px" src="fits/vega.jpg" alt="...">
+                                <img width="530px" height="460px" src="output_fits/vega.jpg" alt="...">
                             </div>
                         </div>
                 </div>
@@ -40,108 +53,20 @@
             </td>
             <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:15%;">
                 <label style="background-color: rgb(77, 157, 194);border:0px;" class="btn btn-primary btn-file sharp customHeight" ng-disabled="uploadFlag"> Browse
-                   <input style="display:none;" type="file" file-model = "myFile2" name="vFileName" multiple ng-disabled="uploadFlag"/>
+                   <input style="display:none;" type="file" file-model = "myFile" name="vFileName" multiple ng-disabled="uploadFlag"/>
                 </label>
             </td>
             <td colspan="2" style="border-bottom: 0px;padding-right:0px;margin-bottom: 7px;width:25%;text-decoration: none;padding: 0px 0px;font-family: inherit;font-weight: normal;
                                           font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">{{selectType}}</td>
-            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:15%"><input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
-            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:20%"><input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="addObservation()" ng-show="isUserLoggedIn"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:15%"><input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight" ng-click="addObservation()"/></td>
+            <td style="vertical-align: top;border-bottom: 0px;padding-left:0px;width:20%"><input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="addObservation()"/></td>
         </tr>
     </table>
-    <div style="position:relative;bottom:0px;margin:10px;margin-top:-10px">
-        <div  id="sync2" class="owl-carousel">
-            <div ng-repeat="image in images">
-                <div style="width:80px;height:81px;margin: 1px auto;" class="owl-items">
-                    <div style="padding:1px;padding-right: 1px" class="item">
-                        <img width="68" height="80" src="fits/vega.jpg" alt="..." style="opacity: 0.5;">
-                    </div>
-                </div>
-            </div>
+    <div style="position:relative;bottom:0px;margin:10px;margin-top:-10px"  ng-show="isUserLoggedIn">
+        <div id="sync2" class="owl-carousel" bind-html-compile="sync2Content">
         </div>
     </div>
 </div>
-
-
-
-
-<script>
-
-
-    $(document).ready(function() {
-
-      var sync1 = $("#sync1");
-      var sync2 = $("#sync2");
-
-      sync1.owlCarousel({
-        singleItem : true,
-        slideSpeed : 1000,
-        navigation: true,
-        pagination:false,
-        afterAction : syncPosition,
-        responsiveRefreshRate : 200,
-      });
-
-      sync2.owlCarousel({
-        items : 15,
-        itemsDesktop      : [1199,10],
-        itemsDesktopSmall     : [979,10],
-        itemsTablet       : [768,8],
-        itemsMobile       : [479,4],
-        pagination:false,
-        responsiveRefreshRate : 100,
-        afterInit : function(el){
-          el.find(".owl-item").eq(0).addClass("synced");
-        }
-      });
-
-      function syncPosition(el){
-        var current = this.currentItem;
-        $("#sync2")
-          .find(".owl-item")
-          .removeClass("synced")
-          .eq(current)
-          .addClass("synced")
-        if($("#sync2").data("owlCarousel") !== undefined){
-          center(current)
-        }
-      }
-
-      $("#sync2").on("click", ".owl-item", function(e){
-        e.preventDefault();
-        var number = $(this).data("owlItem");
-        sync1.trigger("owl.goTo",number);
-      });
-
-      function center(number){
-        var sync2visible = sync2.data("owlCarousel").owl.visibleItems;
-        var num = number;
-        var found = false;
-        for(var i in sync2visible){
-          if(num === sync2visible[i]){
-            var found = true;
-          }
-        }
-
-        if(found===false){
-          if(num>sync2visible[sync2visible.length-1]){
-            sync2.trigger("owl.goTo", num - sync2visible.length+2)
-          }else{
-            if(num - 1 === -1){
-              num = 0;
-            }
-            sync2.trigger("owl.goTo", num);
-          }
-        } else if(num === sync2visible[sync2visible.length-1]){
-          sync2.trigger("owl.goTo", sync2visible[1])
-        } else if(num === sync2visible[0]){
-          sync2.trigger("owl.goTo", num-1)
-        }
-
-      }
-
-    });
-</script>
 
 <script>
     $('.fade_hov').hover(function(){
