@@ -19,7 +19,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     //------------------------------------------------Table List--------------------------------------------------------
     //tableListCtrl
-	astroApp.controller('tableListCtrl', function($scope) {
+	astroApp.controller('tableListCtrl', function($scope, $window) {
 	});
 
     //tableCtrl
@@ -1513,6 +1513,40 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           };
     }]);
 
+
+//-----------------------------------------------------Password Reminder------------------------------------------------
+
+    //loginCtrl
+	astroApp.controller('reminderCtrl', function($scope) {
+	});
+
+   astroApp.controller('PasswordReminderCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
+
+      $rootScope.errorFlag = false
+      //[Submit]
+      $scope.sendPassword = function(){
+
+   		  Register.save({email:$scope.email}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+
+   		     $rootScope.errorFlag = false
+   		     $location.path("login");
+
+             $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
+             $uibModalInstance.dismiss();
+   		     })
+      };
+
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+     }]);
 
 
 //--------------------------------------------------------Register------------------------------------------------------

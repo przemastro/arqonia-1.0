@@ -326,7 +326,7 @@ class RestRegister(Resource):
             content = Message("Hello "+args['name'],
                       sender="admin@arqonia.com",
                       recipients=[args['email']])
-            content.body = 'Welcome '+args['name']+',\n\nThank you for joining AstroApp, the biggest astronomical fandom in the Universe.' \
+            content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
                                                    '\n\nBest Regards, \nThe Creator'
             mail.send(content);
         return jsonify({'msg': msg})
