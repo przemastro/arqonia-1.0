@@ -449,15 +449,22 @@
  </div>
 
  <div align="center" id="newsletter" class="newsletter" style="position: relative;margin:auto;">
+     <div class="alert alert-success" ng-show="showSuccessAlert">
+         <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">×</button> <strong></strong> {{successTextAlert}}
+     </div>
    <p>
        Please subscribe if you want to get latest news about new<br> functionalities and updates to existing ones.
    </p>
-             <form name="subscribe" role="form" novalidate ng-submit="addSubscriber()" class="form-inline">
-                 <div class="input-group input-group-lg">
-                     <input style="background-color: #2d2d2d;border: none;display:" type="email" class="form-control customInputSubscribe" placeholder="youremail@domain.com" name="email" ng-model="email"/>
+             <form name="subscribe" role="form" class="form-inline" novalidate ng-submit="subscribe.$valid && addSubscriber()">
+                 <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <input style="background-color: #2d2d2d;border: none;display:" type="email" class="form-control customInputSubscribe" placeholder="youremail@domain.com" name="email" ng-model="email" required/>
+                    </div>
+                    <div ng-messages="subscribe.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                    </div>
                  </div>
-                 <div style="margin-left: -55px;margin-bottom: 1px;" class="input-group input-group-lg">
-                     <input type="submit" value="SUBSCRIBE" class="btn btn-primary sharp customSubscribe btnMarginLeft"  ng-click="submitted=true" ng-keyup="submitted=false"/>
+                 <div style="margin-left: -55px;margin-bottom: 0px;" class="input-group input-group-lg">
+                     <input type="submit" value="subscribe" class="btn btn-primary sharp customSubscribe btnMarginLeft"  ng-click="submitted=true" ng-keyup="submitted=false"/>
                  </div>
              </form>
          </div>

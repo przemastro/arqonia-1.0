@@ -500,7 +500,9 @@ def addSubscriber(email):
 
         email = str(email)
 
-        insert_NewSubscriber = ("insert into data.subscribeList values('"+email+"')")
+        insert_NewSubscriber = ("BEGIN IF NOT EXISTS (SELECT * FROM [data].[subscribeList] WHERE email = '"+email+"') "
+                                "BEGIN INSERT INTO [data].[subscribeList] (Email) VALUES ('"+email+"') "
+                                "END END")
         cursor.execute(insert_NewSubscriber)
         cnx.commit()
 

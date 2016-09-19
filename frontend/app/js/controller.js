@@ -102,7 +102,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
             }, 15000);
          $timeout(function(){
             $window.location.reload();
-            }, 25000);
+            }, 15000);
        };
 
        //New Observation Modal
@@ -1320,7 +1320,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              }, 15000);
           $timeout(function(){
              $window.location.reload();
-             }, 25000);
+             }, 15000);
 
         };
 
@@ -1416,8 +1416,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 //-----------------------------------------------------------Home-------------------------------------------------------
 
     //mainCtrl
-	astroApp.controller('mainCtrl', ['$rootScope', '$scope', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe',
-	                       function ($rootScope, $scope, Login, $cookies, Statistics, $uibModal, Subscribe) {
+	astroApp.controller('mainCtrl', ['$rootScope', '$scope', 'login', '$cookies', 'getStatistics', '$uibModal', 'subscribe', '$window', '$timeout',
+	                       function ($rootScope, $scope, Login, $cookies, Statistics, $uibModal, Subscribe, $window, $timeout) {
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
 	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
 	   $rootScope.loggedInUser = $cookies.get('name');
@@ -1444,6 +1444,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.addSubscriber = function(){
       	  Subscribe.save({email:$scope.email}, function(response){
       	  $scope.message = response[Object.keys(response)[0]];
+      	           $scope.successTextAlert = "Your email has been added to the subscribe list";
+                       $scope.showSuccessAlert = true;
+                       // switch flag
+                       $scope.switchBool = function (value) {
+                           $scope[value] = !$scope[value];
+                       };
+
+                    $timeout(function(){
+                       $scope.showSuccessAlert = false;
+                       }, 5000);
       	  });
        }
 	}]);
