@@ -439,6 +439,27 @@ def addUser(name, email, password):
     else:
         cnx.close()
 
+#----------------------------------------------------Get Password-------------------------------------------------------
+def getPassword(email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+
+        get_Password = ("select password from data.users where Email='"+email+"'")
+        cursor.execute(get_Password)
+        Value = cursor.fetchone()
+        msg = Value[0]
+
+        return msg
+        cursor.close()
+
+    except:
+        print 'errors in addUser function'
+    else:
+        cnx.close()
+
 #-----------------------------------------------------verify Credentials------------------------------------------------
 def verifyCredentials(email, password):
     try:

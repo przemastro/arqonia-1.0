@@ -3,7 +3,7 @@ from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, \
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
-from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, getPassword
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -327,10 +327,22 @@ class RestRegister(Resource):
                       sender="admin@arqonia.com",
                       recipients=[args['email']])
             content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
-                                                   '\n\nBest Regards, \nThe Creator'
+                                                   '\n\nBest Regards, \nAdmin'
             mail.send(content);
         return jsonify({'msg': msg})
 
+class RestReminder(Resource):
+    def post(self):
+        args = parser.parse_args()
+
+        msg = getPassword(args['email'])
+        content = Message("Hello",
+                          sender="admin@arqonia.com",
+                          recipients=[args['email']])
+        content.body = 'Hi,\n\nThis is reply for your request. \n\nYour password is: '+msg+'' \
+                                               '\n\nBest Regards, \nAdmin'
+        mail.send(content);
+        return 201
 
 class RestLogin(Resource):
     def put(self):
@@ -393,6 +405,7 @@ api.add_resource(RestObservationLCRDiagram, '/observationsLCRDiagram')
 api.add_resource(RestObservationLCIDiagram, '/observationsLCIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
+api.add_resource(RestReminder, '/reminder')
 api.add_resource(RestLogin, '/login')
 api.add_resource(RestSearch, '/search')
 api.add_resource(RestStatistics, '/statistics')

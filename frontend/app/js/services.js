@@ -40,6 +40,14 @@ services.factory('login', ['$resource',
     });
 }]);
 
+//Reminder
+services.factory('reminder', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/reminder', {}, {
+        save: {method:'POST'}
+    });
+}]);
+
 
 //Subscribe
 services.factory('subscribe', ['$resource',

@@ -1455,8 +1455,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('loginCtrl', function($scope) {
 	   $scope.message = 'Login';
 	});
-	astroApp.controller('ModalLoginCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location',
-	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Login, $cookies, $location) {
+	astroApp.controller('ModalLoginCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'login', '$cookies', '$location', '$uibModal',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Login, $cookies, $location, $uibModal) {
 
       $rootScope.errorFlag = false
       //[Submit]
@@ -1511,6 +1511,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
+
+
+                  //Reminder Modal
+                  $scope.reminderModal = function () {
+                       $uibModalInstance.dismiss();
+                       var modalInstance = $uibModal.open({
+                         animation: $scope.animationsEnabled,
+                         templateUrl: 'reminderModalContent.html',
+                         controller: 'PasswordReminderCtrl',
+                       });
+                  };
     }]);
 
 
@@ -1520,15 +1531,13 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('reminderCtrl', function($scope) {
 	});
 
-   astroApp.controller('PasswordReminderCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
-	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
+   astroApp.controller('PasswordReminderCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'reminder', '$cookies', '$location',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Reminder, $cookies, $location) {
 
       $rootScope.errorFlag = false
-      //[Submit]
+      //[Send]
       $scope.sendPassword = function(){
-
-   		  Register.save({email:$scope.email}, function(response){
-   		  $scope.message = response[Object.keys(response)[0]];
+   		  Reminder.save({email:$scope.email}, function(response){
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
