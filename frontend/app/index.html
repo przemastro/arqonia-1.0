@@ -40,9 +40,38 @@
 
  <body ng-controller="mainCtrl" style="background-color: #efefef;overflow-x:hidden;">
 
+ <div align="center" style="margin:auto;position:relative;">
+     <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;padding-top:3px;overflow: hidden;color: #4c4c4c;background-color: #efefef;min-height:40px;position:relative">
+         <li style="position:fixed;position:relative;float:right;font-size: 1.6rem;top: 2px;right: 10px;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()"
+                                                       style="color:#4c4c4c;text-decoration: none;padding: 7px 5px;padding-right:10px;">Sign up</a></li>
+         <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;top: 5px;right: 80px;" ng-show="!isUserLoggedIn">|</li>
+         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 85px;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
+                                                       style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:5px;">Login</a></li>
+         <li style="position:fixed;float:right;font-size: 1.6rem;z-index: 150;top: 5px;right: 5px;">
+             <div style="height:100px;">
+                <div class="dropdown">
+                    <a href style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;" class="dropdown-toggle" ng-show="isUserLoggedIn" id="dLabel"
+                       role="button" data-toggle="dropdown">
+                        <span style="font-size: 2.3rem;" class="glyphicon glyphicon-user" aria-hidden="true" aria-haspopup="true" aria-expanded="false"></span>
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </a>
+                    <ul style="margin-left:-120px;text-align:left;" class="dropdown-menu">
+                        <li><a style="text-align:left;width:200px" href="#edit">Edit Profile</a></li>
+                        <li><a style="text-align:left;width:200px" href="#logout">Logout</a></li>
+                    </ul>
+                </div>
+             </div>
+         </li>
+         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 295px;">
+             <a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 7px 16px;">Admin Panel</a></li>
+         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 45px;z-index: 150;">
+             <div ng-show="isUserLoggedIn"  style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:25px;white-space: nowrap;">
+                 You are logged in as &nbsp;<b style="white-space: nowrap;color:red">{{loggedInUser}}</b></div></li>
+     </ul>
+ </div>
 
-
- <div id="header" align="center" style="margin:auto;position:relative;z-index: 50;text-align:right">
+ <div id="header" align="center" style="margin:auto;position:relative;z-index: 50;text-align:right;">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
          <li style="margin-top: 7px;float: right;margin-right:500px"><a href="#search" class="pageSection" style="color:white;text-decoration: none;">SEARCH</a></li>
@@ -270,33 +299,6 @@
      </a>
  </div>
 
- <div align="center" style="margin:auto;position:relative;z-index: 150;">
-     <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;padding-top:3px;overflow: hidden;color: #4c4c4c;background-color: #efefef;height:100px;position:relative">
-         <li style="float:right;font-size: 1.6rem;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()"
-                                                       style="color:#4c4c4c;text-decoration: none;padding: 7px 5px;padding-right:10px;">Sign up</a></li>
-         <li style="float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;" ng-show="!isUserLoggedIn">|</li>
-         <li style="float:right;font-size: 1.6rem;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
-                                                       style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:5px;">Login</a></li>
-         <li style="float:right;font-size: 1.6rem;">
-             <div class="dropdown">
-                 <a href style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;" class="dropdown-toggle" ng-show="isUserLoggedIn" id="dLabel"
-                    role="button" data-toggle="dropdown">
-                     <span style="font-size: 2.3rem;" class="glyphicon glyphicon-user" aria-hidden="true" aria-haspopup="true" aria-expanded="false"></span>
-                     <span class="caret"></span>
-                     <span class="sr-only">Toggle Dropdown</span>
-                 </a>
-                 <ul style="margin-left:-120px;text-align:left;z-index: 250;" class="dropdown-menu">
-                     <li><a style="text-align:left;width:200px" href="#edit">Edit Profile</a></li>
-                     <li><a style="text-align:left;width:200px" href="#logout">Logout</a></li>
-                 </ul>
-             </div>
-         </li>
-         <li style="float:right;font-size: 1.6rem;"><a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 7px 16px;">Admin Panel</a></li>
-         <li style="float:right;font-size: 1.6rem;">
-             <a href ng-show="isUserLoggedIn"  style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:25px;white-space: nowrap;">
-                 You are logged in as &nbsp;<b style="white-space: nowrap;color:red">{{loggedInUser}}</b></a></li>
-     </ul>
- </div>
 
  <div class="subMenu" style="margin-top: 50px;">
    <table class="menu">
