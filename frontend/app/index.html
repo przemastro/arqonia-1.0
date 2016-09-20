@@ -40,38 +40,40 @@
 
  <body ng-controller="mainCtrl" style="background-color: #efefef;overflow-x:hidden;">
 
- <div align="center" style="margin:auto;position:relative;">
-     <ul class="topMenu" style="margin:auto;list-style-type: none;margin: 0;padding: 0;padding-top:3px;overflow: hidden;color: #4c4c4c;background-color: #efefef;min-height:40px;position:relative">
-         <li style="position:fixed;position:relative;float:right;font-size: 1.6rem;top: 2px;right: 10px;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()"
+ <div align="center" style="background:#efefef;padding:10px 15px;position:fixed;top:0;left:0;z-index:2000;width:100%;">
+     <ul class="topMenu" style="margin:auto;list-style-type: none;padding: 0;color: #4c4c4c;background-color: #efefef;height:15px;position:relative;z-index: 150;display: block;height:10px">
+         <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 10px;z-index: 150;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()"
                                                        style="color:#4c4c4c;text-decoration: none;padding: 7px 5px;padding-right:10px;">Sign up</a></li>
-         <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;top: 5px;right: 80px;" ng-show="!isUserLoggedIn">|</li>
-         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 85px;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
+         <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;top: 0px;right: 75px;" ng-show="!isUserLoggedIn">|</li>
+         <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 85px;z-index: 150;"><a href="#login" ng-show="!isUserLoggedIn" ng-click="loginModal()"
                                                        style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:5px;">Login</a></li>
-         <li style="position:fixed;float:right;font-size: 1.6rem;z-index: 150;top: 5px;right: 5px;">
+         <li style="position:fixed;float:right;font-size: 1.4rem;z-index: 150;top: 3px;right: 5px;">
              <div style="height:100px;">
                 <div class="dropdown">
-                    <a href style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;" class="dropdown-toggle" ng-show="isUserLoggedIn" id="dLabel"
-                       role="button" data-toggle="dropdown">
-                        <span style="font-size: 2.3rem;" class="glyphicon glyphicon-user" aria-hidden="true" aria-haspopup="true" aria-expanded="false"></span>
+                    <a href style="color:#4c4c4c;text-decoration: none;padding: 0px 10px;"
+                       onMouseOver="this.style.boxShadow = '0 6px 12px rgba(0,0,0,.175)'" onMouseOut="this.style.boxShadow = '0 0px 0px rgba(0,0,0,.175)'"
+                       class="dropdown-toggle" ng-show="isUserLoggedIn" id="dLabel" role="button" data-toggle="dropdown">
+                        <span style="font-size: 2.2rem;" class="glyphicon glyphicon-user" aria-hidden="true" aria-haspopup="true" aria-expanded="false"></span>
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </a>
-                    <ul style="margin-left:-120px;text-align:left;" class="dropdown-menu">
-                        <li><a style="text-align:left;width:200px" href="#edit">Edit Profile</a></li>
-                        <li><a style="text-align:left;width:200px" href="#logout">Logout</a></li>
+                    <ul style="margin-left:-85px;text-align:left;background-color: #efefef;margin-top:1px;border: 0px;min-width:50px !important;max-width:140px" class="dropdown-menu">
+                        <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px">Account & Settings</a></li>
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit">Edit Profile</a></li>
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#logout">Logout</a></li>
                     </ul>
                 </div>
              </div>
          </li>
-         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 295px;">
+         <li style="position:fixed;float:right;font-size: 1.4rem;top: 2px;right: 295px;z-index: 150;">
              <a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 7px 16px;">Admin Panel</a></li>
-         <li style="position:fixed;float:right;font-size: 1.6rem;top: 5px;right: 45px;z-index: 150;">
+         <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 45px;z-index: 150;">
              <div ng-show="isUserLoggedIn"  style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:25px;white-space: nowrap;">
-                 You are logged in as &nbsp;<b style="white-space: nowrap;color:red">{{loggedInUser}}</b></div></li>
+                 You are logged in as <b style="white-space: nowrap;color:red">{{loggedInUser}}</b></div></li>
      </ul>
  </div>
 
- <div id="header" align="center" style="margin:auto;position:relative;z-index: 50;text-align:right;">
+ <div id="header" align="center" style="margin:auto;position:relative;z-index: 50;text-align:right;margin-top:30px">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
          <li style="margin-top: 7px;float: right;margin-right:500px"><a href="#search" class="pageSection" style="color:white;text-decoration: none;">SEARCH</a></li>
@@ -300,7 +302,7 @@
  </div>
 
 
- <div class="subMenu" style="margin-top: 50px;">
+ <div class="subMenu" style="margin-top: 60px;margin-bottom:20px">
    <table class="menu">
      <tr>
        <td>
@@ -372,6 +374,11 @@
    </table>
  </div>
      <a href="#" class="scrollToTop" style="background-image:url('images/arrow_up.png');"></a>
+
+<!--just to have view below not to covered by upper menu-->
+<div id="mainUpper" style="height:10px;margin-bottom:-80px">
+
+</div>
 
 
  <div id="main">
@@ -643,31 +650,31 @@
 		return false;
 	});
 
-    //scroll to id="main"
+    //scroll to id="mainUpper"
     $('.pageSection').click(function (){
         $('html, body').animate({
-            scrollTop: $("#main").offset().top
+            scrollTop: $("#mainUpper").offset().top
         }, 2000);
     });
 
-    //scroll to id="main"
+    //scroll to id="mainUpper"
     $('#photometry').click(function (){
         $('html, body').animate({
-            scrollTop: $("#main").offset().top
+            scrollTop: $("#mainUpper").offset().top
         }, 2000);
     });
 
-    //scroll to id="main"
+    //scroll to id="mainUpper"
     $('#table-list').click(function (){
         $('html, body').animate({
-            scrollTop: $("#main").offset().top
+            scrollTop: $("#mainUpper").offset().top
         }, 2000);
     });
 
-    //scroll to id="main"
+    //scroll to id="mainUpper"
     $('#diagram').click(function (){
         $('html, body').animate({
-            scrollTop: $("#main").offset().top
+            scrollTop: $("#mainUpper").offset().top
         }, 2000);
     });
 
