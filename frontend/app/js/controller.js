@@ -1391,7 +1391,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 //----------------------------------------------------------Logout-------------------------------------------------------
 
     //logoutCtrl
-	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', function ($scope, Login, $cookies) {
+	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', '$uibModal', function ($scope, Login, $cookies, $uibModal) {
 	   //put the cookie down
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
@@ -1402,6 +1402,18 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location',
     function ($scope, usSpinnerService, Login, $cookies, $location) {
+
+       //Firstly we need to kill all active modals
+       $('.modal-content > .ng-scope').each(function()
+       {
+           try
+           {
+               $(this).scope().$dismiss();
+           }
+           catch(_) {}
+       });
+
+       //Set flags
        $scope.isUserLoggedIn = false;
        $scope.isAdminLoggedIn = false;
              if (!$scope.spinneractive) {
