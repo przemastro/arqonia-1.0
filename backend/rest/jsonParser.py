@@ -452,16 +452,8 @@ def updateUser(name, email, password, oldEmail):
         oldEmail = str(oldEmail)
 
         if email != 'None' and password != 'None' and name != 'None' and oldEmail != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+oldEmail+"'")
-            cursor.execute(verify_User)
-
-            Value = cursor.fetchone()
-            Value = Value[0]
-
-            if Value>0:
-                msg = "User exists"
-            else:
                 update_ExistingUser = ("update data.users set Name='"+name+"', Email='"+email+"', Password='"+password+"' where email='"+oldEmail+"'")
+                print update_ExistingUser
                 cursor.execute(update_ExistingUser)
                 cnx.commit()
                 msg = "Correct"

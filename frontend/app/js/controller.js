@@ -1535,8 +1535,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     }
+   		     console.log($rootScope.isAdminLoggedIn);
    		  });
       };
+
 
           //[Cancel]
           $scope.cancel = function () {
@@ -1598,13 +1600,15 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location) {
 
       $rootScope.errorFlag = false
+
       $scope.loggedInUser = $cookies.get('name');
       $scope.isUserLoggedIn = $cookies.get('cook');
       $scope.loggedInUserEmail = $cookies.get('email');
-      $scope.isAdminLoggedIn = $cookies.get('admin');
+      $rootScope.isAdminLoggedIn = $cookies.get('admin');
 
-      console.log($scope.loggedInUserEmail);
+      console.log($rootScope.isAdminLoggedIn);
 
+      $scope.data = [{name:$scope.loggedInUser, email:$scope.loggedInUserEmail}];
       $scope.changeName = function() {
          $scope.name = this.name;
       };
@@ -1613,6 +1617,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
          $scope.email = this.email;
       };
 
+      $scope.name = $scope.data[0].name;
+      $scope.email = $scope.data[0].email;
 
       //[Submit]
       $scope.updateUser = function(){

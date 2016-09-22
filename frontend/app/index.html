@@ -61,7 +61,7 @@
                     <ul style="margin-left:-85px;text-align:left;background-color: #efefef;margin-top:1px;border: 0px;min-width:50px !important;max-width:140px;z-index: 3000;position:absolute"
                         class="dropdown-menu">
                         <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px">Account & Settings</a></li>
-                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit" ng-click="editProfileModal()">Edit Profile</a></li>
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit" ng-click="editProfileModal()" ng-show="isAdminLoggedIn=='false'">Edit Profile</a></li>
                         <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#logout">Logout</a></li>
                     </ul>
                 </div>
@@ -644,22 +644,26 @@
          <tr>
              <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
                            font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
-                 <form name="editProfile" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editProfileForm.$valid && updateUser()">
+                 <form name="editProfile" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editProfile.$valid && updateUser()">
                      <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                          <div class="form-group">
-                             <div class="col-md-7">
-                                 <input type="name" class="form-control" placeholder="Full name" name="name" ng-model="name" ng-init="name='{{loggedInUser}}'" value="{{loggedInUser}}" ng-change='changeName()' required/>
-                                 <div ng-messages="editProfile.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                     <div ng-message="required">This field is required</div>
-                                 </div>
+                             <div ng-repeat="data in data">
+                                <div class="col-md-7">
+                                    <input type="name" class="form-control" placeholder="Full name" name="name" ng-model="name" ng-init="name='{{data.name}}'" value="{{data.name}}" ng-change='changeName()' required/>
+                                    <div ng-messages="editProfile.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </div>
                              </div>
                          </div>
                          <div class="form-group">
-                             <div class="col-md-7">
-                                 <input type="name" class="form-control" placeholder="Email" name="email" ng-model="email" ng-init="email='{{loggedInUserEmail}}'" value="{{loggedInUserEmail}}" ng-change='changeEmail()' required/>
-                                 <div ng-messages="editProfile.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
-                                     <div ng-message="required">This field is required</div>
-                                 </div>
+                             <div ng-repeat="data in data">
+                                <div class="col-md-7">
+                                    <input type="name" class="form-control" placeholder="Email" name="email" ng-model="email" ng-init="email='{{data.email}}'" value="{{data.email}}" ng-change='changeEmail()' required/>
+                                    <div ng-messages="editProfile.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                        <div ng-message="required">This field is required</div>
+                                    </div>
+                                </div>
                              </div>
                          </div>
                          <div class="form-group">
