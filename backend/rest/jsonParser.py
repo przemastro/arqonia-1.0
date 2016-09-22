@@ -453,7 +453,6 @@ def updateUser(name, email, password, oldEmail):
 
         if email != 'None' and password != 'None' and name != 'None' and oldEmail != 'None':
                 update_ExistingUser = ("update data.users set Name='"+name+"', Email='"+email+"', Password='"+password+"' where email='"+oldEmail+"'")
-                print update_ExistingUser
                 cursor.execute(update_ExistingUser)
                 cnx.commit()
                 msg = "Correct"

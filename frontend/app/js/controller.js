@@ -1606,8 +1606,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.loggedInUserEmail = $cookies.get('email');
       $rootScope.isAdminLoggedIn = $cookies.get('admin');
 
-      console.log($rootScope.isAdminLoggedIn);
-
       $scope.data = [{name:$scope.loggedInUser, email:$scope.loggedInUserEmail}];
       $scope.changeName = function() {
          $scope.name = this.name;
@@ -1622,9 +1620,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       //[Submit]
       $scope.updateUser = function(){
-          console.log('update');
-                console.log($scope.name);
-                console.log($scope.email);
           var password = sjcl.encrypt("password", $scope.password)
 
    		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail}, function(response){
