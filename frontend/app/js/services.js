@@ -25,6 +25,13 @@ astroApp.service('fileUpload', ['$http', function ($http) {
 
 //Authentication
 //Register
+services.factory('updateProfile', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/updateProfile', {}, {
+        update: {method:'PUT'}
+    });
+}]);
+
 services.factory('register', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/register', {}, {

@@ -3,7 +3,7 @@ from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, \
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
-from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, getPassword
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, getPassword, updateUser
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -122,6 +122,7 @@ parser.add_argument('iName', type=str)
 parser.add_argument('iFileName', type=str)
 parser.add_argument('id', type=str)
 parser.add_argument('email', type=str)
+parser.add_argument('oldEmail', type=str)
 parser.add_argument('password', type=str)
 parser.add_argument('objectType', type=str)
 parser.add_argument('verified', type=str)
@@ -331,6 +332,22 @@ class RestRegister(Resource):
             mail.send(content);
         return jsonify({'msg': msg})
 
+
+class RestUpdateProfile(Resource):
+    def put(self):
+        args = parser.parse_args()
+
+        sj = decrypt_password(args['password'])
+        msg = updateUser(args['name'],args['email'], str(sj),args['oldEmail'])
+        if msg == 'Correct':
+            content = Message("Hello "+args['name'],
+                              sender="admin@arqonia.com",
+                              recipients=[args['email']])
+            content.body = 'Hello '+args['name']+',\n\nYour Profile has been updated.' \
+                                                   '\n\nBest Regards, \nAdmin'
+            mail.send(content);
+        return jsonify({'msg': msg})
+
 class RestReminder(Resource):
     def post(self):
         args = parser.parse_args()
@@ -405,6 +422,7 @@ api.add_resource(RestObservationLCRDiagram, '/observationsLCRDiagram')
 api.add_resource(RestObservationLCIDiagram, '/observationsLCIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
+api.add_resource(RestUpdateProfile, '/updateProfile')
 api.add_resource(RestReminder, '/reminder')
 api.add_resource(RestLogin, '/login')
 api.add_resource(RestSearch, '/search')

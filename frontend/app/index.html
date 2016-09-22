@@ -38,10 +38,11 @@
  </head>
  <!-- define angular controller -->
 
+
  <body ng-controller="mainCtrl" style="background-color: #efefef;overflow-x:hidden;">
 
- <div align="center" style="background:#efefef;padding:10px 15px;position:fixed;top:0;left:0;z-index:2000;width:100%;">
-     <ul class="topMenu" style="margin:auto;list-style-type: none;padding: 0;color: #4c4c4c;background-color: #efefef;height:15px;position:relative;z-index: 150;display: block;height:10px">
+ <div align="center" style="background:#efefef;padding:0px 0px;position:fixed;top:0;left:0;z-index:2000;width:100%;height:30px">
+     <ul class="topMenu" style="margin:auto;list-style-type: none;padding: 0;color: #4c4c4c;background-color: #efefef;height:30px !important;position:relative;z-index: 150;display: block;">
          <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 10px;z-index: 150;"><a href="#register" ng-show="!isUserLoggedIn" ng-click="registerModal()"
                                                        style="color:#4c4c4c;text-decoration: none;padding: 7px 5px;padding-right:10px;">Sign up</a></li>
          <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;top: 0px;right: 75px;" ng-show="!isUserLoggedIn">|</li>
@@ -57,9 +58,10 @@
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </a>
-                    <ul style="margin-left:-85px;text-align:left;background-color: #efefef;margin-top:1px;border: 0px;min-width:50px !important;max-width:140px" class="dropdown-menu">
+                    <ul style="margin-left:-85px;text-align:left;background-color: #efefef;margin-top:1px;border: 0px;min-width:50px !important;max-width:140px;z-index: 3000;position:absolute"
+                        class="dropdown-menu">
                         <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px">Account & Settings</a></li>
-                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit">Edit Profile</a></li>
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit" ng-click="editProfileModal()">Edit Profile</a></li>
                         <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#logout">Logout</a></li>
                     </ul>
                 </div>
@@ -73,7 +75,7 @@
      </ul>
  </div>
 
- <div id="header" align="center" style="margin:auto;position:relative;z-index: 50;text-align:right;margin-top:30px">
+ <div id="header" align="center" style="margin:auto;position:relative;z-index: 0;text-align:right;margin-top:30px">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
          <li style="margin-top: 7px;float: right;margin-right:500px"><a href="#search" class="pageSection" style="color:white;text-decoration: none;">SEARCH</a></li>
@@ -84,7 +86,7 @@
      </ul>
  </div>
 
- <div align="center" id="carousel-example-generic" style="position: relative;margin:auto;margin-top:-48px;z-index: 10;" class="carousel slide" data-ride="carousel" data-interval="5000">
+ <div align="center" id="carousel-example-generic" style="position: relative;margin:auto;margin-top:-48px;z-index: -1;" class="carousel slide" data-ride="carousel" data-interval="5000">
      <ol align="center" style="margin: auto" class="carousel-indicators">
          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
@@ -631,6 +633,57 @@
         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
     </table>
 </script>
+
+ <script type="text/ng-template" id="editProfileModalContent.html">
+     <div class="modal-header">
+         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Edit Profile</h3>
+     </div>
+     <table class="main">
+         <tr>
+             <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                 <form name="editProfile" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editProfileForm.$valid && updateUser()">
+                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="name" class="form-control" placeholder="Full name" name="name" ng-model="name" ng-init="name='{{loggedInUser}}'" value="{{loggedInUser}}" ng-change='changeName()' required/>
+                                 <div ng-messages="editProfile.name.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="name" class="form-control" placeholder="Email" name="email" ng-model="email" ng-init="email='{{loggedInUserEmail}}'" value="{{loggedInUserEmail}}" ng-change='changeEmail()' required/>
+                                 <div ng-messages="editProfile.email.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="col-md-7">
+                                 <input type="password" class="form-control" placeholder="Password" name="password" ng-model="password" required/>
+                                 <div ng-messages="editProfile.password.$error" style="color:maroon" role="alert" ng-if='submitted'>
+                                     <div ng-message="required">This field is required</div>
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div style="color:maroon" role="alert" ng-if='errorFlag'>User exists</div>
+                         </div>
+                     </div>
+                     <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                         <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                         <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                     </div>
+                 </form>
+             </td>
+         </tr>
+         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
+     </table>
+ </script>
 
  <script>
      $(document).ready(function(){

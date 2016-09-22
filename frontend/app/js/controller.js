@@ -1437,7 +1437,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
               //Login Modal
               $scope.loginModal = function () {
-                       var modalInstance = $uibModal.open({
+                     var modalInstance = $uibModal.open({
                      animation: $scope.animationsEnabled,
                      templateUrl: 'loginModalContent.html',
                      controller: 'ModalLoginCtrl',
@@ -1446,10 +1446,19 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
               //Register Modal
               $scope.registerModal = function () {
-                   var modalInstance = $uibModal.open({
+                     var modalInstance = $uibModal.open({
                      animation: $scope.animationsEnabled,
                      templateUrl: 'registerModalContent.html',
                      controller: 'ModalRegisterCtrl',
+                   });
+              };
+
+              //Edit Profile Modal
+              $scope.editProfileModal = function () {
+                     var modalInstance = $uibModal.open({
+                     animation: $scope.animationsEnabled,
+                     templateUrl: 'editProfileModalContent.html',
+                     controller: 'ModalEditProfileCtrl',
                    });
               };
 
@@ -1571,6 +1580,65 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     })
+      };
+
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+     }]);
+
+
+//------------------------------------------------------Edit Profile----------------------------------------------------
+
+	astroApp.controller('editProfileCtrl', function($scope) {
+	});
+
+    astroApp.controller('ModalEditProfileCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'updateProfile', '$cookies', '$location',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location) {
+
+      $rootScope.errorFlag = false
+      $scope.loggedInUser = $cookies.get('name');
+      $scope.isUserLoggedIn = $cookies.get('cook');
+      $scope.loggedInUserEmail = $cookies.get('email');
+      $scope.isAdminLoggedIn = $cookies.get('admin');
+
+      console.log($scope.loggedInUserEmail);
+
+      $scope.changeName = function() {
+         $scope.name = this.name;
+      };
+
+      $scope.changeEmail = function() {
+         $scope.email = this.email;
+      };
+
+
+      //[Submit]
+      $scope.updateUser = function(){
+          console.log('update');
+                console.log($scope.name);
+                console.log($scope.email);
+          var password = sjcl.encrypt("password", $scope.password)
+
+   		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+          if($scope.message == "User exists"){
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+
+   		     $rootScope.errorFlag = false
+   		     $location.path("login");
+
+             $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
+             $uibModalInstance.dismiss();
+   		     }
+   		  });
       };
 
           //[Cancel]

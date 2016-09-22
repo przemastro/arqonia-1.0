@@ -439,6 +439,41 @@ def addUser(name, email, password):
     else:
         cnx.close()
 
+
+#----------------------------------------------------update existing user-----------------------------------------------
+def updateUser(name, email, password, oldEmail):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        name = str(name)
+        email = str(email)
+        password = str(password)
+        oldEmail = str(oldEmail)
+
+        if email != 'None' and password != 'None' and name != 'None' and oldEmail != 'None':
+            verify_User = ("select count(1) from data.users where Email='"+oldEmail+"'")
+            cursor.execute(verify_User)
+
+            Value = cursor.fetchone()
+            Value = Value[0]
+
+            if Value>0:
+                msg = "User exists"
+            else:
+                update_ExistingUser = ("update data.users set Name='"+name+"', Email='"+email+"', Password='"+password+"' where email='"+oldEmail+"'")
+                cursor.execute(update_ExistingUser)
+                cnx.commit()
+                msg = "Correct"
+
+        return msg
+        cursor.close()
+
+    except:
+        print 'errors in updateUser function'
+    else:
+        cnx.close()
+
 #----------------------------------------------------Get Password-------------------------------------------------------
 def getPassword(email):
     try:
