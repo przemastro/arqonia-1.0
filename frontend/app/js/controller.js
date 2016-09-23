@@ -1462,6 +1462,12 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    });
               };
 
+       $rootScope.successTextAlert = "This website uses cookies to ensure you get the best experience on our service";
+                     $rootScope.showCookiesSuccessAlert = true;
+                     $rootScope.switchBoolCookies = function (value) {
+                         $rootScope[value] = !$rootScope[value];
+                     };
+
        $scope.addSubscriber = function(){
       	  Subscribe.save({email:$scope.email}, function(response){
       	  $scope.message = response[Object.keys(response)[0]];
