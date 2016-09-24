@@ -23,8 +23,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	});
 
     //tableCtrl
-    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', 'getUserObservations', '$cookies',
-                                     function($scope, $routeParams, Observations, UserObservations, $cookies) {
+    astroApp.controller('tableCtrl', ['$rootScope', '$routeParams', 'getObservations', 'getUserObservations', '$cookies', 'usSpinnerService',
+                                     function($scope, $routeParams, Observations, UserObservations, $cookies, usSpinnerService) {
 
        //Just to clear table when new user is logged in
        $scope.displayedObservations = [];
@@ -39,14 +39,27 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        //Verify who has logged in and populate table with appropriate data
        if(!$scope.isUserLoggedIn) { //nobody is logged in
        //Get data
+                                       if (!$scope.spinneractive) {
+                                         usSpinnerService.spin('spinner-1');
+                                       };
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
+                                         $scope.spinneractive = false;
+                                         usSpinnerService.stop('spinner-1');
        }
        else if ($scope.isAdminLoggedIn==='true') { //Admin
+                                              if (!$scope.spinneractive) {
+                                                usSpinnerService.spin('spinner-1');
+                                              };
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
+                                                   $scope.spinneractive = false;
+                                                   usSpinnerService.stop('spinner-1');
        }
        else if($scope.isUserLoggedIn) { //User
+                                                     if (!$scope.spinneractive) {
+                                                       usSpinnerService.spin('spinner-1');
+                                                     };
    		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
    		     var globalObject = [];
              var len = response.length;
@@ -60,6 +73,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  $scope.message = response[Object.keys(response)];
           $scope.displayedObservations = [];
           $scope.observations = globalObject;
+           $scope.spinneractive = false;
+           usSpinnerService.stop('spinner-1');
           })
        }
 
@@ -99,10 +114,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              };
          $timeout(function(){
             $scope.showSuccessAlert = false;
-            }, 15000);
+            }, 5000);
          $timeout(function(){
             $window.location.reload();
-            }, 15000);
+            }, 5000);
        };
 
        //New Observation Modal
@@ -804,10 +819,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller("lcCtrl", ['$rootScope', 'getObservationsLCUDiagramRange', 'getObservationsLCUDiagram',
                                    'getObservationsLCVDiagramRange', 'getObservationsLCVDiagram','getObservationsLCBDiagramRange', 'getObservationsLCBDiagram',
                                    'getObservationsLCRDiagramRange', 'getObservationsLCRDiagram','getObservationsLCIDiagramRange', 'getObservationsLCIDiagram',
-                                   'getPesronalizedLCDiagramRange','getPesronalizedLCDiagram','$cookies',
+                                   'getPesronalizedLCDiagramRange','getPesronalizedLCDiagram','$cookies', 'usSpinnerService',
                                   (function ($scope, ObservationsLCUDiagramRange, ObservationsLCUDiagram, ObservationsLCVDiagramRange, ObservationsLCVDiagram,
                                   ObservationsLCBDiagramRange, ObservationsLCBDiagram, ObservationsLCRDiagramRange, ObservationsLCRDiagram,
-                                  ObservationsLCIDiagramRange, ObservationsLCIDiagram, PesronalizedLCDiagramRange, PesronalizedLCDiagram, $cookies) {
+                                  ObservationsLCIDiagramRange, ObservationsLCIDiagram, PesronalizedLCDiagramRange, PesronalizedLCDiagram, $cookies, usSpinnerService) {
 
        //Get the user's cookies
        $scope.loggedInUser = $cookies.get('name');
@@ -824,6 +839,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
        //select filter from drop down
        $scope.selectFilter = function (filter) {
+                          if (!$scope.spinneractive) {
+                            usSpinnerService.spin('spinner-1');
+                          };
+
           $scope.LCTitle = true;
           $scope.selectedFilterValue = filter;
 
@@ -835,6 +854,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
                     $scope.starNames = observationsDiagram[0].StarNames;
+                                                     $scope.spinneractive = false;
+                                                     usSpinnerService.stop('spinner-1');
                 });
              }
              else if ($scope.cutString == "V") {
@@ -842,6 +863,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
                     $scope.starNames = observationsDiagram[0].StarNames;
+                                                     $scope.spinneractive = false;
+                                                     usSpinnerService.stop('spinner-1');
                 });
              }
              else if ($scope.cutString == "B") {
@@ -849,6 +872,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
                     $scope.starNames = observationsDiagram[0].StarNames;
+                                                     $scope.spinneractive = false;
+                                                     usSpinnerService.stop('spinner-1');
                 });
              }
              else if ($scope.cutString == "R") {
@@ -856,6 +881,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
                     $scope.starNames = observationsDiagram[0].StarNames;
+                                                     $scope.spinneractive = false;
+                                                     usSpinnerService.stop('spinner-1');
                 });
              }
              else if ($scope.cutString == "I") {
@@ -863,6 +890,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
                     $scope.starNames = observationsDiagram[0].StarNames;
+                                                     $scope.spinneractive = false;
+                                                     usSpinnerService.stop('spinner-1');
                 });
              }
           }
@@ -879,6 +908,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                      }
                      $scope.starNames = tab[4];
                      $scope.selectedFilter = true;
+                                                      $scope.spinneractive = false;
+                                                      usSpinnerService.stop('spinner-1');
              })
           }
        }
@@ -886,6 +917,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       //select object from drop down for selected filter
       $scope.selectObject = function (object) {
+                                if (!$scope.spinneractive) {
+                                  usSpinnerService.spin('spinner-1');
+                                };
         $scope.LCTitle = false;
         $scope.selectedObjectValue = object;
         //Again global data firstly
@@ -941,6 +975,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                        zoom: {enabled: true,scaleExtent: [1, 10],useFixedDomain: false,useNiceScale: false,horizontalOff: false,verticalOff: false,unzoomEventType: 'dblclick.zoom'}
                    }
                };
+                               $scope.spinneractive = false;
+                               usSpinnerService.stop('spinner-1');
                return $scope.option
            });
 
@@ -1044,6 +1080,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                        zoom: {enabled: true,scaleExtent: [1, 10],useFixedDomain: false,useNiceScale: false,horizontalOff: false,verticalOff: false,unzoomEventType: 'dblclick.zoom'}
                    }
                };
+                               $scope.spinneractive = false;
+                               usSpinnerService.stop('spinner-1');
                return $scope.option
            })
            PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
@@ -1101,10 +1139,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     astroApp.controller("cmdCtrl", ['$rootScope', 'getObservationsBVDiagram', 'getObservationsBVDiagramRange',
                                      'getObservationsUBDiagram', 'getObservationsUBDiagramRange', 'getObservationsRIDiagram', 'getObservationsRIDiagramRange',
                                      'getObservationsVIDiagram', 'getObservationsVIDiagramRange', 'getPesronalizedObservationsDiagram',
-                                     'getPesronalizedObservationsDiagramRange', '$cookies',
+                                     'getPesronalizedObservationsDiagramRange', '$cookies', 'usSpinnerService',
                                   (function ($scope, ObservationsBVDiagram, ObservationsBVDiagramRange, ObservationsUBDiagram, ObservationsUBDiagramRange,
                                   ObservationsRIDiagram, ObservationsRIDiagramRange,ObservationsVIDiagram, ObservationsVIDiagramRange, PesronalizedObservationsDiagram,
-                                  PesronalizedObservationsDiagramRange, $cookies) {
+                                  PesronalizedObservationsDiagramRange, $cookies, usSpinnerService) {
 
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
@@ -1123,8 +1161,17 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
        $scope.obRange = [];
        $scope.ob = [];
 
+
        //select HR diagram type
        $scope.selectDiagram = function (value) {
+              $scope.selectedDiagramValue = '';
+              $scope.obRange = [];
+              $scope.ob = [];
+                       $scope.data = [];
+                       $scope.exampleData = [];
+                                       if (!$scope.spinneractive) {
+                                         usSpinnerService.spin('spinner-1');
+                                       };
          $scope.selectedDiagramValue = value;
          $scope.HRTitle = false;
 
@@ -1163,16 +1210,23 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                yDomain: [$scope.YMax,$scope.YMin], xDomain: [$scope.XMin,$scope.XMax], tooltipContent: function(key) {return '<h3>' + key + '</h3>';},duration: 350,
                                xAxis: {axisLabel: 'Color '+cutString,tickFormat: function(d){return d3.format('.02f')(d);},ticks: 8},
                                yAxis: {axisLabel: 'Absolute Magnitude '+cutString.substring(2,3)+' (mag)',tickFormat: function(d){return d3.format('.02f')(d);},axisLabelDistance: -5,ticks: 10},
-                               zoom: {enabled: false,scaleExtent: [1, 10],useFixedDomain: false,useNiceScale: false,horizontalOff: false,verticalOff: false,unzoomEventType: 'dblclick.zoom'
+                               zoom: {enabled: true,scaleExtent: [1, 10],useFixedDomain: false,useNiceScale: false,horizontalOff: false,verticalOff: false,unzoomEventType: 'dblclick.zoom'
                                }
                            }
                        };
+                                                      $scope.spinneractive = false;
+                                                      usSpinnerService.stop('spinner-1');
                        return $scope.options
                     });
                  }
                  //Get personalized data Range
                  else {
+                      $scope.XMax = [];
+                      $scope.XMin = [];
+                      $scope.YMax = [];
+                      $scope.YMin = [];
              		  PesronalizedObservationsDiagramRange.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail}, function(response){
+
                          for(var i = 0; i < response.length; i++) {
                             var j = 0
                             var tab = {}
@@ -1198,14 +1252,20 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                  }
                              }
                          };
+                                                        $scope.spinneractive = false;
+                                                        usSpinnerService.stop('spinner-1');
                          return $scope.options
                     })
                  }
 
          //The magic to populate data with data
          $scope.data = [];
+         $scope.exampleData = [];
 
          function generateData() {
+              $scope.starNames = [];
+              $scope.ObservationsDifference = [];
+              $scope.FilterObservations = [];
               var data = [],
               shapes = ['circle'],
               random = d3.random.normal();
@@ -1248,6 +1308,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
               }
               //Get personalized data
               else {
+                  $scope.starNames = [];
+                  $scope.ObservationsDifference = [];
+                  $scope.FilterObservations = [];
+                  data = [];
+
              	  PesronalizedObservationsDiagram.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail}, function(response){
                       for(var i = 0; i < response.length; i++) {
                          var j = 0
@@ -1433,6 +1498,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
 	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
 	   $rootScope.loggedInUser = $cookies.get('name');
+	   $rootScope.userAcceptCookies = $cookies.get('allowCookies');
        $scope.Statistics = Statistics.query();
 
               //Login Modal
@@ -1462,10 +1528,21 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    });
               };
 
-       $rootScope.successTextAlert = "This website uses cookies to ensure you get the best experience on our service";
+              //Remove Account Modal
+              $scope.removeAccountModal = function () {
+                     var modalInstance = $uibModal.open({
+                     animation: $scope.animationsEnabled,
+                     templateUrl: 'removeAccountModalContent.html',
+                     controller: 'ModalRemoveAccountCtrl',
+                   });
+              };
+
+       $rootScope.cookiesTextAlert = "This website uses cookies to ensure you get the best experience on our service";
                      $rootScope.showCookiesSuccessAlert = true;
                      $rootScope.switchBoolCookies = function (value) {
                          $rootScope[value] = !$rootScope[value];
+                         $cookies.put('allowCookies', true);
+                         $rootScope.userAcceptCookies = $cookies.get('allowCookies');
                      };
 
        $scope.addSubscriber = function(){
@@ -1498,6 +1575,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $rootScope.errorFlag = false
       //[Submit]
       $scope.loginUser = function(){
+                   if (!$scope.spinneractive) {
+                     usSpinnerService.spin('spinner-1');
+                   };
           var password = sjcl.encrypt("password", $scope.password)
 
    		  Login.update({email:$scope.email,password:password}, function(response){
@@ -1508,9 +1588,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.errorFlag = true;
    		     }
    		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@arqonia.com")){
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
              $cookies.put('email', $scope.email);
              $cookies.put('name', $scope.message);
    		     $cookies.put('cook', true);
@@ -1525,9 +1602,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $uibModalInstance.dismiss();
    		     }
    		  else {
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', true);
    		     $cookies.put('name', $scope.message);
@@ -1576,10 +1650,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $rootScope.errorFlag = false
       //[Send]
       $scope.sendPassword = function(){
+                   if (!$scope.spinneractive) {
+                     usSpinnerService.spin('spinner-1');
+                   };
    		  Reminder.save({email:$scope.email}, function(response){
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
 
    		     $rootScope.errorFlag = false
    		     $location.path("login");
@@ -1602,8 +1676,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('editProfileCtrl', function($scope) {
 	});
 
-    astroApp.controller('ModalEditProfileCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'updateProfile', '$cookies', '$location',
-	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location) {
+    astroApp.controller('ModalEditProfileCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'updateProfile', '$cookies', '$location', '$timeout',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location, $timeout) {
 
       $rootScope.errorFlag = false
 
@@ -1626,6 +1700,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
       //[Submit]
       $scope.updateUser = function(){
+             if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
           var password = sjcl.encrypt("password", $scope.password)
 
    		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail}, function(response){
@@ -1634,9 +1711,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.errorFlag = true
    		     }
    		  else {
-             if (!$scope.spinneractive) {
-               usSpinnerService.spin('spinner-1');
-             };
+
 
    		     $rootScope.errorFlag = false
    		     $location.path("login");
@@ -1644,6 +1719,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
+      	           $rootScope.successTextAlert = "Your data have been updated.";
+                       $rootScope.showSuccessAlert = true;
+                       // switch flag
+                       $rootScope.switchBool = function (value) {
+                           $rootScope[value] = !$rootScope[value];
+                       };
+
+                    $timeout(function(){
+                       $rootScope.showSuccessAlert = false;
+                       }, 5000);
    		     }
    		  });
       };
@@ -1654,27 +1739,19 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           };
      }]);
 
+//------------------------------------------------------Remove Account--------------------------------------------------
 
-//--------------------------------------------------------Register------------------------------------------------------
-
-	astroApp.controller('registerCtrl', function($scope) {
-	   $scope.message = 'Register';
+    //loginCtrl
+	astroApp.controller('removeAccountCtrl', function($scope) {
 	});
 
-    astroApp.controller('ModalRegisterCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location',
-	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Register, $cookies, $location) {
+   astroApp.controller('ModalRemoveAccountCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'removeAccount', '$cookies', '$location', '$timeout',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, RemoveAccount, $cookies, $location, $timeout) {
 
       $rootScope.errorFlag = false
-      //[Submit]
-      $scope.addUser = function(){
-          var password = sjcl.encrypt("password", $scope.password)
-
-   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
-   		  $scope.message = response[Object.keys(response)[0]];
-          if($scope.message == "User exists"){
-   		     $rootScope.errorFlag = true
-   		     }
-   		  else {
+      //[Send]
+      $scope.removeAccount = function(){
+   		  Reminder.save({email:$scope.email}, function(response){
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
@@ -1685,6 +1762,66 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
+      	           $rootScope.successTextAlert = "Your account has been soft deleted.";
+                       $rootScope.showSuccessAlert = true;
+                       // switch flag
+                       $rootScope.switchBool = function (value) {
+                           $rootScope[value] = !$rootScope[value];
+                       };
+
+                    $timeout(function(){
+                       $rootScope.showSuccessAlert = false;
+                       }, 5000);
+   		     })
+      };
+
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+     }]);
+
+//--------------------------------------------------------Register------------------------------------------------------
+
+	astroApp.controller('registerCtrl', function($scope) {
+	   $scope.message = 'Register';
+	});
+
+    astroApp.controller('ModalRegisterCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'register', '$cookies', '$location', '$timeout',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, Register, $cookies, $location, $timeout) {
+
+      $rootScope.errorFlag = false
+      //[Submit]
+      $scope.addUser = function(){
+                   if (!$scope.spinneractive) {
+                     usSpinnerService.spin('spinner-1');
+                   };
+          var password = sjcl.encrypt("password", $scope.password)
+
+   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
+   		  $scope.message = response[Object.keys(response)[0]];
+          if($scope.message == "User exists"){
+   		     $rootScope.errorFlag = true
+   		     }
+   		  else {
+
+   		     $rootScope.errorFlag = false
+   		     $location.path("login");
+
+             $scope.spinneractive = false;
+             usSpinnerService.stop('spinner-1');
+             $uibModalInstance.dismiss();
+      	           $rootScope.successTextAlert = "You have created new account. We have sent an activation link to the email address you provided.";
+                       $rootScope.showSuccessAlert = true;
+                       // switch flag
+                       $rootScope.switchBool = function (value) {
+                           $rootScope[value] = !$rootScope[value];
+                       };
+
+                    $timeout(function(){
+                       $rootScope.showSuccessAlert = false;
+                       }, 5000);
+
    		     }
    		  });
       };

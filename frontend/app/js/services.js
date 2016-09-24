@@ -32,6 +32,13 @@ services.factory('updateProfile', ['$resource',
     });
 }]);
 
+services.factory('removeAccount', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/removeAccount', {}, {
+        update: {method:'PUT'}
+    });
+}]);
+
 services.factory('register', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/register', {}, {

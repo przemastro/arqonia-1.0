@@ -61,8 +61,8 @@
                     </a>
                     <ul style="margin-left:-85px;text-align:left;background-color: #efefef;margin-top:1px;border: 0px;min-width:50px !important;max-width:140px;"
                         class="dropdown-menu">
-                        <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px">Account & Settings</a></li>
-                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#edit" ng-click="editProfileModal()" ng-show="isAdminLoggedIn=='false'">Edit Profile</a></li>
+                        <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px;margin-left:-5px">Account & Settings</a></li>
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href ng-click="editProfileModal()" ng-show="isAdminLoggedIn=='false'">Edit Profile</a></li>
                         <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#logout">Logout</a></li>
                     </ul>
                 </div>
@@ -79,11 +79,11 @@
  <div id="header" align="center" style="margin:auto;position:relative;z-index: 1;text-align:right;margin-top:30px;">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
-         <li style="margin-top: 7px;float: right;margin-right:500px"><a href="#search" class="pageSection" style="color:white;text-decoration: none;">SEARCH</a></li>
-         <li style="margin-top: 7px;float: right;"><a href="#diagram" class="pageSection" style="color:white;text-decoration: none">DIAGRAMS</a></li>
-         <li style="margin-top: 7px;float: right;"><a href="#table-list" class="pageSection" style="color:white;text-decoration: none">OBSERVATIONS</a></li>
-         <li style="margin-top: 7px;float: right;"><a href="#photometry" class="pageSection" style="color:white;text-decoration: none">PHOTOMETRY</a></li>
-         <li style="margin-top: 7px;float: right;"><a href="#reduction" class="pageSection" style="color:white;text-decoration: none">DATA REDUCTION</a></li>
+         <li style="margin-top: 7px;float: right;margin-right:500px"><a href="#search" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none;">SEARCH</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="#diagram" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">DIAGRAMS</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="#table-list" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">OBSERVATIONS</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="#photometry" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">PHOTOMETRY</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="#reduction" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">DATA REDUCTION</a></li>
      </ul>
  </div>
 
@@ -206,7 +206,7 @@
                              </div>
                              <script type="text/javascript">
                                  var day_start=new Date();
-                                 var day_end=new Date("Dec 31 2016");
+                                 var day_end=new Date("Dec 01 2016");
                                  var total_days = (day_end - day_start) / (1000 * 60 * 60 * 24);
                                  document.getElementById("date").innerHTML=Math.round(total_days);
                              </script>
@@ -317,9 +317,9 @@
                   Login or Sign up</li>
              </ul>
             <div style="padding: 0px 15px;">
-            <p>Before any data processing can be started an existing user needs to <a href="#login" ng-click="loginModal()" ng-show="!isUserLoggedIn">Login</a>
+            <p>Before any data processing can be started an existing user needs to <a href ng-click="loginModal()" ng-show="!isUserLoggedIn">Login</a>
                 <a style="text-decoration: none !important;" ng-show="isUserLoggedIn">Login</a> to the service.
-            New user has to <a href="#register" ng-click="registerModal()" ng-show="!isUserLoggedIn">Sign up</a>
+            New user has to <a href ng-click="registerModal()" ng-show="!isUserLoggedIn">Sign up</a>
                 <a style="text-decoration: none !important;" ng-show="isUserLoggedIn">Sign up</a> firstly.</p>
             </div>
           </div>
@@ -472,8 +472,9 @@
 
  </div>
 
- <div align="center" id="newsletter" class="newsletter" style="position: relative;margin:auto;">
-     <div class="alert alert-success" ng-show="showSuccessAlert">
+ <div align="center" id="newsletter" class="newsletter" style="position: relative;margin:auto;)">
+     <div style="color:white;box-shadow:0 6px 12px rgba(0,0,0,.175);position:fixed;top:0;z-index:2000;box-shadow:0 6px 12px rgba(0,0,0,.175);
+                            background-color:#50D050;left: 50%;transform: translate(-50%, 0);min-width:650px;height:55px;font-size: 1.5rem;" class="alert alert-success" ng-show="showSuccessAlert">
          <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">×</button> <strong></strong> {{successTextAlert}}
      </div>
    <p>
@@ -492,7 +493,6 @@
                  </div>
              </form>
          </div>
-         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
 
  <div align="center" id="bottom" style="position: relative;margin:auto;">
      <div style="color: white;font-weight: 300;" class="copyright">
@@ -500,10 +500,20 @@
      </div>
  </div>
 
- <div align="center" style="position:fixed;bottom:0;width:100%;margin-bottom:0px;z-index:300" class="alert alert-success" ng-show="showCookiesSuccessAlert">
-     <button style="float:right;" type="button" value="Got it!" class="btn btn-default sharp" data-ng-click="switchBoolCookies('showCookiesSuccessAlert')">Got it!</button>
-     <strong style="text-align: left;text-decoration: none;font-family: inherit;font-weight: normal;
-                                              font-size: 2.1rem;text-rendering: optimizeLegibility;font-style: bold;">{{successTextAlert}}</strong>
+ <div ng-show="userAcceptCookies != 'true'">
+    <div align="center" style="position:fixed;bottom:0;margin-bottom:5px;z-index:300;box-shadow:0 6px 12px rgba(0,0,0,.175);
+                               background-color:#50D050;left: 50%;transform: translate(-50%, 0);min-width:1000px;height:75px" class="alert alert-success" ng-show="showCookiesSuccessAlert">
+        <button style="float:right;margin-left:50px;line-height: 2.0em;font-family: inherit;font-weight: normal;
+                                                 font-size: 1.5rem;text-rendering: optimizeLegibility;font-style: bold;" type="button" value="Got it!" class="btn btn-default sharp" data-ng-click="switchBoolCookies('showCookiesSuccessAlert')">Got it!</button>
+        <strong style="text-align: left;text-decoration: none;font-family: inherit;font-weight: normal;
+                                                 font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;color:white;
+                                                     line-height: 2.5em;">{{cookiesTextAlert}}</strong>
+    </div>
+ </div>
+
+ <div style="color:white;box-shadow:0 6px 12px rgba(0,0,0,.175);position:fixed;top:0;z-index:2000;box-shadow:0 6px 12px rgba(0,0,0,.175);
+                            background-color:#50D050;left: 50%;transform: translate(-50%, 0);min-width:650px;height:55px;font-size: 1.5rem;" class="alert alert-success" ng-show="showSuccessAlert">
+     <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">×</button> <strong></strong> {{successTextAlert}}
  </div>
 
  <script type="text/ng-template" id="loginModalContent.html">
@@ -550,7 +560,6 @@
                  </form>
              </td>
          </tr>
-         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
      </table>
  </script>
 
@@ -601,7 +610,6 @@
                  </form>
              </td>
          </tr>
-         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
      </table>
  </script>
 
@@ -636,7 +644,6 @@
                 </form>
             </td>
         </tr>
-        <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
     </table>
 </script>
 
@@ -696,9 +703,11 @@
                  </form>
              </td>
          </tr>
-         <span us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
      </table>
  </script>
+
+ <span style="position:fixed;top:50%;left: 50%;z-index:10000" us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
+
 
  <script>
      $(document).ready(function(){
