@@ -21,94 +21,111 @@ def json_data():
         get_IdFromObservationsSorted = queries.get('DatabaseQueries', 'database.getIdFromObservationsSorted');
         getIds = fetch_all(get_IdFromObservationsSorted)
 
+        i = 0
         controller = ''
-        for counter in getIds:
-            id = str(counter)
-            get_observationsOwners = (queries.get('DatabaseQueries', 'database.getObservationsOwners') + id)
-            get_objectName = (queries.get('DatabaseQueries', 'database.getStarNameFromObservationsSorted') + id)
-            get_StartDate = (queries.get('DatabaseQueries', 'database.getStartDateFromObservationsSorted') + id)
-            get_EndDate = (queries.get('DatabaseQueries', 'database.getEndDateFromObservationsSorted') + id)
-            get_UPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
-            get_UPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
-            get_UPhotometryTime = (queries.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
-            get_VPhotometryFlag = (queries.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
-            get_VPhotometryFlux = (queries.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
-            get_VPhotometryTime = (queries.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
-            get_BPhotometryFlag = (queries.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
-            get_BPhotometryFlux = (queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
-            get_BPhotometryTime = (queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
-            get_RPhotometryFlag = (queries.get('DatabaseQueries', 'database.getRPhotometryFlagFromRPhotometrySorted') + id)
-            get_RPhotometryFlux = (queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
-            get_RPhotometryTime = (queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
-            get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
-            get_IPhotometryFlux = (queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
-            get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
+        if(len(getIds) != 0):
+           for counter in getIds:
+               id = str(counter)
+               i = i + 1
+               get_observationsOwners = (queries.get('DatabaseQueries', 'database.getObservationsOwners') + id)
+               get_objectName = (queries.get('DatabaseQueries', 'database.getStarNameFromObservationsSorted') + id)
+               get_StartDate = (queries.get('DatabaseQueries', 'database.getStartDateFromObservationsSorted') + id)
+               get_EndDate = (queries.get('DatabaseQueries', 'database.getEndDateFromObservationsSorted') + id)
+               get_UPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUPhotometryFlagFromUPhotometrySorted') + id)
+               get_UPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUPhotometryFluxFromUPhotometrySorted') + id)
+               get_UPhotometryTime = (queries.get('DatabaseQueries', 'database.getUPhotometryTimeFromUPhotometrySorted') + id)
+               get_VPhotometryFlag = (queries.get('DatabaseQueries', 'database.getVPhotometryFlagFromVPhotometrySorted') + id)
+               get_VPhotometryFlux = (queries.get('DatabaseQueries', 'database.getVPhotometryFluxFromVPhotometrySorted') + id)
+               get_VPhotometryTime = (queries.get('DatabaseQueries', 'database.getVPhotometryTimeFromVPhotometrySorted') + id)
+               get_BPhotometryFlag = (queries.get('DatabaseQueries', 'database.getBPhotometryFlagFromBPhotometrySorted') + id)
+               get_BPhotometryFlux = (queries.get('DatabaseQueries', 'database.getBPhotometryFluxFromBPhotometrySorted') + id)
+               get_BPhotometryTime = (queries.get('DatabaseQueries', 'database.getBPhotometryTimeFromBPhotometrySorted') + id)
+               get_RPhotometryFlag = (queries.get('DatabaseQueries', 'database.getRPhotometryFlagFromRPhotometrySorted') + id)
+               get_RPhotometryFlux = (queries.get('DatabaseQueries', 'database.getRPhotometryFluxFromRPhotometrySorted') + id)
+               get_RPhotometryTime = (queries.get('DatabaseQueries', 'database.getRPhotometryTimeFromRPhotometrySorted') + id)
+               get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getIPhotometryFlagFromIPhotometrySorted') + id)
+               get_IPhotometryFlux = (queries.get('DatabaseQueries', 'database.getIPhotometryFluxFromIPhotometrySorted') + id)
+               get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getIPhotometryTimeFromIPhotometrySorted') + id)
 
-            UPhotometry = str(fetch_one(get_UPhotometryFlag))
-            if UPhotometry != 'null' and UPhotometry != '0':
-                UPhotometry = 'YES'
-                UPhotometryFlux = fetch_all_replace(get_UPhotometryFlux)
-                UPhotometryTime = fetch_all_replace(get_UPhotometryTime)
-            else:
-                UPhotometry = 'NO'
-                UPhotometryFlux = 'No data available'
-                UPhotometryTime = 'No data available'
+               UPhotometry = str(fetch_one(get_UPhotometryFlag))
+               if UPhotometry != 'null' and UPhotometry != '0':
+                   UPhotometry = 'YES'
+                   UPhotometryFlux = fetch_all_replace(get_UPhotometryFlux)
+                   UPhotometryTime = fetch_all_replace(get_UPhotometryTime)
+               else:
+                   UPhotometry = 'NO'
+                   UPhotometryFlux = 'No data available'
+                   UPhotometryTime = 'No data available'
 
-            VPhotometry = str(fetch_one(get_VPhotometryFlag))
-            if VPhotometry != 'null' and VPhotometry != '0':
-                VPhotometry = 'YES'
-                VPhotometryFlux = fetch_all_replace(get_VPhotometryFlux)
-                VPhotometryTime = fetch_all_replace(get_VPhotometryTime)
-            else:
-                VPhotometry = 'NO'
-                VPhotometryFlux = 'No data available'
-                VPhotometryTime = 'No data available'
+               VPhotometry = str(fetch_one(get_VPhotometryFlag))
+               if VPhotometry != 'null' and VPhotometry != '0':
+                   VPhotometry = 'YES'
+                   VPhotometryFlux = fetch_all_replace(get_VPhotometryFlux)
+                   VPhotometryTime = fetch_all_replace(get_VPhotometryTime)
+               else:
+                   VPhotometry = 'NO'
+                   VPhotometryFlux = 'No data available'
+                   VPhotometryTime = 'No data available'
 
-            BPhotometry = str(fetch_one(get_BPhotometryFlag))
-            if BPhotometry != 'null' and BPhotometry != '0':
-                BPhotometry = 'YES'
-                BPhotometryFlux = fetch_all_replace(get_BPhotometryFlux)
-                BPhotometryTime = fetch_all_replace(get_BPhotometryTime)
-            else:
-                BPhotometry = 'NO'
-                BPhotometryFlux = 'No data available'
-                BPhotometryTime = 'No data available'
+               BPhotometry = str(fetch_one(get_BPhotometryFlag))
+               if BPhotometry != 'null' and BPhotometry != '0':
+                   BPhotometry = 'YES'
+                   BPhotometryFlux = fetch_all_replace(get_BPhotometryFlux)
+                   BPhotometryTime = fetch_all_replace(get_BPhotometryTime)
+               else:
+                   BPhotometry = 'NO'
+                   BPhotometryFlux = 'No data available'
+                   BPhotometryTime = 'No data available'
 
-            RPhotometry = str(fetch_one(get_RPhotometryFlag))
-            if RPhotometry != 'null' and RPhotometry != '0':
-                RPhotometry = 'YES'
-                RPhotometryFlux = fetch_all_replace(get_RPhotometryFlux)
-                RPhotometryTime = fetch_all_replace(get_RPhotometryTime)
-            else:
-                RPhotometry = 'NO'
-                RPhotometryFlux = 'No data available'
-                RPhotometryTime = 'No data available'
+               RPhotometry = str(fetch_one(get_RPhotometryFlag))
+               if RPhotometry != 'null' and RPhotometry != '0':
+                   RPhotometry = 'YES'
+                   RPhotometryFlux = fetch_all_replace(get_RPhotometryFlux)
+                   RPhotometryTime = fetch_all_replace(get_RPhotometryTime)
+               else:
+                   RPhotometry = 'NO'
+                   RPhotometryFlux = 'No data available'
+                   RPhotometryTime = 'No data available'
 
-            IPhotometry = str(fetch_one(get_IPhotometryFlag))
-            if IPhotometry != 'null' and IPhotometry != '0':
-                IPhotometry = 'YES'
-                IPhotometryFlux = fetch_all_replace(get_IPhotometryFlux)
-                IPhotometryTime = fetch_all_replace(get_IPhotometryTime)
-            else:
-                IPhotometry = 'NO'
-                IPhotometryFlux = 'No data available'
-                IPhotometryTime = 'No data available'
+               IPhotometry = str(fetch_one(get_IPhotometryFlag))
+               if IPhotometry != 'null' and IPhotometry != '0':
+                   IPhotometry = 'YES'
+                   IPhotometryFlux = fetch_all_replace(get_IPhotometryFlux)
+                   IPhotometryTime = fetch_all_replace(get_IPhotometryTime)
+               else:
+                   IPhotometry = 'NO'
+                   IPhotometryFlux = 'No data available'
+                   IPhotometryTime = 'No data available'
 
-            object = {'id': id, 'name': str(fetch_one(get_objectName)), 'startDate': str(fetch_one(get_StartDate)), 'endDate': str(fetch_one(get_EndDate)),
-                      'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux, 'uPhotometryTime': UPhotometryTime,
-                      'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux, 'vPhotometryTime': VPhotometryTime,
-                      'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux, 'bPhotometryTime': BPhotometryTime,
-                      'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux, 'rPhotometryTime': RPhotometryTime,
-                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime, 'owner': str(fetch_one(get_observationsOwners))}
+               object = {'id': id, 'name': str(fetch_one(get_objectName)), 'startDate': str(fetch_one(get_StartDate)), 'endDate': str(fetch_one(get_EndDate)),
+                         'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux, 'uPhotometryTime': UPhotometryTime,
+                         'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux, 'vPhotometryTime': VPhotometryTime,
+                         'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux, 'bPhotometryTime': BPhotometryTime,
+                         'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux, 'rPhotometryTime': RPhotometryTime,
+                         'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime, 'owner': str(fetch_one(get_observationsOwners))}
 
-            controller = str(object) + ',' + controller
+               controller = str(object) + ',' + controller
 
-        controller = ast.literal_eval(controller[:-1])
-        controller = json.dumps(controller, skipkeys=True)
+           controller = ast.literal_eval(controller[:-1])
+           #controller = json.dumps(controller, skipkeys=True)
 
         cursor.close()
-        json_string = json.loads(controller)
-        json_data.jsonData = json_string
+        if(i==1):
+           observations = [controller]
+        elif(i>1):
+           observations = controller
+        else:
+           observations = [{'id': 'No Data', 'name': 'No Data', 'startDate': 'No Data', 'endDate': 'No Data',
+                           'uPhotometry': '', 'uPhotometryFlux': '', 'uPhotometryTime': '',
+                           'vPhotometry': '', 'vPhotometryFlux': '', 'vPhotometryTime': '',
+                           'bPhotometry': '', 'bPhotometryFlux': '', 'bPhotometryTime': '',
+                           'rPhotometry': '', 'rPhotometryFlux': '', 'rPhotometryTime': '',
+                           'iPhotometry': '', 'iPhotometryFlux': '', 'iPhotometryTime': '', 'owner': 'No Data'}]
+
+
+        #json_string = json.loads(controller)
+        #json_data.jsonData = json_string
+        json_data.jsonData = observations
 
     except:
         print 'errors json_data function'
@@ -240,8 +257,12 @@ def json_load():
         get_LastLoadStartDate = (queries.get('DatabaseQueries', 'database.getLastLoadStartDateFromStagingObservations'))
         get_LastLoadEndDate = (queries.get('DatabaseQueries', 'database.getLastLoadEndDateFromStagingObservations'))
 
-        lastLoad = [{'observationId': fetch_one(get_LastLoadObservationId), 'starName': fetch_one(get_LastLoadStarName),
+        flag = fetch_all(get_LastLoadObservationId)
+        if(len(flag) != 0):
+           lastLoad = [{'observationId': fetch_one(get_LastLoadObservationId), 'starName': fetch_one(get_LastLoadStarName),
                      'startDate': fetch_one(get_LastLoadStartDate), 'endDate': fetch_one(get_LastLoadEndDate)}]
+        else:
+            lastLoad = [{'observationId': '', 'starName': '', 'startDate': '', 'endDate': ''}]
 
         cursor.close()
         json_load.jsonLastLoad = lastLoad

@@ -489,7 +489,7 @@
             <th style="padding-right:0px;padding-left:0px;" title="Infrared magnitude">I</th>
             <th style="width: 100%;" ng-show="!isUserLoggedIn">Owner</th>
         </tr>
-        <tr ng-repeat="observation in displayedObservations | filter:singleOwner" >
+        <tr ng-repeat="observation in displayedObservations | filter:singleOwner">
             <td style="text-align: left;">{{observation.name}}</td>
             <td style="white-space: nowrap;">{{observation.startDate}}</td>
             <td style="white-space: nowrap;">{{observation.endDate}}</td>

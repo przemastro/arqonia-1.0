@@ -44,6 +44,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                        };
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
+          //console.log($scope.undefined);
                                          $scope.spinneractive = false;
                                          usSpinnerService.stop('spinner-1');
        }
@@ -1589,6 +1590,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		     $rootScope.isUserLoggedIn = false;
    		     $rootScope.isAdminLoggedIn = false;
    		     $rootScope.errorFlag = true;
+   		        		     $scope.spinneractive = false;
+                          usSpinnerService.stop('spinner-1');
    		     }
    		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@arqonia.com")){
              $cookies.put('email', $scope.email);
@@ -1757,6 +1760,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  Reminder.save({email:$scope.email}, function(response){
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
+                 		     $scope.spinneractive = false;
+                           usSpinnerService.stop('spinner-1');
              };
 
    		     $rootScope.errorFlag = false
@@ -1805,6 +1810,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		  $scope.message = response[Object.keys(response)[0]];
           if($scope.message == "User exists"){
    		     $rootScope.errorFlag = true
+   		        		     $scope.spinneractive = false;
+                          usSpinnerService.stop('spinner-1');
    		     }
    		  else {
 
