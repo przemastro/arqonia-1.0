@@ -1207,6 +1207,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                            chart: {
                                type: 'scatterChart', height: 550, width: 600, color: d3.scale.category10().range(myColors), scatter: { onlyCircles: true},
                                showLegend: false, showDistX: false, showDistY: false, showXAxis: true, showYAxis: true,
+                               noData: '',
                                yDomain: [$scope.YMax,$scope.YMin], xDomain: [$scope.XMin,$scope.XMax], tooltipContent: function(key) {return '<h3>' + key + '</h3>';},duration: 350,
                                xAxis: {axisLabel: 'Color '+cutString,tickFormat: function(d){return d3.format('.02f')(d);},ticks: 8},
                                yAxis: {axisLabel: 'Absolute Magnitude '+cutString.substring(2,3)+' (mag)',tickFormat: function(d){return d3.format('.02f')(d);},axisLabelDistance: -5,ticks: 10},
@@ -1245,6 +1246,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                              chart: {
                                  type: 'scatterChart', height: 550, width: 600, color: d3.scale.category10().range(myColors), scatter: { onlyCircles: true},
                                  showLegend: false, showDistX: false, showDistY: false, showXAxis: true, showYAxis: true,
+                                 noData: '',
                                  yDomain: [$scope.YMax,$scope.YMin], xDomain: [$scope.XMin,$scope.XMax], tooltipContent: function(key) {return '<h3>' + key + '</h3>';},duration: 350,
                                  xAxis: {axisLabel: 'Color '+cutString,tickFormat: function(d){return d3.format('.02f')(d);},ticks: 8},
                                  yAxis: {axisLabel: 'Absolute Magnitude '+cutString.substring(2,3)+' (mag)',tickFormat: function(d){return d3.format('.02f')(d);},axisLabelDistance: -5,ticks: 10},
@@ -1252,8 +1254,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                  }
                              }
                          };
-                                                        $scope.spinneractive = false;
-                                                        usSpinnerService.stop('spinner-1');
                          return $scope.options
                     })
                  }
@@ -1314,6 +1314,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                   data = [];
 
              	  PesronalizedObservationsDiagram.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail}, function(response){
+             	                                                          $scope.spinneractive = false;
+                                                                          usSpinnerService.stop('spinner-1');
                       for(var i = 0; i < response.length; i++) {
                          var j = 0
                          var tab = {}
@@ -1500,6 +1502,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $rootScope.loggedInUser = $cookies.get('name');
 	   $rootScope.userAcceptCookies = $cookies.get('allowCookies');
        $scope.Statistics = Statistics.query();
+
 
               //Login Modal
               $scope.loginModal = function () {

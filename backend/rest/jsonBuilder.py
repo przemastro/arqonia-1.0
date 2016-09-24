@@ -344,7 +344,7 @@ def personalizedObservationsHRDiagramRange(hrDiagramType, email):
            get_XMin = (queries.get('DatabaseQueries', 'database.getUserXMinFromBVDiagramAvg') + "'" + email + "'")
            get_YMax = (queries.get('DatabaseQueries', 'database.getUserYMaxFromVPhotometrySorted') + "'" + email + "'")
            get_YMin = (queries.get('DatabaseQueries', 'database.getUserYMinFromVPhotometrySorted') + "'" + email + "'")
-           time.sleep(1)
+           time.sleep(0.1)
            data = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
         #U-B
         elif(hrDiagramType == 'U-B'):
@@ -352,7 +352,7 @@ def personalizedObservationsHRDiagramRange(hrDiagramType, email):
            get_XMin = (queries.get('DatabaseQueries', 'database.getUserXMinFromUBDiagramAvg') + "'" + email + "'")
            get_YMax = (queries.get('DatabaseQueries', 'database.getUserYMaxFromBPhotometrySorted') + "'" + email + "'")
            get_YMin = (queries.get('DatabaseQueries', 'database.getUserYMinFromBPhotometrySorted') + "'" + email + "'")
-           time.sleep(1)
+           time.sleep(0.1)
            data = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
         #R-I
         elif(hrDiagramType == 'R-I'):
@@ -360,7 +360,7 @@ def personalizedObservationsHRDiagramRange(hrDiagramType, email):
            get_XMin = (queries.get('DatabaseQueries', 'database.getUserXMinFromRIDiagramAvg') + "'" + email + "'")
            get_YMax = (queries.get('DatabaseQueries', 'database.getUserYMaxFromIPhotometrySorted') + "'" + email + "'")
            get_YMin = (queries.get('DatabaseQueries', 'database.getUserYMinFromIPhotometrySorted') + "'" + email + "'")
-           time.sleep(1)
+           time.sleep(0.1)
            data = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
         #V-I
         elif(hrDiagramType == 'V-I'):
@@ -368,7 +368,7 @@ def personalizedObservationsHRDiagramRange(hrDiagramType, email):
            get_XMin = (queries.get('DatabaseQueries', 'database.getUserXMinFromVIDiagramAvg') + "'" + email + "'")
            get_YMax = (queries.get('DatabaseQueries', 'database.getUserYMaxFromIPhotometrySorted') + "'" + email + "'")
            get_YMin = (queries.get('DatabaseQueries', 'database.getUserYMinFromIPhotometrySorted') + "'" + email + "'")
-           time.sleep(1)
+           time.sleep(0.1)
            data = [{'XMax': fetch_one(get_XMax), 'XMin': fetch_one(get_XMin), 'YMax': fetch_one(get_YMax), 'YMin': fetch_one(get_YMin)}]
 
         return data
@@ -394,7 +394,6 @@ def personalizedObservationsHRDiagram(hrDiagramType, email):
            get_VObservations = (queries.get('DatabaseQueries', 'database.getJoinedUserVObservationsFromVPhotometrySorted') + "'" + email + "' group by so.ObjectName")
            get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getUserBVObservationsDifferenceFromBVDiagramAvg') + "'" + email + "'")
            get_StarNames = (queries.get('DatabaseQueries', 'database.getUserStarNamesFromBVDiagramAvg') + "'" + email + "'")
-           #time.sleep(1)
            data = [{'abvObservationsDifference': fetch_all(get_BVObservationsDifference), 'cvObservations': fetch_all(get_VObservations), 'bstarNames': fetch_all(get_StarNames)}]
         #U-B
         elif(hrDiagramType == 'U-B'):
@@ -486,30 +485,35 @@ def json_lcDiagram():
         get_UObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromUPhotometrySorted'))
         get_UTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromUPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromUPhotometrySorted'))
+        time.sleep(1)
         json_lcDiagram.jsonLCUDiagram = [{'starNames': fetch_all(get_StarNames), 'uObservations': fetch_all(get_UObservations), 'uTimes': fetch_all(get_UTimes)}]
 
         #V
         get_VObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromVPhotometrySorted'))
         get_VTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromVPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromVPhotometrySorted'))
+        time.sleep(1)
         json_lcDiagram.jsonLCVDiagram = [{'starNames': fetch_all(get_StarNames), 'vObservations': fetch_all(get_VObservations), 'vTimes': fetch_all(get_VTimes)}]
 
         #B
         get_BObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromBPhotometrySorted'))
         get_BTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromBPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromBPhotometrySorted'))
+        time.sleep(1)
         json_lcDiagram.jsonLCBDiagram = [{'starNames': fetch_all(get_StarNames), 'bObservations': fetch_all(get_BObservations), 'bTimes': fetch_all(get_BTimes)}]
 
         #R
         get_RObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromRPhotometrySorted'))
         get_RTimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromRPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromRPhotometrySorted'))
+        time.sleep(1)
         json_lcDiagram.jsonLCRDiagram = [{'starNames': fetch_all(get_StarNames), 'rObservations': fetch_all(get_RObservations), 'rTimes': fetch_all(get_RTimes)}]
 
         #I
         get_IObservations = (queries.get('DatabaseQueries', 'database.getAllLCObservationsFromIPhotometrySorted'))
         get_ITimes = (queries.get('DatabaseQueries', 'database.getAllLCTimesFromIPhotometrySorted'))
         get_StarNames = (queries.get('DatabaseQueries', 'database.getAllLCStarNamesFromIPhotometrySorted'))
+        time.sleep(1)
         json_lcDiagram.jsonLCIDiagram = [{'starNames': fetch_all(get_StarNames), 'iObservations': fetch_all(get_IObservations), 'iTimes': fetch_all(get_ITimes)}]
 
         cursor.close()
