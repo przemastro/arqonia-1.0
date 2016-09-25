@@ -24,7 +24,7 @@ astroApp.service('fileUpload', ['$http', function ($http) {
 }]);
 
 //Authentication
-//Register
+//Update Account Data
 services.factory('updateProfile', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/updateProfile', {}, {
@@ -32,6 +32,7 @@ services.factory('updateProfile', ['$resource',
     });
 }]);
 
+//Remove Account
 services.factory('removeAccount', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/removeAccount', {}, {
@@ -39,6 +40,7 @@ services.factory('removeAccount', ['$resource',
     });
 }]);
 
+//Register
 services.factory('register', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/register', {}, {

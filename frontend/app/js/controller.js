@@ -1532,15 +1532,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    });
               };
 
-              //Remove Account Modal
-              $scope.removeAccountModal = function () {
-                     var modalInstance = $uibModal.open({
-                     animation: $scope.animationsEnabled,
-                     templateUrl: 'removeAccountModalContent.html',
-                     controller: 'ModalRemoveAccountCtrl',
-                   });
-              };
-
        $rootScope.cookiesTextAlert = "This website uses cookies to ensure you get the best experience on our service";
                      $rootScope.showCookiesSuccessAlert = true;
                      $rootScope.switchBoolCookies = function (value) {
@@ -1682,8 +1673,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('editProfileCtrl', function($scope) {
 	});
 
-    astroApp.controller('ModalEditProfileCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'updateProfile', '$cookies', '$location', '$timeout',
-	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location, $timeout) {
+    astroApp.controller('ModalEditProfileCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'updateProfile', '$cookies', '$location', '$timeout', '$uibModal',
+	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, UpdateProfile, $cookies, $location, $timeout, $uibModal) {
 
       $rootScope.errorFlag = false
 
@@ -1743,45 +1734,73 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
           };
+
+              //Remove Account Modal
+              $scope.removeAccountModal = function () {
+                     $uibModalInstance.dismiss();
+                     var modalInstance = $uibModal.open({
+                     animation: $scope.animationsEnabled,
+                     templateUrl: 'removeAccountModalContent.html',
+                     controller: 'ModalRemoveAccountCtrl',
+                   });
+              };
      }]);
 
 //------------------------------------------------------Remove Account--------------------------------------------------
 
-    //loginCtrl
-	astroApp.controller('removeAccountCtrl', function($scope) {
-	});
 
    astroApp.controller('ModalRemoveAccountCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'usSpinnerService', 'removeAccount', '$cookies', '$location', '$timeout',
 	                             function ($rootScope, $scope, $uibModalInstance, usSpinnerService, RemoveAccount, $cookies, $location, $timeout) {
 
       $rootScope.errorFlag = false
-      //[Send]
+      $scope.loggedInUser = $cookies.get('name');
+      $scope.isUserLoggedIn = $cookies.get('cook');
+      $scope.loggedInUserEmail = $cookies.get('email');
+      $rootScope.isAdminLoggedIn = $cookies.get('admin');
+
+      //[Remove]
       $scope.removeAccount = function(){
-   		  Reminder.save({email:$scope.email}, function(response){
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
+             };
+   		     RemoveAccount.update({email:$scope.loggedInUserEmail}, function(response){
                  		     $scope.spinneractive = false;
                            usSpinnerService.stop('spinner-1');
-             };
 
    		     $rootScope.errorFlag = false
-   		     $location.path("login");
 
-             $scope.spinneractive = false;
-             usSpinnerService.stop('spinner-1');
-             $uibModalInstance.dismiss();
-      	           $rootScope.successTextAlert = "Your account has been soft deleted.";
-                       $rootScope.showSuccessAlert = true;
-                       // switch flag
-                       $rootScope.switchBool = function (value) {
-                           $rootScope[value] = !$rootScope[value];
-                       };
+             //Firstly we need to kill all active modals
+             $('.modal-content > .ng-scope').each(function()
+             {
+                 try
+                 {
+                     $(this).scope().$dismiss();
+                 }
+                 catch(_) {}
+             });
 
-                    $timeout(function(){
-                       $rootScope.showSuccessAlert = false;
-                       }, 5000);
+             //Set flags
+             $rootScope.isUserLoggedIn = false;
+             $rootScope.isAdminLoggedIn = false;
+             $cookies.remove("cook");
+             $cookies.remove("admin");
+             $cookies.remove("name");
+             $cookies.remove("email");
+             $location.path("main");
+
+      	     $rootScope.successTextAlert = "Your account has been soft deleted.";
+                 $rootScope.showSuccessAlert = true;
+                 // switch flag
+                 $rootScope.switchBool = function (value) {
+                     $rootScope[value] = !$rootScope[value];
+                 };
+
+             $timeout(function(){
+                $rootScope.showSuccessAlert = false;
+                }, 5000);
+
    		     })
-      };
+           };
 
           //[Cancel]
           $scope.cancel = function () {

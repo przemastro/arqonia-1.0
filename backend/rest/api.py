@@ -3,7 +3,8 @@ from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, \
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
-from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, getPassword, updateUser
+from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
+    getPassword, updateUser, removeUser
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -348,8 +349,21 @@ class RestUpdateProfile(Resource):
             content = Message("Hello "+args['name'],
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hello '+args['name']+',\n\nYour Profile has been updated.' \
+            content.body = 'Hi '+args['name']+',\n\nYour Profile has been updated.' \
                                                    '\n\nBest Regards, \nAdmin'
+            mail.send(content);
+        return jsonify({'msg': msg})
+
+class RestRemoveAccount(Resource):
+    def put(self):
+        args = parser.parse_args()
+        msg = removeUser(args['email'])
+        if msg == 'Correct':
+            content = Message("Hello",
+                              sender="admin@arqonia.com",
+                              recipients=[args['email']])
+            content.body = 'Hi, \n\nThank you for using Arqonia. We hope you will be back soon.' \
+                                                 '\n\nBest Regards, \nAdmin'
             mail.send(content);
         return jsonify({'msg': msg})
 
@@ -430,6 +444,7 @@ api.add_resource(RestObservationLCIDiagram, '/observationsLCIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestUpdateProfile, '/updateProfile')
+api.add_resource(RestRemoveAccount, '/removeAccount')
 api.add_resource(RestReminder, '/reminder')
 api.add_resource(RestLogin, '/login')
 api.add_resource(RestSearch, '/search')

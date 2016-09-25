@@ -467,6 +467,33 @@ def updateUser(name, email, password, oldEmail):
     else:
         cnx.close()
 
+#----------------------------------------------------remove existing user-----------------------------------------------
+def removeUser(email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+
+        print
+        if email != 'None':
+            update_ExistingUser = ("update data.users set activeFlag='false' where email='"+email+"'")
+            cursor.execute(update_ExistingUser)
+            cnx.commit()
+            removeObservation = ("update so set active=1, status='deleted' from stg.stagingObservations so "
+                                 "join data.users us on so.OwnerId=us.ID where email='"+email+"'")
+            cursor.execute(removeObservation)
+            cnx.commit()
+            msg = "Correct"
+
+        return msg
+        cursor.close()
+
+    except:
+        print 'errors in updateUser function'
+    else:
+        cnx.close()
+
 #----------------------------------------------------Get Password-------------------------------------------------------
 def getPassword(email):
     try:
@@ -497,7 +524,7 @@ def verifyCredentials(email, password):
         email = str(email)
         password = str(password)
         if email != 'None' and password != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+email+"'")
+            verify_User = ("select count(1) from data.users where Email='"+email+"' and ActiveFlag='true'")
             cursor.execute(verify_User)
 
         Value = cursor.fetchone()

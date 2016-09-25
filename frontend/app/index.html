@@ -522,10 +522,10 @@
          <h3 style="font-family: inherit;font-weight: normal;
                            font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Login</h3>
      </div>
-     <table class="main">
+     <table class="main" style="margin-bottom:30px">
          <tr>
              <td style="width:60%;vertical-align: topfont-family: inherit;font-weight: normal;
-                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px;border: 0px solid black;">
                  <form name="loginForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="loginForm.$valid && loginUser()">
                      <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                          <div class="form-group">
@@ -549,7 +549,7 @@
                          </div>
                          <div style="font-family: inherit;font-weight: normal;
                            font-size: 1.5rem;text-rendering: optimizeLegibility;color: #4c4c4c;">
-                             <a href="#password-reminder" ng-show="!isUserLoggedIn" ng-click="reminderModal()"
+                             <a href ng-show="!isUserLoggedIn" ng-click="reminderModal()"
                                 style="color:#4c4c4c;padding: 0px 10px;padding-right:195px;">Forgot your password?</a>
                          </div>
                      </div>
@@ -569,10 +569,10 @@
          <h3 style="font-family: inherit;font-weight: normal;
                            font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Sign up</h3>
      </div>
-     <table class="main">
+     <table class="main" style="margin-bottom:30px">
          <tr>
              <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
-                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px;border: 0px solid black;">
                  <form name="registerForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="registerForm.$valid && addUser()">
                      <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                          <div class="form-group">
@@ -619,10 +619,10 @@
         <h3 style="font-family: inherit;font-weight: normal;
                            font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Reminder</h3>
     </div>
-    <table class="main">
+    <table class="main" style="margin-bottom:30px">
         <tr>
             <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
-                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px;border: 0px solid black;">
                 <form name="reminderForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="reminderForm.$valid && sendPassword()">
                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                         <div class="form-group">
@@ -653,10 +653,10 @@
          <h3 style="font-family: inherit;font-weight: normal;
                            font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Edit Profile</h3>
      </div>
-     <table class="main">
+     <table class="main" style="margin-bottom:30px">
          <tr>
              <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
-                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px">
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px;border: 0px solid black;">
                  <form name="editProfile" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editProfile.$valid && updateUser()">
                      <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                          <div class="form-group">
@@ -698,6 +698,33 @@
                      </div>
                      <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
                          <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Submit" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                         <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                     </div>
+                 </form>
+             </td>
+         </tr>
+     </table>
+ </script>
+
+ <script type="text/ng-template" id="removeAccountModalContent.html">
+     <div class="modal-header">
+         <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Remove Account</h3>
+     </div>
+     <table class="main" style="margin-bottom:30px;">
+         <tr>
+             <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;padding-left:140px;border: 0px solid black;">
+                 <form name="removeAccountForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="removeAccountForm.$valid && removeAccount()">
+                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;margin-left:-200px">
+                         <div style="font-family: inherit;font-weight: normal;
+                           font-size: 1.8rem;text-rendering: optimizeLegibility;color: #4c4c4c;margin-left:30px;margin-right:30px" class="modal-body">
+                             <div>Please be advised that your data will be soft deleted from DB. In order to permanently delete your data please contact Admin.</div>
+                         </div>
+                     </div>
+                     <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                         <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Remove" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
                          <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
                      </div>
                  </form>
