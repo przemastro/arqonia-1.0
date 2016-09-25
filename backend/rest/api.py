@@ -41,6 +41,7 @@ config.read('../resources/env.properties')
 serverAddress = config.get('Server', 'server.address');
 serverPort = int(config.get('Server', 'server.port'));
 serverService = config.get('Server', 'server.service');
+key = config.get('SecurityKey', 'public.key');
 
 
 json_data()
@@ -323,8 +324,9 @@ class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
 
-        sj = decrypt_password(args['password'])
-        msg = addUser(args['name'],args['email'], str(sj))
+        #sj = decrypt_password(args['password'])
+        #msg = addUser(args['name'],args['email'], str(sj))
+        msg = addUser(args['name'],args['email'], args['password'])
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
                       sender="admin@arqonia.com",
@@ -339,8 +341,9 @@ class RestUpdateProfile(Resource):
     def put(self):
         args = parser.parse_args()
 
-        sj = decrypt_password(args['password'])
-        msg = updateUser(args['name'],args['email'], str(sj),args['oldEmail'])
+        #sj = decrypt_password(args['password'])
+        #msg = updateUser(args['name'],args['email'], str(sj),args['oldEmail'])
+        msg = updateUser(args['name'],args['email'], args['password'],args['oldEmail'])
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
                               sender="admin@arqonia.com",
@@ -355,6 +358,7 @@ class RestReminder(Resource):
         args = parser.parse_args()
 
         msg = getPassword(args['email'])
+        msg = decrypt_password(msg)
         content = Message("Hello",
                           sender="admin@arqonia.com",
                           recipients=[args['email']])
@@ -368,6 +372,7 @@ class RestLogin(Resource):
         args = parser.parse_args()
         sj = decrypt_password(args['password'])
         msg = verifyCredentials(args['email'], sj)
+        #msg = verifyCredentials(args['email'], args['password'])
         return jsonify({'msg': msg})
 
 class RestSearch(Resource):
@@ -449,7 +454,7 @@ def after_request(response):
 
 def decrypt_password(password):
     d = json.loads(password)
-    sj = SJCL().decrypt(d, "password")
+    sj = SJCL().decrypt(d, key)
     return sj
 
 logging.basicConfig(level=logging.DEBUG,

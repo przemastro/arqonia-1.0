@@ -1582,7 +1582,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
-          var password = sjcl.encrypt("password", $scope.password)
+          var password = sjcl.encrypt(__env.key, $scope.password)
 
    		  Login.update({email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
@@ -1709,7 +1709,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
-          var password = sjcl.encrypt("password", $scope.password)
+          var password = sjcl.encrypt(__env.key, $scope.password)
 
    		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
@@ -1804,7 +1804,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
-          var password = sjcl.encrypt("password", $scope.password)
+          var password = sjcl.encrypt(__env.key, $scope.password)
 
    		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];

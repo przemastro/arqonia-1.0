@@ -122,9 +122,6 @@ def json_data():
                            'rPhotometry': '', 'rPhotometryFlux': '', 'rPhotometryTime': '',
                            'iPhotometry': '', 'iPhotometryFlux': '', 'iPhotometryTime': '', 'owner': 'No Data'}]
 
-
-        #json_string = json.loads(controller)
-        #json_data.jsonData = json_string
         json_data.jsonData = observations
 
     except:

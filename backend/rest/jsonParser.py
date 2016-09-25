@@ -4,11 +4,13 @@ import ConfigParser
 import pandas
 import ast
 import simplejson as json
+from sjcl import SJCL
 
 
 env = ConfigParser.RawConfigParser()
 env.read('../resources/env.properties')
 dbAddress = env.get('DatabaseConnection', 'database.address');
+key = env.get('SecurityKey', 'public.key');
 queries = ConfigParser.RawConfigParser()
 queries.read('../resources/queries.properties')
 cnx = pyodbc.connect(dbAddress)
@@ -426,7 +428,7 @@ def addUser(name, email, password):
             if Value>0:
                 msg = "User exists"
             else:
-                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"')")
+                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"','true',123)")
                 cursor.execute(insert_NewUser)
                 cnx.commit()
                 msg = "Correct"
@@ -495,17 +497,24 @@ def verifyCredentials(email, password):
         email = str(email)
         password = str(password)
         if email != 'None' and password != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+email+"' and Password='"+password+"'")
+            verify_User = ("select count(1) from data.users where Email='"+email+"'")
             cursor.execute(verify_User)
 
         Value = cursor.fetchone()
         Value = Value[0]
 
-        if Value>0:
-            select_userName = ("select name from data.users where Email='"+email+"' and Password='"+password+"'")
-            cursor.execute(select_userName)
-            Name = cursor.fetchone()
-            msg = Name[0]
+        if Value==1:
+            verify_password = ("select password from data.users where Email='"+email+"'")
+            cursor.execute(verify_password)
+            DBPassword = cursor.fetchone()
+            DBPassword = DBPassword[0]
+            if(decrypt_password(DBPassword)==password):
+               select_userName = ("select name from data.users where Email='"+email+"'")
+               cursor.execute(select_userName)
+               Name = cursor.fetchone()
+               msg = Name[0]
+            else:
+               msg = "Wrong credentials"
         else:
             msg = "Wrong credentials"
 
@@ -1313,3 +1322,8 @@ def fetch_all_replace(get_value):
     Value = [u[0] for u in Value]
     Value = ans = ' '.join(Value).replace(' ', '\n')
     return Value
+
+def decrypt_password(password):
+    d = json.loads(password)
+    sj = SJCL().decrypt(d, key)
+    return sj
