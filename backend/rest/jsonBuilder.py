@@ -225,8 +225,6 @@ def userObservations(email):
             controller = str(object) + ',' + controller
             #print controller
 
-        print 'counter'
-        print counter
 
         controller = ast.literal_eval(controller[:-1])
 

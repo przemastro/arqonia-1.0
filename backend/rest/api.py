@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from flask import Flask, jsonify, render_template, request, redirect, url_for, send_from_directory
 from flask_restful import reqparse, Api, Resource, abort
 from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagram, json_statistics, \
@@ -156,8 +158,13 @@ class RestObservation(Resource):
             content = Message("New observation added",
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hi,\n\nYou have added '+args['name']+' to the staging area.' \
-                                           '\n\nBest Regards, \nThe Creator'
+            #content.body = 'Hi,\n\nYou have added '+args['name']+' to the staging area.' \
+            #                               '\n\nBest Regards, \nThe Creator'
+
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                   '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                   'Hi, <br><br>You have added '+args['name']+' to the staging area. <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
             mail.send(content);
             return 201
 
@@ -169,8 +176,12 @@ class RestObservation(Resource):
             content = Message("Existing observation updated",
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hi,\n\nYou have updated '+args['name']+' in the staging area.' \
-                                                                 '\n\nBest Regards, \nThe Creator'
+            #content.body = 'Hi,\n\nYou have updated '+args['name']+' in the staging area.' \
+            #                                                     '\n\nBest Regards, \nThe Creator'
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                           'Hi, <br><br>You have updated '+args['name']+' in the staging area. <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
             mail.send(content);
             return 201
 
@@ -200,8 +211,13 @@ class RestDeleteObservation(Resource):
             content = Message("Existing observation removed",
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hi,\n\nYou have removed '+args['name']+' from the staging area.' \
-                                                                   '\n\nBest Regards, \nThe Creator'
+            #content.body = 'Hi,\n\nYou have removed '+args['name']+' from the staging area.' \
+            #                                                       '\n\nBest Regards, \nThe Creator'
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                           'Hi, <br><br>You have removed '+args['name']+' from the staging area. <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
+
             mail.send(content);
             return 201
 
@@ -333,9 +349,13 @@ class RestRegister(Resource):
             content = Message("Hello "+args['name'],
                       sender="admin@arqonia.com",
                       recipients=[args['email']])
-            content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
-                                                   '\nPlease login with following password to activate your account: '+decrypted+'' \
-                                                   '\n\nBest Regards, \nAdmin'
+            #content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
+            #                                       '\nPlease login with following password to activate your account: '+decrypted+'' \
+            #                                       '\n\nBest Regards, \nAdmin'
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;padding-right:50px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                           'Welcome '+args['name']+',<br><br>Thank you for joining Arqonia, the biggest astronomical fandom in the Universe. <br>Please login with following password to activate your account: <b style="color:red">'+decrypted+'</b><br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
             mail.send(content);
         return jsonify({'msg': msg})
 
@@ -351,8 +371,13 @@ class RestUpdateProfile(Resource):
             content = Message("Hello "+args['name'],
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hi '+args['name']+',\n\nYour Profile has been updated.' \
-                                                   '\n\nBest Regards, \nAdmin'
+            #content.body = 'Hi '+args['name']+',\n\nYour Profile has been updated.' \
+            #                                       '\n\nBest Regards, \nAdmin'
+
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                           'Hi '+args['name']+',<br><br>Your Profile has been updated. <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
             mail.send(content);
         return jsonify({'msg': msg})
 
@@ -364,8 +389,13 @@ class RestRemoveAccount(Resource):
             content = Message("Hello",
                               sender="admin@arqonia.com",
                               recipients=[args['email']])
-            content.body = 'Hi, \n\nThank you for using Arqonia. We hope you will be back soon.' \
-                                                 '\n\nBest Regards, \nAdmin'
+            #content.body = 'Hi, \n\nThank you for using Arqonia. We hope you will be back soon.' \
+            #                                     '\n\nBest Regards, \nAdmin'
+
+            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                           'Hi, <br><br>Thank you for using Arqonia. In order to remove your account permanently please ask Admin. <br>We hope you will be back soon. <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
             mail.send(content);
         return jsonify({'msg': msg})
 
@@ -378,8 +408,13 @@ class RestReminder(Resource):
         content = Message("Hello",
                           sender="admin@arqonia.com",
                           recipients=[args['email']])
-        content.body = 'Hi,\n\nThis is reply for your request. \n\nYour password is: '+msg+'' \
-                                               '\n\nBest Regards, \nAdmin'
+        #content.body = 'Hi,\n\nThis is reply for your request. \n\nYour password is: '+msg+'' \
+        #                                       '\n\nBest Regards, \nAdmin'
+
+        content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:#efefef;margin-bottom: 50px"><div style="max-width: 500px;height: 450px;border-style: solid;border-width: 1px;border-color: #e1e1e1; background-color:white;width:100%;margin: 10px auto"> <div id="header" align="center" style="background: rgba(0, 0, 0, .7);background-color: rgba(0, 0, 0, 0.7);background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:0px;"> <ul style="margin:auto;list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;"> <li style="font-size:120%;text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:25px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: #4D9DC2;position: relative;margin:auto;margin-top:-43px;z-index: 0;height:40px"> </div>' \
+                       '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                       'Hi, <br><br>This is reply for your request. <br><br>Your password is: <b style="color:red"> '+msg+' </b> <br><br><br> Best Regards, <br>Arqonia Team</p></div><div align="center" style="color: white;font-weight: 300;padding: 10px 0;background-color: #323232;font-size: 12px;max-width: 600px; background-color: #323232;height: 15px;margin-bottom: 0px;margin-top: 0px;"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+
         mail.send(content);
         return 201
 

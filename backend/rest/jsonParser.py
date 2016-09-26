@@ -417,7 +417,6 @@ def addUser(name, email, activeNumber):
         name = str(name)
         email = str(email)
         activeNumber = str(activeNumber)
-        print activeNumber
 
         if email != 'None' and name != 'None':
             verify_User = ("select count(1) from data.users where Email='"+email+"'")
@@ -538,8 +537,6 @@ def verifyCredentials(email, password):
             cursor.execute(verify_password)
             DBPassword = cursor.fetchone()
             DBPassword = DBPassword[0]
-            print decrypt_password(DBPassword)
-            print password
             if(decrypt_password(DBPassword)==password):
                #Activation for first login - in fact I will update everytime this flag
                update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
