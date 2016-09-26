@@ -1468,8 +1468,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	   $cookies.remove("email");
 	}]);
 
-    astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location',
-    function ($scope, usSpinnerService, Login, $cookies, $location) {
+    astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location', '$timeout',
+    function ($scope, usSpinnerService, Login, $cookies, $location, $timeout) {
 
        //Firstly we need to kill all active modals
        $('.modal-content > .ng-scope').each(function()
@@ -1490,6 +1490,16 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
        $location.path("main");
+      	           $scope.successTextAlert = "Logout successful.";
+                       $scope.showSuccessAlert = true;
+                       // switch flag
+                       $scope.switchBool = function (value) {
+                           $scope[value] = !scope[value];
+                       };
+
+                    $timeout(function(){
+                       $scope.showSuccessAlert = false;
+                       }, 5000);
     }]);
 
 

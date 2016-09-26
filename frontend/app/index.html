@@ -46,7 +46,7 @@
      <ul class="topMenu" style="margin:auto;list-style-type: none;padding: 0;color: #4c4c4c;background-color: #efefef;height:30px !important;position:relative;">
          <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 10px;z-index: 150;"><a href ng-show="!isUserLoggedIn" ng-click="registerModal()"
                                                        style="color:#4c4c4c;text-decoration: none;padding: 7px 5px;padding-right:10px;">Sign up</a></li>
-         <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 4px 0px;padding-right:0px;font-size: 1.8rem;top: 0px;right: 75px;" ng-show="!isUserLoggedIn">|</li>
+         <li style="position:fixed;float:right;color:#4c4c4c;text-decoration: none;padding: 2px 0px;padding-right:0px;font-size: 1.8rem;top: 0px;right: 77px;" ng-show="!isUserLoggedIn">|</li>
          <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 85px;z-index: 150;"><a href ng-show="!isUserLoggedIn" ng-click="loginModal()"
                                                        style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:5px;">Login</a></li>
          <li style="position:fixed;float:right;font-size: 1.4rem;top: 3px;right: 5px;">
@@ -68,7 +68,7 @@
                 </div>
              </div>
          </li>
-         <li style="position:fixed;float:right;font-size: 1.4rem;top: 2px;right: 295px;z-index: 150;">
+         <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 295px;z-index: 150;">
              <a href="#admin" class="pageSection" ng-show="isAdminLoggedIn=='true'" style="color:#4c4c4c;text-decoration: none;padding: 7px 16px;">Admin Panel</a></li>
          <li style="position:fixed;float:right;font-size: 1.4rem;top: 0px;right: 45px;z-index: 150;">
              <div ng-show="isUserLoggedIn"  style="color:#4c4c4c;text-decoration: none;padding: 7px 10px;padding-right:25px;white-space: nowrap;">
@@ -499,6 +499,7 @@
          ©2016 ARQONIA. All Rights Reserved.
      </div>
  </div>
+
 
  <div ng-show="userAcceptCookies != 'true'">
     <div align="center" style="position:fixed;bottom:0;margin-bottom:5px;z-index:300;box-shadow:0 6px 12px rgba(0,0,0,.175);
