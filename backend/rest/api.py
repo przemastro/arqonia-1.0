@@ -131,6 +131,7 @@ parser.add_argument('verified', type=str)
 parser.add_argument('abbreviation', type=str)
 parser.add_argument('hrDiagramType', type=str)
 parser.add_argument('filter', type=str)
+parser.add_argument('activeNumber', type=str)
 
 
 class Rest(Resource):
@@ -325,14 +326,15 @@ class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
 
-        #sj = decrypt_password(args['password'])
+        decrypted = decrypt_password(args['activeNumber'])
         #msg = addUser(args['name'],args['email'], str(sj))
-        msg = addUser(args['name'],args['email'], args['password'])
+        msg = addUser(args['name'],args['email'], args['activeNumber'])
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
                       sender="admin@arqonia.com",
                       recipients=[args['email']])
             content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
+                                                   '\nPlease login with following password to activate your account: '+decrypted+'' \
                                                    '\n\nBest Regards, \nAdmin'
             mail.send(content);
         return jsonify({'msg': msg})

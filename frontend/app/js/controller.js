@@ -1494,7 +1494,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                        $scope.showSuccessAlert = true;
                        // switch flag
                        $scope.switchBool = function (value) {
-                           $scope[value] = !scope[value];
+                           $scope[value] = !$scope[value];
                        };
 
                     $timeout(function(){
@@ -1661,7 +1661,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                      usSpinnerService.spin('spinner-1');
                    };
    		  Reminder.save({email:$scope.email}, function(response){
-
+             console.log('get',response)
    		     $rootScope.errorFlag = false
    		     $location.path("login");
 
@@ -1833,9 +1833,11 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                    if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
-          var password = sjcl.encrypt(__env.key, $scope.password)
 
-   		  Register.save({name:$scope.name,email:$scope.email,password:password}, function(response){
+          var initialNumber = (new Date().getTime()).toString(36)
+          var activeNumber = sjcl.encrypt(__env.key, initialNumber)
+
+   		  Register.save({name:$scope.name,email:$scope.email,activeNumber:activeNumber}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
           if($scope.message == "User exists"){
    		     $rootScope.errorFlag = true
@@ -1850,7 +1852,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
-      	           $rootScope.successTextAlert = "You have created new account. We have sent an activation link to the email address you provided.";
+      	           $rootScope.successTextAlert = "You have created new account. We have sent an initial password to the email address you provided.";
                        $rootScope.showSuccessAlert = true;
                        // switch flag
                        $rootScope.switchBool = function (value) {

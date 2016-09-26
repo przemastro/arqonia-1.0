@@ -409,16 +409,17 @@ def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileN
 
 
 #----------------------------------------------------add new user-------------------------------------------------------
-def addUser(name, email, password):
+def addUser(name, email, activeNumber):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
         name = str(name)
         email = str(email)
-        password = str(password)
+        activeNumber = str(activeNumber)
+        print activeNumber
 
-        if email != 'None' and password != 'None' and name != 'None':
+        if email != 'None' and name != 'None':
             verify_User = ("select count(1) from data.users where Email='"+email+"'")
             cursor.execute(verify_User)
 
@@ -428,7 +429,7 @@ def addUser(name, email, password):
             if Value>0:
                 msg = "User exists"
             else:
-                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+password+"','true',123)")
+                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+activeNumber+"','false','"+activeNumber+"')")
                 cursor.execute(insert_NewUser)
                 cnx.commit()
                 msg = "Correct"
@@ -475,7 +476,6 @@ def removeUser(email):
 
         email = str(email)
 
-        print
         if email != 'None':
             update_ExistingUser = ("update data.users set activeFlag='false' where email='"+email+"'")
             cursor.execute(update_ExistingUser)
@@ -523,8 +523,11 @@ def verifyCredentials(email, password):
 
         email = str(email)
         password = str(password)
+
+        #Activation for first login
+
         if email != 'None' and password != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+email+"' and ActiveFlag='true'")
+            verify_User = ("select count(1) from data.users where Email='"+email+"' and (ActiveFlag='true' or (ActiveFlag='false' and ActiveCode is not NULL))")
             cursor.execute(verify_User)
 
         Value = cursor.fetchone()
@@ -535,7 +538,14 @@ def verifyCredentials(email, password):
             cursor.execute(verify_password)
             DBPassword = cursor.fetchone()
             DBPassword = DBPassword[0]
+            print decrypt_password(DBPassword)
+            print password
             if(decrypt_password(DBPassword)==password):
+               #Activation for first login - in fact I will update everytime this flag
+               update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
+               cursor.execute(update_ActiveFlag)
+               cnx.commit()
+               #and the rest
                select_userName = ("select name from data.users where Email='"+email+"'")
                cursor.execute(select_userName)
                Name = cursor.fetchone()
