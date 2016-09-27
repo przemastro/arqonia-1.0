@@ -490,7 +490,10 @@
             <th style="width: 100%;" ng-show="!isUserLoggedIn">Owner</th>
         </tr>
         <tr ng-repeat="observation in displayedObservations | filter:singleOwner">
-            <td style="text-align: left;">{{observation.name}}</td>
+            <td style="text-align: left;" ng-show="!isUserLoggedIn">{{observation.name}}</td>
+            <td style="text-align: left;" ng-show="isUserLoggedIn" ng-if="observation.status=='old'">{{observation.name}}</td>
+            <td style="text-align: left;color:red" ng-show="isUserLoggedIn" ng-if="observation.status=='deleted'">{{observation.name}}</td>
+            <td style="text-align: left;color:blue" ng-show="isUserLoggedIn" ng-if="observation.status=='new'">{{observation.name}}</td>
             <td style="white-space: nowrap;">{{observation.startDate}}</td>
             <td style="white-space: nowrap;">{{observation.endDate}}</td>
             <td style="padding-right:0px;padding-left:0px;"><input type="button" value="{{observation.uPhotometry}}" class="btn btn-default sharp customTrueFalse" ng-click="editUPhotometry(observation.id)"/></td>

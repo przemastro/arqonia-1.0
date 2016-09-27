@@ -400,8 +400,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
     }]);
 
     //-------------------------------------------Remove Observation modal's details-------------------------------------
-    astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies',
-                                           function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceRemoveCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'removeObservation', 'removePhotometry', '$uibModal', '$window', '$timeout', '$cookies', 'usSpinnerService', 'getObservations', 'getUserObservations',
+                                           function ($rootScope, $scope, $uibModalInstance, RemoveObservation, removePhotometry, $uibModal, $window, $timeout, $cookies, usSpinnerService, Observations, UserObservations) {
 
       $scope.ob = $scope.observations;
 
@@ -422,27 +422,52 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
         //remove photometry is an observation.id so I can keep the correct index of an observation in table list
         $scope.removePhotometry = removePhotometry;
         //Call removeObservation service
+        $rootScope.displayedObservations = [];
+        $rootScope.observations = [];
         RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.removePhotometryName}, function(response){
            $scope.message = response.message;
+
         });
-        //...and close modal
-        $uibModalInstance.dismiss();
-        $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
-               $rootScope.showSuccessAlert = true;
-               // switch flag
-               $rootScope.switchBool = function (value) {
-                   $rootScope[value] = !$rootScope[value];
-               };
-           $timeout(function(){
-              $rootScope.showSuccessAlert = false;
-              }, 5000);
+
+                  if (!$scope.spinneractive) {
+                    usSpinnerService.spin('spinner-1');
+                  };
+           		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+           		     var globalObject = [];
+                     var len = response.length;
+                     for(var i = 0; i < len; i++) {
+                        var newObject = {}
+                        angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                             newObject[key] = value;
+                         });
+                         globalObject.push(newObject);
+                     }
+           		  $scope.message = response[Object.keys(response)];
+                  $rootScope.displayedObservations = [];
+                  $rootScope.observations = globalObject;
+                  console.log($rootScope.observations);
+                   $scope.spinneractive = false;
+                   usSpinnerService.stop('spinner-1');
+                  })
+
+                //...and close modal
+                $uibModalInstance.dismiss();
+                $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
+                       $rootScope.showSuccessAlert = true;
+                       // switch flag
+                       $rootScope.switchBool = function (value) {
+                           $rootScope[value] = !$rootScope[value];
+                       };
+                   $timeout(function(){
+                      $rootScope.showSuccessAlert = false;
+                      }, 5000);
         return true;
       };
     }]);
 
     //-------------------------------------------Edit Observation modal's details---------------------------------------
-    astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
-                                         function ($rootScope, $scope, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceEditCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'updateObservation', 'editPhotometry', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies', 'usSpinnerService', 'getObservations', 'getUserObservations',
+                                         function ($rootScope, $scope, $uibModalInstance, UpdateObservation, editPhotometry, fileUpload, $uibModal, $window, $timeout, $cookies, usSpinnerService, Observations, UserObservations) {
 
 
       $scope.ob = $scope.observations;
@@ -607,6 +632,9 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              var file5 = 'No file5';
              }
 
+                            $rootScope.displayedObservations = [];
+                            $rootScope.observations = [];
+
           //Call updateObservation service...
    		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.name,startDate:$scope.startDate,
    		                            endDate:$scope.endDate,
@@ -615,6 +643,28 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                                     verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
    		  $scope.message = response.message;
    		  });
+
+   		                    if (!$scope.spinneractive) {
+                              usSpinnerService.spin('spinner-1');
+                            };
+                     		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+                     		     var globalObject = [];
+                               var len = response.length;
+                               for(var i = 0; i < len; i++) {
+                                  var newObject = {}
+                                  angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                       newObject[key] = value;
+                                   });
+                                   globalObject.push(newObject);
+                               }
+                     		  $scope.message = response[Object.keys(response)];
+                            $rootScope.displayedObservations = [];
+                            $rootScope.observations = globalObject;
+                            console.log($rootScope.observations);
+                             $scope.spinneractive = false;
+                             usSpinnerService.stop('spinner-1');
+                            })
+
    		  //...and close modal
    		  $uibModalInstance.dismiss();
           $rootScope.successTextAlert = "Observation has been updated in the staging area.";

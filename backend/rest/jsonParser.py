@@ -236,10 +236,10 @@ def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileN
         cursor.execute(delete_stagingObservation)
         cnx.commit()
 
-        delete_observation= ("delete from bi.observations where id="+id)
+        #delete_observation= ("delete from bi.observations where id="+id)
 
-        cursor.execute(delete_observation)
-        cnx.commit()
+        #cursor.execute(delete_observation)
+        #cnx.commit()
 
         delete_files= ("delete from data.fileNames where observationId="+id)
 

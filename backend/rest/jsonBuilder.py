@@ -164,6 +164,7 @@ def userObservations(email):
             get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserIPhotometryFlagFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
             get_IPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserIPhotometryFluxFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
             get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserIPhotometryTimeFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
+            get_statuses = (queries.get('DatabaseQueries', 'database.getPersonalObservationsStatuses') + id + " and us.Email='" + email + "'")
 
             UPhotometry = str(fetch_one(get_UPhotometryFlag))
             if UPhotometry != 'null' and UPhotometry != '0':
@@ -220,7 +221,8 @@ def userObservations(email):
                       'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux, 'vPhotometryTime': VPhotometryTime,
                       'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux, 'bPhotometryTime': BPhotometryTime,
                       'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux, 'rPhotometryTime': RPhotometryTime,
-                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime, 'owner': str(fetch_one(get_observationsOwners))}
+                      'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime,
+                      'owner': str(fetch_one(get_observationsOwners)), 'status': str(fetch_one(get_statuses))}
 
             controller = str(object) + ',' + controller
             #print controller
