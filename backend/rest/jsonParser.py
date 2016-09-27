@@ -130,7 +130,7 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
 
      insert_observation = ''
 
-     if uFileName != 'None' or vFileName != 'None' or bFileName != 'None':
+     if uFileName != 'None' or vFileName != 'None' or bFileName != 'None' or rFileName != 'None' or iFileName != 'None':
         for counter in range(0,globalRange):
            if counter < globalRange:
               i = counter
@@ -197,7 +197,7 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
                              "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
                              "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
 
-
+        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()
