@@ -1615,6 +1615,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
                        }, 5000);
       	  });
        }
+
 	}]);
 
 

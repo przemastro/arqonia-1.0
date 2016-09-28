@@ -1,0 +1,13 @@
+DB backup
+   Files:
+      1. backup.bat
+      2. backup.sql
+
+   Execution:
+      1. Update backup.sql and backup.bat paths
+      2. Run in CMD 'Taskschd.msc'
+      3. Select 'Utwórz zadanie podstawowe...' and select time trigger 'every day' at midnight
+
+   Restore:
+      1. Right click 'Astro' then select Properties -> Options and in 'Restrict Access' select 'SINGLE USER'
+      2. Right click 'Astro' then select Tasks -> Restore -> Database and select Device radio button
