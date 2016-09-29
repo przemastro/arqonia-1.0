@@ -471,8 +471,45 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 
       $scope.ob = $scope.observations;
-      //edit photometry is an observation.id so I can keep the correct index of an observation in table list
+      console.log($scope.ob);
+      //editPhotometry is an observation.id so I can keep the correct index of an observation in table list
       $scope.editPhotometry = editPhotometry;
+      console.log($scope.editPhotometry);
+
+      var len = $scope.ob.length;
+      for(var i = 0; i < len; i++) {
+         if($scope.ob[i].id == editPhotometry) {
+            $scope.objectTypeFlag = $scope.ob[i].objectType;
+            $scope.objectVerifiedFlag = $scope.ob[i].objectVerified;
+            $scope.objectValue = $scope.objectTypeFlag;
+            $scope.radioValue = $scope.objectVerifiedFlag;
+         }
+      }
+
+      $rootScope.starFlag = 'false';
+      $rootScope.planetoidFlag = 'false';
+      $rootScope.cometFlag = 'false';
+      $rootScope.verifiedTrueFlag = 'false';
+      $rootScope.verifiedFalseFlag = 'false';
+
+      if($scope.objectTypeFlag == 'Star') {
+         $rootScope.starFlag = 'true';
+      }
+      else if ($scope.objectTypeFlag == 'Planetoid') {
+         $rootScope.planetoidFlag = 'true';
+      }
+      else if ($scope.objectTypeFlag == 'Comet') {
+         $rootScope.cometFlag = 'true';
+      }
+
+
+      if($scope.objectVerifiedFlag == 'True') {
+         $rootScope.verifiedTrueFlag = 'true';
+      }
+      else if($scope.objectVerifiedFlag == 'False') {
+         $rootScope.verifiedFalseFlag = 'true';
+      }
+
       //this is to check if input field values changed. If yes get the new value to the scope
       $scope.changeName = function() {
          $scope.name = this.name;
@@ -483,7 +520,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
       $scope.changeEndDate = function() {
          $scope.endDate = this.endDate;
       };
-
+      console.log($scope.objectValue);
       //This is done to update scope objects to correct value. I compare clicked observation.id with this in scope
       var editPhotometry2 = -1
       		var evaluatedOb = $scope.ob.length;
@@ -631,7 +668,6 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           else {
              var file5 = 'No file5';
              }
-
                             $rootScope.displayedObservations = [];
                             $rootScope.observations = [];
 
