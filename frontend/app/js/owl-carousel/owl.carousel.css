@@ -16,7 +16,7 @@
 .owl-carousel{
 	display: none;
 	position: relative;
-	width: 100%;
+	width: 160%;
 	-ms-touch-action: pan-y;
 }
 .owl-carousel .owl-wrapper{

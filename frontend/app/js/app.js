@@ -2,7 +2,7 @@
 
 
 	// create the module and name it astroApp
-	angular.module('astroApp', ['ngRoute', 'astroApp.services', 'astroApp.controller', 'ngMessages'])
+	var astroApp = angular.module('astroApp', ['ngRoute', 'astroApp.services', 'astroApp.controller', 'ngMessages'])
 
 	// configure routes
 	   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {

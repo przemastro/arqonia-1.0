@@ -338,6 +338,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
              var file = 'No file';
              }
 
+
           var file2 = $scope.myFile2;
           if(file2) {
              var uploadUrl = __env.apiUrl+"/fileUpload";
@@ -380,6 +381,7 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
    		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
    		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
    		  $scope.message = response.message;
+   		  console.log(file);
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
@@ -471,11 +473,10 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 
 
       $scope.ob = $scope.observations;
-      console.log($scope.ob);
       //editPhotometry is an observation.id so I can keep the correct index of an observation in table list
       $scope.editPhotometry = editPhotometry;
-      console.log($scope.editPhotometry);
 
+     //Pre-populated radio buttons
       var len = $scope.ob.length;
       for(var i = 0; i < len; i++) {
          if($scope.ob[i].id == editPhotometry) {
@@ -1967,8 +1968,8 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
 	astroApp.controller('reductionCtrl', function($scope) {
 	});
 
-    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
-                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route) {
+    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route', 'fileUpload',
+                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, fileUpload) {
 
         $scope.uploadFlag = true;
                 $rootScope.mySync2 = angular.element( document.querySelector( '#sync2' ) );
@@ -2022,14 +2023,23 @@ var astroApp = angular.module('astroApp.controller', ['ngResource', 'ngAnimate',
           if($scope.selectedImageType == "Raw Images") {
                 $rootScope.selectType = "RAW IMAGES";
 
-
+                var file = $scope.myFile;
+                //use fileUpload service only if file has been uploaded in modal
+                if(file) {
+                   var uploadUrl = __env.apiUrl+"/input_fits";
+                   fileUpload.uploadFileToUrl(file, uploadUrl);
+                   }
+                else {
+                   var file = 'No file';
+                   }
+                console.log(file);
                 //$rootScope.mySync2.empty();   //removes element
                 //$rootScope.mySync1.empty();   //removes element
 
-                $rootScope.images = ['1','2','3'];
+                $rootScope.images = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
 
-                $scope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" src="input_fits/vega.jpg" alt="..." style="opacity: 0.5;"></div></div></div>';
-                $scope.sync1Content = '<div ng-repeat="image in images"><div style="width:500px;height:490px;margin: 0px;" class="owl-items"><div style="padding:0px;padding-right: 0px;" class="item"><img width="530px" height="460px" src="input_fits/vega.jpg" alt="..."></div></div></div>';
+                $scope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" src="input_fits/linear.png" alt="..." style="opacity: 0.5;"></div></div></div>';
+                $scope.sync1Content = '<div ng-repeat="image in images"><div style="width:500px;height:540px;margin: 0px;" class="owl-items"><div style="padding:0px;padding-right: 0px;width:630px" class="item"><img width="630px" height="540px" src="input_fits/linear.png" alt="..."></div></div></div>';
 
                 $scope.uploadFlag = false;
 
