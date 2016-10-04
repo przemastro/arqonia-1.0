@@ -24,6 +24,7 @@
 	   $cookies.remove("admin");
 	   $cookies.remove("name");
 	   $cookies.remove("email");
+	   $cookies.remove("sessionID");
 	}]);
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location', '$timeout',
@@ -69,6 +70,7 @@
 	   $rootScope.isUserLoggedIn = $cookies.get('cook');
 	   $rootScope.isAdminLoggedIn = $cookies.get('admin');
 	   $rootScope.loggedInUser = $cookies.get('name');
+	   $rootScope.sessionID = $cookies.get('sessionID');
 	   $rootScope.userAcceptCookies = $cookies.get('allowCookies');
        $scope.Statistics = Statistics.query();
 
@@ -158,10 +160,14 @@
              $cookies.put('name', $scope.message);
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', false);
+   		     var date = new Date();
+   		     $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
    		     $rootScope.loggedInUser = $cookies.get('name');
+   		     $rootScope.sessionID = $cookies.get('sessionID');
+   		     console.log($rootScope.sessionID);
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
@@ -171,10 +177,13 @@
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', true);
    		     $cookies.put('name', $scope.message);
+   		     var date = new Date();
+             $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
    		     $rootScope.loggedInUser = $cookies.get('name');
+   		     $rootScope.sessionID = $cookies.get('sessionID');
    		     //$rootScope.loggedInUser = $scope.message
    		     $location.path("main");
    		     $scope.spinneractive = false;
@@ -251,6 +260,7 @@
       $scope.isUserLoggedIn = $cookies.get('cook');
       $scope.loggedInUserEmail = $cookies.get('email');
       $rootScope.isAdminLoggedIn = $cookies.get('admin');
+      $rootScope.sessionID = $cookies.get('sessionID');
 
       $scope.data = [{name:$scope.loggedInUser, email:$scope.loggedInUserEmail}];
       $scope.changeName = function() {
@@ -325,6 +335,7 @@
       $scope.loggedInUser = $cookies.get('name');
       $scope.isUserLoggedIn = $cookies.get('cook');
       $scope.loggedInUserEmail = $cookies.get('email');
+      $rootScope.sessionID = $cookies.get('sessionID');
       $rootScope.isAdminLoggedIn = $cookies.get('admin');
 
       //[Remove]

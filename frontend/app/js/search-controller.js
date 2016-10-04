@@ -21,6 +21,7 @@
 	   $scope.message = 'Search';
 	   $scope.isUserLoggedIn = $cookies.get('cook');
 	   $scope.isAdminLoggedIn = $cookies.get('admin');
+	   $scope.sessionID = $cookies.get('sessionID');
 	   $scope.search = false
 	   $scope.stars = false
        $scope.comets = false

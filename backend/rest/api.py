@@ -35,6 +35,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail()
 mail.init_app(app)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
+app.config['INPUT_FITS'] = 'inputFits/'
 api = Api(app)
 
 
@@ -339,6 +340,14 @@ class RestFileUpload(Resource):
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return 201
 
+class RestInputFITSUpload(Resource):
+    def post(self):
+        file = request.files['file']
+        print file
+        filename = file.filename
+        file.save(os.path.join(app.config['INPUT_FITS'], filename))
+        return 201
+
 class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
@@ -480,6 +489,7 @@ api.add_resource(RestObservationLCBDiagram, '/observationsLCBDiagram')
 api.add_resource(RestObservationLCRDiagram, '/observationsLCRDiagram')
 api.add_resource(RestObservationLCIDiagram, '/observationsLCIDiagram')
 api.add_resource(RestFileUpload, '/fileUpload')
+api.add_resource(RestInputFITSUpload, '/inputFits')
 api.add_resource(RestRegister, '/register')
 api.add_resource(RestUpdateProfile, '/updateProfile')
 api.add_resource(RestRemoveAccount, '/removeAccount')

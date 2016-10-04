@@ -39,6 +39,7 @@
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
        $scope.isAdminLoggedIn = $cookies.get('admin');
+       $scope.sessionID = $cookies.get('sessionID');
 
 
        $scope.LCTitle = true;
@@ -358,6 +359,7 @@
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
        $scope.isAdminLoggedIn = $cookies.get('admin');
+       $scope.sessionID = $cookies.get('sessionID');
 
 
        function sleep (time) {

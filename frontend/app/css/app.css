@@ -377,7 +377,7 @@ p {
 
 .custom {
     width: 90px !important;
-    height: 33px !important;
+    height: 34px !important;
 
 }
 
@@ -385,9 +385,19 @@ p {
     height: 34px !important;
 }
 
+.customHeightAdjusted {
+    height: 47px !important;
+}
+
 .customLong {
     width: 110px !important;
     height: 33px !important;
+}
+
+.customVeryLong {
+    width: 180px !important;
+    height: 34px !important;
+    text-align: center !important;
 }
 
 .customSubscribe {
@@ -407,6 +417,10 @@ p {
 
 .customUpload {
     width: 310px !important;
+}
+
+.customUploadLong {
+    width: 408px !important;
 }
 
 .btnMarginLeft {

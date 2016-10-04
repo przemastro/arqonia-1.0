@@ -35,6 +35,7 @@
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
        $scope.isAdminLoggedIn = $cookies.get('admin');
+       $scope.sessionID = $cookies.get('sessionID');
 
        //Verify who has logged in and populate table with appropriate data
        if(!$scope.isUserLoggedIn) { //nobody is logged in
@@ -97,6 +98,7 @@
        $scope.loggedInUser = $cookies.get('name');
        $scope.isUserLoggedIn = $cookies.get('cook');
        $scope.loggedInUserEmail = $cookies.get('email');
+       $scope.sessionID = $cookies.get('sessionID');
 
        //Process Data
        $scope.startSpin = function() {
@@ -337,7 +339,7 @@
           else {
              var file = 'No file';
              }
-
+          console.log(file);
 
           var file2 = $scope.myFile2;
           if(file2) {

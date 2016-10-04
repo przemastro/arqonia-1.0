@@ -28,6 +28,7 @@
 
         $scope.message = 'Admin Panel';
         $scope.isAdminLoggedIn = $cookies.get('admin');
+        $scope.sessionID = $cookies.get('sessionID');
         $scope.displayedObservations = [];
         //Call getProcessedData service
         $scope.observations = GetProcessedData.query();

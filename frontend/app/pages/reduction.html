@@ -22,16 +22,26 @@
 
     <table style="max-width: 1070px; margin: 10px" st-table="displayedObservations" st-safe-src="observations" class="tableList"  ng-show="isUserLoggedIn">
         <tr>
-            <td colspan="3" style="vertical-align: top;padding:0px;height:500px;border-style: solid;border-width: 0px;
-                                   border-color: #e1e1e1;margin-bottom: 0px;max-width:0px">
+            <td style="vertical-align: top;padding:0px;height:540px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px">
+                <div ng-show="!imageTypeFlag" style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                    <div style="padding: 0px 15px;color:white;">
+                        <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                            You are about to reduce your data. Please remember that system allows only one-dimension FITS files. It means
+                            that all FITS files need to be taken in single (monochromatic) wavelength band. Start with selecting type of images
+                            to be loaded. Good luck!</p>
+                    </div>
+                </div>
                 <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel" bind-html-compile="sync1Content">
                 </div>
             </td>
-            <td colspan="3" style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 0px;
-                                   border-color: #e1e1e1;margin-bottom: 0px;max-width:500px;">
+            <td style="vertical-align: top;padding:0px;height:480px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px;">
 
-                <div class="btn-group dropdown" style="float:left;margin-left:-50px;position:absolute">
-                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary customHeight">{{selectType}}</button>
+                <div class="btn-group dropdown" style="margin-left:20px;position:relative">
+                    <div><br></div>
+                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary customHeight customVeryLong">{{selectType}}</button>
                     <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
@@ -40,51 +50,51 @@
                         <li ng-repeat="type in imageTypes"><a href style="text-align:left" ng-click="selectImageType(type)">{{type}}</a></li>
                     </ul>
                 </div>
-                <div><br><br><br><br></div>
-                <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="addRow()">
-                    <div class="btn-group dropdown" style="float:left;margin-left:-200px;position:absolute">
-                         <label style="background-color: rgb(77, 157, 194);border:0px;" class="btn btn-primary btn-file sharp customHeight" ng-disabled="uploadFlag"> Browse
-                             <input style="display:none;" type="file" file-model = "myFile" name="vFileName" multiple ng-disabled="uploadFlag"/>
-                         </label>
-                    </div>
-                    <div><br><br><br><br></div>
-                    <div class="btn-group" style="float:left;margin-left:-100px;position:absolute" ng-init="active = true">
-                        <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Linear</label>
-                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Power</label>
-                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Hist</label>
-                    </div>
-                    <div><br><br><br><br></div>
-                    <!--<div class="btn-group dropdown" style="float:left;margin-left:-200px;position:absolute">
-                        <label style="background-color: rgb(77, 157, 194);border:0px;" class="btn btn-primary btn-file sharp customHeight" ng-disabled="uploadFlag"> Convert
-                            <input style="display:none;" type="file" file-model = "myFile" name="vFileName" multiple ng-disabled="uploadFlag"/>
-                        </label>
-                    </div>-->
-                    <div class="form-group">
-                        <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">U Photometry</label>
-                        <div class="col-md-7">
-                            <input type="file" class="btn btn-default customUpload" file-model = "myFile" name="uFileName" accept="text/csv"/>
-                        </div>
-                    </div>
-                </form>
-                <div><br><br><br><br></div>
-                <div class="btn-group dropdown" style="float:left;margin-left:-200px;position:absolute;">
-                    <input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight" ng-click="addObservation()"/>
-                </div>
                 <div><br><br></div>
-                <div class="btn-group dropdown" style="float:left;margin-left:95px;margin-top:145px">
-                    <input style="border: 0px" type="button" value="Go Back" class="btn btn-primary sharp customHeight" ng-click="addObservation()"/>
+                <form ng-show="imageTypeFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
+                    <div class="btn-group dropdown" style="width:100%;position:relative;margin-left:60px">
+
+                        <input class="btn btn-default customUploadLong" type="file" file-model = "files" name="files" multiple />
+                        <!--
+                        <label style="background-color: rgb(77, 157, 194);border:0px;margin-right:-150px" class="btn btn-primary btn-file sharp customHeight customLong"> Browse
+                            <input style="display:none;" type="file" ng-file-model = "files" multiple/>
+                        </label>
+                        -->
+                    </div>
+                    <div><br></div>
+                    <div class="btn-group" style="float:left;margin-left:60px;position:relative" ng-init="active = true">
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Convert" class="btn btn-primary sharp btnMarginRight customLong" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-class="{'active': active === {{linearFlag}}}"  ng-model="objectValue" uib-btn-radio="'Linear'" uncheckable>Linear</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Power'" uib-uncheckable="uncheckable">Power</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Hist'" uib-uncheckable="uncheckable">Hist</label>
+                    </div>
+                    <div><br></div>
+                </form>
+                <div><br><br></div>
+                <div ng-show="imageTypeFlag" class="btn-group dropdown" style="float:left;margin-left:60px;position:relative;">
+                    <input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight customLong" ng-click="processFiles()"/>
                 </div>
-                <div class="btn-group dropdown" style="float:right;margin-left:120px;margin-top:145px">
-                    <input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="addObservation()"/>
+                <div ng-show="imageTypeFlag" style="padding: 0px 15px;color:white;margin-top:80px;position:relative;height:100px">
+                    <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                             font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                        {{helpDescription}}</p>
+                </div>
+                <div ng-show="processFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:100px;margin-right:20px">
+                    <input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
                 </div>
                 <div><br></div>
             </td>
         </tr>
+        <tr>
+            <td colspan="2" style="vertical-align: top;padding:0px;height:70px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px">
+                <div style="position:relative;bottom:0px;margin-left:0px;margin-top:0px;margin-right:0px;margin-bottom:0px"  ng-show="isUserLoggedIn">
+                    <div id="sync2" style="width:100% !important" class="owl-carousel" bind-html-compile="sync2Content">
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
-    <div style="position:relative;bottom:0px;margin-left:9px;margin-top:-15px;margin-right:13px"  ng-show="isUserLoggedIn">
-        <div id="sync2" style="width:100% !important" class="owl-carousel" bind-html-compile="sync2Content">
-        </div>
-    </div>
 </div>
 
 <script>
