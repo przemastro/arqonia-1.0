@@ -5,6 +5,9 @@ import pandas
 import ast
 import simplejson as json
 from sjcl import SJCL
+import os
+import convertPlots
+import time
 
 
 env = ConfigParser.RawConfigParser()
@@ -1320,6 +1323,105 @@ def catalogData(objectType, abbreviation, email):
         print 'errors in catalogData function'
     else:
         cnx.close()
+
+
+
+#----------------------------------------------insert new reduction images----------------------------------------------
+def addReductionImages(sessionId, files, email, conversionType, imageType):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        sessionId = str(sessionId)
+        files = str(files)
+        email = str(email)
+        conversionType = str(conversionType)
+        imageType = str(imageType)
+
+        specialCharacterPosition = files.index('.') + 1
+        fileExtension = str(files[specialCharacterPosition:])
+        objectName = files
+
+        get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromDataImages')
+        cursor.execute(get_lastId)
+        lastId = cursor.fetchone()
+        if lastId is None:
+            lastId = 1
+        else:
+            lastId = lastId[0] + 1
+
+        lastId = str(lastId)
+        #--insert to data.images
+        if files != 'None':
+            verifyFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+objectName+"' "
+                                            "and sessionId = "+sessionId+"")
+            cursor.execute(verifyFileExists)
+            existsFlag = cursor.fetchone()
+
+            if (existsFlag[0] == 0):
+               insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                              " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                              "(select fileExtensionId from dic.FileExtensions where FileExtension = '"+fileExtension+"'), "
+                              "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
+                              "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+objectName+"', 'inputFits', "
+                              "'Reduction', getdate())")
+
+               cursor.execute(insertImage)
+               cnx.commit()
+               file_list = os.listdir("./inputFits/")
+               for fileName in file_list:
+                  specialCharacterPosition = files.index('.')
+                  sourceString = str(objectName[:specialCharacterPosition])
+                  replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+                  if (fileName == files):
+                      try:
+                         os.rename("./inputFits/"+fileName, "./inputFits/"+fileName.replace(sourceString,replaceString))
+                      except:
+                         print 'errors in renaming function'
+
+        #conversion
+        specialCharacterPosition = files.index('.')
+        replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+        convertPlots.plot(replaceString, conversionType)
+        convertedObjectName = conversionType+"_"+replaceString+".jpg"
+        verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
+                                        "and sessionId = "+sessionId+"")
+        cursor.execute(verifyConvertedFileExists)
+        existsConvertedFlag = cursor.fetchone()
+
+        if (existsConvertedFlag[0] == 0):
+           lastId = int(lastId) + 1
+           lastId = str(lastId)
+           insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                       "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                       "(select fileExtensionId from dic.FileExtensions where FileExtension = 'jpg'), "
+                       "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
+                       "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
+                       "'Reduction', getdate())")
+
+        cursor.execute(insertImage)
+        cnx.commit()
+
+
+        #return json value
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and FileExtensionId=1")
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=1")
+        data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
+        print data
+        i = 1
+        if(i==1):
+           data = data
+        elif(i>1):
+           data = [data]
+        return data
+        cursor.close()
+
+    except:
+        print 'errors in addReductionImages function'
+    else:
+        cnx.close()
+
+
 
 
 def calculate_starsParameters(ra, de, code, name, Umag, Vmag, Bmag, BV, UB, RI, VI, SpType):

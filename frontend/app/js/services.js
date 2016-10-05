@@ -323,3 +323,11 @@ services.factory('searchCatalogData', ['$resource',
         update: {method:'PUT', isArray:true}
     });
 }]);
+
+//Add new reduction images
+services.factory('postReductionImages', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/reductionImages', {}, {
+        save: {method:'POST'}
+    });
+}]);

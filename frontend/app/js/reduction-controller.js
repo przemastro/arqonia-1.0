@@ -22,20 +22,21 @@
 	astroApp.controller('reductionCtrl', function($scope) {
 	});
 
-    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route', 'fileUpload', '$cookies', '$element',
-                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, fileUpload, $cookies, $element) {
+    astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route', 'fileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService',
+                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, fileUpload, $cookies, $element, ReductionImages, usSpinnerService) {
 
         //cookies
         $scope.loggedInUser = $cookies.get('name');
         $scope.isUserLoggedIn = $cookies.get('cook');
         $scope.loggedInUserEmail = $cookies.get('email');
-        $scope.sessionID = $cookies.get('sessionID');
+        $rootScope.sessionID = $cookies.get('sessionID');
 
 
         //Flags
         $scope.imageTypeFlag = false;
         $scope.processFlag = false;
         $scope.linearFlag = 'true';
+        $rootScope.textStep = 'uploaded'
 
         $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
 
@@ -44,6 +45,7 @@
 
         //Process Data
         $scope.processFiles = function(){
+                                    $rootScope.textStep = 'processed'
                                     var files = $scope.files;
 
                                     //use fileUpload service only if file has been uploaded
@@ -101,6 +103,7 @@
           if($scope.selectedImageType == "Raw Images") {
                 console.log($scope.processFlag);
                 $rootScope.selectType = "RAW IMAGES";
+                $scope.imageType = 'Raw';
                 $scope.imageTypeFlag = true;
                 $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [Convert] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
@@ -112,19 +115,34 @@
                                     if(files) {
                                        var uploadUrl = __env.apiUrl+"/inputFits";
                                        fileUpload.uploadFileToUrl(files, uploadUrl);
-                                       $scope.filesNumber = files.length;
-                                       console.log('test');
-                                       console.log($scope.filesNumber);
+                                       console.log(files.name);
                                        }
                                     else {
                                        files = 'No file';
                                        console.log(files);
                                        }
                                     console.log(files);
-                             $rootScope.images = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
 
-                             $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" src="input_fits/linear.jpg" alt="..." style="opacity: 0.5;"></div></div></div>';
-                             $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:500px;height:540px;margin: 0px;" class="owl-items"><div style="padding:0px;padding-right: 0px;width:630px" class="item"><img width="630px" height="540px" src="input_fits/linear.jpg" alt="..."></div></div></div>';
+
+   		                               if (!$scope.spinneractive) {
+                                         usSpinnerService.spin('spinner-1');
+                                       };
+                                    //Call postObservation service...
+   		                            ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
+   		                                                  conversionType:$scope.objectValue, imageType:$scope.imageType}, function(response){
+   		                               //while (response.message == undefined) {
+   		                               //   console.log('processing');
+   		                               //}
+
+                                   $scope.spinneractive = false;
+                                   usSpinnerService.stop('spinner-1');
+   		                            });
+
+                                       $rootScope.images = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16'];
+
+                                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" src="inputFits/linear.jpg" alt="..." style="opacity: 0.5;"></div></div></div>';
+                                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:500px;height:540px;margin: 0px;" class="owl-items"><div style="padding:0px;padding-right: 0px;width:630px" class="item"><img width="630px" height="540px" src="inputFits/linear.jpg" alt="..."></div></div></div>';
+
 
                            //Carousel binding
                            $(document).ready(function() {

@@ -6,7 +6,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser
+    getPassword, updateUser, removeUser, addReductionImages
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -135,6 +135,10 @@ parser.add_argument('abbreviation', type=str)
 parser.add_argument('hrDiagramType', type=str)
 parser.add_argument('filter', type=str)
 parser.add_argument('activeNumber', type=str)
+parser.add_argument('sessionId', type=str)
+parser.add_argument('files', type=str)
+parser.add_argument('conversionType', type=str)
+parser.add_argument('imageType', type=str)
 
 
 class Rest(Resource):
@@ -343,7 +347,6 @@ class RestFileUpload(Resource):
 class RestInputFITSUpload(Resource):
     def post(self):
         file = request.files['file']
-        print file
         filename = file.filename
         file.save(os.path.join(app.config['INPUT_FITS'], filename))
         return 201
@@ -460,6 +463,14 @@ class RestCatalog(Resource):
         return jsonify(catalog)
 
 
+
+class RestReductionImages(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
+        return jsonify(data)
+
+
 api.add_resource(Rest, '/<rest_id>')
 api.add_resource(RestObservation, '/observations')
 api.add_resource(RestUserObservation, '/userObservations')
@@ -499,6 +510,7 @@ api.add_resource(RestSearch, '/search')
 api.add_resource(RestStatistics, '/statistics')
 api.add_resource(RestSubscribe, '/subscribe')
 api.add_resource(RestCatalog, '/catalog')
+api.add_resource(RestReductionImages, '/reductionImages')
 
 
 # Handling COR requests
