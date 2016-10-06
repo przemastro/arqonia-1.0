@@ -8,6 +8,7 @@ from sjcl import SJCL
 import os
 import convertPlots
 import time
+from multiprocessing import Process, Queue
 
 
 env = ConfigParser.RawConfigParser()
@@ -1354,11 +1355,13 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         #--insert to data.images
         if files != 'None':
             verifyFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+objectName+"' "
-                                            "and sessionId = "+sessionId+"")
+                                            "and im.sessionId = "+sessionId+" and co.conversionType = '"+conversionType+"' and it.ImageType = '"+imageType+"'")
+            print verifyFileExists
             cursor.execute(verifyFileExists)
             existsFlag = cursor.fetchone()
 
             if (existsFlag[0] == 0):
+               print 'fits does not exist in DB'
                insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
                               " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
                               "(select fileExtensionId from dic.FileExtensions where FileExtension = '"+fileExtension+"'), "
@@ -1368,6 +1371,16 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
 
                cursor.execute(insertImage)
                cnx.commit()
+               looper=1
+               while(looper<100):
+                  time.sleep(1)
+                  if os.path.isfile("./inputFits/"+objectName):
+                      break
+                  else:
+                      print 'continue'
+                      i = i + 1
+                      continue
+
                file_list = os.listdir("./inputFits/")
                for fileName in file_list:
                   specialCharacterPosition = files.index('.')
@@ -1378,11 +1391,32 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                          os.rename("./inputFits/"+fileName, "./inputFits/"+fileName.replace(sourceString,replaceString))
                       except:
                          print 'errors in renaming function'
-
+            else:
+                print 'fits exist in DB'
         #conversion
         specialCharacterPosition = files.index('.')
         replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+
+        #queue = Queue()
+        #p = Process(target=convertPlots.plot, args=(replaceString, conversionType))
+        #print 'start subprocess'
+        #p.start()
+        #p.join() # this blocks until the process terminates
+        #result = queue.get()
+        #print 'koniec procesu'
+        #print result
+
         convertPlots.plot(replaceString, conversionType)
+
+        #temporary workaround
+        fn = open('jsonBuilder.py', 'a')
+        fn.write(" ")
+        fn.seek(-1, os.SEEK_END)
+        fn.truncate()
+        fn.close()
+
+        os.chdir(os.getcwd()+"/backend/rest/")
+
         convertedObjectName = conversionType+"_"+replaceString+".jpg"
         verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
                                         "and sessionId = "+sessionId+"")
@@ -1392,20 +1426,25 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         if (existsConvertedFlag[0] == 0):
            lastId = int(lastId) + 1
            lastId = str(lastId)
+           print 'jpg does not exist in DB'
            insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
                        "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
                        "(select fileExtensionId from dic.FileExtensions where FileExtension = 'jpg'), "
                        "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
                        "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
                        "'Reduction', getdate())")
+           cursor.execute(insertImage)
+           cnx.commit()
+        else:
+           print 'jpg already exists in DB'
 
-        cursor.execute(insertImage)
-        cnx.commit()
 
 
         #return json value
-        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and FileExtensionId=1")
-        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=1")
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=1 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        print get_ImageIds
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=1 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
         print data
         i = 1

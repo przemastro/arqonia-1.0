@@ -6,67 +6,85 @@ import pylab
 import numpy
 import math
 import os
+import time
 
 
 
 def plot(fileName, conversionType):
+   try:
+      print fileName
+      print conversionType
+      fn = "./inputFits/"+fileName+".fits"
+      sig_fract = 5.0
+      percent_fract = 0.01
 
-   fn = "./inputFits/"+fileName+".fits"
-   sig_fract = 5.0
-   percent_fract = 0.01
-
-   hdulist = pyfits.open(fn)
-   img_header = hdulist[0].header
-   img_data_raw = hdulist[0].data
-   hdulist.close()
-   width=img_data_raw.shape[0]
-   height=img_data_raw.shape[1]
-   print "#INFO : ", fn, width, height
-   img_data_raw = numpy.array(img_data_raw, dtype=float)
-   #sky, num_iter = img_scale.sky_median_sig_clip(img_data, sig_fract, percent_fract, max_iter=100)
-   sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=10)
-   print "sky = ", sky, '(', num_iter, ')'
-   img_data = img_data_raw - sky
-   min_val = 0.0
+      hdulist = pyfits.open(fn)
+      img_header = hdulist[0].header
+      img_data_raw = hdulist[0].data
+      hdulist.close()
+      width=img_data_raw.shape[0]
+      height=img_data_raw.shape[1]
+      print "#INFO : ", fn, width, height
+      img_data_raw = numpy.array(img_data_raw, dtype=float)
+      #sky, num_iter = img_scale.sky_median_sig_clip(img_data, sig_fract, percent_fract, max_iter=100)
+      sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=10)
+      print "sky = ", sky, '(', num_iter, ')'
+      img_data = img_data_raw - sky
+      min_val = 0.0
 
 
-   #plotting
+      #plotting
 
 
-   if(conversionType == "Power"):
-      new_img = power(img_data, power_index=3.0, scale_min = min_val)
-      pylab.figure(figsize=(8, 6))
-      pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-      pylab.tight_layout()
-      pylab.axis('off')
-      os.chdir("../../")
-      resultFile = conversionType+"_"+fileName
-      print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-      pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-      pylab.clf()
-   elif(conversionType == "Linear"):
-      new_img = linear(img_data, scale_min = min_val)
-      pylab.figure(figsize=(8, 6))
-      pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-      pylab.tight_layout()
-      pylab.axis('off')
-      os.chdir("../../")
-      resultFile = conversionType+"_"+fileName
-      print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-      pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-      pylab.clf()
-   elif(conversionType == "Hist"):
-      new_img = histeq(img_data_raw, num_bins=256)
-      pylab.figure(figsize=(8, 6))
-      pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-      pylab.tight_layout()
-      pylab.axis('off')
-      os.chdir("../../")
-      resultFile = conversionType+"_"+fileName
-      print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-      pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-      pylab.clf()
+      if(conversionType == "Power"):
+         new_img = power(img_data, power_index=3.0, scale_min = min_val)
+         pylab.figure(figsize=(8, 6))
+         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
+         pylab.tight_layout()
+         pylab.axis('off')
+         os.chdir("../../")
+         resultFile = conversionType+"_"+fileName
+         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
+         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
+         time.sleep(1)
+         pylab.clf()
+      elif(conversionType == "Linear"):
+         new_img = linear(img_data, scale_min = min_val)
+         pylab.figure(figsize=(8, 6))
+         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
+         pylab.tight_layout()
+         pylab.axis('off')
+         os.chdir("../../")
+         resultFile = conversionType+"_"+fileName
+         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
+         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
+         time.sleep(1)
+         pylab.clf()
+      elif(conversionType == "Hist"):
+         new_img = histeq(img_data_raw, num_bins=256)
+         pylab.figure(figsize=(8, 6))
+         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
+         pylab.tight_layout()
+         pylab.axis('off')
+         os.chdir("../../")
+         resultFile = conversionType+"_"+fileName
+         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
+         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
+         time.sleep(1)
+         pylab.clf()
 
+      looper=1
+      while(looper<100):
+          time.sleep(1)
+          if os.path.isfile(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"):
+              print 'jpg has been created'
+              break
+          else:
+              print 'continue'
+              i = i + 1
+              continue
+   except:
+       print 'errors in convertPlots function'
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
     print "img_scale : power"
