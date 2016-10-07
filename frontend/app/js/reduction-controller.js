@@ -38,7 +38,8 @@
         $scope.imageTypeFlag = false;
         $scope.processFlag = false;
         $scope.linearFlag = 'true';
-        $rootScope.textStep = 'uploaded'
+        $rootScope.textStep = 'uploaded';
+        $scope.imageTypeText = '';
 
         $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
 
@@ -94,7 +95,9 @@
                 $rootScope.selectType = "DARK FRAMES";
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Dark';
-                $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [Convert] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded');
+                if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
+                $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
                 $scope.convert = function(){
                    var files = $scope.files;
@@ -124,6 +127,9 @@
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
                        bindData();
+                       $cookies.put('numberOfDarkFilesUploaded', response[Object.keys(response)].fileNames.length);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
@@ -134,7 +140,9 @@
                 $rootScope.selectType = "FLAT FIELDS";
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Flat';
-                $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [Convert] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded');
+                if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
+                $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
                 $scope.convert = function(){
                    var files = $scope.files;
@@ -163,6 +171,9 @@
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
                        bindData();
+                       $cookies.put('numberOfFlatFilesUploaded', response[Object.keys(response)].fileNames.length);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
@@ -173,7 +184,9 @@
                 $rootScope.selectType = "RAW IMAGES";
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Raw';
-                $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [Convert] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $rootScope.numberOfFilesUploaded = $cookies.get('numberOfRawFilesUploaded');
+                if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
+                $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
                 $scope.convert = function(){
                    var files = $scope.files;
@@ -202,6 +215,9 @@
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
                        bindData();
+                       $cookies.put('numberOfRawFilesUploaded', response[Object.keys(response)].fileNames.length);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfRawFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
@@ -212,7 +228,9 @@
                 $rootScope.selectType = "BIAS FRAMES";
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Bias';
-                $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [Convert] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded');
+                if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
+                $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
                 $scope.convert = function(){
                    var files = $scope.files;
@@ -241,6 +259,9 @@
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
                        bindData();
+                       $cookies.put('numberOfBiasFilesUploaded', response[Object.keys(response)].fileNames.length);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
