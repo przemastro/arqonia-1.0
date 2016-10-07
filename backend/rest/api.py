@@ -233,7 +233,6 @@ class RestPersonalizedObservationHRDiagram(Resource):
     def put(self):
         args = parser.parse_args()
         data = personalizedObservationsHRDiagram(args['hrDiagramType'], args['email'])
-        time.sleep(1)
         return jsonify(data)
 
 
@@ -249,7 +248,6 @@ class RestPersonalizedObservationLCDiagram(Resource):
     def put(self):
         args = parser.parse_args()
         data = personalizedLCDiagram(args['filter'], args['email'])
-        #time.sleep(1)
         return jsonify(data)
 
 #Personalized LC Diagrams Range

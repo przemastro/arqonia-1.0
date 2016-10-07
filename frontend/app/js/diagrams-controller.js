@@ -64,7 +64,7 @@
                 $scope.obRange = ObservationsLCUDiagramRange.query;
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
-                    $scope.starNames = observationsDiagram[0].StarNames;
+                    $scope.starNamesList = observationsDiagram[0].StarNames;
                                                      $scope.spinneractive = false;
                                                      usSpinnerService.stop('spinner-1');
                 });
@@ -73,7 +73,7 @@
                 $scope.obRange = ObservationsLCVDiagramRange.query;
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
-                    $scope.starNames = observationsDiagram[0].StarNames;
+                    $scope.starNamesList = observationsDiagram[0].StarNames;
                                                      $scope.spinneractive = false;
                                                      usSpinnerService.stop('spinner-1');
                 });
@@ -82,7 +82,7 @@
                 $scope.obRange = ObservationsLCBDiagramRange.query;
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
-                    $scope.starNames = observationsDiagram[0].StarNames;
+                    $scope.starNamesList = observationsDiagram[0].StarNames;
                                                      $scope.spinneractive = false;
                                                      usSpinnerService.stop('spinner-1');
                 });
@@ -91,7 +91,7 @@
                 $scope.obRange = ObservationsLCRDiagramRange.query;
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
-                    $scope.starNames = observationsDiagram[0].StarNames;
+                    $scope.starNamesList = observationsDiagram[0].StarNames;
                                                      $scope.spinneractive = false;
                                                      usSpinnerService.stop('spinner-1');
                 });
@@ -100,7 +100,7 @@
                 $scope.obRange = ObservationsLCIDiagramRange.query;
                 $scope.selectedFilter = true;
                 $scope.obRange(function(observationsDiagram) {
-                    $scope.starNames = observationsDiagram[0].StarNames;
+                    $scope.starNamesList = observationsDiagram[0].StarNames;
                                                      $scope.spinneractive = false;
                                                      usSpinnerService.stop('spinner-1');
                 });
@@ -117,7 +117,7 @@
                                 j++;
                         });
                      }
-                     $scope.starNames = tab[4];
+                     $scope.starNamesList = tab[4];
                      $scope.selectedFilter = true;
                                                       $scope.spinneractive = false;
                                                       usSpinnerService.stop('spinner-1');
@@ -193,6 +193,7 @@
 
            //The magic to populate data with data
            $scope.data = generateData();
+
            function generateData() {
                var data = [],
                shapes = ['circle'],
@@ -291,11 +292,11 @@
                        zoom: {enabled: true,scaleExtent: [1, 10],useFixedDomain: false,useNiceScale: false,horizontalOff: false,verticalOff: false,unzoomEventType: 'dblclick.zoom'}
                    }
                };
-                               $scope.spinneractive = false;
-                               usSpinnerService.stop('spinner-1');
                return $scope.option
            })
            PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+                                                                 $scope.spinneractive = false;
+                                                                 usSpinnerService.stop('spinner-1');
             //The magic to populate data with data
                    $scope.data = generateData();
                    function generateData() {

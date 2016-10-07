@@ -81,7 +81,7 @@ def plot(fileName, conversionType):
               break
           else:
               print 'continue'
-              i = i + 1
+              looper = looper + 1
               continue
    except:
        print 'errors in convertPlots function'
