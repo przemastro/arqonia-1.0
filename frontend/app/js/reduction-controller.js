@@ -101,19 +101,19 @@
 
                 $scope.convert = function(){
                    var files = $scope.files;
-
-                   //use fileUpload service only if file has been uploaded
-                   if(files) {
-                      var uploadUrl = __env.apiUrl+"/inputFits";
-                      fileUpload.uploadFileToUrl(files, uploadUrl);
-                      }
-                   else {
-                      files = 'No file';
-                      }
-
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
+
+                   //use fileUpload service only if file has been uploaded
+
+                 var uploadUrl = __env.apiUrl+"/inputFits";
+                 $scope.uploadImages = fileUpload.uploadFileToUrl(files, uploadUrl);
+
+                 $q.all([
+                     $scope.uploadImages.$promise
+                 ]).then(function(response) {
+
                    //Call postObservation service...
                     $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
                                                           conversionType:$scope.objectValue, imageType:$scope.imageType});
@@ -132,6 +132,7 @@
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
+                 });
                 }
           }
 

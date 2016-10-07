@@ -667,7 +667,7 @@ def json_statistics():
         NumberOfFiles = fetch_one(get_NumberOfFiles)
         NumberOfObjects = fetch_one(get_NumberOfObjects)
 
-
+        time.sleep(0.5)
         statistics = [{'numberOfUsers': NumberOfUsers, 'numberOfFiles': NumberOfFiles,
                                   'numberOfObjects': NumberOfObjects}]
         cursor.close()
