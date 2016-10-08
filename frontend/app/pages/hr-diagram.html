@@ -8,8 +8,8 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><a href="#hr-diagram" style="text-align:left">HR-Diagrams</a></li>
-            <li><a href="#lc-diagram" style="text-align:left">Light Curves</a></li>
+            <li><a href="#hr-diagram" style="text-align:left;width:300px;">HR-Diagrams</a></li>
+            <li><a href="#lc-diagram" style="text-align:left;width:300px;">Light Curves</a></li>
         </ul>
     </div>
     <div class="btn-group dropdown">
@@ -19,7 +19,7 @@
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu" style="max-height: 300px;overflow-y: auto;">
-            <li ng-repeat="diagram in hrDiagrams track by $index"><a href style="text-align:left" ng-click="selectDiagram(diagram)">{{diagram}}</a></li>
+            <li ng-repeat="diagram in hrDiagrams track by $index"><a href style="text-align:left;width:300px;" ng-click="selectDiagram(diagram)">{{diagram}}</a></li>
         </ul>
     </div>
 
