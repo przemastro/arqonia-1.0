@@ -245,6 +245,9 @@
                                      function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
 
 
+        $scope.objectValue = 'Star';
+        $scope.radioValue = 'Yes';
+
         //DatePicker - don't ask me how it works
         $scope.inlineOptions = {
           customClass: getDayClass,

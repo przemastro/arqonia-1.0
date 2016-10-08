@@ -14,6 +14,8 @@ from multiprocessing import Process, Queue
 env = ConfigParser.RawConfigParser()
 env.read('../resources/env.properties')
 dbAddress = env.get('DatabaseConnection', 'database.address');
+backendInputFits = env.get('FilesCatalogs', 'catalog.backendInputFits');
+frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 key = env.get('SecurityKey', 'public.key');
 queries = ConfigParser.RawConfigParser()
 queries.read('../resources/queries.properties')
@@ -1374,25 +1376,36 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                looper=1
                while(looper<100):
                   time.sleep(1)
-                  if os.path.isfile("./inputFits/"+objectName):
+                  if os.path.isfile(backendInputFits+objectName):
                       break
                   else:
                       print 'continue'
-                      i = i + 1
+                      looper = looper + 1
                       continue
 
-               file_list = os.listdir("./inputFits/")
+               file_list = os.listdir(backendInputFits)
                for fileName in file_list:
                   specialCharacterPosition = files.index('.')
                   sourceString = str(objectName[:specialCharacterPosition])
                   replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
                   if (fileName == files):
                       try:
-                         os.rename("./inputFits/"+fileName, "./inputFits/"+fileName.replace(sourceString,replaceString))
+                         os.rename(backendInputFits+fileName, backendInputFits+fileName.replace(sourceString,replaceString))
                       except:
                          print 'errors in renaming function'
             else:
                 print 'fits exist in DB'
+                looper=1
+                while(looper<100):
+                    time.sleep(1)
+                    if os.path.isfile(backendInputFits+objectName):
+                        break
+                    else:
+                        print 'continue'
+                        looper = looper + 1
+                        continue
+        #End of backend
+
         #conversion
         specialCharacterPosition = files.index('.')
         replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
@@ -1415,9 +1428,7 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         fn.truncate()
         fn.close()
 
-        os.chdir(os.getcwd()+"/backend/rest/")
-
-        convertedObjectName = conversionType+"_"+replaceString+".jpg"
+        convertedObjectName = conversionType+"_"+replaceString+".png"
         verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
                                         "and sessionId = "+sessionId+"")
         cursor.execute(verifyConvertedFileExists)
@@ -1426,24 +1437,24 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         if (existsConvertedFlag[0] == 0):
            lastId = int(lastId) + 1
            lastId = str(lastId)
-           print 'jpg does not exist in DB'
+           print 'png does not exist in DB'
            insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
                        "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
-                       "(select fileExtensionId from dic.FileExtensions where FileExtension = 'jpg'), "
+                       "(select fileExtensionId from dic.FileExtensions where FileExtension = 'png'), "
                        "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
                        "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
                        "'Reduction', getdate())")
            cursor.execute(insertImage)
            cnx.commit()
         else:
-           print 'jpg already exists in DB'
+           print 'png already exists in DB'
 
 
 
         #return json value
-        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=1 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
         print get_ImageIds
-        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=1 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
         print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
         print data

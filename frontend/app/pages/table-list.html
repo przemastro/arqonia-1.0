@@ -40,9 +40,9 @@
                    <form name="newObservationForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="newObservationForm.$valid && addRow()">
                        <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                            <div class="btn-group" style="margin-bottom: 15px;margin-left: -50px;">
-                               <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Star</label>
-                               <label class="btn btn-default pull-left btnMarginRight customLong" ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Planetoid</label>
-                               <label class="btn btn-default pull-left btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Comet</label>
+                               <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Star'">Star</label>
+                               <label class="btn btn-default pull-left btnMarginRight customLong" ng-model="objectValue" uib-btn-radio="'Planetoid'">Planetoid</label>
+                               <label class="btn btn-default pull-left btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Comet'">Comet</label>
                            </div>
                            <div class="form-group">
                               <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name </label>
@@ -91,7 +91,7 @@
                            <div class="form-group">
                               <label style="text-right: left;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">U Photometry</label>
                               <div class="col-md-7">
-                                  <input type="file" class="btn btn-default customUpload" file-model = "myFile" name="uFileName" accept="text/csv"/>
+                                  <input type="file" class="btn btn-default customUpload" file-model = "myFile" name="uFileName" ng-model="myFile" accept="text/csv"/>
                               </div>
                            </div>
                            <div class="form-group">
@@ -121,8 +121,8 @@
                            <div class="form-group" data-toggle="buttons">
                                <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
                                <div class="btn-group" style="margin-left: -210px">
-                                   <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'Yes'" uncheckable>Yes</label>
-                                   <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'No'" uib-uncheckable="uncheckable">No</label>
+                                   <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'Yes'">Yes</label>
+                                   <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-model="radioValue" uib-btn-radio="'No'" >No</label>
                                </div>
                            </div>
                        </div>
@@ -174,9 +174,9 @@
                     <form name="editForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="editForm.$valid && updateRow()">
                         <div class="modal-body" style="margin-top:-70px">
                             <div class="btn-group" style="margin-bottom: 15px;margin-left: -50px;" ng-init="active = true">
-                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-class="{'active': active === {{starFlag}}}" ng-model="objectValue" uib-btn-radio="'Star'" uncheckable>Star</label>
-                                <label class="btn btn-default pull-left btnMarginRight customLong" ng-class="{'active': active === {{planetoidFlag}}}" ng-model="objectValue" uib-btn-radio="'Planetoid'" uib-uncheckable="uncheckable">Planetoid</label>
-                                <label class="btn btn-default pull-left btnMarginRight custom" ng-class="{'active': active === {{cometFlag}}}" ng-model="objectValue" uib-btn-radio="'Comet'" uib-uncheckable="uncheckable">Comet</label>
+                                <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-class="{'active': active === {{starFlag}}}" ng-model="objectValue" uib-btn-radio="'Star'">Star</label>
+                                <label class="btn btn-default pull-left btnMarginRight customLong" ng-class="{'active': active === {{planetoidFlag}}}" ng-model="objectValue" uib-btn-radio="'Planetoid'">Planetoid</label>
+                                <label class="btn btn-default pull-left btnMarginRight custom" ng-class="{'active': active === {{cometFlag}}}" ng-model="objectValue" uib-btn-radio="'Comet'">Comet</label>
                             </div>
                             <div class="form-group">
                                 <label style="text-align: right;padding-left: 50px;white-space: nowrap;" class="col-md-4 control-label">Object Name</label>
@@ -258,8 +258,8 @@
                             <div class="form-group" data-toggle="buttons">
                                 <label style="text-align: right;padding-left: 0px;white-space: nowrap;" class="col-md-4 control-label">Is this observation verified?</label>
                                 <div class="btn-group" style="margin-left: -210px" ng-init="active = true">
-                                    <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-class="{'active': active === {{verifiedTrueFlag}}}" ng-model="radioValue" uib-btn-radio="'Yes'" uncheckable>Yes</label>
-                                    <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-class="{'active': active === {{verifiedFalseFlag}}}" ng-model="radioValue" uib-btn-radio="'No'" uib-uncheckable="uncheckable">No</label>
+                                    <label class="btn btn-default pull-left btnMarginLeft btnMarginRight customYesNo" ng-class="{'active': active === {{verifiedTrueFlag}}}" ng-model="radioValue" uib-btn-radio="'Yes'">Yes</label>
+                                    <label class="btn btn-default pull-left btnMarginRight customYesNo" ng-class="{'active': active === {{verifiedFalseFlag}}}" ng-model="radioValue" uib-btn-radio="'No'">No</label>
                                 </div>
                             </div>
                         </div>

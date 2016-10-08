@@ -7,6 +7,13 @@ import numpy
 import math
 import os
 import time
+import ConfigParser
+
+
+env = ConfigParser.RawConfigParser()
+env.read('../resources/env.properties')
+backendInputFits = env.get('FilesCatalogs', 'catalog.backendInputFits');
+frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 
 
 
@@ -14,7 +21,7 @@ def plot(fileName, conversionType):
    try:
       print fileName
       print conversionType
-      fn = "./inputFits/"+fileName+".fits"
+      fn = backendInputFits+fileName+".fits"
       sig_fract = 5.0
       percent_fract = 0.01
 
@@ -42,11 +49,9 @@ def plot(fileName, conversionType):
          pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
          pylab.tight_layout()
          pylab.axis('off')
-         os.chdir("../../")
          resultFile = conversionType+"_"+fileName
-         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         time.sleep(1)
+         print frontendInputFits+resultFile+".png"
+         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
       elif(conversionType == "Linear"):
          new_img = linear(img_data, scale_min = min_val)
@@ -54,11 +59,9 @@ def plot(fileName, conversionType):
          pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
          pylab.tight_layout()
          pylab.axis('off')
-         os.chdir("../../")
          resultFile = conversionType+"_"+fileName
-         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         time.sleep(1)
+         print frontendInputFits+resultFile+".png"
+         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
       elif(conversionType == "Hist"):
          new_img = histeq(img_data_raw, num_bins=256)
@@ -66,18 +69,16 @@ def plot(fileName, conversionType):
          pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
          pylab.tight_layout()
          pylab.axis('off')
-         os.chdir("../../")
          resultFile = conversionType+"_"+fileName
-         print os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"
-         pylab.savefig(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         time.sleep(1)
+         print frontendInputFits+resultFile+".png"
+         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
 
       looper=1
       while(looper<100):
           time.sleep(1)
-          if os.path.isfile(os.getcwd()+"/frontend/app/inputFits/"+resultFile+".jpg"):
-              print 'jpg has been created'
+          if os.path.isfile(frontendInputFits+resultFile+".png"):
+              print 'png has been created'
               break
           else:
               print 'continue'

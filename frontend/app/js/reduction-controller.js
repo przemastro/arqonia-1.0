@@ -23,9 +23,9 @@
 	});
 
     astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
-                                              'fileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q',
+                                              'fileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
                         (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, fileUpload, $cookies,
-                                   $element, ReductionImages, usSpinnerService, $q) {
+                                   $element, ReductionImages, usSpinnerService, $q, buttonConfig) {
 
         //cookies
         $scope.loggedInUser = $cookies.get('name');
@@ -41,8 +41,9 @@
         $rootScope.textStep = 'uploaded';
         $scope.imageTypeText = '';
 
-        $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
+        $scope.objectValue = 'Linear';
 
+        $scope.imageTypes = ['Raw Images', 'Dark Frames', 'Flat Fields', 'Bias Frames', 'Processed Images'];
         $rootScope.selectType = "SELECT IMAGE TYPE";
 
 
