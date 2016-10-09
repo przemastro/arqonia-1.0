@@ -157,11 +157,9 @@ class RestUserObservation(Resource):
 class RestObservation(Resource):
     def post(self):
             args = parser.parse_args()
-            print 'test'
             json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
                         args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
                         args['objectType'], args['verified'], args['email'])
-            print 'test2'
             content = Message("New Observation Added",
                               sender="admin@arqonia.com",
                               recipients=[args['email']])

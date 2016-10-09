@@ -1,4 +1,4 @@
-DB backup
+I. DB backup
    Files:
       1. backup.bat
       2. backup.sql
@@ -11,3 +11,13 @@ DB backup
    Restore:
       1. Right click 'Astro' then select Properties -> Options and in 'Restrict Access' select 'SINGLE USER'
       2. Right click 'Astro' then select Tasks -> Restore -> Database and select Device radio button
+
+
+II. Reload Service/Stop Service
+   Files:
+      1. forceKill.bat (kill service)
+      2. reloadService.py (reload service)
+   Execution:
+      1. Update reloadService.py 'env.properties' path
+      2. Run in CMD 'Taskschd.msc'
+      3. Select 'Utwórz zadanie podstawowe...' and select time trigger 'every day' at midnight
