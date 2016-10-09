@@ -627,8 +627,8 @@ try:
     #hr_catalog()
     #sao_catalog()
     #tyc2_catalog()
-    #tyc2_sup1_catalog()
-    tyc2_sup2_catalog()
+    tyc2_sup1_catalog()
+    #tyc2_sup2_catalog()
     #tyc2_hd_catalog()
     #hd_name_catalog()
 except:

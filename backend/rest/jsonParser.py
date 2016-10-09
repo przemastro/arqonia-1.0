@@ -617,7 +617,7 @@ def objectDetails(name):
                    calc = str(float(HD[4].strip())-float(HD[3].strip()))
                else:
                    calc = " "
-               details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+               details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HD_name hdn join data.HR hr on hdn.hd=hr.hd where hdn.name = '"+objectName+"'")
@@ -629,12 +629,12 @@ def objectDetails(name):
                else:
                    calcB = " "
                    calcU = " "
-               details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+               details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.HD_name hdn join data.HR hr on hdn.hd=hr.hd join data.GC gc on hr.hd=gc.hd where hdn.name = '"+objectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.HD_name hdn join data.HR hr on hdn.hd=hr.hd join data.SAO sao on hr.hd=sao.hd where hdn.name = '"+objectName+"'")
@@ -644,7 +644,7 @@ def objectDetails(name):
                    calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                else:
                    calc = " "
-               details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+               details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.HD_name hdn join data.tyc2_HD tychd on tychd.hd=hdn.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 "
@@ -655,7 +655,7 @@ def objectDetails(name):
                    calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                else:
                    calc = " "
-               details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+               details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                controller = str(details) + ',' + controller
 
             select_hip = ("select distinct hip.RAJ2000, hip.DEJ2000, hip.HIP, hip.Hpmag, hip.B_V, hip.V_I from data.HD_name hdn join data.tyc2_HD tychd on tychd.hd=hdn.hd join data.TYC2 tyc on "
@@ -666,7 +666,7 @@ def objectDetails(name):
                    calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                else:
                    calc = " "
-               details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+               details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                controller = str(details) + ',' + controller
             controller = ast.literal_eval(controller[:-1])
             controller = json.dumps(controller, skipkeys=True)
@@ -683,7 +683,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HD hd join data.HR hr on hd.hd=hr.hd where hd.hd = '"+hdObjectName+"'")
@@ -695,12 +695,12 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.HD hd join data.GC gc on hd.hd=gc.hd where hd.hd = '"+hdObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.HD hd join data.SAO sao on hd.hd=sao.hd where hd.hd = '"+hdObjectName+"'")
@@ -710,7 +710,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.HD hd join data.tyc2_HD tychd on tychd.hd=hd.hd "
@@ -721,7 +721,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_hip = ("select distinct hip.RAJ2000, hip.DEJ2000, hip.HIP, hip.Hpmag, hip.B_V, hip.V_I from data.HD hd join data.tyc2_HD tychd on tychd.hd=hd.hd "
@@ -733,7 +733,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -751,7 +751,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr where hr.hr = '"+hrObjectName+"'")
@@ -763,12 +763,12 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.GC gc on hd.hd=gc.hd where hr.hr = '"+hrObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.SAO sao on hd.hd=sao.hd where hr.hr = '"+hrObjectName+"'")
@@ -778,7 +778,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.HR hr join data.HD hd on hd.hd=hr.hd "
@@ -790,7 +790,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -803,7 +803,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -821,7 +821,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr where hr.name = '"+objectName+"'")
@@ -833,12 +833,12 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.GC gc on hd.hd=gc.hd where hr.name = '"+objectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.HR hr join data.HD hd on hd.hd=hr.hd join data.SAO sao on hd.hd=sao.hd where hr.name = '"+objectName+"'")
@@ -848,7 +848,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.HR hr join data.HD hd on hd.hd=hr.hd "
@@ -860,7 +860,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -873,7 +873,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -893,7 +893,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.GC gc "
@@ -906,13 +906,13 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.GC gc where gc.gc = '"+gcObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.GC gc join data.HD hd on hd.hd=gc.hd "
@@ -923,7 +923,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.GC gc "
@@ -935,7 +935,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -949,7 +949,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -968,7 +968,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.SAO sao "
@@ -981,13 +981,13 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.SAO sao join data.HD hd on hd.hd=sao.hd "
                          "join data.GC gc on gc.hd=hd.hd where sao.sao = '"+saoObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.SAO sao "
@@ -998,7 +998,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.SAO sao "
@@ -1010,7 +1010,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -1023,7 +1023,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -1044,7 +1044,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr "
@@ -1058,14 +1058,14 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.GC gc join data.HD hd on hd.hd=gc.hd "
                          "join data.tyc2_HD tychd on tychd.hd=hd.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 and tychd.TYC2=tyc.TYC2 "
                          "and tychd.TYC3=tyc.TYC3 join data.hip hip on hip.HIP=tyc.HIP where hip.hip = '"+hipObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.SAO sao "
@@ -1077,7 +1077,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.tyc2_HD tychd "
@@ -1089,7 +1089,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -1101,7 +1101,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
@@ -1124,7 +1124,7 @@ def objectDetails(name):
                     calc = str(float(HD[4].strip())-float(HD[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", HD[2].strip(), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
+                details = calculate_starsParameters(HD[0].strip(), HD[1].strip(), "HD", str(HD[2]), " ", HD[3].strip(), HD[4].strip(), calc, " ", " ", " ", HD[5].strip())
                 controller = str(details) + ',' + controller
 
             select_hr = ("select distinct hr.RAJ2000, hr.DEJ2000, hr.HR, hr.Vmag, hr.SpType, hr.B_V, hr.U_B, hr.R_I from data.HR hr "
@@ -1139,14 +1139,14 @@ def objectDetails(name):
                 else:
                     calcB = " "
                     calcU = " "
-                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", HR[2].strip(), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
+                details = calculate_starsParameters(HR[0].strip(), HR[1].strip(), "HR", str(HR[2]), calcU, HR[3].strip(), calcB, HR[5].strip(), HR[6].strip(), HR[7].strip(), " ", HR[4].strip())
                 controller = str(details) + ',' + controller
 
             select_gc = ("select distinct gc.RAJ2000, gc.DEJ2000, gc.GC, gc.Vmag, gc.SpType from data.GC gc join data.HD hd on hd.hd=gc.hd "
                          "join data.tyc2_HD tychd on tychd.hd=hd.hd join data.TYC2 tyc on tychd.TYC1=tyc.TYC1 and tychd.TYC2=tyc.TYC2 and tychd.TYC3=tyc.TYC3 "
                          "where tyc.TYC1 = '"+tyc1ObjectName+"' and tyc.TYC2 = '"+tyc2ObjectName+"' and tyc.TYC3 = '"+tyc3ObjectName+"'")
             GC = cursor.execute(select_gc).fetchone()
-            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", GC[2].strip(), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
+            details = calculate_starsParameters(GC[0].strip(), GC[1].strip(), "GC", str(GC[2]), " ", GC[3].strip(), " ", " ", " ", " ", " ", GC[4].strip())
             controller = str(details) + ',' + controller
 
             select_sao = ("select distinct sao.RAJ2000, sao.DEJ2000, sao.SAO, sao.Pmag, sao.Vmag, sao.SpType from data.SAO sao "
@@ -1159,7 +1159,7 @@ def objectDetails(name):
                     calc = str(float(SAO[3].strip())-float(SAO[4].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", SAO[2].strip(), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(SAO[0].strip(), SAO[1].strip(), "SAO", str(SAO[2]), " ", SAO[4].strip(), SAO[3].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
             select_tyc2 = ("select distinct tyc.RAJ2000, tyc.DEJ2000, tyc.TYC1, tyc.TYC2, tyc.TYC3, tyc.BTmag, tyc.VTmag from data.TYC2 tyc "
@@ -1170,7 +1170,7 @@ def objectDetails(name):
                     calc = str(float(TYC2[5].strip())-float(TYC2[6].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", TYC2[2].strip()+"-"+TYC2[3]+"-"+TYC2[4], " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
+                details = calculate_starsParameters(TYC2[0].strip(), TYC2[1].strip(), "TYC", str(TYC2[2])+"-"+str(TYC2[3])+"-"+str(TYC2[4]), " ", TYC2[6].strip(), TYC2[5].strip(), calc, " ", " ", " ", " ")
                 controller = str(details) + ',' + controller
 
 
@@ -1183,7 +1183,7 @@ def objectDetails(name):
                     calc = str(float(HIP[4].strip())+float(HIP[3].strip()))
                 else:
                     calc = " "
-                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", HIP[2].strip(), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
+                details = calculate_starsParameters(HIP[0].strip(), HIP[1].strip(), "HIP", str(HIP[2]), " ", HIP[3].strip(), calc, HIP[4].strip(), " ", " ", HIP[5].strip(), " ")
                 controller = str(details) + ',' + controller
 
             controller = ast.literal_eval(controller[:-1])
