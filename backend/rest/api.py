@@ -136,7 +136,7 @@ parser.add_argument('hrDiagramType', type=str)
 parser.add_argument('filter', type=str)
 parser.add_argument('activeNumber', type=str)
 parser.add_argument('sessionId', type=str)
-parser.add_argument('files', type=str)
+parser.add_argument('files', type=str, action='append')
 parser.add_argument('conversionType', type=str)
 parser.add_argument('imageType', type=str)
 
@@ -342,10 +342,13 @@ class RestFileUpload(Resource):
 
 class RestInputFITSUpload(Resource):
     def post(self):
-        file = request.files['file']
-        filename = file.filename
-        file.save(os.path.join(app.config['INPUT_FITS'], filename))
+        files = request.files.getlist("files")
+
+        for file in files:
+           filename = file.filename
+           file.save(os.path.join(app.config['INPUT_FITS'], filename))
         return 201
+
 
 class RestRegister(Resource):
     def post(self):
@@ -463,6 +466,7 @@ class RestCatalog(Resource):
 class RestReductionImages(Resource):
     def post(self):
         args = parser.parse_args()
+        print args['files']
         data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
         return jsonify(data)
 

@@ -23,8 +23,8 @@
 	});
 
     astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
-                                              'fileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
-                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, fileUpload, $cookies,
+                                              'multipleFileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
+                        (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, multipleFileUpload, $cookies,
                                    $element, ReductionImages, usSpinnerService, $q, buttonConfig) {
 
         //cookies
@@ -55,7 +55,7 @@
                                     //use fileUpload service only if file has been uploaded
                                     if(files) {
                                        var uploadUrl = __env.apiUrl+"/inputFits";
-                                       fileUpload.uploadFileToUrl(files, uploadUrl);
+                                       multipleFileUpload.uploadFileToUrl(files, uploadUrl);
                                        $scope.filesNumber = files.length;
                                        console.log($scope.filesNumber);
                                        }
@@ -68,20 +68,6 @@
            $scope.processFlag = true;
            console.log($scope.processFlag);
         }
-
-        //Multiple Load Data - to be done
-      //$scope.loadFiles = function(){
-/*
-          var file = $scope.myFile;
-          if(file) {
-             var uploadUrl = __env.apiUrl+"/fileUpload";
-             fileUpload.uploadFileToUrl(file, uploadUrl);
-             }
-          else {
-             var file = 'No file';
-             }
-*/
-       //}
 
 
         $rootScope.carouselFlag = false;
@@ -100,23 +86,41 @@
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                 $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
+                      $scope.setFiles = function(element) {
+                       $scope.$apply(function($scope) {
+                         console.log('files:', element.files);
+                         // Turn the FileList object into an Array
+                           $scope.files = []
+                           for (var i = 0; i < element.files.length; i++) {
+                             $scope.files.push(element.files[i])
+                           }
+                         });
+                       };
+
                 $scope.convert = function(){
-                   var files = $scope.files;
+                   var names = [];
+                           for (var i in $scope.files) {
+                               console.log(i);
+                               console.log($scope.files[i].name);
+                               names.push($scope.files[i].name);
+                           }
+                   console.log(names);
+
+                   var uploadUrl = __env.apiUrl+"/inputFits"
+                           var fd = new FormData()
+                           for (var i in $scope.files) {
+                               fd.append("files", $scope.files[i])
+                           }
+                           var xhr = new XMLHttpRequest()
+                           xhr.open("POST", uploadUrl)
+                           xhr.send(fd)
+
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
 
-                   //use fileUpload service only if file has been uploaded
-
-                 var uploadUrl = __env.apiUrl+"/inputFits";
-                 $scope.uploadImages = fileUpload.uploadFileToUrl(files, uploadUrl);
-
-                 $q.all([
-                     $scope.uploadImages.$promise
-                 ]).then(function(response) {
-
                    //Call postObservation service...
-                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
+                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:names,email:$scope.loggedInUserEmail,
                                                           conversionType:$scope.objectValue, imageType:$scope.imageType});
                     $q.all([
                         $scope.reductionImages.$promise
@@ -133,7 +137,6 @@
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
-                 });
                 }
           }
 
@@ -146,22 +149,40 @@
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
                 $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
+                      $scope.setFiles = function(element) {
+                       $scope.$apply(function($scope) {
+                         console.log('files:', element.files);
+                         // Turn the FileList object into an Array
+                           $scope.files = []
+                           for (var i = 0; i < element.files.length; i++) {
+                             $scope.files.push(element.files[i])
+                           }
+                         });
+                       };
+
                 $scope.convert = function(){
-                   var files = $scope.files;
-                   //use fileUpload service only if file has been uploaded
-                   if(files) {
-                      var uploadUrl = __env.apiUrl+"/inputFits";
-                      fileUpload.uploadFileToUrl(files, uploadUrl);
-                      }
-                   else {
-                      files = 'No file';
-                      }
+                   var names = [];
+                           for (var i in $scope.files) {
+                               console.log(i);
+                               console.log($scope.files[i].name);
+                               names.push($scope.files[i].name);
+                           }
+                   console.log(names);
+
+                   var uploadUrl = __env.apiUrl+"/inputFits"
+                           var fd = new FormData()
+                           for (var i in $scope.files) {
+                               fd.append("files", $scope.files[i])
+                           }
+                           var xhr = new XMLHttpRequest()
+                           xhr.open("POST", uploadUrl)
+                           xhr.send(fd)
 
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
                    //Call postObservation service...
-                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
+                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:names,email:$scope.loggedInUserEmail,
                                                           conversionType:$scope.objectValue, imageType:$scope.imageType});
                     $q.all([
                         $scope.reductionImages.$promise
@@ -190,22 +211,40 @@
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
                 $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
+                      $scope.setFiles = function(element) {
+                       $scope.$apply(function($scope) {
+                         console.log('files:', element.files);
+                         // Turn the FileList object into an Array
+                           $scope.files = []
+                           for (var i = 0; i < element.files.length; i++) {
+                             $scope.files.push(element.files[i])
+                           }
+                         });
+                       };
+
                 $scope.convert = function(){
-                   var files = $scope.files;
-                   //use fileUpload service only if file has been uploaded
-                   if(files) {
-                      var uploadUrl = __env.apiUrl+"/inputFits";
-                      fileUpload.uploadFileToUrl(files, uploadUrl);
-                      }
-                   else {
-                      files = 'No file';
-                      }
+                   var names = [];
+                           for (var i in $scope.files) {
+                               console.log(i);
+                               console.log($scope.files[i].name);
+                               names.push($scope.files[i].name);
+                           }
+                   console.log(names);
+
+                   var uploadUrl = __env.apiUrl+"/inputFits"
+                           var fd = new FormData()
+                           for (var i in $scope.files) {
+                               fd.append("files", $scope.files[i])
+                           }
+                           var xhr = new XMLHttpRequest()
+                           xhr.open("POST", uploadUrl)
+                           xhr.send(fd)
 
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
                    //Call postObservation service...
-                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
+                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:names,email:$scope.loggedInUserEmail,
                                                           conversionType:$scope.objectValue, imageType:$scope.imageType});
                     $q.all([
                         $scope.reductionImages.$promise
@@ -234,22 +273,44 @@
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
                 $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
 
+                      $scope.setFiles = function(element) {
+                       $scope.$apply(function($scope) {
+                         console.log('files:', element.files);
+                         // Turn the FileList object into an Array
+                           $scope.files = []
+                           for (var i = 0; i < element.files.length; i++) {
+                             $scope.files.push(element.files[i])
+                           }
+                         });
+                       };
+
+
+
                 $scope.convert = function(){
-                   var files = $scope.files;
-                   //use fileUpload service only if file has been uploaded
-                   if(files) {
-                      var uploadUrl = __env.apiUrl+"/inputFits";
-                      fileUpload.uploadFileToUrl(files, uploadUrl);
-                      }
-                   else {
-                      files = 'No file';
-                      }
+                   var names = [];
+                           for (var i in $scope.files) {
+                               console.log(i);
+                               console.log($scope.files[i].name);
+                               names.push($scope.files[i].name);
+                           }
+                   console.log(names);
+
+                   var uploadUrl = __env.apiUrl+"/inputFits"
+                           var fd = new FormData()
+                           for (var i in $scope.files) {
+                               fd.append("files", $scope.files[i])
+                           }
+                           var xhr = new XMLHttpRequest()
+                           xhr.open("POST", uploadUrl)
+                           xhr.send(fd)
+
+
 
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
                    //Call postObservation service...
-                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:files.name,email:$scope.loggedInUserEmail,
+                    $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:names,email:$scope.loggedInUserEmail,
                                                           conversionType:$scope.objectValue, imageType:$scope.imageType});
                     $q.all([
                         $scope.reductionImages.$promise
@@ -279,14 +340,7 @@
                 $scope.convert = function(){
                    var files = $scope.files;
                    $scope.helpDescription = "Great! Go ahead and Save your data";
-                   //use fileUpload service only if file has been uploaded
-                   if(files) {
-                      var uploadUrl = __env.apiUrl+"/inputFits";
-                      fileUpload.uploadFileToUrl(files, uploadUrl);
-                      }
-                   else {
-                      files = 'No file';
-                      }
+                   //use multipleFileUpload service only if file has been uploaded
 
    		           if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');

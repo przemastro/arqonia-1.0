@@ -1336,14 +1336,13 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         cursor = cnx.cursor()
 
         sessionId = str(sessionId)
-        files = str(files)
         email = str(email)
         conversionType = str(conversionType)
         imageType = str(imageType)
 
-        specialCharacterPosition = files.index('.') + 1
-        fileExtension = str(files[specialCharacterPosition:])
-        objectName = files
+        #specialCharacterPosition = files.index('.') + 1
+        #fileExtension = str(files[specialCharacterPosition:])
+        fileExtension = 'fits'
 
         get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromDataImages')
         cursor.execute(get_lastId)
@@ -1353,12 +1352,17 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         else:
             lastId = lastId[0] + 1
 
-        lastId = str(lastId)
-        #--insert to data.images
-        if files != 'None':
+        counter = lastId
+
+
+        #--Insert to data.images
+        for file in files:
+            objectName = file
+            lastId = str(counter)
+
             verifyFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+objectName+"' "
                                             "and im.sessionId = "+sessionId+" and co.conversionType = '"+conversionType+"' and it.ImageType = '"+imageType+"'")
-            print verifyFileExists
+
             cursor.execute(verifyFileExists)
             existsFlag = cursor.fetchone()
 
@@ -1379,73 +1383,60 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                   if os.path.isfile(backendInputFits+objectName):
                       break
                   else:
-                      print 'continue'
+                      print 'continue fits does not exist in DB'
                       looper = looper + 1
                       continue
 
                file_list = os.listdir(backendInputFits)
                for fileName in file_list:
-                  specialCharacterPosition = files.index('.')
+                  specialCharacterPosition = objectName.index('.')
                   sourceString = str(objectName[:specialCharacterPosition])
                   replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
-                  if (fileName == files):
+                  if (fileName == objectName):
                       try:
                          os.rename(backendInputFits+fileName, backendInputFits+fileName.replace(sourceString,replaceString))
                       except:
                          print 'errors in renaming function'
             else:
-                print 'fits exist in DB'
+                print 'fits exists in DB'
                 looper=1
                 while(looper<100):
                     time.sleep(1)
                     if os.path.isfile(backendInputFits+objectName):
                         break
                     else:
-                        print 'continue'
+                        print 'continue fits exists in DB'
                         looper = looper + 1
                         continue
-        #End of backend
 
-        #conversion
-        specialCharacterPosition = files.index('.')
-        replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
 
-        #queue = Queue()
-        #p = Process(target=convertPlots.plot, args=(replaceString, conversionType))
-        #print 'start subprocess'
-        #p.start()
-        #p.join() # this blocks until the process terminates
-        #result = queue.get()
-        #print 'koniec procesu'
-        #print result
+            #start conversion
+            print 'Start Conversion'
+            specialCharacterPosition = objectName.index('.')
+            replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+            convertPlots.plot(replaceString, conversionType)
+            #end conversion
 
-        convertPlots.plot(replaceString, conversionType)
+            #Add converted file to DB
+            convertedObjectName = conversionType+"_"+replaceString+".png"
+            verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
+                                            "and sessionId = "+sessionId+"")
+            cursor.execute(verifyConvertedFileExists)
+            existsConvertedFlag = cursor.fetchone()
 
-        #temporary workaround
-        fn = open('jsonBuilder.py', 'a')
-        fn.write(" ")
-        fn.seek(-1, os.SEEK_END)
-        fn.truncate()
-        fn.close()
-
-        convertedObjectName = conversionType+"_"+replaceString+".png"
-        verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
-                                        "and sessionId = "+sessionId+"")
-        cursor.execute(verifyConvertedFileExists)
-        existsConvertedFlag = cursor.fetchone()
-
-        if (existsConvertedFlag[0] == 0):
-           lastId = int(lastId) + 1
-           lastId = str(lastId)
-           print 'png does not exist in DB'
-           insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
-                       "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
-                       "(select fileExtensionId from dic.FileExtensions where FileExtension = 'png'), "
-                       "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
-                       "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
-                       "'Reduction', getdate())")
-           cursor.execute(insertImage)
-           cnx.commit()
+            if (existsConvertedFlag[0] == 0):
+               counter = counter + 1
+               lastId = str(counter)
+               #print 'png does not exist in DB'
+               insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                           "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                           "(select fileExtensionId from dic.FileExtensions where FileExtension = 'png'), "
+                           "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
+                           "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
+                           "'Reduction', getdate())")
+               cursor.execute(insertImage)
+               cnx.commit()
+            counter = counter + 1
         else:
            print 'png already exists in DB'
 
@@ -1453,11 +1444,8 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
 
         #return json value
         get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
-        print get_ImageIds
         get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
-        print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
-        print data
         i = 1
         if(i==1):
            data = data

@@ -23,6 +23,27 @@ astroApp.service('fileUpload', ['$http', function ($http) {
             }
 }]);
 
+//Multiple File Upload
+astroApp.service('multipleFileUpload', ['$http', function ($http) {
+            this.uploadFileToUrl = function(files, uploadUrl){
+               var fd = new FormData();
+               console.log('tutaj');
+               console.log(fd);
+               fd.append('file', files);
+
+               $http.post(uploadUrl, fd, {
+                  transformRequest: angular.identity,
+                  headers: {'Content-Type': undefined}
+               })
+
+               .success(function(){
+               })
+
+               .error(function(){
+               });
+            }
+}]);
+
 //Authentication
 //Update Account Data
 services.factory('updateProfile', ['$resource',

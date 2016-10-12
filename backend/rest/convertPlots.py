@@ -19,8 +19,6 @@ frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 
 def plot(fileName, conversionType):
    try:
-      print fileName
-      print conversionType
       fn = backendInputFits+fileName+".fits"
       sig_fract = 5.0
       percent_fract = 0.01
@@ -31,11 +29,9 @@ def plot(fileName, conversionType):
       hdulist.close()
       width=img_data_raw.shape[0]
       height=img_data_raw.shape[1]
-      print "#INFO : ", fn, width, height
       img_data_raw = numpy.array(img_data_raw, dtype=float)
-      #sky, num_iter = img_scale.sky_median_sig_clip(img_data, sig_fract, percent_fract, max_iter=100)
+      #sky, num_iter = sky_median_sig_clip(img_data, sig_fract, percent_fract, max_iter=100)
       sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=10)
-      print "sky = ", sky, '(', num_iter, ')'
       img_data = img_data_raw - sky
       min_val = 0.0
 
@@ -50,7 +46,7 @@ def plot(fileName, conversionType):
          pylab.tight_layout()
          pylab.axis('off')
          resultFile = conversionType+"_"+fileName
-         print frontendInputFits+resultFile+".png"
+         #print frontendInputFits+resultFile+".png"
          pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
       elif(conversionType == "Linear"):
@@ -60,7 +56,6 @@ def plot(fileName, conversionType):
          pylab.tight_layout()
          pylab.axis('off')
          resultFile = conversionType+"_"+fileName
-         print frontendInputFits+resultFile+".png"
          pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
       elif(conversionType == "Hist"):
@@ -70,7 +65,7 @@ def plot(fileName, conversionType):
          pylab.tight_layout()
          pylab.axis('off')
          resultFile = conversionType+"_"+fileName
-         print frontendInputFits+resultFile+".png"
+         #print frontendInputFits+resultFile+".png"
          pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          pylab.clf()
 
@@ -78,10 +73,10 @@ def plot(fileName, conversionType):
       while(looper<100):
           time.sleep(1)
           if os.path.isfile(frontendInputFits+resultFile+".png"):
-              print 'png has been created'
+              #print 'png has been created'
               break
           else:
-              print 'continue'
+              #print 'continue'
               looper = looper + 1
               continue
    except:
@@ -141,7 +136,7 @@ def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut
 
 
 def linear(inputArray, scale_min=None, scale_max=None):
-    print "img_scale : linear"
+    #print "img_scale : linear"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:
