@@ -8,6 +8,10 @@ import math
 import os
 import time
 import ConfigParser
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+from threading import Lock
+lock = Lock()
 
 
 env = ConfigParser.RawConfigParser()
@@ -51,13 +55,17 @@ def plot(fileName, conversionType):
          pylab.clf()
       elif(conversionType == "Linear"):
          new_img = linear(img_data, scale_min = min_val)
-         pylab.figure(figsize=(8, 6))
-         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-         pylab.tight_layout()
-         pylab.axis('off')
+         fig = Figure(figsize=(8, 6))
+         fig.figimage(new_img, cmap='gray')
+         #fig.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
+         #fig.tight_layout()
+         #fig.axis('off')
          resultFile = conversionType+"_"+fileName
-         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         pylab.clf()
+         #print frontendInputFits+resultFile+".png"
+         canvas = FigureCanvas(fig)
+         #pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
+         canvas.print_figure(frontendInputFits+resultFile+".png")
+         #pylab.clf()
       elif(conversionType == "Hist"):
          new_img = histeq(img_data_raw, num_bins=256)
          pylab.figure(figsize=(8, 6))

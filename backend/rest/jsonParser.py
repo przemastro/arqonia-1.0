@@ -1408,8 +1408,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                         print 'continue fits exists in DB'
                         looper = looper + 1
                         continue
-
-
             #start conversion
             print 'Start Conversion'
             specialCharacterPosition = objectName.index('.')
@@ -1444,8 +1442,11 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
 
         #return json value
         get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        #print get_ImageIds
         get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        #print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
+        #print data
         i = 1
         if(i==1):
            data = data
