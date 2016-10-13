@@ -641,7 +641,7 @@ p {
     -moz-transform: rotate(180deg) scaleX(-1);
     -o-transform: rotate(180deg) scaleX(-1);
     -ms-transform: rotate(180deg) scaleX(-1);
-     transform: rotate(180deg);
+     transform: rotate(180deg) scaleX(-1);
      filter: FlipH;
     -ms-filter: "FlipH";
 }

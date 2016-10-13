@@ -28,54 +28,35 @@ def plot(fileName, conversionType):
       percent_fract = 0.01
 
       hdulist = pyfits.open(fn)
-      img_header = hdulist[0].header
       img_data_raw = hdulist[0].data
       hdulist.close()
-      width=img_data_raw.shape[0]
-      height=img_data_raw.shape[1]
       img_data_raw = numpy.array(img_data_raw, dtype=float)
-      #sky, num_iter = sky_median_sig_clip(img_data, sig_fract, percent_fract, max_iter=100)
-      sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=10)
+      sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=1)
       img_data = img_data_raw - sky
       min_val = 0.0
 
-
       #plotting
-
-
       if(conversionType == "Power"):
          new_img = power(img_data, power_index=3.0, scale_min = min_val)
-         pylab.figure(figsize=(8, 6))
-         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-         pylab.tight_layout()
-         pylab.axis('off')
+         fig = Figure(figsize=(12.5, 13.35))
+         fig.figimage(new_img, cmap='gray')
          resultFile = conversionType+"_"+fileName
-         #print frontendInputFits+resultFile+".png"
-         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         pylab.clf()
+         canvas = FigureCanvas(fig)
+         canvas.print_figure(frontendInputFits+resultFile+".png")
       elif(conversionType == "Linear"):
          new_img = linear(img_data, scale_min = min_val)
-         fig = Figure(figsize=(8, 6))
+         fig = Figure(figsize=(12.5, 13.35))
          fig.figimage(new_img, cmap='gray')
-         #fig.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-         #fig.tight_layout()
-         #fig.axis('off')
          resultFile = conversionType+"_"+fileName
-         #print frontendInputFits+resultFile+".png"
          canvas = FigureCanvas(fig)
-         #pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
          canvas.print_figure(frontendInputFits+resultFile+".png")
-         #pylab.clf()
       elif(conversionType == "Hist"):
          new_img = histeq(img_data_raw, num_bins=256)
-         pylab.figure(figsize=(8, 6))
-         pylab.imshow(new_img, interpolation='nearest', origin='lower', cmap='gray', aspect='equal', extent=[.0,1,.0,1])
-         pylab.tight_layout()
-         pylab.axis('off')
+         fig = Figure(figsize=(12.5, 13.35))
+         fig.figimage(new_img, cmap='gray')
          resultFile = conversionType+"_"+fileName
-         #print frontendInputFits+resultFile+".png"
-         pylab.savefig(frontendInputFits+resultFile+".png", dpi = 100, pad_inches = -.07, bbox_inches='tight')
-         pylab.clf()
+         canvas = FigureCanvas(fig)
+         canvas.print_figure(frontendInputFits+resultFile+".png")
 
       looper=1
       while(looper<100):
