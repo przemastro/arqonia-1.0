@@ -400,6 +400,12 @@ p {
     text-align: center !important;
 }
 
+.customExtremelyLong {
+    width: 240px !important;
+    height: 34px !important;
+    text-align: center !important;
+}
+
 .customSubscribe {
     width: 120px !important;
     height: 46px !important;

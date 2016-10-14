@@ -29,6 +29,7 @@
 	   $cookies.remove("numberOfFlatFilesUploaded");
 	   $cookies.remove("numberOfRawFilesUploaded");
 	   $cookies.remove("numberOfBiasFilesUploaded");
+	   $cookies.remove("numberOfProcessedFiles");
 	}]);
 
     astroApp.controller('goodbyeCtrl', ['$rootScope', 'usSpinnerService', 'login', '$cookies', '$location', '$timeout',
@@ -168,6 +169,7 @@
    		     $cookies.put('numberOfRawFilesUploaded', 0);
    		     $cookies.put('numberOfFlatFilesUploaded', 0);
    		     $cookies.put('numberOfBiasFilesUploaded', 0);
+   		     $cookies.put('numberOfProcessedFiles', 0);
    		     var date = new Date();
    		     $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
@@ -189,6 +191,7 @@
    		     $cookies.put('numberOfRawFilesUploaded', 0);
    		     $cookies.put('numberOfFlatFilesUploaded', 0);
    		     $cookies.put('numberOfBiasFilesUploaded', 0);
+   		     $cookies.put('numberOfProcessedFiles', 0);
    		     var date = new Date();
              $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
