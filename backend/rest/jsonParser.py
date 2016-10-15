@@ -7,6 +7,7 @@ import simplejson as json
 from sjcl import SJCL
 import os
 import convertPlots
+import reduceImages
 import time
 from multiprocessing import Process, Queue
 
@@ -1460,6 +1461,70 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
     else:
         cnx.close()
 
+
+#--------------------------------------------------------reduce data----------------------------------------------------
+def processImages(sessionId, email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        sessionId = str(sessionId)
+        email = str(email)
+
+        get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromDataImages')
+        cursor.execute(get_lastId)
+        lastId = cursor.fetchone()
+        if lastId is None:
+            lastId = 1
+        else:
+            lastId = lastId[0] + 1
+
+        counter = lastId
+
+        #Get Images
+        getDarkFrames = (queries.get('DatabaseQueries', 'database.getDarkFrames') + sessionId)
+        getBiasFrames = (queries.get('DatabaseQueries', 'database.getBiasFrames') + sessionId)
+        getFlatFields = (queries.get('DatabaseQueries', 'database.getFlatFields') + sessionId)
+        getRawFrames = (queries.get('DatabaseQueries', 'database.getRawFrames') + sessionId)
+
+        reduceImages.reduce(fetch_all(getDarkFrames), fetch_all(getBiasFrames), fetch_all(getFlatFields), fetch_all(getRawFrames))
+
+        rawImages = fetch_all(getRawFrames)
+        for file in rawImages:
+           insertFitsImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                          " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                          "3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate())")
+           cursor.execute(insertFitsImage)
+           cnx.commit()
+
+           specialCharacterPosition = file.index('.') - 1
+           objectName = str(file[:specialCharacterPosition])
+           objectName = "Linear_"+sessionId+"_Processed_"+objectName+".png"
+           insertPngImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                              " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                              "2, '"+sessionId+"', 1, 5, '"+objectName+"', 'outputFits', 'Reduction', getdate())")
+           cursor.execute(insertPngImage)
+           cnx.commit()
+
+        #return json value
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed'")
+        #print get_ImageIds
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed'")
+        #print get_FileNames
+        data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
+        #print data
+        i = 1
+        if(i==1):
+            data = data
+        elif(i>1):
+            data = [data]
+        return data
+        cursor.close()
+
+    except:
+        print 'errors in processImages function'
+    else:
+        cnx.close()
 
 
 

@@ -56,7 +56,7 @@
                                              font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
                         {{numberOfFilesUploaded}} {{imageTypeText}} {{textStep}} in this session</p>
                 </div>
-                <form ng-show="imageTypeFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
+                <form ng-show="imageTypeFlag && formFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
                     <div class="btn-group dropdown" style="width:100%;position:relative;margin-left:65px">
                         <input class="btn btn-default customUploadLong" type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)"/>
                     </div>
@@ -70,7 +70,7 @@
                     <div><br></div>
                 </form>
                 <div><br><br></div>
-                <div ng-show="imageTypeFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
+                <div ng-show="clickProcessFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
                     <input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight customLong" ng-click="processFiles()"/>
                 </div>
                 <div ng-show="imageTypeFlag" style="padding: 0px 15px;color:white;margin-top:85px;position:relative;height:100px">
@@ -78,7 +78,7 @@
                                              font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
                         {{helpDescription}}</p>
                 </div>
-                <div ng-show="processFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:70px;margin-right:20px">
+                <div ng-show="processedFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:70px;margin-right:20px">
                     <input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
                 </div>
                 <div><br></div>

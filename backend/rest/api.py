@@ -6,7 +6,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser, addReductionImages
+    getPassword, updateUser, removeUser, addReductionImages, processImages
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -462,12 +462,17 @@ class RestCatalog(Resource):
         return jsonify(catalog)
 
 
-
 class RestReductionImages(Resource):
     def post(self):
         args = parser.parse_args()
-        print args['files']
         data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
+        return jsonify(data)
+
+
+class RestProcessImages(Resource):
+    def post(self):
+        args = parser.parse_args()
+        data = processImages(args['sessionId'], args['email'])
         return jsonify(data)
 
 
@@ -511,6 +516,7 @@ api.add_resource(RestStatistics, '/statistics')
 api.add_resource(RestSubscribe, '/subscribe')
 api.add_resource(RestCatalog, '/catalog')
 api.add_resource(RestReductionImages, '/reductionImages')
+api.add_resource(RestProcessImages, '/processImages')
 
 
 # Handling COR requests

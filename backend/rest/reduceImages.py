@@ -15,59 +15,133 @@ from matplotlib.figure import Figure
 env = ConfigParser.RawConfigParser()
 env.read('../resources/env.properties')
 backendInputFits = env.get('FilesCatalogs', 'catalog.backendInputFits');
+backendOutputFits = env.get('FilesCatalogs', 'catalog.backendOutputFits');
 frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 
 
 
-def plot(fileName, conversionType):
-   try:
-      fn = backendInputFits+fileName+".fits"
-      sig_fract = 5.0
-      percent_fract = 0.01
 
-      hdulist = pyfits.open(fn)
-      img_data_raw = hdulist[0].data
-      hdulist.close()
-      img_data_raw = numpy.array(img_data_raw, dtype=float)
-      sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=1)
-      img_data = img_data_raw - sky
-      min_val = 0.0
+def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames):
+    try:
+        sig_fract = 5.0
+        percent_fract = 0.01
+        min_val = 0.0
 
-      #plotting
-      if(conversionType == "Power"):
-         new_img = power(img_data, power_index=3.0, scale_min = min_val)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
-         resultFile = conversionType+"_"+fileName
-         canvas = FigureCanvas(fig)
-         canvas.print_figure(frontendInputFits+resultFile+".png")
-      elif(conversionType == "Linear"):
-         new_img = linear(img_data, scale_min = min_val)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
-         resultFile = conversionType+"_"+fileName
-         canvas = FigureCanvas(fig)
-         canvas.print_figure(frontendInputFits+resultFile+".png")
-      elif(conversionType == "Hist"):
-         new_img = histeq(img_data_raw, num_bins=256)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
-         resultFile = conversionType+"_"+fileName
-         canvas = FigureCanvas(fig)
-         canvas.print_figure(frontendInputFits+resultFile+".png")
+        #Open Dark Frames data
+        List = getDarkFrames
+        dataList = []
+        for file in List:
+            dataList.append(openFile(file))
+        reference_dark_image = medianImage(dataList)
 
-      looper=1
-      while(looper<100):
-          time.sleep(1)
-          if os.path.isfile(frontendInputFits+resultFile+".png"):
-              #print 'png has been created'
-              break
-          else:
-              #print 'continue'
-              looper = looper + 1
-              continue
-   except:
-       print 'errors in convertPlots function'
+        #Open Bias Frames data
+        List = getBiasFrames
+        dataList = []
+        for file in List:
+            dataList.append(openFile(backendInputFits+file))
+        reference_bias_image = medianImage(dataList)
+
+        #Open Flat Fields data
+        List = getFlatFields
+        dataList = []
+        for file in List:
+            dataList.append(openFileAndNormalize(backendInputFits+file))
+        reference_flat_image = medianImage(dataList)
+
+
+        #Open Raw Images Data and Reduce
+        List = getRawFrames
+        for file in List:
+           dataImage = openFileAndNormalize(backendInputFits+file)
+           dark_corrected_image = dataImage - reference_dark_image
+           bias_corrected_image = dark_corrected_image - reference_bias_image
+           final_image = bias_corrected_image / reference_flat_image
+
+           pyfits.append(backendOutputFits+"Processed_"+file+".fits", final_image)
+
+           sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
+           img_data = final_image - sky
+           new_img = linear(img_data, scale_min = min_val)
+           fig = Figure(figsize=(12.5, 13.35))
+           fig.figimage(new_img, cmap='gray')
+           canvas = FigureCanvas(fig)
+           canvas.print_figure(frontendInputFits+"Processed_"+file+".png")
+
+    except (RuntimeError, TypeError, NameError):
+        print 'error'
+
+def medianImage(images):
+    stack = numpy.array(images)
+    print stack
+    median = numpy.median(stack, axis=0)
+    return median
+
+def openFile(fileName):
+    hdulist = pyfits.open(fileName)
+    img_data_raw = hdulist[0].data
+    hdulist.close()
+    img_data_raw = numpy.array(img_data_raw, dtype=float)
+    return img_data_raw
+
+def openFileAndNormalize(fileName):
+    hdulist = pyfits.open(fileName)
+    img_data_raw = hdulist[0].data
+    hdulist.close()
+    img_data_raw = numpy.array(img_data_raw, dtype=float)
+    image_mean = numpy.mean(img_data_raw)
+    normalized = img_data_raw / image_mean
+    return normalized
+
+def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut=True, high_cut=True):
+    work_arr = numpy.ravel(input_arr)
+    old_sky = numpy.mean(work_arr)
+    sig = work_arr.std()
+    upper_limit = old_sky + sig_fract * sig
+    lower_limit = old_sky - sig_fract * sig
+    if low_cut and high_cut:
+        indices = numpy.where((work_arr < upper_limit) & (work_arr > lower_limit))
+    else:
+        if low_cut:
+            indices = numpy.where((work_arr > lower_limit))
+        else:
+            indices = numpy.where((work_arr < upper_limit))
+    work_arr = work_arr[indices]
+    new_sky = numpy.mean(work_arr)
+    iteration = 0
+    while ((math.fabs(old_sky - new_sky)/new_sky) > percent_fract) and (iteration < max_iter) :
+        iteration += 1
+        old_sky = new_sky
+        sig = work_arr.std()
+        upper_limit = old_sky + sig_fract * sig
+        lower_limit = old_sky - sig_fract * sig
+        if low_cut and high_cut:
+            indices = numpy.where((work_arr < upper_limit) & (work_arr > lower_limit))
+        else:
+            if low_cut:
+                indices = numpy.where((work_arr > lower_limit))
+            else:
+                indices = numpy.where((work_arr < upper_limit))
+        work_arr = work_arr[indices]
+        new_sky = numpy.mean(work_arr)
+    return (new_sky, iteration)
+
+
+def linear(inputArray, scale_min=None, scale_max=None):
+    #print "img_scale : linear"
+    imageData=numpy.array(inputArray, copy=True)
+
+    if scale_min == None:
+        scale_min = imageData.min()
+    if scale_max == None:
+        scale_max = imageData.max()
+
+    imageData.clip(min=scale_min, max=scale_max)
+    imageData = (imageData -scale_min) / (scale_max - scale_min)
+    indices = numpy.where(imageData < 0)
+    imageData[indices] = 0.0
+
+    return imageData
+
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
     print "img_scale : power"
@@ -86,7 +160,6 @@ def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
     imageData[indices1] = numpy.power((imageData[indices1] - scale_min), power_index)*factor
 
     return imageData
-
 
 def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut=True, high_cut=True):
     work_arr = numpy.ravel(input_arr)
