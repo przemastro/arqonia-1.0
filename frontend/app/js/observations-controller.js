@@ -62,7 +62,7 @@
                                                      if (!$scope.spinneractive) {
                                                        usSpinnerService.spin('spinner-1');
                                                      };
-   		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+   		  UserObservations.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		     var globalObject = [];
              var len = response.length;
              for(var i = 0; i < len; i++) {
@@ -105,7 +105,7 @@
          if (!$scope.spinneractive) {
            usSpinnerService.spin('spinner-1');
            //Call processData service
-   	       ProcessUserData.update({email:$scope.loggedInUserEmail}, function(response){
+   	       ProcessUserData.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    	          $scope.message = response.message;
    	       });
          }
@@ -384,7 +384,7 @@
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
    		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
-   		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
+   		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
    		  console.log(file);
    		  });
@@ -431,7 +431,7 @@
         //Call removeObservation service
         $rootScope.displayedObservations = [];
         $rootScope.observations = [];
-        RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.removePhotometryName}, function(response){
+        RemoveObservation.save({id:removePhotometry,email:$scope.loggedInUserEmail,name:$scope.removePhotometryName, sessionId:$cookies.get('sessionID')}, function(response){
            $scope.message = response.message;
 
         });
@@ -682,14 +682,14 @@
    		                            endDate:$scope.endDate,
    		                            uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
    		                            rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
-                                    verified:$scope.radioValue,email:$scope.loggedInUserEmail}, function(response){
+                                    verified:$scope.radioValue,email:$scope.loggedInUserEmail,sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
    		  });
 
    		                    if (!$scope.spinneractive) {
                               usSpinnerService.spin('spinner-1');
                             };
-                     		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+                     		  UserObservations.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
                      		     var globalObject = [];
                                var len = response.length;
                                for(var i = 0; i < len; i++) {
@@ -841,7 +841,8 @@
           if (!$scope.spinneractive) {
             usSpinnerService.spin('spinner-1');
             //Call searchCatalogData service
-   		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation, email:$scope.loggedInUserEmail}, function(response){
+   		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation,
+   		                              email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		      var globalObject = [];
    		          if(response.length==2) {
    		             var len = 1;

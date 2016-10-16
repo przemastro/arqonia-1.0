@@ -108,7 +108,7 @@
           }
           //For logged in gentleman
           else {
-             PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+             PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
                      for(var i = 0; i < response.length; i++) {
                         var j = 0
                         var tab = {}
@@ -254,7 +254,7 @@
         }
         //And for logged in user
         else {
-           PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+           PesronalizedLCDiagramRange.update({filter:$scope.cutString, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
                    for(var i = 0; i < response.length; i++) {
                       var j = 0
                       var tab = {}
@@ -294,7 +294,7 @@
                };
                return $scope.option
            })
-           PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail}, function(response){
+           PesronalizedLCDiagram.update({filter:$scope.cutString, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
                                                                  $scope.spinneractive = false;
                                                                  usSpinnerService.stop('spinner-1');
             //The magic to populate data with data
@@ -439,7 +439,7 @@
                       $scope.XMin = [];
                       $scope.YMax = [];
                       $scope.YMin = [];
-             		  PesronalizedObservationsDiagramRange.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail}, function(response){
+             		  PesronalizedObservationsDiagramRange.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
 
                          for(var i = 0; i < response.length; i++) {
                             var j = 0
@@ -526,7 +526,7 @@
                   $scope.FilterObservations = [];
                   data = [];
 
-             	  PesronalizedObservationsDiagram.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail}, function(response){
+             	  PesronalizedObservationsDiagram.update({hrDiagramType:cutString, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
              	                                                          $scope.spinneractive = false;
                                                                           usSpinnerService.stop('spinner-1');
                       for(var i = 0; i < response.length; i++) {

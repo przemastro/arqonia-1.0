@@ -204,7 +204,6 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
                              "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
                              "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
 
-        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()
@@ -532,6 +531,7 @@ def authentication(email, sessionId):
         sessionId = int(sessionId)
 
         verify_sessionId = ("select sessionId from data.users where Email='"+email+"'")
+        print verify_sessionId
         cursor.execute(verify_sessionId)
         DBSessionId = cursor.fetchone()
         DBSessionId = int(DBSessionId[0])
@@ -544,10 +544,29 @@ def authentication(email, sessionId):
         cursor.close()
 
     except:
-        print 'errors in verifyCredentials function'
+        print 'errors in authentication function'
     else:
         cnx.close()
 
+
+#------------------------------------------------------Logout User------------------------------------------------------
+def logoutUser(email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+
+        logoutDataUsers = ("update data.users set SessionId=NULL where Email='"+email+"'")
+        print logoutDataUsers
+        cursor.execute(logoutDataUsers)
+        cnx.commit()
+        cursor.close()
+
+    except:
+        print 'errors in logoutUser function'
+    else:
+        cnx.close()
 
 #-----------------------------------------------------verify Credentials------------------------------------------------
 def verifyCredentials(email, password, sessionId):
@@ -559,7 +578,7 @@ def verifyCredentials(email, password, sessionId):
         password = str(password)
         sessionId = str(sessionId)
 
-        #Activation for first login
+        #Verify user exists
 
         if email != 'None' and password != 'None':
             verify_User = ("select count(1) from data.users where Email='"+email+"' and (ActiveFlag='true' or (ActiveFlag='false' and ActiveCode is not NULL))")
@@ -569,25 +588,36 @@ def verifyCredentials(email, password, sessionId):
         Value = Value[0]
 
         if Value==1:
-            verify_password = ("select password from data.users where Email='"+email+"'")
-            cursor.execute(verify_password)
-            DBPassword = cursor.fetchone()
-            DBPassword = DBPassword[0]
-            if(decrypt_password(DBPassword)==password):
-               #Activation for first login - in fact I will update everytime this flag
-               update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
-               cursor.execute(update_ActiveFlag)
-               cnx.commit()
-               update_SessionId = ("update data.users set SessionId='"+sessionId+"' where Email='"+email+"'")
-               cursor.execute(update_ActiveFlag)
-               cnx.commit()
-               #and the rest
-               select_userName = ("select name from data.users where Email='"+email+"'")
-               cursor.execute(select_userName)
-               Name = cursor.fetchone()
-               msg = Name[0]
+            #Firstly check if user is logged in
+            verify_userIsLoggedIn = ("select sessionId from data.users where Email='"+email+"'")
+            cursor.execute(verify_userIsLoggedIn)
+            sessionIdValue = cursor.fetchone()
+            print sessionIdValue[0]
+            if(str(sessionIdValue[0]) != 'None'):
+               msg = "User is already logged In"
+               print msg
             else:
-               msg = "Wrong credentials"
+               #Now verify credentials
+               verify_password = ("select password from data.users where Email='"+email+"'")
+               cursor.execute(verify_password)
+               DBPassword = cursor.fetchone()
+               DBPassword = DBPassword[0]
+               if(decrypt_password(DBPassword)==password):
+                  #Activation for first login - in fact I will update everytime this flag
+                  update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
+                  cursor.execute(update_ActiveFlag)
+                  cnx.commit()
+                  #Update SessionId
+                  update_SessionId = ("update data.users set sessionID='"+sessionId+"' where Email='"+email+"'")
+                  cursor.execute(update_SessionId)
+                  cnx.commit()
+                  #and the rest
+                  select_userName = ("select name from data.users where Email='"+email+"'")
+                  cursor.execute(select_userName)
+                  Name = cursor.fetchone()
+                  msg = Name[0]
+               else:
+                  msg = "Wrong credentials"
         else:
             msg = "Wrong credentials"
 
@@ -637,7 +667,6 @@ def objectDetails(name):
             tyc1ObjectName = tycObjectName[:specialCharacterPosition]
             tyc2ObjectName = tycObjectName[:length-2]
             tyc2ObjectName = tyc2ObjectName[specialCharacterPosition+1:]
-
 
         controller = ''
         #Proper Name

@@ -17,7 +17,11 @@
 //----------------------------------------------------------Logout-------------------------------------------------------
 
     //logoutCtrl
-	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', '$uibModal', function ($scope, Login, $cookies, $uibModal) {
+	astroApp.controller('logoutCtrl', ['$rootScope', 'login', '$cookies', '$uibModal', 'updateUser',
+	                          function ($scope, Login, $cookies, $uibModal, UpdateUser) {
+   		  UpdateUser.update({email:$cookies.get('email'),sessionId:$cookies.get('sessionID')}, function(response){
+   		  $scope.message = response.message;
+   		  });
 	   //put the cookie down
 	   $scope.message = 'Logout';
 	   $cookies.remove("cook");
@@ -150,17 +154,20 @@
                      usSpinnerService.spin('spinner-1');
                    };
           var password = sjcl.encrypt(__env.key, $scope.password)
+          var date = new Date();
+          $cookies.put('sessionID', date.getTime());
 
-   		  Login.update({email:$scope.email,password:password}, function(response){
+   		  Login.update({email:$scope.email,password:password,sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
-          if($scope.message == "Wrong credentials"){
+          if(($scope.message == "Wrong credentials") || ($scope.message == "User is already logged In")){
    		     $rootScope.isUserLoggedIn = false;
    		     $rootScope.isAdminLoggedIn = false;
    		     $rootScope.errorFlag = true;
+   		     $rootScope.errorMessage = $scope.message;
    		        		     $scope.spinneractive = false;
                           usSpinnerService.stop('spinner-1');
    		     }
-   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@arqonia.com")){
+   		  else if(($scope.message != "Wrong credentials") && ($scope.email != "admin@arqonia.com") && ($scope.message != "User is already logged In")){
              $cookies.put('email', $scope.email);
              $cookies.put('name', $scope.message);
    		     $cookies.put('cook', true);
@@ -170,8 +177,6 @@
    		     $cookies.put('numberOfFlatFilesUploaded', 0);
    		     $cookies.put('numberOfBiasFilesUploaded', 0);
    		     $cookies.put('numberOfProcessedFiles', 0);
-   		     var date = new Date();
-   		     $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
@@ -183,7 +188,7 @@
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     }
-   		  else {
+   		  else if(($scope.email == "admin@arqonia.com")) {
    		     $cookies.put('cook', true);
    		     $cookies.put('admin', true);
    		     $cookies.put('name', $scope.message);
@@ -192,8 +197,6 @@
    		     $cookies.put('numberOfFlatFilesUploaded', 0);
    		     $cookies.put('numberOfBiasFilesUploaded', 0);
    		     $cookies.put('numberOfProcessedFiles', 0);
-   		     var date = new Date();
-             $cookies.put('sessionID', date.getTime());
    		     $rootScope.isUserLoggedIn = $cookies.get('cook');
    		     $rootScope.isAdminLoggedIn = $cookies.get('admin');
    		     $rootScope.errorFlag = false;
@@ -243,7 +246,7 @@
                    if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
-   		  Reminder.save({email:$scope.email}, function(response){
+   		  Reminder.save({email:$scope.email, sessionId:$cookies.get('sessionID')}, function(response){
              console.log('get',response)
    		     $rootScope.errorFlag = false
    		     $location.path("login");
@@ -277,7 +280,7 @@
       $rootScope.isAdminLoggedIn = $cookies.get('admin');
       $rootScope.sessionID = $cookies.get('sessionID');
 
-      $scope.data = [{name:$scope.loggedInUser, email:$scope.loggedInUserEmail}];
+      $scope.data = [{name:$scope.loggedInUser, email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}];
       $scope.changeName = function() {
          $scope.name = this.name;
       };
@@ -296,7 +299,7 @@
              };
           var password = sjcl.encrypt(__env.key, $scope.password)
 
-   		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail}, function(response){
+   		  UpdateProfile.update({name:$scope.name,email:$scope.email,password:password,oldEmail:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response[Object.keys(response)[0]];
           if($scope.message == "User exists"){
    		     $rootScope.errorFlag = true
@@ -358,7 +361,7 @@
              if (!$scope.spinneractive) {
                usSpinnerService.spin('spinner-1');
              };
-   		     RemoveAccount.update({email:$scope.loggedInUserEmail}, function(response){
+   		     RemoveAccount.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
                  		     $scope.spinneractive = false;
                            usSpinnerService.stop('spinner-1');
 

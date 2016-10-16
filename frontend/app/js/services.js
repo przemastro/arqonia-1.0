@@ -5,14 +5,14 @@ var services = angular.module('astroApp.services', ['ngResource']);
     //services.constant('__env', __env);
 
 //File Upload
-astroApp.service('fileUpload', ['$http', function ($http) {
+astroApp.service('fileUpload', ['$http', '$cookies', function ($http, $cookies) {
             this.uploadFileToUrl = function(file, uploadUrl){
                var fd = new FormData();
                fd.append('file', file);
 
                $http.post(uploadUrl, fd, {
                   transformRequest: angular.identity,
-                  headers: {'Content-Type': undefined}
+                  headers: {'Content-Type': undefined, 'Email': $cookies.get('email'), 'SessionId': $cookies.get('sessionID')}
                })
 
                .success(function(){
@@ -27,8 +27,6 @@ astroApp.service('fileUpload', ['$http', function ($http) {
 astroApp.service('multipleFileUpload', ['$http', function ($http) {
             this.uploadFileToUrl = function(files, uploadUrl){
                var fd = new FormData();
-               console.log('tutaj');
-               console.log(fd);
                fd.append('file', files);
 
                $http.post(uploadUrl, fd, {
@@ -49,6 +47,14 @@ astroApp.service('multipleFileUpload', ['$http', function ($http) {
 services.factory('updateProfile', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/updateProfile', {}, {
+        update: {method:'PUT'}
+    });
+}]);
+
+//Update User
+services.factory('updateUser', ['$resource',
+    function ($resource) {
+    return $resource(__env.apiUrlService+'/logout', {}, {
         update: {method:'PUT'}
     });
 }]);
@@ -356,7 +362,7 @@ services.factory('postReductionImages', ['$resource',
 //Add new reduction images
 services.factory('postProcessImages', ['$resource',
     function ($resource) {
-    return $resource(__env.apiUrlService+'/processImages', {}, {
+    return $resource(__env.apiUrlService+'/processedImages', {}, {
         save: {method:'POST'}
     });
 }]);

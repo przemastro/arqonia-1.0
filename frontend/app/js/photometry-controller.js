@@ -103,6 +103,8 @@
                            }
                            var xhr = new XMLHttpRequest()
                            xhr.open("POST", uploadUrl)
+                           xhr.setRequestHeader('Email', $scope.loggedInUserEmail);
+                           xhr.setRequestHeader('SessionId', $cookies.get('sessionID'));
                            xhr.send(fd)
 
    		           if (!$scope.spinneractive) {
@@ -111,7 +113,7 @@
 
                    //Call postObservation service...
                     $scope.reductionImages = ReductionImages.save({sessionId:$rootScope.sessionID,files:names,email:$scope.loggedInUserEmail,
-                                                          conversionType:$scope.objectValue, imageType:'Processed'});
+                                                          conversionType:$scope.objectValue, imageType:'Processed', sessionId:$cookies.get('sessionID')});
                     $q.all([
                         $scope.reductionImages.$promise
                     ]).then(function(response) {

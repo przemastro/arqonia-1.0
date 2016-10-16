@@ -66,7 +66,7 @@ def plot(fileName, conversionType):
               #print 'continue'
               looper = looper + 1
               continue
-   except:
+   except(RuntimeError, TypeError, NameError):
        print 'errors in convertPlots function'
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):

@@ -6,7 +6,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication
+    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -141,327 +141,401 @@ parser.add_argument('conversionType', type=str)
 parser.add_argument('imageType', type=str)
 
 
+#public
 class Rest(Resource):
     def get(self, rest_id):
             abort_if_json_doesnt_exist(rest_id)
             return REST[rest_id]
 
-
+#private
 class RestUserObservation(Resource):
     def put(self):
         args = parser.parse_args()
-        observations = userObservations(args['email'])
-        return jsonify(observations)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           observations = userObservations(args['email'])
+           return jsonify(observations)
+        else:
+           return 401
 
-
+#private
 class RestObservation(Resource):
     def post(self):
-            args = parser.parse_args()
-            json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
-                        args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
-                        args['objectType'], args['verified'], args['email'])
-            content = Message("New Observation Added",
-                              sender="admin@arqonia.com",
-                              recipients=[args['email']])
-            #content.body = 'Hi,\n\nYou have added '+args['name']+' to the staging area.' \
-            #                               '\n\nBest Regards, \nThe Creator'
-
-            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> New Observation Added </div>' \
-                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
-                           'Hi, <br><br>You have added '+args['name']+' to the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
-            mail.send(content);
-            return 201
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           json_parser(args['name'], args['startDate'], args['endDate'], args['uFileName'],
+                       args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
+                       args['objectType'], args['verified'], args['email'])
+           content = Message("New Observation Added",
+                             sender="admin@arqonia.com",
+                             recipients=[args['email']])
+           content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> New Observation Added </div>' \
+                          '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                          'Hi, <br><br>You have added '+args['name']+' to the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+           mail.send(content);
+           return 201
+        else:
+           return 401
 
     def put(self):
-            args = parser.parse_args()
-            updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
-                              args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
-                              args['objectType'], args['verified'], args['email'])
-            content = Message("Existing Observation Updated",
-                              sender="admin@arqonia.com",
-                              recipients=[args['email']])
-            #content.body = 'Hi,\n\nYou have updated '+args['name']+' in the staging area.' \
-            #                                                     '\n\nBest Regards, \nThe Creator'
-            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Existing Observation Updated </div>' \
-                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
-                           'Hi, <br><br>You have updated '+args['name']+' in the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           updateObservation(args['id'], args['name'], args['startDate'], args['endDate'], args['uFileName'],
+                             args['vFileName'], args['bFileName'], args['rFileName'], args['iFileName'],
+                             args['objectType'], args['verified'], args['email'])
+           content = Message("Existing Observation Updated",
+                             sender="admin@arqonia.com",
+                             recipients=[args['email']])
+           content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Existing Observation Updated </div>' \
+                          '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                          'Hi, <br><br>You have updated '+args['name']+' in the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+           mail.send(content);
+           return 201
+        else:
+           return 401
 
-            mail.send(content);
-            return 201
 
 
-
-
+#admin
 class RestLastObservation(Resource):
     def get(self):
             return REST["lastLoad"]
 
 
     def put(self):
-        procRunner()
-        os.system("forceKill.bat")
-        return 201
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           procRunner()
+           os.system("forceKill.bat")
+           return 201
+        else:
+           return 401
 
+#private
 class RestUserProcessData(Resource):
     def put(self):
         args = parser.parse_args()
-        procPersonalizedRunner(args['email'])
-        return 201
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           procPersonalizedRunner(args['email'])
+           return 201
+        else:
+           return 401
 
+#private
 class RestDeleteObservation(Resource):
     def post(self):
-            args = parser.parse_args()
-            deleteObservation(args['id'])
-            content = Message("Existing Observation Removed",
-                              sender="admin@arqonia.com",
-                              recipients=[args['email']])
-            #content.body = 'Hi,\n\nYou have removed '+args['name']+' from the staging area.' \
-            #                                                       '\n\nBest Regards, \nThe Creator'
-            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Existing Observation Removed </div>' \
-                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
-                           'Hi, <br><br>You have removed '+args['name']+' from the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
-            mail.send(content);
-            return 201
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           deleteObservation(args['id'])
+           content = Message("Existing Observation Removed",
+                             sender="admin@arqonia.com",
+                             recipients=[args['email']])
+           content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Existing Observation Removed </div>' \
+                          '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                          'Hi, <br><br>You have removed '+args['name']+' from the staging area.<br>Follow the link to verify results: <a href="http://arqonia.com/#/table-list" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+           mail.send(content);
+           return 201
+        else:
+           return 401
 
 
 #Personalized HR Diagrams Data
+#private
 class RestPersonalizedObservationHRDiagram(Resource):
     def put(self):
         args = parser.parse_args()
-        data = personalizedObservationsHRDiagram(args['hrDiagramType'], args['email'])
-        return jsonify(data)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           data = personalizedObservationsHRDiagram(args['hrDiagramType'], args['email'])
+           return jsonify(data)
+        else:
+           return 401
 
 
 #Personalized HR Diagrams Data Range
+#private
 class RestPersonalizedObservationHRDiagramRange(Resource):
     def put(self):
         args = parser.parse_args()
-        data = personalizedObservationsHRDiagramRange(args['hrDiagramType'], args['email'])
-        return jsonify(data)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           data = personalizedObservationsHRDiagramRange(args['hrDiagramType'], args['email'])
+           return jsonify(data)
+        else:
+           return 401
 
 #Personalized LC Diagrams Data
+#private
 class RestPersonalizedObservationLCDiagram(Resource):
     def put(self):
         args = parser.parse_args()
-        data = personalizedLCDiagram(args['filter'], args['email'])
-        return jsonify(data)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           data = personalizedLCDiagram(args['filter'], args['email'])
+           return jsonify(data)
+        else:
+           return 401
+
 
 #Personalized LC Diagrams Range
+#private
 class RestPersonalizedObservationLCDiagramRange(Resource):
     def put(self):
         args = parser.parse_args()
-        data = personalizedLCDiagramRange(args['filter'], args['email'])
-        return jsonify(data)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           data = personalizedLCDiagramRange(args['filter'], args['email'])
+           return jsonify(data)
+        else:
+           return 401
 
-    #HR Diagrams Data
+#public
+#HR Diagrams Data
 class RestObservationBVDiagram(Resource):
     def get(self):
             return REST["observationsBVDiagram"]
 
+#public
 class RestObservationUBDiagram(Resource):
     def get(self):
         return REST["observationsUBDiagram"]
 
+#public
 class RestObservationVIDiagram(Resource):
     def get(self):
         return REST["observationsVIDiagram"]
 
+#public
 class RestObservationRIDiagram(Resource):
     def get(self):
         return REST["observationsRIDiagram"]
 
+
 #HR Diagrams Range
+#public
 class RestObservationBVDiagramRange(Resource):
     def get(self):
             return REST["observationsBVDiagramRange"]
 
+#public
 class RestObservationUBDiagramRange(Resource):
     def get(self):
         return REST["observationsUBDiagramRange"]
 
+#public
 class RestObservationRIDiagramRange(Resource):
     def get(self):
         return REST["observationsRIDiagramRange"]
 
+#public
 class RestObservationVIDiagramRange(Resource):
     def get(self):
         return REST["observationsVIDiagramRange"]
 
 
 #LC Diagrams Data
+#public
 class RestObservationLCUDiagram(Resource):
     def get(self):
         return REST["observationsLCUDiagram"]
-
+#public
 class RestObservationLCVDiagram(Resource):
     def get(self):
         return REST["observationsLCVDiagram"]
 
+#public
 class RestObservationLCBDiagram(Resource):
     def get(self):
         return REST["observationsLCBDiagram"]
 
+#public
 class RestObservationLCRDiagram(Resource):
     def get(self):
         return REST["observationsLCRDiagram"]
 
+#public
 class RestObservationLCIDiagram(Resource):
     def get(self):
         return REST["observationsLCIDiagram"]
 
 #LC Diagrams Range
+#public
 class RestObservationLCUDiagramRange(Resource):
     def get(self):
         return REST["observationsLCUDiagramRange"]
 
+#public
 class RestObservationLCVDiagramRange(Resource):
     def get(self):
         return REST["observationsLCVDiagramRange"]
 
+#public
 class RestObservationLCBDiagramRange(Resource):
     def get(self):
         return REST["observationsLCBDiagramRange"]
 
+#public
 class RestObservationLCRDiagramRange(Resource):
     def get(self):
         return REST["observationsLCRDiagramRange"]
 
+#public
 class RestObservationLCIDiagramRange(Resource):
     def get(self):
         return REST["observationsLCIDiagramRange"]
 
-
+#private
 class RestFileUpload(Resource):
     def post(self):
-            file = request.files['file']
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return 201
+        emailHeader = request.headers.get("Email")
+        sessionIdHeader = request.headers.get("SessionId")
+        print emailHeader
+        auth = basicAuthentication(emailHeader, sessionIdHeader)
+        if(auth == 'true'):
+           file = request.files['file']
+           filename = file.filename
+           file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+           return 201
+        else:
+           return 401
 
+#private
 class RestInputFITSUpload(Resource):
     def post(self):
-        files = request.files.getlist("files")
+        emailHeader = request.headers.get("Email")
+        sessionIdHeader = request.headers.get("SessionId")
+        print emailHeader
+        auth = basicAuthentication(emailHeader, sessionIdHeader)
+        if(auth == 'true'):
+           files = request.files.getlist("files")
+           for file in files:
+              filename = file.filename
+              file.save(os.path.join(app.config['INPUT_FITS'], filename))
+           return 201
+        else:
+           return 401
 
-        for file in files:
-           filename = file.filename
-           file.save(os.path.join(app.config['INPUT_FITS'], filename))
-        return 201
 
-
+#public
 class RestRegister(Resource):
     def post(self):
         args = parser.parse_args()
-
         decrypted = decrypt_password(args['activeNumber'])
-        #msg = addUser(args['name'],args['email'], str(sj))
         msg = addUser(args['name'],args['email'], args['activeNumber'])
         if msg == 'Correct':
             content = Message("Hello "+args['name'],
                       sender="admin@arqonia.com",
                       recipients=[args['email']])
-            #content.body = 'Welcome '+args['name']+',\n\nThank you for joining Arqonia, the biggest astronomical fandom in the Universe.' \
-            #                                       '\nPlease login with following password to activate your account: '+decrypted+'' \
-            #                                       '\n\nBest Regards, \nAdmin'
             content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Hello </div>' \
                            '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
                            'Welcome '+args['name']+',<br><br>Thank you for joining Arqonia, the biggest astronomical fandom in the Universe. <br>Please login with following password to activate your account: <b style="color:red">'+decrypted+'</b><br>Follow the link to log in to the application: <a href="http://arqonia.com/#/main" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
             mail.send(content);
         return jsonify({'msg': msg})
 
-
+#private
 class RestUpdateProfile(Resource):
     def put(self):
         args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           msg = updateUser(args['name'],args['email'], args['password'],args['oldEmail'])
+           if msg == 'Correct':
+               content = Message("Profile Updated", sender="admin@arqonia.com", recipients=[args['email']])
+               content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Profile Updated </div>' \
+                              '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                              'Hi '+args['name']+',<br><br>Your Profile has been updated.<br>Follow the link to log in to the application: <a href="http://arqonia.com/#/main" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+           mail.send(content);
+           return jsonify({'msg': msg})
+        else:
+           return 401
 
-        #sj = decrypt_password(args['password'])
-        #msg = updateUser(args['name'],args['email'], str(sj),args['oldEmail'])
-        msg = updateUser(args['name'],args['email'], args['password'],args['oldEmail'])
-        if msg == 'Correct':
-            content = Message("Profile Updated",
-                              sender="admin@arqonia.com",
-                              recipients=[args['email']])
-            #content.body = 'Hi '+args['name']+',\n\nYour Profile has been updated.' \
-            #                                       '\n\nBest Regards, \nAdmin'
-
-            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Profile Updated </div>' \
-                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
-                           'Hi '+args['name']+',<br><br>Your Profile has been updated.<br>Follow the link to log in to the application: <a href="http://arqonia.com/#/main" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
-        mail.send(content);
-        return jsonify({'msg': msg})
-
+#private
 class RestRemoveAccount(Resource):
     def put(self):
         args = parser.parse_args()
-        msg = removeUser(args['email'])
-        if msg == 'Correct':
-            content = Message("Goodbye",
-                              sender="admin@arqonia.com",
-                              recipients=[args['email']])
-            #content.body = 'Hi, \n\nThank you for using Arqonia. We hope you will be back soon.' \
-            #                                     '\n\nBest Regards, \nAdmin'
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           msg = removeUser(args['email'])
+           if msg == 'Correct':
+               content = Message("Goodbye",
+                                 sender="admin@arqonia.com",
+                                 recipients=[args['email']])
+               content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Goodbye! </div>' \
+                              '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
+                              'Hi, <br><br>Thank you for using Arqonia. <br>In order to remove your account permanently please ask <a style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;" href="mailto:admin@arqonia.com">Admin</a>. <br>We hope you will be back soon. </b><br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
+               mail.send(content);
+           return jsonify({'msg': msg})
+        else:
+           return 401
 
-            content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Goodbye! </div>' \
-                           '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
-                           'Hi, <br><br>Thank you for using Arqonia. <br>In order to remove your account permanently please ask <a style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;" href="mailto:admin@arqonia.com">Admin</a>. <br>We hope you will be back soon. </b><br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
-            mail.send(content);
-        return jsonify({'msg': msg})
-
+#public
 class RestReminder(Resource):
     def post(self):
         args = parser.parse_args()
-
         msg = getPassword(args['email'])
         msg = decrypt_password(msg)
-        content = Message("Password Reminder",
-                          sender="admin@arqonia.com",
-                          recipients=[args['email']])
-        #content.body = 'Hi,\n\nThis is reply for your request. \n\nYour password is: '+msg+'' \
-        #                                       '\n\nBest Regards, \nAdmin'
-
+        content = Message("Password Reminder", sender="admin@arqonia.com", recipients=[args['email']])
         content.html = '<!DOCTYPE html><html lang="en"><meta charset="utf-8"><body style="background-color:white;margin-bottom: 50px;"><div style="max-width: 650px;height: 550px;border-style: solid;border-width: 1px;border-color: #EBEBEB; background-color:white;width:100%;margin: 40px auto;"> <div id="header" align="center" style="background-color: white;background-image: none; background-repeat: repeat;background-attachment: scroll;background-position: 0% 0%;background-clip: border-box; background-origin: padding-box;background-size: auto auto;width: 100%;margin:auto; position:relative;z-index: 1;text-align:right;margin-top:10px;"> <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden;font-family: ''Helvetica Neue'', ''Helvetica'', Helvetica, Arial, sans-serif;border-bottom: 1px solid #4D9DC2 !important;width:91%;margin-left:30px"> <li style="text-align:center;margin-top: 10px;margin-bottom:10px;margin-left:0px;float: left;"> <a class="pageSection" style="color:white;text-decoration: none;color:#4D9DC2;font-size: 1.5rem;">A R Q O N I A</a></li></ul> </div><div align="center" style="background-color: white;position: relative;margin:auto;margin-top:30px;z-index: 0;height:40px;color:#4D9DC2;font-size: 1.8rem;"> Password Reminder </div>' \
                        '<div style="height:375px"> <p style="padding-left:50px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: normal;">' \
                        'Hi, <br><br>This is reply to your request. <br><br>Your password is: <b style="color:red"> '+msg+' </b><br>Follow the link to log in to the application: <a href="http://arqonia.com/#/main" style="text-decoration: none;color:#4D9DC2;padding-left:0px;padding-top:20px;font-family: inherit;font-weight: normal;font-size: 1.0rem;line-height: 1.6;margin-bottom: 1.25rem;text-rendering: optimizeLegibility;font-style: normal;">ARQONIA</a>  <br><br><br> Best Regards, <br>Arqonia Team<br><br><br>This is an automated email. Please do not reply.</p></div><div align="center" style="color: white;font-weight: 300;padding: 1px 0;background-color: #323232;font-size: 12px;max-width: 650px; background-color: #4D9DC2;height: 15px;margin-bottom: 0px;margin-top: 0px;width:91%;margin-left:30px"> ©2016 ARQONIA. All Rights Reserved. </div></div></body></html>'
-
         mail.send(content);
         return 201
 
+#public
 class RestLogin(Resource):
     def put(self):
         args = parser.parse_args()
         sj = decrypt_password(args['password'])
-        msg = verifyCredentials(args['email'], sj)
-        #msg = verifyCredentials(args['email'], args['password'])
+        msg = verifyCredentials(args['email'], sj, args['sessionId'])
         return jsonify({'msg': msg})
 
+#private
+class RestLogout(Resource):
+    def put(self):
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           logoutUser(args['email'])
+           return 201
+        else:
+           return 401
+
+#public
 class RestSearch(Resource):
     def put(self):
         args = parser.parse_args()
         details = objectDetails(args['name'])
         return jsonify(details)
 
+#public
 class RestStatistics(Resource):
     def get(self):
         return REST["statistics"]
 
+#public
 class RestSubscribe(Resource):
     def post(self):
         args = parser.parse_args()
         addSubscriber(args['email'])
         return 201
 
-
+#private
 class RestCatalog(Resource):
     def put(self):
         args = parser.parse_args()
-        catalog = catalogData(args['objectType'], args['abbreviation'], args['email'])
-        return jsonify(catalog)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           catalog = catalogData(args['objectType'], args['abbreviation'], args['email'])
+           return jsonify(catalog)
+        else:
+           return 401
 
-
+#private
 class RestReductionImages(Resource):
     def post(self):
         args = parser.parse_args()
@@ -473,18 +547,23 @@ class RestReductionImages(Resource):
         else:
            return 401
 
-
+#private
 class RestProcessImages(Resource):
     def post(self):
         args = parser.parse_args()
-        data = processImages(args['sessionId'], args['email'])
-        return jsonify(data)
-
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           data = processImages(args['sessionId'], args['email'])
+           return jsonify(data)
+        else:
+           return 401
 
 def basicAuthentication(email, sessionId):
-    auth = authentication(email, sessionId)
+    if(str(sessionId) != 'None'):
+       auth = authentication(email, sessionId)
+    else:
+       auth = 'false'
     return auth
-
 
 
 api.add_resource(Rest, '/<rest_id>')
@@ -522,6 +601,7 @@ api.add_resource(RestUpdateProfile, '/updateProfile')
 api.add_resource(RestRemoveAccount, '/removeAccount')
 api.add_resource(RestReminder, '/reminder')
 api.add_resource(RestLogin, '/login')
+api.add_resource(RestLogout, '/logout')
 api.add_resource(RestSearch, '/search')
 api.add_resource(RestStatistics, '/statistics')
 api.add_resource(RestSubscribe, '/subscribe')
@@ -534,7 +614,7 @@ api.add_resource(RestProcessImages, '/processImages')
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,SessionId,Email')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     response.headers.add("Access-Control-Max-Age", "3600");
     response.headers.add("Access-Control-Allow-Headers", "x-requested-with");

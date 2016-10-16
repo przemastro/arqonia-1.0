@@ -29,6 +29,7 @@
         $scope.message = 'Admin Panel';
         $scope.isAdminLoggedIn = $cookies.get('admin');
         $scope.sessionID = $cookies.get('sessionID');
+        $scope.loggedInUserEmail = $cookies.get('email');
         $scope.displayedObservations = [];
         //Call getProcessedData service
         $scope.observations = GetProcessedData.query();
@@ -38,7 +39,7 @@
             usSpinnerService.spin('spinner-1');
 
             //Call processData service
-   		    ProcessData.query(function(response){
+   		    ProcessData.query({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}), (function(response){
    		      $scope.message = response.message;
    		   });
           }
