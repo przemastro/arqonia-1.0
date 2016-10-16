@@ -6,7 +6,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser, addReductionImages, processImages
+    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -465,8 +465,13 @@ class RestCatalog(Resource):
 class RestReductionImages(Resource):
     def post(self):
         args = parser.parse_args()
-        data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
-        return jsonify(data)
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+           args = parser.parse_args()
+           data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
+           return jsonify(data)
+        else:
+           return 401
 
 
 class RestProcessImages(Resource):
@@ -474,6 +479,12 @@ class RestProcessImages(Resource):
         args = parser.parse_args()
         data = processImages(args['sessionId'], args['email'])
         return jsonify(data)
+
+
+def basicAuthentication(email, sessionId):
+    auth = authentication(email, sessionId)
+    return auth
+
 
 
 api.add_resource(Rest, '/<rest_id>')

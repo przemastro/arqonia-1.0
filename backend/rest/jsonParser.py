@@ -521,14 +521,43 @@ def getPassword(email):
     else:
         cnx.close()
 
+
+#------------------------------------------------------Authentication---------------------------------------------------
+def authentication(email, sessionId):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        email = str(email)
+        sessionId = int(sessionId)
+
+        verify_sessionId = ("select sessionId from data.users where Email='"+email+"'")
+        cursor.execute(verify_sessionId)
+        DBSessionId = cursor.fetchone()
+        DBSessionId = int(DBSessionId[0])
+        if(DBSessionId==sessionId):
+            auth = 'true'
+        else:
+            auth = "Unauthorized User"
+
+        return auth
+        cursor.close()
+
+    except:
+        print 'errors in verifyCredentials function'
+    else:
+        cnx.close()
+
+
 #-----------------------------------------------------verify Credentials------------------------------------------------
-def verifyCredentials(email, password):
+def verifyCredentials(email, password, sessionId):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
 
         email = str(email)
         password = str(password)
+        sessionId = str(sessionId)
 
         #Activation for first login
 
@@ -547,6 +576,9 @@ def verifyCredentials(email, password):
             if(decrypt_password(DBPassword)==password):
                #Activation for first login - in fact I will update everytime this flag
                update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
+               cursor.execute(update_ActiveFlag)
+               cnx.commit()
+               update_SessionId = ("update data.users set SessionId='"+sessionId+"' where Email='"+email+"'")
                cursor.execute(update_ActiveFlag)
                cnx.commit()
                #and the rest
