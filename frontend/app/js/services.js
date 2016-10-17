@@ -362,7 +362,7 @@ services.factory('postReductionImages', ['$resource',
 //Add new reduction images
 services.factory('postProcessImages', ['$resource',
     function ($resource) {
-    return $resource(__env.apiUrlService+'/processedImages', {}, {
+    return $resource(__env.apiUrlService+'/processImages', {}, {
         save: {method:'POST'}
     });
 }]);

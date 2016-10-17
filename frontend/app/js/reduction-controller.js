@@ -342,7 +342,7 @@
                    };
 
                    //Call
-                    $scope.processImages = ProcessImages.save({sessionId:$rootScope.sessionID,email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')});
+                    $scope.processImages = ProcessImages.save({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')});
                     $q.all([
                         $scope.processImages.$promise
                     ]).then(function(response) {

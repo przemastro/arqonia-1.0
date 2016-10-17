@@ -21,7 +21,7 @@ frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 
 
 
-def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames):
+def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId):
     try:
         sig_fract = 5.0
         percent_fract = 0.01
@@ -31,33 +31,37 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames):
         List = getDarkFrames
         dataList = []
         for file in List:
-            dataList.append(openFile(file))
+            dataList.append(openFile(backendInputFits+sessionId+"_Dark_"+file))
         reference_dark_image = medianImage(dataList)
 
         #Open Bias Frames data
         List = getBiasFrames
         dataList = []
         for file in List:
-            dataList.append(openFile(backendInputFits+file))
+            dataList.append(openFile(backendInputFits+sessionId+"_Bias_"+file))
         reference_bias_image = medianImage(dataList)
 
         #Open Flat Fields data
         List = getFlatFields
         dataList = []
         for file in List:
-            dataList.append(openFileAndNormalize(backendInputFits+file))
+            dataList.append(openFileAndNormalize(backendInputFits+sessionId+"_Flat_"+file))
         reference_flat_image = medianImage(dataList)
 
 
         #Open Raw Images Data and Reduce
         List = getRawFrames
         for file in List:
-           dataImage = openFileAndNormalize(backendInputFits+file)
+           dataImage = openFile(backendInputFits+sessionId+"_Raw_"+file)
            dark_corrected_image = dataImage - reference_dark_image
+           print dark_corrected_image
            bias_corrected_image = dark_corrected_image - reference_bias_image
+           print bias_corrected_image
            final_image = bias_corrected_image / reference_flat_image
+           print 'final_image'
+           print final_image
 
-           pyfits.append(backendOutputFits+"Processed_"+file+".fits", final_image)
+           pyfits.append(backendOutputFits+"Processed_"+file, final_image)
 
            sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
            img_data = final_image - sky
@@ -65,9 +69,12 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames):
            fig = Figure(figsize=(12.5, 13.35))
            fig.figimage(new_img, cmap='gray')
            canvas = FigureCanvas(fig)
-           canvas.print_figure(frontendInputFits+"Processed_"+file+".png")
+           specialCharacterPosition = file.index('.')
+           fileWithoutExtension = str(file[:specialCharacterPosition])
+           print fileWithoutExtension
+           canvas.print_figure(frontendInputFits+"Linear_"+sessionId+"_Processed_"+fileWithoutExtension+".png")
 
-    except (RuntimeError, TypeError, NameError):
+    except:
         print 'error'
 
 def medianImage(images):

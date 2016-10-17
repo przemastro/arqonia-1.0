@@ -1540,29 +1540,37 @@ def processImages(sessionId, email):
         else:
             lastId = lastId[0] + 1
 
-        counter = lastId
-
         #Get Images
         getDarkFrames = (queries.get('DatabaseQueries', 'database.getDarkFrames') + sessionId)
         getBiasFrames = (queries.get('DatabaseQueries', 'database.getBiasFrames') + sessionId)
         getFlatFields = (queries.get('DatabaseQueries', 'database.getFlatFields') + sessionId)
         getRawFrames = (queries.get('DatabaseQueries', 'database.getRawFrames') + sessionId)
 
-        reduceImages.reduce(fetch_all(getDarkFrames), fetch_all(getBiasFrames), fetch_all(getFlatFields), fetch_all(getRawFrames))
+
+        reduceImages.reduce(fetch_all(getDarkFrames), fetch_all(getBiasFrames), fetch_all(getFlatFields), fetch_all(getRawFrames), sessionId)
 
         rawImages = fetch_all(getRawFrames)
+        print rawImages
+        counter = lastId
         for file in rawImages:
-           insertFitsImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
-                          " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
-                          "3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate())")
+           print 'tutaj'
+           print file
+           lastId = str(counter)
+           counter = counter + 1
+           insertFitsImage = "insert into data.images(ID, ImageId, OwnerID, FileExtensionId, SessionId, ConversionTypeId, ImageTypeId, ObjectName, FolderName, ProcessingType, UploadTime) " \
+                             "values('"+lastId+"', 1, (select id from data.users where email='"+email+"'), 3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate())"
+
+           print insertFitsImage
            cursor.execute(insertFitsImage)
            cnx.commit()
-
-           specialCharacterPosition = file.index('.') - 1
+           print 'helow'
+           lastId = str(counter)
+           counter = counter + 1
+           specialCharacterPosition = file.index('.')
            objectName = str(file[:specialCharacterPosition])
            objectName = "Linear_"+sessionId+"_Processed_"+objectName+".png"
            insertPngImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
-                              " values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                              " values('"+lastId+"', 1, (select id from data.users where email='"+email+"'),"
                               "2, '"+sessionId+"', 1, 5, '"+objectName+"', 'outputFits', 'Reduction', getdate())")
            cursor.execute(insertPngImage)
            cnx.commit()
