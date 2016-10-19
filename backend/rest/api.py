@@ -6,7 +6,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser
+    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser, returnZippedImages
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -558,6 +558,17 @@ class RestProcessImages(Resource):
         else:
            return 401
 
+#private
+class RestSaveImages(Resource):
+    def post(self):
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+            returnZippedImages(args['sessionId'], args['email'])
+            return 201
+        else:
+            return 401
+
 def basicAuthentication(email, sessionId):
     if(str(sessionId) != 'None'):
        auth = authentication(email, sessionId)
@@ -608,6 +619,7 @@ api.add_resource(RestSubscribe, '/subscribe')
 api.add_resource(RestCatalog, '/catalog')
 api.add_resource(RestReductionImages, '/reductionImages')
 api.add_resource(RestProcessImages, '/processImages')
+api.add_resource(RestSaveImages, '/saveImages')
 
 
 # Handling COR requests

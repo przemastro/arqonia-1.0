@@ -24,9 +24,9 @@
 
     astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
                                               'multipleFileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
-                                              'postProcessImages',
+                                              'postProcessImages', 'postSaveImages',
                         (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, multipleFileUpload, $cookies,
-                                   $element, ReductionImages, usSpinnerService, $q, buttonConfig, ProcessImages) {
+                                   $element, ReductionImages, usSpinnerService, $q, buttonConfig, ProcessImages, SaveImages) {
 
         //cookies
         $scope.loggedInUser = $cookies.get('name');
@@ -362,6 +362,26 @@
                    $scope.processedFlag = true;
                    console.log($scope.processedFlag);
                 }
+
+                //Save Data
+                $scope.saveFiles = function(){
+           		   if (!$scope.spinneractive) {
+                     usSpinnerService.spin('spinner-1');
+                   };
+
+                   //Call
+                    $scope.saveImages = SaveImages.save({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')});
+                    $q.all([
+                        $scope.saveImages.$promise
+                    ]).then(function(response) {
+
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                       $window.open("outputFits/"+$rootScope.sessionID+"_ProcessedImages.zip")
+
+                       });
+                }
+
           }
 
         }

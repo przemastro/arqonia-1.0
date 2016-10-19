@@ -8,6 +8,7 @@ from sjcl import SJCL
 import os
 import convertPlots
 import reduceImages
+import zipFiles
 import time
 from multiprocessing import Process, Queue
 
@@ -1595,6 +1596,27 @@ def processImages(sessionId, email):
     else:
         cnx.close()
 
+
+#----------------------------------------------------------ZIP Files----------------------------------------------------
+def returnZippedImages(sessionId, email):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        sessionId = str(sessionId)
+
+        #Get Images
+        getImages = (queries.get('DatabaseQueries', 'database.getImages') + sessionId)
+
+
+        data = zipFiles.zipAll(fetch_all(getImages), sessionId)
+
+        cursor.close()
+
+    except:
+        print 'errors in processImages function'
+    else:
+        cnx.close()
 
 
 def calculate_starsParameters(ra, de, code, name, Umag, Vmag, Bmag, BV, UB, RI, VI, SpType):
