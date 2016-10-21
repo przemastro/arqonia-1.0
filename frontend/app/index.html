@@ -73,6 +73,10 @@
                         <li><a style="text-align:left;width:200px;background-color: rgb(23, 47, 58);color:white;margin-top:-5px;margin-left:-5px">Account & Settings</a></li>
                         <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href ng-click="editProfileModal()" ng-show="isAdminLoggedIn=='false'">Edit Profile</a></li>
                         <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="#logout">Logout</a></li>
+                        <!--PRODUCTION-->
+                        <!--
+                        <li><a style="text-align:left;width:200px;" onMouseOver="this.style.backgroundColor='white'" onMouseOut="this.style.backgroundColor='#efefef'" href="logout">Logout</a></li>
+                        -->
                     </ul>
                 </div>
              </div>
@@ -85,6 +89,27 @@
      </ul>
  </div>
 
+ <div class="socials-links" align="left" style="background:#49494b;padding:8px 0px;position:fixed;top:0;z-index:2000;width:100%;height:30px;
+                                                margin-left:0px;margin-top:370px;max-width:45px;height:100px;">
+     <a style="margin-left:11px;" href="http://www.linkedin.com/company/4972?goback=.fcs_GLHD_EPAM_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2&trk=ncsrch_hits" target="_blank">
+         <img src="images/linkedin.svg">
+     </a>
+ </div>
+ <div class="socials-links" align="left" style="background:#49494b;padding:8px 0px;position:fixed;top:0;z-index:2000;width:100%;height:30px;
+                                                margin-left:0px;margin-top:410px;max-width:45px;height:80px;">
+     <a style="margin-left:11px" href="https://twitter.com/ArqoniaFandom" target="_blank">
+         <img src="images/twitter.svg">
+     </a>
+ </div>
+ <div class="socials-links" align="left" style="background:#49494b;padding:8px 0px;position:fixed;top:0;z-index:2000;width:100%;height:30px;
+                                                margin-left:0px;margin-top:450px;max-width:45px;max-height:50px;padding-bottom:4px">
+     <a style="margin-left:11px" href="https://www.facebook.com/Arqonia-534298626768355" target="_blank">
+         <img src="images/facebook.svg">
+     </a>
+ </div>
+
+
+
  <div id="header" align="center" style="margin:auto;position:relative;z-index: 1;text-align:right;margin-top:30px;">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="#main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
@@ -96,12 +121,26 @@
      </ul>
  </div>
 
+ <!--PRODUCTION-->
+<!--
+ <div id="header" align="center" style="margin:auto;position:relative;z-index: 1;text-align:right;margin-top:30px;">
+     <ul style="margin:auto;">
+         <li style="font-size:120%;margin-left:30px;margin-top: 5px"><a href="main" class="pageSection" style="color:white;text-decoration: none">A R Q O N I A</a></li>
+         <li style="margin-top: 7px;float: right;margin-right:20%"><a href="search" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none;">SEARCH</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="diagram" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">DIAGRAMS</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="table-list" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">OBSERVATIONS</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="photometry" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">PHOTOMETRY</a></li>
+         <li style="margin-top: 7px;float: right;"><a href="reduction" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none">DATA REDUCTION</a></li>
+     </ul>
+ </div>
+-->
+
  <div align="center" id="carousel-example-generic" style="position: relative;margin:auto;margin-top:-48px;z-index: 0;" class="carousel slide" data-ride="carousel" data-interval="5000">
      <ol align="center" style="margin: auto;" class="carousel-indicators">
          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-         <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+         <!--<li data-target="#carousel-example-generic" data-slide-to="3"></li>-->
      </ol>
 
      <div align="center" class="carousel-inner" style="max-width: 100%;width:5800px;max-height: 100%;height:250px;">
@@ -228,6 +267,7 @@
                  </table>
              </div>
          </div>
+         <!--
          <div class="item">
              <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:280px;">
              <div class="carousel-caption">
@@ -270,6 +310,7 @@
                  </table>
              </div>
          </div>
+         -->
          <div class="item">
              <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:280px;">
              <div class="carousel-caption">
