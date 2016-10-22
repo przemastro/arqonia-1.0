@@ -1443,9 +1443,10 @@ if (typeof Object.create !== "function") {
     $.fn.owlCarousel = function (options) {
 
         return this.each(function () {
-            if ($(this).data("owl-init") === true) {
-                return false;
-            }
+        console.log('inside carousel');
+            //if ($(this).data("owl-init") === true) {
+            //    return false;
+            //}
             $(this).data("owl-init", true);
             var carousel = Object.create(Carousel);
 
@@ -1453,7 +1454,11 @@ if (typeof Object.create !== "function") {
               return new Promise((resolve) => setTimeout(resolve, time));
             }
             sleep(100).then(() => {
-            carousel.init(options, this);})
+            //console.log('destroy');
+            //carousel.destroy(this);
+            console.log('init');
+            carousel.init(options, this);
+            })
             $.data(this, "owlCarousel", carousel);
 
 

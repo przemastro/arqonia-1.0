@@ -1,5 +1,8 @@
 <body ng-controller = "searchCtrl" ng-app = "astroApp">
 <div ng-controller = "searchDBCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
+    <p style="margin-top:-90px;margin-bottom:30px;text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">Search for Object</p>
+
     <form style="margin-top: 50px;margin-bottom: 50px;" class="form-inline" name="searchForm" role="form" novalidate ng-submit="searchForm.$valid && startSpin()">
         <div class="form-group">
             <input type="text" class="form-control" placeholder="e.g. HD172167" name="nam" ng-model="nam" required/>

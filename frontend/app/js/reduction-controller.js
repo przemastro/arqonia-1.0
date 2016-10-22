@@ -60,6 +60,12 @@
 
           //Dark Frames selected
           if($scope.selectedImageType == "Dark Frames") {
+          //$window.location.reload();
+                var myEl1 = angular.element( document.querySelector( '#sync1' ) );
+                myEl1.empty();  //clears contents
+                var myEl2 = angular.element( document.querySelector( '#sync2' ) );
+                myEl2.empty();  //clears contents
+
                 $rootScope.selectType = "DARK FRAMES";
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Dark';
@@ -78,7 +84,6 @@
                            }
                          });
                        };
-
                 $scope.convert = function(){
                    var names = [];
                            for (var i in $scope.files) {
@@ -387,11 +392,23 @@
         }
 
                                         //Carousel binding
-                                    function bindData() {    $(document).ready(function() {
+                                    function bindData() {
+                                         var $carousel = $(".owl-carousel");
+                                         //console.log('remove');
+                                         //    $carousel.trigger('remove.owl.carousel',1)
+                                         //       .trigger('refresh.owl.carousel');
+                                         //console.log('create');
+                                         //var html = '<div class=\"item\"><h4>N1</h4></div>';
+                                         //    $carousel.trigger('add.owl.carousel', [html, 0])
+                                         //       .trigger('refresh.owl.carousel');
 
+                                        $(document).ready(function() {
+
+                                           console.log('declaration');
                                            var sync1 = $("#sync1");
                                            var sync2 = $("#sync2");
 
+                                           console.log('options-sync1');
                                            sync1.owlCarousel({
                                              singleItem : true,
                                              slideSpeed : 1000,
@@ -401,6 +418,7 @@
                                              responsiveRefreshRate : 200,
                                            });
 
+                                           console.log('options-sync2');
                                            sync2.owlCarousel({
                                              items : 15,
                                              itemsDesktop      : [1199,10],
