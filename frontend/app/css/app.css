@@ -381,6 +381,11 @@ p {
 
 }
 
+.customHeightWidth {
+    width: 110px !important;
+    height: 36px !important;
+}
+
 .customHeight {
     height: 34px !important;
 }
@@ -456,8 +461,8 @@ p {
 
 
 .scrollToTop{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 65px;
 	padding:0px;
 	text-align:center;
 	background: whiteSmoke;
@@ -465,12 +470,14 @@ p {
 	color: #444;
 	text-decoration: none;
 	position:fixed;
-	top:530px;
-	right:-15px;
+	bottom:0px;
+	right:0px;
     float: right;
 	display:none;
-	background: url('images\arrow_up.png') no-repeat 0px 20px;
-	z-index: 1;
+	background: url('images\arrow_up2.png') no-repeat 0px 20px;
+	z-index: 2000;
+	padding:0px 0px;
+    margin-right:0px;
 }
 .scrollToTop:hover{
 	text-decoration:none;
@@ -650,4 +657,10 @@ p {
      transform: rotate(180deg) scaleX(-1);
      filter: FlipH;
     -ms-filter: "FlipH";
+}
+
+.carousel-control.left, .carousel-control.right {
+   background-image: none !important;
+   outline: none !important;
+   background-color: rgba(77, 157, 194, 0) !important;
 }

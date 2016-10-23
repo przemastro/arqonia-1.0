@@ -1,7 +1,7 @@
 'use strict';
 
 
-	// create the module and name it astroApp
+	// create the module and name in astroApp
 	var astroApp = angular.module('astroApp', ['ngRoute', 'astroApp.services', 'astroApp.controller', 'ngMessages'])
 
 	// configure routes
@@ -62,5 +62,6 @@
 				controller  : 'logoutCtrl',
 			})
 
+            //PRODUCTION
 			//$locationProvider.html5Mode(true);
 	}]);

@@ -43,6 +43,7 @@
    <script src="bower_components/angular-nvd3/dist/angular-nvd3.min.js"></script>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-rc.0/angular-cookies.min.js"></script>
    <script src="js/owl-carousel/owl.carousel.js"></script>
+   <!--PRODUCTION-->
    <!--<base href="/">-->
  </head>
  <!-- define angular controller -->
@@ -90,27 +91,27 @@
  </div>
 
  <div class="socials-links" align="left" style="background:#49494b;padding:15px 0px;position:fixed;bottom:0;z-index:2000;width:100%;
-                                                margin-left:0px;margin-bottom:250px;max-width:45px;height:50px;">
-     <a style="margin-left:11px;" href="http://www.linkedin.com/company/4972?goback=.fcs_GLHD_EPAM_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2&trk=ncsrch_hits" target="_blank">
+                                                margin-left:0px;top:0;bottom:0;margin-bottom:auto;margin-top:auto;max-width:46px;height:176px;">
+     <a style="margin-left:12px;" href="http://www.linkedin.com/company/4972?goback=.fcs_GLHD_EPAM_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2_*2&trk=ncsrch_hits" target="_blank">
          <img src="images/linkedin.svg">
      </a>
- </div>
- <div class="socials-links" align="left" style="background:#49494b;padding:10px 0px;position:fixed;bottom:0;z-index:2000;width:100%;
-                                                margin-left:0px;margin-bottom:200px;max-width:45px;height:50px;">
-     <a style="margin-left:11px" href="https://twitter.com/ArqoniaFandom" target="_blank">
+     <div style="padding: 10px 0px"></div>
+     <a style="margin-left:12px;" href="https://twitter.com/ArqoniaFandom" target="_blank">
          <img src="images/twitter.svg">
      </a>
- </div>
- <div class="socials-links" align="left" style="background:#49494b;padding:10px 0px;position:fixed;bottom:0;z-index:2000;width:100%;
-                                                margin-left:0px;margin-bottom:155px;max-width:45px;height:50px;">
-     <a style="margin-left:11px" href="https://www.facebook.com/Arqonia-534298626768355" target="_blank">
+     <div style="padding: 10px 0px"></div>
+     <a style="margin-left:12px" href="https://www.facebook.com/Arqonia-534298626768355" target="_blank">
          <img src="images/facebook.svg">
+     </a>
+     <div style="padding: 10px 0px"></div>
+     <a style="margin-left:6px" href="mailto:admin@arqonia.com">
+         <img src="images/mail.png" height="22px" width="28px">
      </a>
  </div>
 
 
 
- <div id="header" align="center" style="margin:auto;position:fixed;z-index: 1;text-align:right;margin-top:30px;top:0px">
+ <div id="header" align="center" style="margin:auto;position:fixed;z-index: 100;text-align:right;margin-top:30px;top:0px">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 2px"><a href="#main" class="pageSection" style="color:white;text-decoration: none;font-size: 2.4rem;">A R Q O N I A</a></li>
          <li style="margin-top: 10px;float: right;margin-right:20%"><a href="#search" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none;">SEARCH</a></li>
@@ -123,7 +124,7 @@
 
  <!--PRODUCTION-->
 <!--
- <div id="header" align="center" style="margin:auto;position:relative;z-index: 1;text-align:right;margin-top:30px;top:0px">
+ <div id="header" align="center" style="margin:auto;position:relative;z-index: 100;text-align:right;margin-top:30px;top:0px">
      <ul style="margin:auto;">
          <li style="font-size:120%;margin-left:30px;margin-top: 2px"><a href="main" class="pageSection" style="color:white;text-decoration: none;font-size: 2.4rem;">A R Q O N I A</a></li>
          <li style="margin-top: 10px;float: right;margin-right:20%"><a href="search" class="pageSection" onMouseOver="this.style.color='#069'" onMouseOut="this.style.color='white'" style="color:white;text-decoration: none;">SEARCH</a></li>
@@ -135,59 +136,73 @@
  </div>
 -->
 
- <div align="center" id="carousel-example-generic" style="position: relative;margin:auto;margin-top:10px;z-index: 0;" class="carousel slide" data-ride="carousel" data-interval="5000">
-     <ol align="center" style="margin: auto;" class="carousel-indicators">
-         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-         <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-         <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-         <!--<li data-target="#carousel-example-generic" data-slide-to="3"></li>-->
-     </ol>
-
-     <div align="center" class="carousel-inner" style="max-width: 100%;width:5800px;max-height: 100%;height:290px;">
-         <div class="item active">
-             <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:300px;">
-             <div align="center" class="carousel-caption">
-                 <table align="center" ng-repeat="statistics in Statistics" class="topTable" style="position:relative;max-width: 4000px;margin-left:-60px;margin-top:150px;">
+ <div align="center" id="carousel-example-generic" style="position: relative;margin-top:10px;z-index: 0;background-color: rgb(77, 157, 194) !important;"
+      class="carousel slide" data-ride="carousel" data-interval="10000">
+     <img src="images/workspace2.jpg" style="visibility: inherit;height: 100%;height:720px;width: 2100px;z-index: -1;position:absolute;left:0;right:0;margin-left:auto;margin-right:auto;">
+     <div align="center" class="carousel-inner" style="max-width: 100%;width:5800px;max-height: 100%;height:720px;background-color: rgba(77, 157, 194, 0.45) !important;
+                                                       background-image: none;background-repeat: repeat;">
+         <div align="center" class="item active" style="background-color: rgba(77, 157, 194, 0.45) !important;height: 100%;height:760px;">
+             <div align="center" class="carousel-caption" style="height:560px;left:0;right:0;margin-left:auto;margin-right:auto;">
+                 <table align="center" ng-repeat="statistics in Statistics" class="topTable"
+                        style="position:relative;max-width: 2500px;height:700px;width:1150;">
                      <tr>
-                         <td style="width: 360px" rowspan="2">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">
-                                 Science</div>
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                              font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                         <td style="width:1150px;padding-bottom:240px">
+                             <div style="text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 4.5rem;text-rendering: optimizeLegibility;font-style: bold;">
                                  This is a concept application created
                                  to integrate amateur astronomers who
-                                 are interested in the field of home made science.
+                                 are interested in the field of home made science
 
                              </div>
                          </td>
-                         <td style="width:135px;text-align: right;">
+                     </tr>
+                 </table>
+             </div>
+         </div>
+         <div class="item" style="background-color: rgba(77, 157, 194, 0.45) !important;height: 100%;height:760px;">
+             <div align="center" class="carousel-caption" style="height:600px">
+                 <table align="center" ng-repeat="statistics in Statistics" class="topTable"
+                        style="position:relative;max-width: 2500px;height:500px;width:1150px;">
+                     <tr>
+                         <td style="width: 1150px;padding-bottom:80px;" colspan="4">
+                             <div align="center" style="text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 4.5rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 Science</div>
+                             <div style="text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 Service allows users to perform analysis of data obtained from photometric observations
+
+                             </div>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td style="width:135px;text-align: right;padding-bottom:20px">
                              <div>
                                  <img src="images/group.png" alt="...">
                              </div>
                          </td>
-                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;padding-bottom:20px">
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
                                              font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap">
                                      {{statistics.numberOfUsers}}
                                  </div>
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                             font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                      NUMBER OF USERS
                                  </div>
                          </td>
-                         <td style="width:135px;text-align: right;">
+                         <td style="width:135px;text-align: right;padding-bottom:20px">
                              <div>
-                                 <img src="images/icon_star_alt.png" alt="...">
+                                 <img src="images/icon_star_alt.png">
                              </div>
                          </td>
-                         <td style="width:100px;padding-left:15px;padding-top: 25px;">
+                         <td style="width:100px;padding-left:15px;padding-top: 25px;padding-bottom:20px">
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
                                              font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                      {{statistics.numberOfObjects}}
                                  </div>
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                             font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                      OBJECTS OBSERVED
                                  </div>
                          </td>
@@ -204,7 +219,7 @@
                                      {{statistics.numberOfFiles}}
                                  </div>
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                             font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                      TIME SERIES LOADED
                                  </div>
                          </td>
@@ -219,7 +234,7 @@
                                  0
                                  </div>
                                  <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                             font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                      PUBLIC MONEY CONSUMED
                                  </div>
                          </td>
@@ -227,28 +242,30 @@
                  </table>
              </div>
          </div>
-         <div class="item">
-             <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:300px;">
-             <div class="carousel-caption">
-                 <table class="topTable" style="width: 800px;margin-left:-120px">
+         <div class="item" style="background-color: rgba(77, 157, 194, 0.45) !important;height: 100%;height:760px;">
+             <div align="center" class="carousel-caption" style="height:600px">
+                 <table align="center" ng-repeat="statistics in Statistics" class="topTable"
+                        style="position:relative;max-width: 2500px;height:500px;width:1150px;">
                      <tr>
-                         <td style="width:460px;">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;margin-top:-60px">
+                         <td style="width: 1150px;padding-bottom:80px;" colspan="2">
+                             <div align="center" style="text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 4.5rem;text-rendering: optimizeLegibility;font-style: bold;">
                                  News</div>
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
-                                 A bunch of useful infos about incoming<br>
-                                 changes. For more informations be sure<br>
-                                 to subscribe!<br>
+                             <div style="text-align: center;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
+                                              font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;">
+                                 A bunch of useful informations about incoming
+                                 changes. For more informations be sure
+                                 to subscribe!
                              </div>
                          </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;">
+                     </tr>
+                     <tr>
+                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;width:50%">
                              <div>
-                                 <img src="images/icon_calendar.png" alt="...">
+                                 <img src="images/icon_calendar.png">
                              </div>
                          </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
+                         <td style="text-align: left;margin-bottom:0px;padding-bottom: 55px;padding-left:15px;">
                              <div id="date" style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
                                              font-size: 2.8rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                              </div>
@@ -259,84 +276,8 @@
                                  document.getElementById("date").innerHTML=Math.round(total_days);
                              </script>
                              <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
+                                             font-size: 2.0rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;">
                                  DAYS TO RELEASE
-                             </div>
-                         </td>
-                     </tr>
-                 </table>
-             </div>
-         </div>
-         <!--
-         <div class="item">
-             <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:280px;">
-             <div class="carousel-caption">
-                 <table class="topTable" style="width: 800px;margin-left:-120px">
-                     <tr>
-                         <td style="width:460px;">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;margin-top:-100px">
-                                 Team</div>
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
-                                 Nothing can happen without good team.
-                                 <br>
-                             </div>
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;">
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:75px">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
-                                 Przemysław Jagodziński<br>
-                                 Remigiusz Pospieszyński
-                             </div>
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
-                                 - <br>
-                                 -
-                             </div>
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:15px">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px">
-                                 FOUNDER & HEAD OF ENGINEERING <br>
-                                 DEVOPS & SCIENCE CONSULTANT
-                             </div>
-                         </td>
-                     </tr>
-                 </table>
-             </div>
-         </div>
-         -->
-         <div class="item">
-             <img src="images/bootstrap3.png" alt="..." style="height: 100%;height:300px;">
-             <div class="carousel-caption">
-                 <table class="topTable" style="width: 800px;margin-left:-120px">
-                     <tr>
-                         <td style="width:460px;">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;margin-top:-80px">
-                                 Contact Us</div>
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.8rem;text-rendering: optimizeLegibility;font-style: bold;">
-                                 Feel free to send a message.
-                                 <br>
-                             </div>
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 80px;">
-                             <div>
-                                 <img src="images/icon_mail.png" alt="...">
-                             </div>
-                         </td>
-                         <td style="text-align: right;margin-bottom:0px;padding-bottom: 55px;padding-left:25px">
-                             <div style="text-align: left;color:white;text-decoration: none;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-10px">
-                                 <a style="text-align: left;color:white;font-family: inherit;font-weight: normal;
-                                             font-size: 1.4rem;text-rendering: optimizeLegibility;font-style: bold;white-space: nowrap;margin-top:-60px"
-                                    href="mailto:admin@arqonia.com">admin@arqonia.com</a>
                              </div>
                          </td>
                      </tr>
@@ -355,12 +296,13 @@
  </div>
 
 
- <div class="subMenu" style="margin-top: 60px;margin-bottom:30px">
+ <div id="subMenu" class="subMenu" style="margin-top: 60px;margin-bottom:30px">
      <div align="center" style="background-color: #efefef;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-         font-size: 3.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">Our Service
+         font-size: 3.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">OUR SERVICE
      </div>
+
      <div align="center" style="background-color: #efefef;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-         font-size: 1.4rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;margin-bottom:20px">ARQONIA provides full process and analysis of photometric data.
+         font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;margin-bottom:20px">ARQONIA provides full processing and analysis of photometric data.
      </div>
    <table class="menu">
      <tr>
@@ -386,13 +328,15 @@
                <li style="color:white;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
                                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
                    <img src="images/image.png" alt="...">
-                   Do photometry</li>
+                   Photometry</li>
              </ul>
              <div style="padding: 0px 15px;">
              <p>User can perform simple photometry by means of aperture photometry. That result can be further on loaded to the system.</p>
              </div>
               <div style="text-align: center">
                   <a href="#photometry" id="photometry" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Photometry</a>
+                  <!--PRODUCTION-->
+                  <!--<a href="photometry" id="photometry" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Photometry</a>-->
               </div>
           </div>
        </td>
@@ -410,6 +354,8 @@
              </div>
               <div style="text-align: center">
                   <a href="#table-list" id="table-list" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>
+                  <!--PRODUCTION-->
+                  <!--<a href="table-list" id="table-list" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Load Data</a>-->
               </div>
           </div>
          </td>
@@ -426,30 +372,55 @@
              </div>
              <div style="text-align: center">
                <a href="#diagram" id="diagram" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>
+               <!--PRODUCTION-->
+               <!--<a href="diagram" id="diagram" style="color:white;text-decoration: none;background-color: #4d9dc2;border: 0px" class="btn btn-primary sharp" ng-show="isUserLoggedIn">Diagrams</a>-->
              </div>
           </div>
        </td>
      </tr>
    </table>
  </div>
-     <a href="#" class="scrollToTop" style="background-image:url('images/arrow_up2.png');"></a>
+     <a href="#" class="scrollToTop" align="right" style="background-image:url('images/arrow_up2.png');"></a>
 
 <!--just to have view below not to covered by upper menu-->
 <div id="mainUpper" style="height:10px;margin-bottom:75px">
 
 </div>
 
-<div style="background-color:#00558c;height:880px;">
+<div style="background-color:white;height:880px;">
  <div id="main" style="padding-top:10px;">
    <!-- this is where content will be injected -->
    <div ng-view></div>
  </div>
 </div>
 
- <div id="faq" class="faq" style="max-width: 1100px;height: 230px;margin: 100px auto;border-style: solid;border-width: 0px;border-color: #e1e1e1;
-                                  background-color:white;width:100%;margin-bottom:150px">
-     <div style="background-color: #efefef;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
-                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+<div style="background-color:#00558c;height:80px;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 3.1rem;text-rendering: optimizeLegibility;color: white;font-style: bold;padding-top:20px">
+    OUR TECHNOLOGY STACK
+</div>
+ <div style="background-color:#efefef;height:120px;">
+     <table class="main" align="center" style="background-color:#efefef;margin-top:20px;margin:bottom:40px;width:1000px;">
+         <tr>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/python-icon.png" height="80px" width="140px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/sqlserver-icon.png" height="80px" width="130px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/jenkins-icon.png" height=90px" width="140px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/angularjs-icon.png" height=90px" width="140px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/bootstrap2-icon.png" height="50px" width="150px"></td>
+         </tr>
+         <tr>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/nodejs-icon.png" height="60px" width="130px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/bitbucket-icon.png" height="30px" width="140px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/jQuery-icon.png" height="100px" width="120px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/web-trello-icon.png" height="50px" width="50px"></td>
+             <td style="background-color:#efefef;border-bottom: 0px;width:20% !important"><img src="images/apachetomcat-icon.png" height="60px" width="130px"></td>
+         </tr>
+     </table>
+ </div>
+<div style="background-color:white;height: 530px;margin-bottom:0px">
+  <div id="faq" class="faq" style="max-width: 1100px;height: 230px;margin: 100px auto;border-style: solid;border-width: 0px;border-color: #e1e1e1;
+                                  background-color:white !important;width:100%;margin-bottom:370px">
+     <div style="background-color: white;text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 3.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;padding-top:80px">
          FREQUENTLY ASKED QUESTIONS
      </div>
      <div style="background-color: #efefef;text-align: left;" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -526,8 +497,39 @@
                  </div>
              </div>
          </div>
+         <div class="panel panel-default">
+             <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingSix">
+                 <h4 class="panel-title">
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseSix" aria-expanded="false" aria-controls="collapseThree">
+                         I have loaded .fits files but nothing happened. I can't see the results.
+                     </a>
+                 </h4>
+             </div>
+             <div id="collapseSix" class="collapseSix collapse" role="tabpanel" aria-labelledby="headingSix">
+                 <div class="panel-body">
+                     Please double check if your fits files are taken in single pass band. Also don't forget to load Raw images to the carousel.
+                     Without these no processing will happen.
+                 </div>
+             </div>
+         </div>
+         <div class="panel panel-default">
+             <div style="background-color: #4d9dc2;color: white" class="panel-heading" role="tab" id="headingSeven">
+                 <h4 class="panel-title">
+                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href=".collapseSeven" aria-expanded="false" aria-controls="collapseThree">
+                         What does it mean that "(number) of images uploaded in this session"?
+                     </a>
+                 </h4>
+             </div>
+             <div id="collapseSeven" class="collapseSeven collapse" role="tabpanel" aria-labelledby="headingSeven">
+                 <div class="panel-body">
+                     Everytime user logs in to the service he/she receives unique session ID. By this ID he/she will be recognized
+                     and all of the images loaded by this user will have this ID number. When user logs out this unique ID is deleted.
+                     It is also deleted when user is not doing anything for 10 minutes. Session expires and user is logged out automatically.
+                 </div>
+             </div>
+         </div>
      </div>
-
+  </div>
  </div>
 
  <div align="center" id="newsletter" class="newsletter" style="position: relative;margin:auto;)">
@@ -536,7 +538,7 @@
          <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">×</button> <strong></strong> {{successTextAlert}}
      </div>
    <p>
-       Please subscribe if you want to get latest news about new<br> functionalities and updates to existing ones.
+       Please subscribe if you want to get latest news about new<br> functionalities and events.
    </p>
              <form name="subscribe" role="form" class="form-inline" novalidate ng-submit="subscribe.$valid && addSubscriber()">
                  <div class="form-group">
@@ -804,6 +806,7 @@
 		$('html, body').animate({scrollTop : 0},800);
 		return false;
 	});
+
 
     //scroll to id="mainUpper"
     $('.pageSection').click(function (){
