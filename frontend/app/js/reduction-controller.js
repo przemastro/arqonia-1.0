@@ -41,7 +41,7 @@
         $scope.clickProcessFlag = false;
         $scope.formFlag = false;
         $scope.linearFlag = 'true';
-        $rootScope.textStep = 'uploaded';
+
         $scope.imageTypeText = '';
 
         $scope.objectValue = 'Linear';
@@ -60,17 +60,13 @@
 
           //Dark Frames selected
           if($scope.selectedImageType == "Dark Frames") {
-          //$window.location.reload();
-                var myEl1 = angular.element( document.querySelector( '#sync1' ) );
-                myEl1.empty();  //clears contents
-                var myEl2 = angular.element( document.querySelector( '#sync2' ) );
-                myEl2.empty();  //clears contents
-
                 $rootScope.selectType = "DARK FRAMES";
+                $rootScope.textStep = 'uploaded';
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Dark';
                 $scope.clickProcessFlag = false;
                 $scope.formFlag = true;
+                $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                 $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
@@ -131,10 +127,12 @@
           //Flat Fields selected
           if($scope.selectedImageType == "Flat Fields") {
                 $rootScope.selectType = "FLAT FIELDS";
+                $rootScope.textStep = 'uploaded';
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Flat';
                 $scope.clickProcessFlag = false;
                 $scope.formFlag = true;
+                $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
                 $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
@@ -197,10 +195,12 @@
           //Raw Images selected
           if($scope.selectedImageType == "Raw Images") {
                 $rootScope.selectType = "RAW IMAGES";
+                $rootScope.textStep = 'uploaded';
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Raw';
                 $scope.clickProcessFlag = false;
                 $scope.formFlag = true;
+                $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfRawFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
                 $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
@@ -263,10 +263,12 @@
           //Bias Frames
           if($scope.selectedImageType == "Bias Frames") {
                 $rootScope.selectType = "BIAS FRAMES";
+                $rootScope.textStep = 'uploaded';
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Bias';
                 $scope.clickProcessFlag = false;
                 $scope.formFlag = true;
+                $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
                 $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
@@ -331,17 +333,17 @@
           //Processed Images
           if($scope.selectedImageType == "Processed Images") {
                 $rootScope.selectType = "PROCESSED IMAGES";
+                $rootScope.textStep = 'processed';
                 $scope.imageTypeFlag = true;
                 $scope.imageType = 'Processed';
                 $scope.clickProcessFlag = true;
                 $scope.formFlag = false;
-                $rootScope.numberOfProcessedFiles = $cookies.get('numberOfProcessedFiles')
-                if($rootScope.numberOfProcessedFiles == 1) {$scope.imageTypeText = 'Processed Image';} else {$scope.imageTypeText = 'Processed Images';}
+                $rootScope.numberOfFilesUploaded = $cookies.get('numberOfProcessedFiles')
+                if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Image';} else {$scope.imageTypeText = 'Images';}
                 $scope.helpDescription = "You have selected Processed Images option. Click [PROCESS] button to perform data reduction.";
 
                 //Process Data
                 $scope.processFiles = function(){
-                   $rootScope.textStep = 'processed'
            		   if (!$scope.spinneractive) {
                      usSpinnerService.spin('spinner-1');
                    };
@@ -359,8 +361,8 @@
                        //Bind Data for Carousel
                        bindData();
                        $cookies.put('numberOfProcessedFiles', response[Object.keys(response)].fileNames.length);
-                       $rootScope.numberOfProcessedFiles = $cookies.get('numberOfProcessedFiles')
-                       if($rootScope.numberOfProcessedFiles == 1) {$scope.imageTypeText = 'Processed Image';} else {$scope.imageTypeText = 'Processed Images';}
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfProcessedFiles')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Image';} else {$scope.imageTypeText = 'Images';}
                        $scope.helpDescription = "Perfect! Processing is done. You can now Save your processed frames.";
                        });
 

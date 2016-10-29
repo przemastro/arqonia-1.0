@@ -1403,8 +1403,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         conversionType = str(conversionType)
         imageType = str(imageType)
 
-        #specialCharacterPosition = files.index('.') + 1
-        #fileExtension = str(files[specialCharacterPosition:])
         fileExtension = 'fits'
 
         get_lastId = queries.get('DatabaseQueries', 'database.getLastIdFromDataImages')
@@ -1417,6 +1415,11 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
 
         counter = lastId
 
+        updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagFalse') + sessionId + " and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
+        print 'updateActiveFlag'
+        print updateActiveFlag
+        cursor.execute(updateActiveFlag)
+        cnx.commit()
 
         #--Insert to data.images
         for file in files:
@@ -1436,8 +1439,9 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                               "(select fileExtensionId from dic.FileExtensions where FileExtension = '"+fileExtension+"'), "
                               "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
                               "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+objectName+"', 'inputFits', "
-                              "'Reduction', getdate())")
+                              "'Reduction', getdate(), 1)")
 
+               #print insertImage
                cursor.execute(insertImage)
                cnx.commit()
                looper=1
@@ -1450,6 +1454,7 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                       looper = looper + 1
                       continue
 
+
                file_list = os.listdir(backendInputFits)
                for fileName in file_list:
                   specialCharacterPosition = objectName.index('.')
@@ -1460,8 +1465,44 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                          os.rename(backendInputFits+fileName, backendInputFits+fileName.replace(sourceString,replaceString))
                       except:
                          print 'errors in renaming function'
+
+               #start conversion
+               print 'Start Conversion'
+               specialCharacterPosition = objectName.index('.')
+               replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+               convertPlots.plot(replaceString, conversionType)
+               #end conversion
+
+               #Add converted file to DB
+               convertedObjectName = conversionType+"_"+replaceString+".png"
+               counter = counter + 1
+               lastId = str(counter)
+               print 'png does not exist in DB'
+               insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
+                              "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
+                              "(select fileExtensionId from dic.FileExtensions where FileExtension = 'png'), "
+                              "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
+                              "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
+                              "'Reduction', getdate(), 1)")
+               cursor.execute(insertImage)
+               cnx.commit()
+
             else:
                 print 'fits exists in DB'
+                objectName = file
+                specialCharacterPosition = objectName.index('.')
+                replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
+                convertedObjectName = conversionType+"_"+replaceString+".png"
+                #update .png file active flag
+                updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagTrue') + sessionId + " and ObjectName='"+convertedObjectName+"' and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
+                print updateActiveFlag
+                cursor.execute(updateActiveFlag)
+                cnx.commit()
+                #update .fits file active flag
+                updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagTrue') + sessionId + " and ObjectName='"+file+"' and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
+                print updateActiveFlag
+                cursor.execute(updateActiveFlag)
+                cnx.commit()
                 looper=1
                 while(looper<100):
                     time.sleep(1)
@@ -1471,45 +1512,17 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                         print 'continue fits exists in DB'
                         looper = looper + 1
                         continue
-            #start conversion
-            print 'Start Conversion'
-            specialCharacterPosition = objectName.index('.')
-            replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
-            convertPlots.plot(replaceString, conversionType)
-            #end conversion
 
-            #Add converted file to DB
-            convertedObjectName = conversionType+"_"+replaceString+".png"
-            verifyConvertedFileExists = (queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages') + "'"+convertedObjectName+"' "
-                                            "and sessionId = "+sessionId+"")
-            cursor.execute(verifyConvertedFileExists)
-            existsConvertedFlag = cursor.fetchone()
-
-            if (existsConvertedFlag[0] == 0):
-               counter = counter + 1
-               lastId = str(counter)
-               #print 'png does not exist in DB'
-               insertImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
-                           "values("+lastId+", 1, (select id from data.users where email='"+email+"'),"
-                           "(select fileExtensionId from dic.FileExtensions where FileExtension = 'png'), "
-                           "'"+sessionId+"', (select ConversionTypeId from dic.ConversionTypes where ConversionType='"+conversionType+"'),"
-                           "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+convertedObjectName+"', 'inputFits', "
-                           "'Reduction', getdate())")
-               cursor.execute(insertImage)
-               cnx.commit()
             counter = counter + 1
-        else:
-           print 'png already exists in DB'
-
 
 
         #return json value
-        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"' and im.ActiveFlag=1")
         #print get_ImageIds
-        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"'")
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"' and im.ActiveFlag=1")
         #print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
-        #print data
+        print data
         i = 1
         if(i==1):
            data = data
@@ -1542,29 +1555,31 @@ def processImages(sessionId, email):
             lastId = lastId[0] + 1
 
         #Get Images
-        getDarkFrames = (queries.get('DatabaseQueries', 'database.getDarkFrames') + sessionId)
-        getBiasFrames = (queries.get('DatabaseQueries', 'database.getBiasFrames') + sessionId)
-        getFlatFields = (queries.get('DatabaseQueries', 'database.getFlatFields') + sessionId)
-        getRawFrames = (queries.get('DatabaseQueries', 'database.getRawFrames') + sessionId)
+        getDarkFrames = (queries.get('DatabaseQueries', 'database.getDarkFrames') + sessionId + " and ActiveFlag = 1")
+        getBiasFrames = (queries.get('DatabaseQueries', 'database.getBiasFrames') + sessionId + " and ActiveFlag = 1")
+        getFlatFields = (queries.get('DatabaseQueries', 'database.getFlatFields') + sessionId + " and ActiveFlag = 1")
+        getRawFrames = (queries.get('DatabaseQueries', 'database.getRawFrames') + sessionId + " and ActiveFlag = 1")
 
 
         reduceImages.reduce(fetch_all(getDarkFrames), fetch_all(getBiasFrames), fetch_all(getFlatFields), fetch_all(getRawFrames), sessionId)
+
+        updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagFalse') + sessionId + " and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = 'Processed')")
+        print 'updateActiveFlag'
+        print updateActiveFlag
+        cursor.execute(updateActiveFlag)
+        cnx.commit()
 
         rawImages = fetch_all(getRawFrames)
         print rawImages
         counter = lastId
         for file in rawImages:
-           print 'tutaj'
-           print file
            lastId = str(counter)
            counter = counter + 1
-           insertFitsImage = "insert into data.images(ID, ImageId, OwnerID, FileExtensionId, SessionId, ConversionTypeId, ImageTypeId, ObjectName, FolderName, ProcessingType, UploadTime) " \
-                             "values('"+lastId+"', 1, (select id from data.users where email='"+email+"'), 3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate())"
-
-           print insertFitsImage
+           insertFitsImage = "insert into data.images(ID, ImageId, OwnerID, FileExtensionId, SessionId, ConversionTypeId, ImageTypeId, ObjectName, FolderName, ProcessingType, UploadTime, ActiveFlag) " \
+                             "values('"+lastId+"', 1, (select id from data.users where email='"+email+"'), 3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate(), 1)"
+           #print insertFitsImage
            cursor.execute(insertFitsImage)
            cnx.commit()
-           print 'helow'
            lastId = str(counter)
            counter = counter + 1
            specialCharacterPosition = file.index('.')
@@ -1572,15 +1587,16 @@ def processImages(sessionId, email):
            objectName = "Linear_"+sessionId+"_Processed_"+objectName+".png"
            insertPngImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
                               " values('"+lastId+"', 1, (select id from data.users where email='"+email+"'),"
-                              "2, '"+sessionId+"', 1, 5, '"+objectName+"', 'outputFits', 'Reduction', getdate())")
+                              "2, '"+sessionId+"', 1, 5, '"+objectName+"', 'outputFits', 'Reduction', getdate(), 1)")
+           #print insertPngImage
            cursor.execute(insertPngImage)
            cnx.commit()
 
         #return json value
-        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed'")
+        get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed' and ActiveFlag = 1")
         #print get_ImageIds
-        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed'")
-        #print get_FileNames
+        get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed' and ActiveFlag = 1")
+        print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
         #print data
         i = 1
@@ -1606,7 +1622,7 @@ def returnZippedImages(sessionId, email):
         sessionId = str(sessionId)
 
         #Get Images
-        getImages = (queries.get('DatabaseQueries', 'database.getImages') + sessionId)
+        getImages = (queries.get('DatabaseQueries', 'database.getImages') + sessionId + " and ActiveFlag = 1")
 
 
         data = zipFiles.zipAll(fetch_all(getImages), sessionId)

@@ -27,52 +27,100 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
         percent_fract = 0.01
         min_val = 0.0
 
+        print 'START'
         #Open Dark Frames data
         List = getDarkFrames
+        reference_dark_image = 'None'
         dataList = []
-        for file in List:
-            dataList.append(openFile(backendInputFits+sessionId+"_Dark_"+file))
-        reference_dark_image = medianImage(dataList)
+        if List != []:
+           for file in List:
+               dataList.append(openFile(backendInputFits+sessionId+"_Dark_"+file))
+           reference_dark_image = medianImage(dataList)
+        print 'reference_dark_image'
+        print reference_dark_image
 
         #Open Bias Frames data
         List = getBiasFrames
-        dataList = []
-        for file in List:
-            dataList.append(openFile(backendInputFits+sessionId+"_Bias_"+file))
-        reference_bias_image = medianImage(dataList)
+        reference_bias_image = 'None'
+        if List != []:
+           dataList = []
+           for file in List:
+               dataList.append(openFile(backendInputFits+sessionId+"_Bias_"+file))
+           reference_bias_image = medianImage(dataList)
 
         #Open Flat Fields data
         List = getFlatFields
-        dataList = []
-        for file in List:
-            dataList.append(openFileAndNormalize(backendInputFits+sessionId+"_Flat_"+file))
-        reference_flat_image = medianImage(dataList)
+        reference_flat_image = 'None'
+        if List != []:
+           dataList = []
+           for file in List:
+               dataList.append(openFileAndNormalize(backendInputFits+sessionId+"_Flat_"+file))
+           reference_flat_image = medianImage(dataList)
+           print 'reference flat image'
+           print reference_flat_image
 
 
         #Open Raw Images Data and Reduce
         List = getRawFrames
-        for file in List:
-           dataImage = openFile(backendInputFits+sessionId+"_Raw_"+file)
-           dark_corrected_image = dataImage - reference_dark_image
-           print dark_corrected_image
-           bias_corrected_image = dark_corrected_image - reference_bias_image
-           print bias_corrected_image
-           final_image = bias_corrected_image / reference_flat_image
-           print 'final_image'
-           print final_image
+        if List != []:
+           for file in List:
+              dataImage = openFile(backendInputFits+sessionId+"_Raw_"+file)
+              #reference dark frame exists
+              dark_corrected_image = 'None'
+              if reference_dark_image != 'None':
+                 print 'Dark Frame Correction'
+                 dark_corrected_image = dataImage - reference_dark_image
+                 print dark_corrected_image
+              #reference dark frame does not exist but reference bias frame exists
+              bias_corrected_image = 'None'
+              if reference_dark_image == 'None' and reference_bias_image != 'None':
+                 bias_corrected_image = dataImage - reference_bias_image
+                 print bias_corrected_image
+              #reference dark frame exists and reference bias frame exists
+              if reference_dark_image != 'None' and reference_bias_image != 'None':
+                 bias_corrected_image = dark_corrected_image - reference_bias_image
+                 print bias_corrected_image
 
-           pyfits.append(backendOutputFits+"Processed_"+file, final_image)
+              #dark corrected image exists and flat exists
+              if dark_corrected_image != 'None' and reference_flat_image != 'None' and bias_corrected_image == 'None':
+                 print 'dark corrected with flat'
+                 final_image = dark_corrected_image / reference_flat_image
+              #bias corrected image exists and flat exists
+              if bias_corrected_image != 'None' and reference_flat_image != 'None':
+                 print 'bias corrected with flat'
+                 final_image = bias_corrected_image / reference_flat_image
+              #reference flat field does not exist but bias corrected image exists
+              if bias_corrected_image != 'None' and reference_flat_image == 'None':
+                  print 'bias corrected without flat'
+                  final_image = bias_corrected_image
+              #reference flat field does not exist and only dark corrected image exists
+              if dark_corrected_image != 'None' and reference_flat_image == 'None' and bias_corrected_image == 'None':
+                  print 'dark corrected without flat'
+                  final_image = dark_corrected_image
+              #reference flat field exists and raw image exists
+              if bias_corrected_image == 'None' and reference_flat_image != 'None' and dark_corrected_image == 'None':
+                  print 'only flat'
+                  final_image = dataImage / reference_flat_image
+              #reference flat field does not exist and only raw image exists
+              if bias_corrected_image == 'None' and reference_flat_image == 'None' and dark_corrected_image == 'None':
+                  print 'only raw'
+                  final_image = dataImage
 
-           sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
-           img_data = final_image - sky
-           new_img = linear(img_data, scale_min = min_val)
-           fig = Figure(figsize=(12.5, 13.35))
-           fig.figimage(new_img, cmap='gray')
-           canvas = FigureCanvas(fig)
-           specialCharacterPosition = file.index('.')
-           fileWithoutExtension = str(file[:specialCharacterPosition])
-           print fileWithoutExtension
-           canvas.print_figure(frontendInputFits+"Linear_"+sessionId+"_Processed_"+fileWithoutExtension+".png")
+              print 'final_image'
+              print final_image
+              try:
+                 pyfits.append(backendOutputFits+"Processed_"+file, final_image)
+              except(RuntimeError, TypeError, NameError):
+                 print 'error appending'
+              sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
+              img_data = final_image - sky
+              new_img = linear(img_data, scale_min = min_val)
+              fig = Figure(figsize=(12.5, 13.35))
+              fig.figimage(new_img, cmap='gray')
+              canvas = FigureCanvas(fig)
+              specialCharacterPosition = file.index('.')
+              fileWithoutExtension = str(file[:specialCharacterPosition])
+              canvas.print_figure(frontendInputFits+"Linear_"+sessionId+"_Processed_"+fileWithoutExtension+".png")
 
     except:
         print 'error'
