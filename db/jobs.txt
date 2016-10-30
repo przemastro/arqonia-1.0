@@ -21,3 +21,13 @@ II. Reload Service/Stop Service
       1. Update reloadService.py 'env.properties' path
       2. Run in CMD 'Taskschd.msc'
       3. Select 'Utwórz zadanie podstawowe...' and select time trigger 'every day' at midnight
+
+III. Verify User is Active
+   Files:
+      1. verifyUserSysDate.bat
+      2. verifyUserSysDate.sql
+   Execution:
+      1. Update in verifyUserSysDate.bat path and set time in minutes
+      2. Run in CMD 'Taskschd.msc'
+      3. Select 'Utwórz zadanie podstawowe...' and select time trigger 'every day' and
+         in Advanced Settings Repeat every 5 minutes

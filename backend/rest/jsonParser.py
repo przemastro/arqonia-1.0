@@ -544,6 +544,11 @@ def authentication(email, sessionId):
            DBSessionId = int(0)
         print DBSessionId
         if(DBSessionId==sessionId):
+            print 'tera tu'
+            update_userSysDate = ("update data.users set ActiveDate=getdate() where Email='"+email+"'")
+            print update_userSysDate
+            cursor.execute(update_userSysDate)
+            cnx.commit()
             auth = 'true'
         else:
             auth = "Unauthorized User"
@@ -566,7 +571,7 @@ def logoutUser(email):
 
         email = str(email)
 
-        logoutDataUsers = ("update data.users set SessionId=NULL where Email='"+email+"'")
+        logoutDataUsers = ("update data.users set SessionId=NULL, ActiveDate=NULL where Email='"+email+"'")
         print logoutDataUsers
         cursor.execute(logoutDataUsers)
         cnx.commit()
@@ -617,7 +622,7 @@ def verifyCredentials(email, password, sessionId):
                   cursor.execute(update_ActiveFlag)
                   cnx.commit()
                   #Update SessionId
-                  update_SessionId = ("update data.users set sessionID='"+sessionId+"' where Email='"+email+"'")
+                  update_SessionId = ("update data.users set SessionID='"+sessionId+"', ActiveDate=getdate() where Email='"+email+"'")
                   cursor.execute(update_SessionId)
                   cnx.commit()
                   #and the rest
