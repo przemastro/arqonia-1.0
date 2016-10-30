@@ -109,9 +109,10 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
               print 'final_image'
               print final_image
               try:
+                 os.remove(backendOutputFits+"Processed_"+file)
                  pyfits.append(backendOutputFits+"Processed_"+file, final_image)
               except(RuntimeError, TypeError, NameError):
-                 print 'error appending'
+                 print 'error appending or removing'
               sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
               img_data = final_image - sky
               new_img = linear(img_data, scale_min = min_val)

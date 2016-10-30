@@ -44,26 +44,40 @@ astroApp.service('multipleFileUpload', ['$http', function ($http) {
 
 //Authentication
 //Update Account Data
-services.factory('updateProfile', ['$resource',
-    function ($resource) {
+services.factory('updateProfile', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/updateProfile', {}, {
-        update: {method:'PUT'}
+        update: {method:'PUT',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
-//Update User
-services.factory('updateUser', ['$resource',
-    function ($resource) {
+//Logout User
+services.factory('updateUser', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/logout', {}, {
         update: {method:'PUT'}
     });
 }]);
 
 //Remove Account
-services.factory('removeAccount', ['$resource',
-    function ($resource) {
+services.factory('removeAccount', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/removeAccount', {}, {
-        update: {method:'PUT'}
+        update: {method:'PUT',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
@@ -110,42 +124,77 @@ services.factory('getObservations', ['$resource',
 }]);
 
 //Table list data - user
-services.factory('getUserObservations', ['$resource',
-    function ($resource) {
+services.factory('getUserObservations', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/userObservations', {}, {
-        update: {method:'PUT', isArray:true}
+        update: {method:'PUT', isArray:true,
+                   interceptor: {
+                      responseError: function(response) {
+                          console.log('The login has failed: ' + response.loginFailed);
+                          logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                      }
+                   }
+                }
     });
 }]);
 
-//Trigger SQL HR Diagram Data
-services.factory('getPesronalizedObservationsDiagram', ['$resource',
-    function ($resource) {
+//Get Personalized HR Diagram Data
+services.factory('getPesronalizedObservationsDiagram', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/RestPersonalizedObservationHRDiagram', {}, {
-        update: {method:'PUT', isArray:true}
+        update: {method:'PUT', isArray:true,
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
-//Trigger SQL HR Diagram Range
-services.factory('getPesronalizedObservationsDiagramRange', ['$resource',
-    function ($resource) {
+//Get Personalized HR Diagram Range
+services.factory('getPesronalizedObservationsDiagramRange', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/RestPersonalizedObservationHRDiagramRange', {}, {
-        update: {method:'PUT', isArray:true}
+        update: {method:'PUT', isArray:true,
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
-//Trigger SQL LC Diagram Data
-services.factory('getPesronalizedLCDiagram', ['$resource',
-    function ($resource) {
+//Get Personalized LC Diagram Data
+services.factory('getPesronalizedLCDiagram', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/RestPersonalizedLCDiagram', {}, {
-        update: {method:'PUT', isArray:true}
+        update: {method:'PUT', isArray:true,
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
-//Trigger SQL LC Diagram Range
-services.factory('getPesronalizedLCDiagramRange', ['$resource',
-    function ($resource) {
+//Get Personalized LC Diagram Range
+services.factory('getPesronalizedLCDiagramRange', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/RestPersonalizedLCDiagramRange', {}, {
-        update: {method:'PUT', isArray:true}
+        update: {method:'PUT', isArray:true,
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
@@ -288,38 +337,59 @@ services.factory('getStatistics', ['$resource',
 }]);
 
 //Add new observation
-services.factory('postObservation', ['$resource',
-    function ($resource) {
+services.factory('postObservation', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/observations', {}, {
-        save: {method:'POST'}
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
-//Trigger SQL process procedure
-services.factory('processData', ['$resource',
-    function ($resource) {
+//Process data procedure
+services.factory('processData', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/lastLoad', {}, {
-        query: {method:'PUT', isArray:true}
+        query: {method:'PUT', isArray:true,
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
 //Process personalized data
-services.factory('processUserData', ['$resource',
-    function ($resource) {
+services.factory('processUserData', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/processUserData', {}, {
-        update: {method:'PUT'}
+        update: {method:'PUT',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
 //Get Last processed observation
-services.factory('getProcessedData', ['$resource',
-    function ($resource) {
+services.factory('getProcessedData', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/lastLoad', {}, {
         query: {method:'GET', isArray:true}
     });
 }]);
 
-//Trigger SQL Search procedure
+//Search Data
 services.factory('searchData', ['$resource',
     function ($resource) {
     return $resource(__env.apiUrlService+'/search', {}, {
@@ -328,18 +398,32 @@ services.factory('searchData', ['$resource',
 }]);
 
 //Remove observation
-services.factory('removeObservation', ['$resource',
-    function ($resource) {
+services.factory('removeObservation', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/deletedObservations', {}, {
-        save: {method:'POST'}
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
 //Update observation
-services.factory('updateObservation', ['$resource',
-    function ($resource) {
+services.factory('updateObservation', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/observations', {}, {
-        update: {method:'PUT'}
+        update: {method:'PUT',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
@@ -352,25 +436,91 @@ services.factory('searchCatalogData', ['$resource',
 }]);
 
 //Add new reduction images
-services.factory('postReductionImages', ['$resource',
-    function ($resource) {
+services.factory('postReductionImages', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/reductionImages', {}, {
-        save: {method:'POST'}
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
 //Reduce images
-services.factory('postProcessImages', ['$resource',
-    function ($resource) {
+services.factory('postProcessImages', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/processImages', {}, {
-        save: {method:'POST'}
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
 
 //Save images
-services.factory('postSaveImages', ['$resource',
-    function ($resource) {
+services.factory('postSaveImages', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/saveImages', {}, {
-        save: {method:'POST'}
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
     });
 }]);
+
+
+function logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout){
+                          	   $scope.message = 'Logout';
+                          	   $cookies.remove("cook");
+                          	   $cookies.remove("admin");
+                          	   $cookies.remove("name");
+                          	   $cookies.remove("email");
+                          	   $cookies.remove("sessionID");
+                          	   $cookies.remove("numberOfDarkFilesUploaded");
+                          	   $cookies.remove("numberOfFlatFilesUploaded");
+                          	   $cookies.remove("numberOfRawFilesUploaded");
+                          	   $cookies.remove("numberOfBiasFilesUploaded");
+                          	   $cookies.remove("numberOfProcessedFiles");
+
+                          	   //Firstly we need to kill all active modals
+                                      $('.modal-content > .ng-scope').each(function()
+                                      {
+                                          try
+                                          {
+                                              $(this).scope().$dismiss();
+                                          }
+                                          catch(_) {}
+                                      });
+
+                                      //Set flags
+                                      $scope.isUserLoggedIn = false;
+                                      $scope.isAdminLoggedIn = false;
+                                            if (!$scope.spinneractive) {
+                                              usSpinnerService.spin('spinner-1');
+                                            };
+                                            $scope.spinneractive = false;
+                                            usSpinnerService.stop('spinner-1');
+                                      $location.path("main");
+                                     	           $scope.successTextAlert = "Logout successful.";
+                                                      $scope.showSuccessAlert = true;
+                                                      // switch flag
+                                                      $scope.switchBool = function (value) {
+                                                          $scope[value] = !$scope[value];
+                                                      };
+
+                                                   $timeout(function(){
+                                                      $scope.showSuccessAlert = false;
+                                                      }, 5000);
+}

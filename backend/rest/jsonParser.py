@@ -535,12 +535,20 @@ def authentication(email, sessionId):
         print verify_sessionId
         cursor.execute(verify_sessionId)
         DBSessionId = cursor.fetchone()
-        DBSessionId = int(DBSessionId[0])
+        print DBSessionId[0]
+        if(DBSessionId[0] != None):
+           print 'testowo'
+           DBSessionId = int(DBSessionId[0])
+        else:
+           print 'test'
+           DBSessionId = int(0)
+        print DBSessionId
         if(DBSessionId==sessionId):
             auth = 'true'
         else:
             auth = "Unauthorized User"
 
+        print auth
         return auth
         cursor.close()
 

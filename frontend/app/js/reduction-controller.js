@@ -396,13 +396,6 @@
                                         //Carousel binding
                                     function bindData() {
                                          var $carousel = $(".owl-carousel");
-                                         //console.log('remove');
-                                         //    $carousel.trigger('remove.owl.carousel',1)
-                                         //       .trigger('refresh.owl.carousel');
-                                         //console.log('create');
-                                         //var html = '<div class=\"item\"><h4>N1</h4></div>';
-                                         //    $carousel.trigger('add.owl.carousel', [html, 0])
-                                         //       .trigger('refresh.owl.carousel');
 
                                         $(document).ready(function() {
 

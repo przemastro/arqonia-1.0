@@ -308,7 +308,7 @@
 
 
    		     $rootScope.errorFlag = false
-   		     $location.path("login");
+   		     $location.path("main");
 
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');

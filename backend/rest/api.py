@@ -156,7 +156,8 @@ class RestUserObservation(Resource):
            observations = userObservations(args['email'])
            return jsonify(observations)
         else:
-           return 401
+           observations = []
+           return observations, 401
 
 #private
 class RestObservation(Resource):
@@ -176,7 +177,8 @@ class RestObservation(Resource):
            mail.send(content);
            return 201
         else:
-           return 401
+           data = []
+           return data, 401
 
     def put(self):
         args = parser.parse_args()
@@ -194,7 +196,8 @@ class RestObservation(Resource):
            mail.send(content);
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 
 
@@ -212,7 +215,8 @@ class RestLastObservation(Resource):
            os.system("forceKill.bat")
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestUserProcessData(Resource):
@@ -223,7 +227,8 @@ class RestUserProcessData(Resource):
            procPersonalizedRunner(args['email'])
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestDeleteObservation(Resource):
@@ -241,7 +246,8 @@ class RestDeleteObservation(Resource):
            mail.send(content);
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 
 #Personalized HR Diagrams Data
@@ -254,7 +260,8 @@ class RestPersonalizedObservationHRDiagram(Resource):
            data = personalizedObservationsHRDiagram(args['hrDiagramType'], args['email'])
            return jsonify(data)
         else:
-           return 401
+           data = []
+           return data, 401
 
 
 #Personalized HR Diagrams Data Range
@@ -267,7 +274,8 @@ class RestPersonalizedObservationHRDiagramRange(Resource):
            data = personalizedObservationsHRDiagramRange(args['hrDiagramType'], args['email'])
            return jsonify(data)
         else:
-           return 401
+           data = []
+           return data, 401
 
 #Personalized LC Diagrams Data
 #private
@@ -279,7 +287,8 @@ class RestPersonalizedObservationLCDiagram(Resource):
            data = personalizedLCDiagram(args['filter'], args['email'])
            return jsonify(data)
         else:
-           return 401
+           data = []
+           return data, 401
 
 
 #Personalized LC Diagrams Range
@@ -292,7 +301,8 @@ class RestPersonalizedObservationLCDiagramRange(Resource):
            data = personalizedLCDiagramRange(args['filter'], args['email'])
            return jsonify(data)
         else:
-           return 401
+           data = []
+           return data, 401
 
 #public
 #HR Diagrams Data
@@ -402,7 +412,8 @@ class RestFileUpload(Resource):
            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestInputFITSUpload(Resource):
@@ -418,7 +429,8 @@ class RestInputFITSUpload(Resource):
               file.save(os.path.join(app.config['INPUT_FITS'], filename))
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 
 #public
@@ -452,7 +464,8 @@ class RestUpdateProfile(Resource):
            mail.send(content);
            return jsonify({'msg': msg})
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestRemoveAccount(Resource):
@@ -471,7 +484,8 @@ class RestRemoveAccount(Resource):
                mail.send(content);
            return jsonify({'msg': msg})
         else:
-           return 401
+            data = []
+            return data, 401
 
 #public
 class RestReminder(Resource):
@@ -503,7 +517,8 @@ class RestLogout(Resource):
            logoutUser(args['email'])
            return 201
         else:
-           return 401
+            data = []
+            return data, 401
 
 #public
 class RestSearch(Resource):
@@ -533,7 +548,8 @@ class RestCatalog(Resource):
            catalog = catalogData(args['objectType'], args['abbreviation'], args['email'])
            return jsonify(catalog)
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestReductionImages(Resource):
@@ -545,7 +561,8 @@ class RestReductionImages(Resource):
            data = addReductionImages(args['sessionId'], args['files'], args['email'], args['conversionType'], args['imageType'])
            return jsonify(data)
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestProcessImages(Resource):
@@ -556,7 +573,8 @@ class RestProcessImages(Resource):
            data = processImages(args['sessionId'], args['email'])
            return jsonify(data)
         else:
-           return 401
+            data = []
+            return data, 401
 
 #private
 class RestSaveImages(Resource):
@@ -567,7 +585,8 @@ class RestSaveImages(Resource):
             returnZippedImages(args['sessionId'], args['email'])
             return 201
         else:
-            return 401
+            data = []
+            return data, 401
 
 def basicAuthentication(email, sessionId):
     if(str(sessionId) != 'None'):

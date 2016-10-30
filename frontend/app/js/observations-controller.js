@@ -107,10 +107,11 @@
            //Call processData service
    	       ProcessUserData.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    	          $scope.message = response.message;
+   	                   $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
+                           $scope.showSuccessAlert = true;
    	       });
          }
-         $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
-             $scope.showSuccessAlert = true;
+
              // switch flag
              $scope.switchBool = function (value) {
                  $scope[value] = !$scope[value];
@@ -241,8 +242,8 @@
     }]);
 
     //--------------------------------------------New Observation modal's details---------------------------------------
-    astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies',
-                                     function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies) {
+    astroApp.controller('ModalInstanceCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'postObservation', 'fileUpload', '$uibModal', '$window', '$timeout', '$cookies', 'usSpinnerService',
+                                     function ($rootScope, $scope, $uibModalInstance, NewObservation, fileUpload, $uibModal, $window, $timeout, $cookies, usSpinnerService) {
 
 
         $scope.objectValue = 'Star';
@@ -380,6 +381,9 @@
              var file5 = 'No file5';
              }
 
+                  if (!$scope.spinneractive) {
+                    usSpinnerService.spin('spinner-1');
+                  };
           //Call postObservation service...
    		  NewObservation.save({name:$scope.name,startDate:$scope.startDate,endDate:$scope.endDate,
    		                     uFileName:file.name,vFileName:file2.name,bFileName:file3.name,
@@ -387,11 +391,14 @@
    		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
    		  console.log(file);
+   		     		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
+                        $rootScope.showSuccessAlert = true;
+                      $scope.spinneractive = false;
+                      usSpinnerService.stop('spinner-1');
    		  });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
-   		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
-              $rootScope.showSuccessAlert = true;
+
               // switch flag
               $rootScope.switchBool = function (value) {
                   $rootScope[value] = !$rootScope[value];
@@ -439,7 +446,9 @@
                   if (!$scope.spinneractive) {
                     usSpinnerService.spin('spinner-1');
                   };
-           		  UserObservations.update({email:$scope.loggedInUserEmail}, function(response){
+           		  UserObservations.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
+           		     $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
+                     $rootScope.showSuccessAlert = true;
            		     var globalObject = [];
                      var len = response.length;
                      for(var i = 0; i < len; i++) {
@@ -455,12 +464,12 @@
                   console.log($rootScope.observations);
                    $scope.spinneractive = false;
                    usSpinnerService.stop('spinner-1');
+
                   })
 
                 //...and close modal
                 $uibModalInstance.dismiss();
-                $rootScope.successTextAlert = "Observation has been soft deleted from the staging area.";
-                       $rootScope.showSuccessAlert = true;
+
                        // switch flag
                        $rootScope.switchBool = function (value) {
                            $rootScope[value] = !$rootScope[value];
@@ -690,6 +699,8 @@
                               usSpinnerService.spin('spinner-1');
                             };
                      		  UserObservations.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
+                     		     $rootScope.successTextAlert = "Observation has been updated in the staging area.";
+                                 $rootScope.showSuccessAlert = true;
                      		     var globalObject = [];
                                var len = response.length;
                                for(var i = 0; i < len; i++) {
@@ -709,8 +720,6 @@
 
    		  //...and close modal
    		  $uibModalInstance.dismiss();
-          $rootScope.successTextAlert = "Observation has been updated in the staging area.";
-               $rootScope.showSuccessAlert = true;
                // switch flag
                $rootScope.switchBool = function (value) {
                    $rootScope[value] = !$rootScope[value];
