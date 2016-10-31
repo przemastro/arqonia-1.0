@@ -228,7 +228,6 @@ def userObservations(email):
                       'objectType': get_objectType, 'objectVerified': get_objectVerified}
 
             controller = str(object) + ',' + controller
-            #print controller
 
 
         controller = ast.literal_eval(controller[:-1])
@@ -706,10 +705,8 @@ def verify_hrDataRange(get_XMax, get_XMin, get_YMax, get_YMin):
     while(looper<100):
         time.sleep(0.1)
         if (get_XMax != 'None' and get_XMin != 'None' and get_YMax != 'None' and get_YMin != 'None'):
-            #print 'HR data range is present'
             break
         else:
-            #print 'continue'
             looper = looper + 1
             continue
 
@@ -718,9 +715,7 @@ def verify_hrData(get_FilterObservations, get_FiltersObservationsDifference, get
     while(looper<100):
         time.sleep(0.1)
         if (get_FilterObservations != 'None' and get_FiltersObservationsDifference != 'None' and get_StarNames != 'None'):
-            #print 'HR data are present'
             break
         else:
-            #print 'continue'
             looper = looper + 1
             continue

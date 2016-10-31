@@ -404,7 +404,6 @@ class RestFileUpload(Resource):
     def post(self):
         emailHeader = request.headers.get("Email")
         sessionIdHeader = request.headers.get("SessionId")
-        print emailHeader
         auth = basicAuthentication(emailHeader, sessionIdHeader)
         if(auth == 'true'):
            file = request.files['file']
@@ -420,7 +419,6 @@ class RestInputFITSUpload(Resource):
     def post(self):
         emailHeader = request.headers.get("Email")
         sessionIdHeader = request.headers.get("SessionId")
-        print emailHeader
         auth = basicAuthentication(emailHeader, sessionIdHeader)
         if(auth == 'true'):
            files = request.files.getlist("files")

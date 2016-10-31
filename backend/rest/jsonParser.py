@@ -532,28 +532,20 @@ def authentication(email, sessionId):
         sessionId = int(sessionId)
 
         verify_sessionId = ("select sessionId from data.users where Email='"+email+"'")
-        print verify_sessionId
         cursor.execute(verify_sessionId)
         DBSessionId = cursor.fetchone()
-        print DBSessionId[0]
         if(DBSessionId[0] != None):
-           print 'testowo'
            DBSessionId = int(DBSessionId[0])
         else:
-           print 'test'
            DBSessionId = int(0)
-        print DBSessionId
         if(DBSessionId==sessionId):
-            print 'tera tu'
             update_userSysDate = ("update data.users set ActiveDate=getdate() where Email='"+email+"'")
-            print update_userSysDate
             cursor.execute(update_userSysDate)
             cnx.commit()
             auth = 'true'
         else:
             auth = "Unauthorized User"
 
-        print auth
         return auth
         cursor.close()
 
@@ -572,7 +564,6 @@ def logoutUser(email):
         email = str(email)
 
         logoutDataUsers = ("update data.users set SessionId=NULL, ActiveDate=NULL where Email='"+email+"'")
-        print logoutDataUsers
         cursor.execute(logoutDataUsers)
         cnx.commit()
         cursor.close()
@@ -606,10 +597,8 @@ def verifyCredentials(email, password, sessionId):
             verify_userIsLoggedIn = ("select sessionId from data.users where Email='"+email+"'")
             cursor.execute(verify_userIsLoggedIn)
             sessionIdValue = cursor.fetchone()
-            print sessionIdValue[0]
             if(str(sessionIdValue[0]) != 'None'):
                msg = "User is already logged In"
-               print msg
             else:
                #Now verify credentials
                verify_password = ("select password from data.users where Email='"+email+"'")
@@ -1429,8 +1418,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         counter = lastId
 
         updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagFalse') + sessionId + " and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
-        print 'updateActiveFlag'
-        print updateActiveFlag
         cursor.execute(updateActiveFlag)
         cnx.commit()
 
@@ -1454,7 +1441,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                               "(select ImageTypeId from dic.ImageTypes where ImageType='"+imageType+"'),'"+objectName+"', 'inputFits', "
                               "'Reduction', getdate(), 1)")
 
-               #print insertImage
                cursor.execute(insertImage)
                cnx.commit()
                looper=1
@@ -1463,7 +1449,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                   if os.path.isfile(backendInputFits+objectName):
                       break
                   else:
-                      print 'continue fits does not exist in DB'
                       looper = looper + 1
                       continue
 
@@ -1480,7 +1465,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                          print 'errors in renaming function'
 
                #start conversion
-               print 'Start Conversion'
                specialCharacterPosition = objectName.index('.')
                replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
                convertPlots.plot(replaceString, conversionType)
@@ -1508,12 +1492,10 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                 convertedObjectName = conversionType+"_"+replaceString+".png"
                 #update .png file active flag
                 updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagTrue') + sessionId + " and ObjectName='"+convertedObjectName+"' and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
-                print updateActiveFlag
                 cursor.execute(updateActiveFlag)
                 cnx.commit()
                 #update .fits file active flag
                 updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagTrue') + sessionId + " and ObjectName='"+file+"' and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = '"+imageType+"')")
-                print updateActiveFlag
                 cursor.execute(updateActiveFlag)
                 cnx.commit()
                 looper=1
@@ -1531,11 +1513,8 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
 
         #return json value
         get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"' and im.ActiveFlag=1")
-        #print get_ImageIds
         get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='"+conversionType+"' and it.ImageType = '"+imageType+"' and im.ActiveFlag=1")
-        #print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
-        print data
         i = 1
         if(i==1):
            data = data
@@ -1577,20 +1556,16 @@ def processImages(sessionId, email):
         reduceImages.reduce(fetch_all(getDarkFrames), fetch_all(getBiasFrames), fetch_all(getFlatFields), fetch_all(getRawFrames), sessionId)
 
         updateActiveFlag = (queries.get('DatabaseQueries', 'database.updateActiveFlagFalse') + sessionId + " and ImageTypeId = (select ImageTypeId from dic.ImageTypes where ImageType = 'Processed')")
-        print 'updateActiveFlag'
-        print updateActiveFlag
         cursor.execute(updateActiveFlag)
         cnx.commit()
 
         rawImages = fetch_all(getRawFrames)
-        print rawImages
         counter = lastId
         for file in rawImages:
            lastId = str(counter)
            counter = counter + 1
            insertFitsImage = "insert into data.images(ID, ImageId, OwnerID, FileExtensionId, SessionId, ConversionTypeId, ImageTypeId, ObjectName, FolderName, ProcessingType, UploadTime, ActiveFlag) " \
                              "values('"+lastId+"', 1, (select id from data.users where email='"+email+"'), 3, '"+sessionId+"', 1, 5, '"+file+"', 'outputFits', 'Reduction', getdate(), 1)"
-           #print insertFitsImage
            cursor.execute(insertFitsImage)
            cnx.commit()
            lastId = str(counter)
@@ -1601,17 +1576,13 @@ def processImages(sessionId, email):
            insertPngImage = (queries.get('DatabaseQueries', 'database.insertIntoDataReductionImages')+
                               " values('"+lastId+"', 1, (select id from data.users where email='"+email+"'),"
                               "2, '"+sessionId+"', 1, 5, '"+objectName+"', 'outputFits', 'Reduction', getdate(), 1)")
-           #print insertPngImage
            cursor.execute(insertPngImage)
            cnx.commit()
 
         #return json value
         get_ImageIds = (queries.get('DatabaseQueries', 'database.getImageIds') + sessionId + " and im.FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed' and ActiveFlag = 1")
-        #print get_ImageIds
         get_FileNames = (queries.get('DatabaseQueries', 'database.getFileNames') + sessionId + " and FileExtensionId=2 and co.conversionType='Linear' and it.ImageType = 'Processed' and ActiveFlag = 1")
-        print get_FileNames
         data = {'imageIds': fetch_all(get_ImageIds), 'fileNames': fetch_all(get_FileNames)}
-        #print data
         i = 1
         if(i==1):
             data = data

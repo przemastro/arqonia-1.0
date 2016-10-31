@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import numpy
+import numpy as np
 import pyfits
+from scipy import ndimage
 import pylab
 import numpy
 import math
@@ -24,9 +25,13 @@ def plot(fileName, conversionType):
       fn = backendInputFits+fileName+".fits"
       sig_fract = 5.0
       percent_fract = 0.01
-
       hdulist = pyfits.open(fn)
       img_data_raw = hdulist[0].data
+      print 'data'
+      print(img_data_raw.shape)
+      width = float(img_data_raw.shape[1])/100
+      height = float(img_data_raw.shape[0])/100
+      print width, height
       hdulist.close()
       img_data_raw = numpy.array(img_data_raw, dtype=float)
       sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=1)
@@ -36,22 +41,28 @@ def plot(fileName, conversionType):
       #plotting
       if(conversionType == "Power"):
          new_img = power(img_data, power_index=3.0, scale_min = min_val)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
+         Rotated_Plot = ndimage.rotate(new_img, 180)
+         Flipped_Plot = np.fliplr(Rotated_Plot)
+         fig = Figure(figsize=(width, height))
+         fig.figimage(Flipped_Plot, cmap='gray')
          resultFile = conversionType+"_"+fileName
          canvas = FigureCanvas(fig)
          canvas.print_figure(frontendInputFits+resultFile+".png")
       elif(conversionType == "Linear"):
          new_img = linear(img_data, scale_min = min_val)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
+         Rotated_Plot = ndimage.rotate(new_img, 180)
+         Flipped_Plot = np.fliplr(Rotated_Plot)
+         fig = Figure(figsize=(width, height))
+         fig.figimage(Flipped_Plot, cmap='gray')
          resultFile = conversionType+"_"+fileName
          canvas = FigureCanvas(fig)
          canvas.print_figure(frontendInputFits+resultFile+".png")
       elif(conversionType == "Hist"):
          new_img = histeq(img_data_raw, num_bins=256)
-         fig = Figure(figsize=(12.5, 13.35))
-         fig.figimage(new_img, cmap='gray')
+         Rotated_Plot = ndimage.rotate(new_img, 180)
+         Flipped_Plot = np.fliplr(Rotated_Plot)
+         fig = Figure(figsize=(width, height))
+         fig.figimage(Flipped_Plot, cmap='gray')
          resultFile = conversionType+"_"+fileName
          canvas = FigureCanvas(fig)
          canvas.print_figure(frontendInputFits+resultFile+".png")
