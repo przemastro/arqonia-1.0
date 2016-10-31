@@ -111,7 +111,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -179,7 +179,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -247,7 +247,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-60px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-60px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -317,7 +317,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -355,7 +355,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel

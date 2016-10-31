@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-import numpy
+import numpy as np
 import pyfits
+from scipy import ndimage
 import pylab
 import numpy
 import math
@@ -27,7 +28,6 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
         percent_fract = 0.01
         min_val = 0.0
 
-        print 'START'
         #Open Dark Frames data
         List = getDarkFrames
         reference_dark_image = 'None'
@@ -36,8 +36,6 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
            for file in List:
                dataList.append(openFile(backendInputFits+sessionId+"_Dark_"+file))
            reference_dark_image = medianImage(dataList)
-        print 'reference_dark_image'
-        print reference_dark_image
 
         #Open Bias Frames data
         List = getBiasFrames
@@ -56,8 +54,6 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
            for file in List:
                dataList.append(openFileAndNormalize(backendInputFits+sessionId+"_Flat_"+file))
            reference_flat_image = medianImage(dataList)
-           print 'reference flat image'
-           print reference_flat_image
 
 
         #Open Raw Images Data and Reduce
@@ -106,8 +102,8 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
                   print 'only raw'
                   final_image = dataImage
 
-              print 'final_image'
-              print final_image
+              width = float(final_image.shape[1])/100
+              height = float(final_image.shape[0])/100
               try:
                  os.remove(backendOutputFits+"Processed_"+file)
                  pyfits.append(backendOutputFits+"Processed_"+file, final_image)
@@ -116,19 +112,20 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
               sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
               img_data = final_image - sky
               new_img = linear(img_data, scale_min = min_val)
-              fig = Figure(figsize=(12.5, 13.35))
-              fig.figimage(new_img, cmap='gray')
+              Rotated_Plot = ndimage.rotate(new_img, 180)
+              Flipped_Plot = np.fliplr(Rotated_Plot)
+              fig = Figure(figsize=(width, height))
+              fig.figimage(Flipped_Plot, cmap='gray')
               canvas = FigureCanvas(fig)
               specialCharacterPosition = file.index('.')
               fileWithoutExtension = str(file[:specialCharacterPosition])
               canvas.print_figure(frontendInputFits+"Linear_"+sessionId+"_Processed_"+fileWithoutExtension+".png")
 
     except:
-        print 'error'
+        print 'error in reduce function'
 
 def medianImage(images):
     stack = numpy.array(images)
-    print stack
     median = numpy.median(stack, axis=0)
     return median
 
@@ -200,7 +197,7 @@ def linear(inputArray, scale_min=None, scale_max=None):
 
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
-    print "img_scale : power"
+    #print "img_scale : power"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:

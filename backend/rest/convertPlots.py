@@ -27,11 +27,8 @@ def plot(fileName, conversionType):
       percent_fract = 0.01
       hdulist = pyfits.open(fn)
       img_data_raw = hdulist[0].data
-      print 'data'
-      print(img_data_raw.shape)
       width = float(img_data_raw.shape[1])/100
       height = float(img_data_raw.shape[0])/100
-      print width, height
       hdulist.close()
       img_data_raw = numpy.array(img_data_raw, dtype=float)
       sky, num_iter = sky_mean_sig_clip(img_data_raw, sig_fract, percent_fract, max_iter=1)
@@ -81,7 +78,7 @@ def plot(fileName, conversionType):
        print 'errors in convertPlots function'
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
-    print "img_scale : power"
+    #print "img_scale : power"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:
