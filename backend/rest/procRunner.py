@@ -52,19 +52,15 @@ def procPersonalizedRunner(email):
         email = str(email)
 
 
-        get_Ids = (queries.get('DatabaseQueries', 'database.getPersonalizedIdsFromStagingObservations') + "'" + email + "' order by id desc")
-        getIds = fetch_all(get_Ids)
-
+        getIds = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getPersonalizedIdsFromStagingObservations')), (email)).fetchall()]
         for i in getIds:
             i=str(i)
-            runObservationsDelta = (queries.get('DatabaseQueries', 'database.runObservationsDeltaPersonalized')+i)
-            cursor.execute(runObservationsDelta)
+            cursor.execute(queries.get('DatabaseQueries', 'database.runObservationsDeltaPersonalized') + i)
             cnx.commit()
 
         Log = False
         while(Log != True):
-            get_Log = (queries.get('DatabaseQueries', 'database.getLogFromLog')+i+" order by id desc")
-            Log = str(fetch_one(get_Log))
+            Log = cursor.execute(queries.get('DatabaseQueries', 'database.getLogFromLog'), (i)).fetchone()
             if(Log):
                 break
             else:
@@ -82,8 +78,7 @@ def deleteObservation(id):
         cursor = cnx.cursor()
 
         id=str(id)
-        removeObservation = (queries.get('DatabaseQueries', 'database.removeObservation')+id)
-        cursor.execute(removeObservation)
+        cursor.execute(queries.get('DatabaseQueries', 'database.removeObservation'), (id))
         cnx.commit()
         cursor.close()
 

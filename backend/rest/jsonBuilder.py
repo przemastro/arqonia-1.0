@@ -144,87 +144,72 @@ def userObservations(email):
         for counter in getIds:
             id = str(counter)
             i = i + 1
-            get_observationsOwners = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserObservationsOwners') + id + " and us.Email='" + email + "'"))
-            get_objectName = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserStarNameFromObservationsSorted') + id + " and us.Email='" + email + "'"))
-            get_objectType = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserObjectTypeFromObservationsSorted') + id + " and us.Email='" + email + "'"))
-            get_objectVerified = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserObjectVerifiedFromObservationsSorted') + id + " and us.Email='" + email + "'"))
-            get_StartDate = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserStartDateFromObservationsSorted') + id + " and us.Email='" + email + "'"))
-            get_EndDate = str(fetch_one(queries.get('DatabaseQueries', 'database.getUserEndDateFromObservationsSorted') + id + " and us.Email='" + email + "'"))
-            get_UPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserUPhotometryFlagFromUPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_UPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserUPhotometryFluxFromUPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_UPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserUPhotometryTimeFromUPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_VPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserVPhotometryFlagFromVPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_VPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserVPhotometryFluxFromVPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_VPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserVPhotometryTimeFromVPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_BPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserBPhotometryFlagFromBPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_BPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserBPhotometryFluxFromBPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_BPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserBPhotometryTimeFromBPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_RPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserRPhotometryFlagFromRPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_RPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserRPhotometryFluxFromRPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_RPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserRPhotometryTimeFromRPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_IPhotometryFlag = (queries.get('DatabaseQueries', 'database.getUserIPhotometryFlagFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_IPhotometryFlux = (queries.get('DatabaseQueries', 'database.getUserIPhotometryFluxFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_IPhotometryTime = (queries.get('DatabaseQueries', 'database.getUserIPhotometryTimeFromIPhotometrySorted') + id + " and us.Email='" + email + "'")
-            get_statuses = str(fetch_one(queries.get('DatabaseQueries', 'database.getPersonalObservationsStatuses') + id + " and us.Email='" + email + "'"))
+            get_observationsOwners = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserObservationsOwners'), (id, email)).fetchone())[0]
+            get_objectName = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserStarNameFromObservationsSorted'), (id, email)).fetchone())[0]
+            get_objectType = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserObjectTypeFromObservationsSorted'), (id, email)).fetchone())[0]
+            get_objectVerified = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserObjectVerifiedFromObservationsSorted'), (id, email)).fetchone())[0]
+            get_StartDate = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserStartDateFromObservationsSorted'), (id, email)).fetchone())[0]
+            get_EndDate = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserEndDateFromObservationsSorted'), (id, email)).fetchone())[0]
+            get_statuses = (cursor.execute(queries.get('DatabaseQueries', 'database.getPersonalObservationsStatuses'), (id, email)).fetchone())[0]
 
-            UPhotometry = str(fetch_one(get_UPhotometryFlag))
-            if UPhotometry != 'null' and UPhotometry != '0':
+            UPhotometry = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserUPhotometryFlagFromUPhotometrySorted'), (id, email)).fetchone())[0]
+            if str(UPhotometry) != 'null' and str(UPhotometry) != '0':
                 UPhotometry = 'YES'
-                UPhotometryFlux = fetch_all_replace(get_UPhotometryFlux)
-                UPhotometryTime = fetch_all_replace(get_UPhotometryTime)
+                UPhotometryFlux = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserUPhotometryFluxFromUPhotometrySorted')), (id, email)).fetchall()])
+                UPhotometryTime = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserUPhotometryTimeFromUPhotometrySorted')), (id, email)).fetchall()])
             else:
                 UPhotometry = 'NO'
                 UPhotometryFlux = 'No data available'
                 UPhotometryTime = 'No data available'
 
-            VPhotometry = str(fetch_one(get_VPhotometryFlag))
-            if VPhotometry != 'null' and VPhotometry != '0':
+            VPhotometry = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserVPhotometryFlagFromVPhotometrySorted'), (id, email)).fetchone())[0]
+            if str(VPhotometry) != 'null' and str(VPhotometry) != '0':
                 VPhotometry = 'YES'
-                VPhotometryFlux = fetch_all_replace(get_VPhotometryFlux)
-                VPhotometryTime = fetch_all_replace(get_VPhotometryTime)
+                VPhotometryFlux = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserVPhotometryFluxFromVPhotometrySorted')), (id, email)).fetchall()])
+                VPhotometryTime = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserVPhotometryTimeFromVPhotometrySorted')), (id, email)).fetchall()])
             else:
                 VPhotometry = 'NO'
                 VPhotometryFlux = 'No data available'
                 VPhotometryTime = 'No data available'
 
-            BPhotometry = str(fetch_one(get_BPhotometryFlag))
-            if BPhotometry != 'null' and BPhotometry != '0':
+            BPhotometry = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserBPhotometryFlagFromBPhotometrySorted'), (id, email)).fetchone())[0]
+            if str(BPhotometry) != 'null' and str(BPhotometry) != '0':
                 BPhotometry = 'YES'
-                BPhotometryFlux = fetch_all_replace(get_BPhotometryFlux)
-                BPhotometryTime = fetch_all_replace(get_BPhotometryTime)
+                BPhotometryFlux = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserBPhotometryFluxFromBPhotometrySorted')), (id, email)).fetchall()])
+                BPhotometryTime = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserBPhotometryTimeFromBPhotometrySorted')), (id, email)).fetchall()])
             else:
                 BPhotometry = 'NO'
                 BPhotometryFlux = 'No data available'
                 BPhotometryTime = 'No data available'
 
-            RPhotometry = str(fetch_one(get_RPhotometryFlag))
-            if RPhotometry != 'null' and RPhotometry != '0':
+            RPhotometry = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserRPhotometryFlagFromRPhotometrySorted'), (id, email)).fetchone())[0]
+            if str(RPhotometry) != 'null' and str(RPhotometry) != '0':
                 RPhotometry = 'YES'
-                RPhotometryFlux = fetch_all_replace(get_RPhotometryFlux)
-                RPhotometryTime = fetch_all_replace(get_RPhotometryTime)
+                RPhotometryFlux = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserRPhotometryFluxFromRPhotometrySorted')), (id, email)).fetchall()])
+                RPhotometryTime = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserRPhotometryTimeFromRPhotometrySorted')), (id, email)).fetchall()])
             else:
                 RPhotometry = 'NO'
                 RPhotometryFlux = 'No data available'
                 RPhotometryTime = 'No data available'
 
-            IPhotometry = str(fetch_one(get_IPhotometryFlag))
-            if IPhotometry != 'null' and IPhotometry != '0':
+            IPhotometry = (cursor.execute(queries.get('DatabaseQueries', 'database.getUserIPhotometryFlagFromIPhotometrySorted'), (id, email)).fetchone())[0]
+            if str(IPhotometry) != 'null' and str(IPhotometry) != '0':
                 IPhotometry = 'YES'
-                IPhotometryFlux = fetch_all_replace(get_IPhotometryFlux)
-                IPhotometryTime = fetch_all_replace(get_IPhotometryTime)
+                IPhotometryFlux = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserIPhotometryFluxFromIPhotometrySorted')), (id, email)).fetchall()])
+                IPhotometryTime = replace([oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUserIPhotometryTimeFromIPhotometrySorted')), (id, email)).fetchall()])
             else:
                 IPhotometry = 'NO'
                 IPhotometryFlux = 'No data available'
                 IPhotometryTime = 'No data available'
 
-            object = {'id': id, 'name': get_objectName, 'startDate': get_StartDate, 'endDate': get_EndDate,
+            object = {'id': id, 'name': get_objectName, 'startDate': str(get_StartDate), 'endDate': str(get_EndDate),
                       'uPhotometry': UPhotometry, 'uPhotometryFlux': UPhotometryFlux, 'uPhotometryTime': UPhotometryTime,
                       'vPhotometry': VPhotometry, 'vPhotometryFlux': VPhotometryFlux, 'vPhotometryTime': VPhotometryTime,
                       'bPhotometry': BPhotometry, 'bPhotometryFlux': BPhotometryFlux, 'bPhotometryTime': BPhotometryTime,
                       'rPhotometry': RPhotometry, 'rPhotometryFlux': RPhotometryFlux, 'rPhotometryTime': RPhotometryTime,
                       'iPhotometry': IPhotometry, 'iPhotometryFlux': IPhotometryFlux, 'iPhotometryTime': IPhotometryTime,
                       'owner': get_observationsOwners, 'status': get_statuses,
-                      'objectType': get_objectType, 'objectVerified': get_objectVerified}
+                      'objectType': get_objectType, 'objectVerified': str(get_objectVerified)}
 
             controller = str(object) + ',' + controller
             #print controller
@@ -697,6 +682,10 @@ def fetch_all_replace(get_value):
     cursor.execute(get_value)
     Value = cursor.fetchall()
     Value = [u[0] for u in Value]
+    Value = ans = ' '.join(Value).replace(' ', '\n')
+    return Value
+
+def replace(Value):
     Value = ans = ' '.join(Value).replace(' ', '\n')
     return Value
 

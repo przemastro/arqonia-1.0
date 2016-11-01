@@ -107,10 +107,11 @@
            //Call processData service
    	       ProcessUserData.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    	          $scope.message = response.message;
-   	                   $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
-                           $scope.showSuccessAlert = true;
+
    	       });
          }
+            	                   $scope.successTextAlert = "Your request has been added to the queue. Results will be visible in few seconds!";
+                                    $scope.showSuccessAlert = true;
 
              // switch flag
              $scope.switchBool = function (value) {
@@ -391,11 +392,12 @@
    		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
    		  console.log(file);
-   		     		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
-                        $rootScope.showSuccessAlert = true;
+
                       $scope.spinneractive = false;
                       usSpinnerService.stop('spinner-1');
    		  });
+   		     		     		  $rootScope.successTextAlert = "New observation has been added to the staging area.";
+                                  $rootScope.showSuccessAlert = true;
    		  //...and close modal
    		  $uibModalInstance.dismiss();
 

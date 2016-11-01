@@ -60,31 +60,31 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
      #--uPhotometry
      uFileName = str(uFileName)
      if uFileName != 'None':
-        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+uFileName+"', ' ', ' ')")
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (lastId, uFileName))
         cnx.commit()
 
      #--vPhotometry
      vFileName = str(vFileName)
      if vFileName != 'None':
-        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+vFileName+"', ' ', ' ')")
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (lastId, vFileName))
         cnx.commit()
 
      #--bPhotometry
      bFileName = str(bFileName)
      if bFileName != 'None':
-        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+bFileName+"', ' ', ' ')")
+        cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (lastId, bFileName))
         cnx.commit()
 
      #--rPhotometry
      rFileName = str(rFileName)
      if rFileName != 'None':
-         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+rFileName+"', ' ', ' ')")
+         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (lastId, rFileName))
          cnx.commit()
 
      #--iPhotometry
      iFileName = str(iFileName)
      if iFileName != 'None':
-         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+lastId+",'"+iFileName+"', ' ', ' ')")
+         cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (lastId, iFileName))
          cnx.commit()
 
 
@@ -195,7 +195,7 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
                   iflux = 'NULL'
               j = str(counter + 1)
               observation = "SELECT "+lastId+","+j+",'"+name+"','"+objectType+"',cast('"+startDate+"' as datetime),cast('"+endDate+"' as datetime),"+utime+","+uflux+","+vtime+","+vflux+","+btime+","+bflux+"," \
-                                                                    ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1, '"+verified+"',  (select id from data.users where email='"+email+"') UNION ALL "
+                                                                                                                                                                                                             ""+rtime+","+rflux+","+itime+","+iflux+", 'new',1, '"+verified+"',  (select id from data.users where email='"+email+"') UNION ALL "
               insert_observation = insert_observation + observation
 
 
@@ -204,7 +204,7 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,ObjectName,ObjectType,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
                              "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
                              "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
-
+        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()
@@ -238,55 +238,45 @@ def updateObservation(id, name, startDate, endDate, uFileName, vFileName, bFileN
 
     #--update in stg.stagingObservations and delete in data.fileNames
 
-        delete_stagingObservation= ("delete from stg.stagingObservations where id="+id)
-
-        cursor.execute(delete_stagingObservation)
+        cursor.execute(queries.get('DatabaseQueries', 'database.deleteStagingObservationsData'), (id))
         cnx.commit()
 
         #delete_observation= ("delete from bi.observations where id="+id)
-
         #cursor.execute(delete_observation)
         #cnx.commit()
 
-        delete_files= ("delete from data.fileNames where observationId="+id)
-
-        cursor.execute(delete_files)
+        cursor.execute(queries.get('DatabaseQueries', 'database.deleteFilesFromFileNames'), (id))
         cnx.commit()
 
     #--insert to data.fileNames
         #--uPhotometry
         uFileName = str(uFileName)
         if uFileName != 'None':
-           insert_uFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+uFileName+"', ' ', ' ')")
-           cursor.execute(insert_uFileName)
+           cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (id, uFileName))
            cnx.commit()
 
         #--vPhotometry
         vFileName = str(vFileName)
         if vFileName != 'None':
-           insert_vFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+vFileName+"', ' ', ' ')")
-           cursor.execute(insert_vFileName)
+           cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (id, vFileName))
            cnx.commit()
 
         #--bPhotometry
         bFileName = str(bFileName)
         if bFileName != 'None':
-           insert_bFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+bFileName+"', ' ', ' ')")
-           cursor.execute(insert_bFileName)
+           cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (id, bFileName))
            cnx.commit()
 
         #--rPhotometry
         rFileName = str(rFileName)
         if rFileName != 'None':
-            insert_rFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+rFileName+"', ' ', ' ')")
-            cursor.execute(insert_rFileName)
+            cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (id, rFileName))
             cnx.commit()
 
         #--iPhotometry
         iFileName = str(iFileName)
         if iFileName != 'None':
-            insert_iFileName = (queries.get('DatabaseQueries', 'database.insertIntoDataFileNames')+"values("+id+",'"+iFileName+"', ' ', ' ')")
-            cursor.execute(insert_iFileName)
+            cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataFileNames'), (id, iFileName))
             cnx.commit()
 
     #---insert to stg.stagingObservations
@@ -1168,41 +1158,30 @@ def catalogData(objectType, abbreviation, email):
         if(abbreviation=='None'):
             abbreviation=''
 
-
         controller = ''
         if(objectType == 'Star'):
            #B-V
-           get_BVObservationsDifference = (queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-           BVObservationsDifference = fetch_all(get_BVObservationsDifference)
+           BVObservationsDifference = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getBVObservationsDifferenceFromBVDiagramAvgForStar')), (objectType, email)).fetchall()]
            #U-B
-           get_UBObservationsDifference = (queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-           UBObservationsDifference = fetch_all(get_UBObservationsDifference)
+           UBObservationsDifference = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUBObservationsDifferenceFromUBDiagramAvgForStar')), (objectType, email)).fetchall()]
            #R-I
-           get_RIObservationsDifference = (queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-           RIObservationsDifference = fetch_all(get_RIObservationsDifference)
+           RIObservationsDifference = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getRIObservationsDifferenceFromRIDiagramAvgForStar')), (objectType, email)).fetchall()]
            #V-I
-           get_VIObservationsDifference = (queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-           VIObservationsDifference = fetch_all(get_VIObservationsDifference)
+           VIObservationsDifference = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getVIObservationsDifferenceFromVIDiagramAvgForStar')), (objectType, email)).fetchall()]
 
 
         #U
-        get_UObservations = (queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        UObservations = fetch_all(get_UObservations)
+        UObservations = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getUObservationsFromUPhotometrySortedForObjectType')), (objectType, email)).fetchall()]
         #V
-        get_VObservations = (queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        VObservations = fetch_all(get_VObservations)
+        VObservations = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getVObservationsFromVPhotometrySortedForObjectType')), (objectType, email)).fetchall()]
         #B
-        get_BObservations = (queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        BObservations = fetch_all(get_BObservations)
+        BObservations = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getBObservationsFromBPhotometrySortedForObjectType')), (objectType, email)).fetchall()]
         #R
-        get_RObservations = (queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        RObservations = fetch_all(get_RObservations)
+        RObservations = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getRObservationsFromRPhotometrySortedForObjectType')), (objectType, email)).fetchall()]
         #I
-        get_IObservations = (queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        IObservations = fetch_all(get_IObservations)
+        IObservations = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getIObservationsFromIPhotometrySortedForObjectType')), (objectType, email)).fetchall()]
         #ObjectNames
-        get_ObjectNames = (queries.get('DatabaseQueries', 'database.getObjectNamesForCatalog') + " where ob.ObjectType='" + objectType + "' and email='" + email + "' group by ob.ObjectName")
-        ObjectNames = fetch_all(get_ObjectNames)
+        ObjectNames = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getObjectNamesForCatalog')), (objectType, email)).fetchall()]
         jsonRange = len(UObservations)
 
 
