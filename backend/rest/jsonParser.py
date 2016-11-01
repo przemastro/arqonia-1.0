@@ -426,17 +426,13 @@ def addUser(name, email, activeNumber):
         activeNumber = str(activeNumber)
 
         if email != 'None' and name != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+email+"'")
-            cursor.execute(verify_User)
-
-            Value = cursor.fetchone()
-            Value = Value[0]
+            cursor.execute(queries.get('DatabaseQueries', 'database.verifyUserExists'), (email))
+            Value = cursor.fetchone()[0]
 
             if Value>0:
                 msg = "User exists"
             else:
-                insert_NewUser = (queries.get('DatabaseQueries', 'database.insertNewUser')+"values('"+name+"', '"+email+"','"+activeNumber+"','false','"+activeNumber+"')")
-                cursor.execute(insert_NewUser)
+                cursor.execute(queries.get('DatabaseQueries', 'database.insertNewUser'), (name, email, activeNumber, activeNumber))
                 cnx.commit()
                 msg = "Correct"
 
@@ -461,8 +457,7 @@ def updateUser(name, email, password, oldEmail):
         oldEmail = str(oldEmail)
 
         if email != 'None' and password != 'None' and name != 'None' and oldEmail != 'None':
-                update_ExistingUser = ("update data.users set Name='"+name+"', Email='"+email+"', Password='"+password+"' where email='"+oldEmail+"'")
-                cursor.execute(update_ExistingUser)
+                cursor.execute(queries.get('DatabaseQueries', 'database.updateExistingUser'), (name, email, password, oldEmail))
                 cnx.commit()
                 msg = "Correct"
 
@@ -483,12 +478,9 @@ def removeUser(email):
         email = str(email)
 
         if email != 'None':
-            update_ExistingUser = ("update data.users set activeFlag='false' where email='"+email+"'")
-            cursor.execute(update_ExistingUser)
+            cursor.execute(queries.get('DatabaseQueries', 'database.softDeleteUser'), (email))
             cnx.commit()
-            removeObservation = ("update so set active=1, status='deleted' from stg.stagingObservations so "
-                                 "join data.users us on so.OwnerId=us.ID where email='"+email+"'")
-            cursor.execute(removeObservation)
+            cursor.execute(queries.get('DatabaseQueries', 'database.removeObservationsOfDeletedUser'), (email))
             cnx.commit()
             msg = "Correct"
 
@@ -496,7 +488,7 @@ def removeUser(email):
         cursor.close()
 
     except:
-        print 'errors in updateUser function'
+        print 'errors in removeUser function'
     else:
         cnx.close()
 
@@ -508,8 +500,7 @@ def getPassword(email):
 
         email = str(email)
 
-        get_Password = ("select password from data.users where Email='"+email+"'")
-        cursor.execute(get_Password)
+        cursor.execute(queries.get('DatabaseQueries', 'database.getPassword'), (email))
         Value = cursor.fetchone()
         msg = Value[0]
 
@@ -517,7 +508,7 @@ def getPassword(email):
         cursor.close()
 
     except:
-        print 'errors in addUser function'
+        print 'errors in getPassword function'
     else:
         cnx.close()
 
@@ -531,16 +522,14 @@ def authentication(email, sessionId):
         email = str(email)
         sessionId = int(sessionId)
 
-        verify_sessionId = ("select sessionId from data.users where Email='"+email+"'")
-        cursor.execute(verify_sessionId)
+        cursor.execute(queries.get('DatabaseQueries', 'database.getSessionId'), (email))
         DBSessionId = cursor.fetchone()
         if(DBSessionId[0] != None):
            DBSessionId = int(DBSessionId[0])
         else:
            DBSessionId = int(0)
         if(DBSessionId==sessionId):
-            update_userSysDate = ("update data.users set ActiveDate=getdate() where Email='"+email+"'")
-            cursor.execute(update_userSysDate)
+            cursor.execute(queries.get('DatabaseQueries', 'database.updateSysDate'), (email))
             cnx.commit()
             auth = 'true'
         else:
@@ -563,8 +552,7 @@ def logoutUser(email):
 
         email = str(email)
 
-        logoutDataUsers = ("update data.users set SessionId=NULL, ActiveDate=NULL where Email='"+email+"'")
-        cursor.execute(logoutDataUsers)
+        cursor.execute(queries.get('DatabaseQueries', 'database.logoutUser'), (email))
         cnx.commit()
         cursor.close()
 
@@ -584,41 +572,31 @@ def verifyCredentials(email, password, sessionId):
         sessionId = str(sessionId)
 
         #Verify user exists
-
         if email != 'None' and password != 'None':
-            verify_User = ("select count(1) from data.users where Email='"+email+"' and (ActiveFlag='true' or (ActiveFlag='false' and ActiveCode is not NULL))")
-            cursor.execute(verify_User)
+            cursor.execute(queries.get('DatabaseQueries', 'database.verifyUser'), (email))
 
-        Value = cursor.fetchone()
-        Value = Value[0]
+        Value = cursor.fetchone()[0]
 
         if Value==1:
             #Firstly check if user is logged in
-            verify_userIsLoggedIn = ("select sessionId from data.users where Email='"+email+"'")
-            cursor.execute(verify_userIsLoggedIn)
+            cursor.execute(queries.get('DatabaseQueries', 'database.getSessionId'), (email))
             sessionIdValue = cursor.fetchone()
             if(str(sessionIdValue[0]) != 'None'):
                msg = "User is already logged In"
             else:
                #Now verify credentials
-               verify_password = ("select password from data.users where Email='"+email+"'")
-               cursor.execute(verify_password)
-               DBPassword = cursor.fetchone()
-               DBPassword = DBPassword[0]
+               cursor.execute(queries.get('DatabaseQueries', 'database.getPassword'), (email))
+               DBPassword = cursor.fetchone()[0]
                if(decrypt_password(DBPassword)==password):
                   #Activation for first login - in fact I will update everytime this flag
-                  update_ActiveFlag = ("update data.users set activeFlag='true', activeCode=NULL where Email='"+email+"'")
-                  cursor.execute(update_ActiveFlag)
+                  cursor.execute(queries.get('DatabaseQueries', 'database.updateActiveFlag'), (email))
                   cnx.commit()
                   #Update SessionId
-                  update_SessionId = ("update data.users set SessionID='"+sessionId+"', ActiveDate=getdate() where Email='"+email+"'")
-                  cursor.execute(update_SessionId)
+                  cursor.execute(queries.get('DatabaseQueries', 'database.updateSessionId'), (sessionId, email))
                   cnx.commit()
                   #and the rest
-                  select_userName = ("select name from data.users where Email='"+email+"'")
-                  cursor.execute(select_userName)
-                  Name = cursor.fetchone()
-                  msg = Name[0]
+                  cursor.execute(queries.get('DatabaseQueries', 'database.getUserName'), (email))
+                  msg = cursor.fetchone()[0]
                else:
                   msg = "Wrong credentials"
         else:
@@ -641,10 +619,7 @@ def addSubscriber(email):
 
         email = str(email)
 
-        insert_NewSubscriber = ("BEGIN IF NOT EXISTS (SELECT * FROM [data].[subscribeList] WHERE email = '"+email+"') "
-                                "BEGIN INSERT INTO [data].[subscribeList] (Email) VALUES ('"+email+"') "
-                                "END END")
-        cursor.execute(insert_NewSubscriber)
+        cursor.execute(queries.get('DatabaseQueries', 'database.addSubscriberIfNotExists'), (email, email))
         cnx.commit()
 
         cursor.close()
