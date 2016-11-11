@@ -336,6 +336,21 @@ services.factory('getStatistics', ['$resource',
     });
 }]);
 
+//Add Photometry Data
+services.factory('postPhotometry', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
+    return $resource(__env.apiUrlService+'/photometry', {}, {
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
+    });
+}]);
+
 //Add new observation
 services.factory('postObservation', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
     function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {

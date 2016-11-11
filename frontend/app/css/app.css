@@ -591,6 +591,14 @@ p {
     width: 310px;
 }
 
+.myInputLong {
+    width: 130px;
+}
+
+.myInputShort {
+    width: 45px;
+}
+
 .myBtn {
     height: 34px;
 }

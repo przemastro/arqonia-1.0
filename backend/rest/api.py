@@ -6,19 +6,16 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     json_lcDiagramRange, json_lcDiagram, userObservations, personalizedObservationsHRDiagram, personalizedObservationsHRDiagramRange, \
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
-    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser, returnZippedImages
+    getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser, returnZippedImages, \
+    addPhotometryData
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
-import random
 from threading import *
 from flask_mail import Mail, Message
 from sjcl import SJCL
 import simplejson as json
-import threading
-import time
 import logging
-import sys
 
 
 
@@ -139,6 +136,11 @@ parser.add_argument('sessionId', type=str)
 parser.add_argument('files', type=str, action='append')
 parser.add_argument('conversionType', type=str)
 parser.add_argument('imageType', type=str)
+parser.add_argument('ref1', type=str)
+parser.add_argument('ref2', type=str)
+parser.add_argument('object', type=str, action='append')
+parser.add_argument('julianDate', type=str)
+parser.add_argument('shift', type=str)
 
 
 #public
@@ -451,7 +453,7 @@ class RestRegister(Resource):
 class RestUpdateProfile(Resource):
     def put(self):
         args = parser.parse_args()
-        auth = basicAuthentication(args['email'], args['sessionId'])
+        auth = basicAuthentication(args['oldEmail'], args['sessionId'])
         if(auth == 'true'):
            msg = updateUser(args['name'],args['email'], args['password'],args['oldEmail'])
            if msg == 'Correct':
@@ -586,6 +588,18 @@ class RestSaveImages(Resource):
             data = []
             return data, 401
 
+#private
+class RestAddPhotometry(Resource):
+    def post(self):
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+            data = addPhotometryData(args['ref1'], args['ref2'], args['object'], args['julianDate'], args['shift'])
+            return data
+        else:
+            data = []
+            return data, 401
+
 def basicAuthentication(email, sessionId):
     if(str(sessionId) != 'None'):
        auth = authentication(email, sessionId)
@@ -637,6 +651,7 @@ api.add_resource(RestCatalog, '/catalog')
 api.add_resource(RestReductionImages, '/reductionImages')
 api.add_resource(RestProcessImages, '/processImages')
 api.add_resource(RestSaveImages, '/saveImages')
+api.add_resource(RestAddPhotometry, '/photometry')
 
 
 # Handling COR requests

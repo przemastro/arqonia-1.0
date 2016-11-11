@@ -8,9 +8,11 @@ from sjcl import SJCL
 import os
 import convertPlots
 import reduceImages
+import photometry
 import zipFiles
 import time
-from multiprocessing import Process, Queue
+import math
+from decimal import getcontext, Decimal
 
 
 env = ConfigParser.RawConfigParser()
@@ -514,6 +516,7 @@ def authentication(email, sessionId):
 
         cursor.execute(queries.get('DatabaseQueries', 'database.getSessionId'), (email))
         DBSessionId = cursor.fetchone()
+
         if(DBSessionId[0] != None):
            DBSessionId = int(DBSessionId[0])
         else:
@@ -1404,6 +1407,39 @@ def processImages(sessionId, email):
     else:
         cnx.close()
 
+
+#------------------------------------------------------measure photometry-----------------------------------------------
+def addPhotometryData(ref1, ref2, object, julianDate, shift):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+        ref1 = str(ref1)
+        julianDate = str(julianDate)
+        object = Decimal(object[0])
+
+
+
+        instrumentalMag = photometry.photometry(93, 218, 6, 15, 20)
+        getcontext().prec = 6
+        absoluteMag = Decimal(instrumentalMag-5*((math.log10(object))-1))
+        absoluteMag = round(absoluteMag, 6)
+        absoluteMag = str(absoluteMag)
+        print absoluteMag
+
+        #return json value
+        data = {'absoluteMag': absoluteMag, 'julianDate': julianDate}
+        i = 1
+        if(i==1):
+            data = data
+        elif(i>1):
+            data = [data]
+        return data
+        cursor.close()
+
+    except(RuntimeError, TypeError, NameError):
+        print 'errors in addPhotometryData function'
+    else:
+        cnx.close()
 
 #----------------------------------------------------------ZIP Files----------------------------------------------------
 def returnZippedImages(sessionId, email):

@@ -22,9 +22,10 @@
 
 
     astroApp.controller("processPhotometryCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
-                                                  'multipleFileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
+                                                  'multipleFileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService',
+                                                  '$q', 'uibButtonConfig', '$uibModal',
                         (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, multipleFileUpload, $cookies,
-                                                                      $element, ReductionImages, usSpinnerService, $q, buttonConfig) {
+                                                                      $element, ReductionImages, usSpinnerService, $q, buttonConfig, $uibModal) {
 
         //cookies
         $scope.loggedInUser = $cookies.get('name');
@@ -34,6 +35,7 @@
 
         //Flags
         $scope.photometryTypeFlag = false;
+        $scope.convertFlag = false;
         $scope.processFlag = false;
         $scope.linearFlag = 'true';
         $rootScope.textStep = 'uploaded';
@@ -45,18 +47,6 @@
         $rootScope.selectType = "SELECT PHOTOMETRY TYPE";
 
 
-        //Measure Photometry
-        $scope.processFiles = function(){
-           $rootScope.textStep = 'processed'
-           var files = $scope.files;
-
-
-           $scope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
-           $scope.processFlag = true;
-           console.log($scope.processFlag);
-        }
-
-
         $rootScope.carouselFlag = false;
 
         $rootScope.selectPhotometryType = function (value) {
@@ -65,8 +55,9 @@
           $scope.selectedPhotometryType = value;
           $scope.helpDescription = "";
 
-          //Dark Frames selected
           if($scope.selectedPhotometryType == "APERTURE PHOTOMETRY") {
+
+
                 $rootScope.selectType = "APERTURE PHOTOMETRY";
 
                 $scope.photometryTypeFlag = true;
@@ -119,8 +110,8 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        console.log()
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5; " class="rotate180"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}" class="rotate180"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5; "></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -129,11 +120,23 @@
                        $rootScope.numberOfProcessedFiles = $cookies.get('numberOfProcessedFiles')
                        if($rootScope.numberOfProcessedFiles == 1) {$scope.imageTypeText = 'Image';} else {$scope.imageTypeText = 'Images';}
                        $scope.helpDescription = "Great! Go ahead and Measure Photometry.";
+                       $scope.convertFlag = true;
                        });
                 }
+
+                 //Measure Photometry Modal
+                 $scope.measure = function () {
+                      var modalInstance = $uibModal.open({
+                        animation: $scope.animationsEnabled,
+                        templateUrl: 'measureContent.html',
+                        controller: 'MeasureCtrl',
+                      });
+                 };
+
           }
 
         }
+
 
                                         //Carousel binding
                                     function bindData() {    $(document).ready(function() {
@@ -212,3 +215,64 @@
                                            }
 
     })]);
+
+
+    //---------------------------------------------------Measure modal's details--------------------------------------------
+        astroApp.controller('MeasureCtrl', ['$rootScope', '$scope', '$uibModalInstance', 'postPhotometry', '$uibModal', '$window', '$timeout', '$cookies', 'usSpinnerService', '$q',
+                                         function ($rootScope, $scope, $uibModalInstance, NewPhotometry, $uibModal, $window, $timeout, $cookies, usSpinnerService, $q) {
+
+
+            //Measure Photometry
+            $scope.processFiles = function(){
+
+               $rootScope.textStep = 'processed'
+                                 if (!$scope.spinneractive) {
+                                   usSpinnerService.spin('spinner-1');
+                                 };
+
+              console.log('credentials');
+              $scope.newPhotometry = NewPhotometry.save({ref1:$scope.ref1,ref2:$scope.ref2,object:$scope.object,
+                                julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID')});
+
+                $q.all([
+                        $scope.newPhotometry.$promise
+                    ]).then(function(response) {
+       		              $scope.message = response.message;
+       		              console.log('response');
+       		              console.log(response.message);
+           		          var globalObject = [];
+                          var len = response.length;
+                          console.log('len');
+                          console.log(len);
+                          for(var i = 0; i < len; i++) {
+                             var newObject = {}
+                             angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                  newObject[key] = value;
+                                  console.log(value);
+                              });
+                              globalObject.push(newObject);
+                          }
+                          $scope.spinneractive = false;
+                          usSpinnerService.stop('spinner-1');
+                       });
+
+               $scope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
+               $scope.processFlag = true;
+               console.log($scope.processFlag);
+
+       		  //...and close modal
+       		  $uibModalInstance.dismiss();
+
+                  // switch flag
+                  $rootScope.switchBool = function (value) {
+                      $rootScope[value] = !$rootScope[value];
+                  };
+              $timeout(function(){
+                 $rootScope.showSuccessAlert = false;
+                 }, 5000);
+            }
+          //[Cancel]
+          $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+          };
+        }]);

@@ -104,11 +104,9 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
 
               width = float(final_image.shape[1])/100
               height = float(final_image.shape[0])/100
-              try:
+              if os.path.exists(backendOutputFits+"Processed_"+file):
                  os.remove(backendOutputFits+"Processed_"+file)
-                 pyfits.append(backendOutputFits+"Processed_"+file, final_image)
-              except(RuntimeError, TypeError, NameError):
-                 print 'error appending or removing'
+              pyfits.append(backendOutputFits+"Processed_"+file, final_image)
               sky, num_iter = sky_mean_sig_clip(final_image, sig_fract, percent_fract, max_iter=1)
               img_data = final_image - sky
               new_img = linear(img_data, scale_min = min_val)

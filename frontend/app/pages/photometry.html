@@ -52,18 +52,13 @@
                     </ul>
                 </div>
                 <div><br><br></div>
-                <div ng-show="photometryTypeFlag" style="color:white;margin-top:0px;position:relative;height:40px">
-                    <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 0px 0px;font-family: inherit;font-weight: normal;
-                                             font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
-                        {{numberOfProcessedFiles}} {{imageTypeText}} {{textStep}} in this session</p>
-                </div>
                 <form ng-show="photometryTypeFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
                     <div class="btn-group dropdown" style="width:100%;position:relative;margin-left:65px">
                         <input class="btn btn-default customUploadLong" type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)"/>
                     </div>
                     <div><br></div>
                     <div class="btn-group" style="float:left;margin-left:65px;position:relative">
-                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Convert" class="btn btn-primary sharp btnMarginRight customLong" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Load" class="btn btn-primary sharp btnMarginRight customLong" ng-click="submitted=true" ng-keyup="submitted=false"/>
                         <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Linear'">Linear</label>
                         <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Power'">Power</label>
                         <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Hist'">Hist</label>
@@ -71,10 +66,12 @@
                     <div><br></div>
                 </form>
                 <div><br><br></div>
-                <div ng-show="photometryTypeFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
-                    <input style="background-color: #4d9dc2;border: 0px" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="processFiles()"/>
+                <div ng-show="convertFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
+                            <div align="left" style="border-top: 0px;padding-left: 0px;">
+                                <input style="background-color: #4d9dc2;border: 0px" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="measure()"/>
+                            </div>
                 </div>
-                <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:85px;position:relative;height:100px">
+                <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:195px;position:relative;height:100px">
                     <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
                                              font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
                         {{helpDescription}}</p>
@@ -96,6 +93,80 @@
         </tr>
     </table>
 </div>
+
+<!--Measure Modal-->
+<script type="text/ng-template" id="measureContent.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Measure Photometry</h3>
+    </div>
+    <table class="main" style="margin-bottom:30px;">
+        <tr>
+            <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;border: 0px solid black;">
+                <form name="measurePhotometryForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="measurePhotometryForm.$valid && processFiles()">
+                    <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:green" class="col-md-7 control-label">Apparent Magnitude of Reference Object 1</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="ref1" ng-model="ref1" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.ref1.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:red" class="col-md-7 control-label">Apparent Magnitude of Reference Object 2</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="ref2" ng-model="ref2" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.ref2.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:blue" align="right" class="col-md-7 control-label">Distance to Object in Parsecs</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="object" ng-model="object" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.object.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100" required/>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100" required/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Measure" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</script>
+
 <script>
     $('.fade_hov').hover(function(){
                     $(this).siblings().addClass('fade');

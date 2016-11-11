@@ -313,7 +313,7 @@
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
-      	           $rootScope.successTextAlert = "Your data have been updated.";
+      	           $rootScope.successTextAlert = "Your data have been updated. You must re-login in order to continue.";
                        $rootScope.showSuccessAlert = true;
                        // switch flag
                        $rootScope.switchBool = function (value) {
