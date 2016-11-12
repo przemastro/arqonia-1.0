@@ -1427,7 +1427,7 @@ def addPhotometryData(ref1, ref2, object, julianDate, shift):
         print absoluteMag
 
         #return json value
-        data = {'absoluteMag': absoluteMag, 'julianDate': julianDate}
+        data = {'julianDate': julianDate, 'mag': absoluteMag}
         i = 1
         if(i==1):
             data = data

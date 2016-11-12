@@ -390,6 +390,10 @@ p {
     height: 34px !important;
 }
 
+.customWidth {
+    width: 90px !important;
+}
+
 .customHeightAdjusted {
     height: 47px !important;
 }

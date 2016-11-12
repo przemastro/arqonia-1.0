@@ -36,7 +36,7 @@
         //Flags
         $scope.photometryTypeFlag = false;
         $scope.convertFlag = false;
-        $scope.processFlag = false;
+        $rootScope.processFlag = false;
         $scope.linearFlag = 'true';
         $rootScope.textStep = 'uploaded';
         $scope.imageTypeText = '';
@@ -53,7 +53,7 @@
           console.log(value)
           $rootScope.carouselFlag = true;
           $scope.selectedPhotometryType = value;
-          $scope.helpDescription = "";
+          $rootScope.helpDescription = "";
 
           if($scope.selectedPhotometryType == "APERTURE PHOTOMETRY") {
 
@@ -65,7 +65,7 @@
                 $scope.photometryType = 'Aperture';
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfProcessedFiles');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Images';} else {$scope.imageTypeText = 'Images';}
-                $scope.helpDescription = "You have selected Aperture Photometry option. Please upload files and then click [CONVERT] button to see your FITS files.";
+                $rootScope.helpDescription = "You have selected Aperture Photometry option. Please upload files and then click [CONVERT] button to see your FITS files.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
@@ -119,7 +119,7 @@
                        $cookies.put('numberOfProcessedFiles', response[Object.keys(response)].fileNames.length);
                        $rootScope.numberOfProcessedFiles = $cookies.get('numberOfProcessedFiles')
                        if($rootScope.numberOfProcessedFiles == 1) {$scope.imageTypeText = 'Image';} else {$scope.imageTypeText = 'Images';}
-                       $scope.helpDescription = "Great! Go ahead and Measure Photometry.";
+                       $rootScope.helpDescription = "Great! Go ahead and Measure Photometry.";
                        $scope.convertFlag = true;
                        });
                 }
@@ -242,23 +242,35 @@
        		              console.log(response.message);
            		          var globalObject = [];
                           var len = response.length;
+                          var sumMag = 0;
                           console.log('len');
                           console.log(len);
                           for(var i = 0; i < len; i++) {
                              var newObject = {}
                              angular.forEach(response[Object.keys(response)[i]], function(value, key){
-                                  newObject[key] = value;
-                                  console.log(value);
+                                  console.log(key);
+                                  if(key == 'julianDate' || key == 'mag'){
+                                     newObject[key] = value;
+                                     }
                               });
+                              console.log(newObject.mag);
+                              sumMag = newObject.mag + sumMag;
                               globalObject.push(newObject);
                           }
+                          $rootScope.avgMag = sumMag/len;
+                          console.log($rootScope.avgMag);
                           $scope.spinneractive = false;
                           usSpinnerService.stop('spinner-1');
+                          $rootScope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
+                          $rootScope.processFlag = true;
+                          console.log('tutaj');
+                          console.log(globalObject);
+                          $rootScope.order = [ 'mag', 'julianDate' ];
+                          $rootScope.getArray = globalObject
+                          console.log($rootScope.getArray);
                        });
 
-               $scope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
-               $scope.processFlag = true;
-               console.log($scope.processFlag);
+
 
        		  //...and close modal
        		  $uibModalInstance.dismiss();

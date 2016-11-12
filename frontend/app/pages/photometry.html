@@ -67,17 +67,21 @@
                 </form>
                 <div><br><br></div>
                 <div ng-show="convertFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
-                            <div align="left" style="border-top: 0px;padding-left: 0px;">
-                                <input style="background-color: #4d9dc2;border: 0px" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="measure()"/>
+                            <div style="float:left;" style="border-top: 0px;padding-left: 0px;">
+                                <input style="background-color: #4d9dc2;border: 0px;" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="measure()"/>
+                            </div>
+                            <div style="float:left;margin-left:9px">
+                                <input ng-show="processFlag" type="text" class="form-control customHeight customWidth" name="avgMag" ng-model="avgMag" value="{{avgMag}}" ng-maxlength="100"/>
                             </div>
                 </div>
-                <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:195px;position:relative;height:100px">
+                <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:125px;position:relative;height:40px">
                     <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
                                              font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
                         {{helpDescription}}</p>
                 </div>
-                <div ng-show="processFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:70px;margin-right:20px">
-                    <input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
+                <div ng-show="processFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:120px;margin-right:20px">
+                    <input ng-csv="getArray" csv-column-order="order" lazy-load="true" filename="lightCurve_{{ sessionID }}.csv" field-separator="{{separator}}" style="border: 0px"
+                           type="submit" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
                 </div>
                 <div><br></div>
             </td>
@@ -144,7 +148,7 @@
                             <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100" required/>
+                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100"/>
                                 </p>
                             </div>
                         </div>
@@ -152,7 +156,7 @@
                             <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100" required/>
+                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100"/>
                                 </p>
                             </div>
                         </div>
