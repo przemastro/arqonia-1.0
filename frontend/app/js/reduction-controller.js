@@ -69,7 +69,7 @@
                 $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
-                $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $scope.helpDescription = "You have selected Dark Frames option. Please upload files and then click [LOAD] button to see your FITS files. If you just want to Process data skip 'Load' step.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
@@ -135,7 +135,7 @@
                 $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
-                $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $scope.helpDescription = "You have selected Flat Fields option. Please upload files and then click [LOAD] button to see your FITS files. If you just want to Process data skip 'Load' step.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
@@ -203,7 +203,7 @@
                 $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfRawFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
-                $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $scope.helpDescription = "You have selected Raw Images option. Please upload files and then click [LOAD] button to see your FITS files. If you just want to Process data skip 'Load' step.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
@@ -271,7 +271,7 @@
                 $scope.processedFlag = false;
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
-                $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [CONVERT] button to see your FITS files. If you just want to Process data skip 'Convert' step.";
+                $scope.helpDescription = "You have selected Bias Frames option. Please upload files and then click [LOAD] button to see your FITS files. If you just want to Process data skip 'Load' step.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {

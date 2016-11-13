@@ -65,7 +65,7 @@
                 $scope.photometryType = 'Aperture';
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfProcessedFiles');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Images';} else {$scope.imageTypeText = 'Images';}
-                $rootScope.helpDescription = "You have selected Aperture Photometry option. Please upload files and then click [CONVERT] button to see your FITS files.";
+                $rootScope.helpDescription = "You have selected Aperture Photometry option. Please upload files and then click [LOAD] button to see your FITS files.";
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
