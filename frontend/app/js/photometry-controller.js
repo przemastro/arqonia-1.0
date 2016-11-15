@@ -124,6 +124,9 @@
                        });
                 }
 
+                 $rootScope.x = $window.x;
+                 console.log('$scope.x');
+                 console.log($rootScope.x);
                  //Measure Photometry Modal
                  $scope.measure = function () {
                       var modalInstance = $uibModal.open({
@@ -222,6 +225,7 @@
                                          function ($rootScope, $scope, $uibModalInstance, NewPhotometry, $uibModal, $window, $timeout, $cookies, usSpinnerService, $q) {
 
 
+
             //Measure Photometry
             $scope.processFiles = function(){
 
@@ -229,7 +233,9 @@
                                  if (!$scope.spinneractive) {
                                    usSpinnerService.spin('spinner-1');
                                  };
-
+       		              $rootScope.x = $window.x;
+       		              console.log('$scope.x');
+                          console.log($rootScope.x);
               console.log('credentials');
               $scope.newPhotometry = NewPhotometry.save({ref1:$scope.ref1,ref2:$scope.ref2,object:$scope.object,
                                 julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID')});
@@ -240,6 +246,7 @@
        		              $scope.message = response.message;
        		              console.log('response');
        		              console.log(response.message);
+
            		          var globalObject = [];
                           var len = response.length;
                           var sumMag = 0;
