@@ -21,7 +21,7 @@
             </tr>
         </table>
     </div>
-    <canvas style="z-index:20;position:absolute;opacity:0.7;margin-top:11px;margin-left:11px" id="canvas" width="532" height="540">
+    <canvas ng-show="convertFlag" style="z-index:20;position:absolute;opacity:0.3;margin-top:11px;margin-left:11px" id="canvas" width="532" height="540">
         Your browser does not support HTML5 Canvas.
     </canvas>
     <table style="max-width: 1070px; margin: 10px" st-table="displayedObservations" st-safe-src="observations" class="tableList"  ng-show="isUserLoggedIn">
@@ -70,13 +70,17 @@
                 </form>
                 <div><br><br></div>
                 <div ng-show="convertFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
-                            <div style="float:left;" style="border-top: 0px;padding-left: 0px;">
+                            <div style="float:left;border-top: 0px;padding-left: 0px;">
                                 <input style="background-color: #4d9dc2;border: 0px;" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="measure()"/>
+                            </div>
+                            <div style="float:left;margin-left:9px">
+                                <input type="text" id="r" type="text" class="form-control customHeight customWidth" placeholder="Radius"/>
                             </div>
                             <div style="float:left;margin-left:9px">
                                 <input ng-show="processFlag" type="text" class="form-control customHeight customWidth" name="avgMag" ng-model="avgMag" value="{{avgMag}}" ng-maxlength="100"/>
                             </div>
                 </div>
+
                 <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:125px;position:relative;height:40px">
                     <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
                                              font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
@@ -102,7 +106,12 @@
 </div>
 
 
+
 <script type="text/javascript">
+   $('input').on('change',function(){
+       r = $(this).val();
+   })
+
    var canvas;
    var ctx;
    var x = 75;
@@ -122,9 +131,9 @@
       for (var i = 0; i < 3; i++ ) {
            ctx.beginPath();
            ctx.arc(x, y, r*i, 0, 2 * Math.PI, false);
-           ctx.fillStyle = 'green';
-           ctx.lineWidth = 2;
-           ctx.strokeStyle = 'green';
+           ctx.fillStyle = '#0AFA0A';
+           ctx.lineWidth = 3;
+           ctx.strokeStyle = '#0AFA0A';
            ctx.stroke();
        }
    }
@@ -144,7 +153,7 @@
     rect(0,0,WIDTH,HEIGHT);
     ctx.fillStyle = "green";
     //rect(x - 15, y - 15, 30, 30);
-    circ(x - 15, y - 15, 10);
+    circ(x - 15, y - 15, r);
    }
 
    function myMove(e){
@@ -191,40 +200,18 @@
                 <form name="measurePhotometryForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="measurePhotometryForm.$valid && processFiles()">
                     <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
                         <div class="form-group">
-                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:green" class="col-md-7 control-label">Apparent Magnitude of Reference Object 1</label>
-                            <div class="col-md-3" style="padding-left: 10px;">
-                                <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="ref1" ng-model="ref1" ng-maxlength="100" required/>
-                                </p>
-                                <div ng-messages="measurePhotometryForm.ref1.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:red" class="col-md-7 control-label">Apparent Magnitude of Reference Object 2</label>
-                            <div class="col-md-3" style="padding-left: 10px;">
-                                <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="ref2" ng-model="ref2" ng-maxlength="100" required/>
-                                </p>
-                                <div ng-messages="measurePhotometryForm.ref2.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
-                                    <div ng-message="required">This field is required</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;color:blue" align="right" class="col-md-7 control-label">Distance to Object in Parsecs</label>
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" align="right" class="col-md-7 control-label">Distance to Object in Parsecs</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
                                     <input type="text" class="form-control" name="object" ng-model="object" ng-maxlength="100" required/>
                                 </p>
-                                <div ng-messages="measurePhotometryForm.object.$error" style="color:maroon;width: 130px;" role="alert" ng-if='submitted'>
+                                <div ng-messages="measurePhotometryForm.object.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
                                     <div ng-message="required">This field is required</div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
                                     <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100"/>
@@ -232,7 +219,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label style="text-align: right;margin-left: -20px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
                                     <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100"/>
