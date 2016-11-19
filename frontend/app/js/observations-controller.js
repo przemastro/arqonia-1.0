@@ -855,22 +855,30 @@
    		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation,
    		                              email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		      var globalObject = [];
+       		              console.log('response');
+       		              console.log(response);
+
    		          if(response.length==2) {
    		             var len = 1;
    		          }
    		          else {
    		             var len = response.length;
    		          }
+   		                                    console.log('len');
+                                            console.log(len);
                   for(var i = 0; i < len; i++) {
                   var newObject = {}
                           angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                   newObject[key] = value;
+                                  console.log(key);
+                                  console.log(value);
                            });
                            globalObject.push(newObject);
                      }
 
             $scope.loadFlag = true;
             $scope.getArray = globalObject;
+            console.log($scope.getArray);
             //Check what type of object data was returned and generate catalogs headers
             if ($scope.objectValue == "Star" && response != null) {
                 $scope.getHeader = function () {

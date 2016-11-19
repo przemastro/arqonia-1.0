@@ -1224,7 +1224,8 @@ def catalogData(objectType, abbreviation, email):
 
 
         catalogData = json.loads(controller)
-
+        print 'Catalogs'
+        print catalogData
         return catalogData
         cursor.close()
     except:
@@ -1409,30 +1410,44 @@ def processImages(sessionId, email):
 
 
 #------------------------------------------------------measure photometry-----------------------------------------------
-def addPhotometryData(ref1, ref2, object, julianDate, shift):
+def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, sessionId, objectDistance):
     try:
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
-        ref1 = str(ref1)
         julianDate = str(julianDate)
-        object = Decimal(object[0])
-
-
-
-        instrumentalMag = photometry.photometry(93, 218, 6, 15, 20)
         getcontext().prec = 6
-        absoluteMag = Decimal(instrumentalMag-5*((math.log10(object))-1))
-        absoluteMag = round(absoluteMag, 6)
-        absoluteMag = str(absoluteMag)
-        print absoluteMag
+        shift = Decimal(shift)
+        julianDate = Decimal(julianDate)
+        objectDistance = Decimal(objectDistance)
+        print 'objectDistance'
+        print objectDistance
+        print julianDate
 
+        getImagesForPhotometry = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getImagesForPhotometry')), (sessionId)).fetchall()]
+
+        i = 0
+        controller = ''
+        for file in getImagesForPhotometry:
+           instrumentalMag = photometry.photometry(xCoordinate, yCoordinate, r1, r2, r3, file, sessionId)
+           getcontext().prec = 6
+           absoluteMag = Decimal(instrumentalMag-5*((math.log10(objectDistance))-1))
+           absoluteMag = round(absoluteMag, 6)
+           absoluteMag = str(absoluteMag)
+           mag = str(absoluteMag)
+           jd = str(julianDate)
+           controller = str({'julianDate': jd, 'mag': mag}) + ',' + controller
+           julianDate = julianDate + shift
+           i = i + 1
+        print i
+        data = ast.literal_eval(controller[:-1])
         #return json value
-        data = {'julianDate': julianDate, 'mag': absoluteMag}
-        i = 1
+
         if(i==1):
-            data = data
-        elif(i>1):
             data = [data]
+        elif(i>1):
+            data = data
+
+        print data
         return data
         cursor.close()
 

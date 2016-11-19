@@ -136,12 +136,14 @@ parser.add_argument('sessionId', type=str)
 parser.add_argument('files', type=str, action='append')
 parser.add_argument('conversionType', type=str)
 parser.add_argument('imageType', type=str)
-parser.add_argument('ref1', type=str)
-parser.add_argument('ref2', type=str)
-parser.add_argument('object', type=str, action='append')
+parser.add_argument('r1', type=str)
+parser.add_argument('r2', type=str)
+parser.add_argument('r3', type=str)
+parser.add_argument('xCoordinate', type=str)
+parser.add_argument('yCoordinate', type=str)
 parser.add_argument('julianDate', type=str)
 parser.add_argument('shift', type=str)
-
+parser.add_argument('objectDistance', type=str)
 
 #public
 class Rest(Resource):
@@ -590,12 +592,13 @@ class RestSaveImages(Resource):
 
 #private
 class RestAddPhotometry(Resource):
-    def post(self):
+    def put(self):
         args = parser.parse_args()
         auth = basicAuthentication(args['email'], args['sessionId'])
         if(auth == 'true'):
-            data = addPhotometryData(args['ref1'], args['ref2'], args['object'], args['julianDate'], args['shift'])
-            return data
+            data = addPhotometryData(args['xCoordinate'], args['yCoordinate'], args['r1'], args['r2'], args['r3'],
+                                     args['julianDate'], args['shift'], args['sessionId'], args['objectDistance'])
+            return jsonify(data)
         else:
             data = []
             return data, 401

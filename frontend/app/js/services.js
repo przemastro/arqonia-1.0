@@ -340,7 +340,7 @@ services.factory('getStatistics', ['$resource',
 services.factory('postPhotometry', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
     function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
     return $resource(__env.apiUrlService+'/photometry', {}, {
-        save: {method:'POST',
+        update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
                                   console.log('The login has failed: ' + response.loginFailed);

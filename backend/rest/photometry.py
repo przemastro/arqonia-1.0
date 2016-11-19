@@ -18,19 +18,28 @@ backendOutputFits = env.get('FilesCatalogs', 'catalog.backendOutputFits');
 frontendInputFits = env.get('FilesCatalogs', 'catalog.frontendInputFits');
 
 
-def photometry(positionX, positionY, radius, radiusInner, radiusOuter):
+def photometry(positionX, positionY, radius, radiusInner, radiusOuter, imageForPhotometry, sessionId):
     try:
 
+       positionX = int(positionX)
+       positionY = int(positionY)
+       radius = int(radius)
+       radiusInner = int(radiusInner)
+       radiusOuter = int(radiusOuter)
        positions = [(positionX, positionY)]
        apertures = CircularAperture(positions, r=radius)
        annulus_apertures = CircularAnnulus(positions, r_in=radiusInner, r_out=radiusOuter)
 
        #Open data
        dataList = []
-       dataList = openFile(backendInputFits+'1478338875742_Raw_eagle1.fits')
+       dataList = openFile(backendInputFits+sessionId+"_Processed_"+imageForPhotometry)
 
        #object aperture
-       rawflux_table = aperture_photometry(dataList, apertures)
+       try:
+          rawflux_table = aperture_photometry(dataList, apertures)
+       except(RuntimeError, TypeError, NameError):
+          print 'I cannot'
+       print rawflux_table
 
        #backround apertures
        bkgflux_table = aperture_photometry(dataList, annulus_apertures)
@@ -39,16 +48,10 @@ def photometry(positionX, positionY, radius, radiusInner, radiusOuter):
        except(RuntimeError, TypeError, NameError):
           print 'error'
 
-       print phot_table
        bkg_mean = phot_table['aperture_sum_bkg'] / annulus_apertures.area()
        bkg_sum = bkg_mean * apertures.area()
        final_sum = phot_table['aperture_sum_raw'] - bkg_sum
        phot_table['residual_aperture_sum'] = final_sum
-
-       print 'background'
-       print phot_table['residual_aperture_sum'][0]
-       print 'raw'
-       print rawflux_table[0][3]
 
        #instrumental magnitude
        print 'instrumental mag'

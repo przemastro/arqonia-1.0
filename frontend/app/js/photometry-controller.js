@@ -234,45 +234,43 @@
                                    usSpinnerService.spin('spinner-1');
                                  };
        		              $rootScope.x = $window.x;
-       		              console.log('$scope.x');
-                          console.log($rootScope.x);
-              console.log('credentials');
-              $scope.newPhotometry = NewPhotometry.save({ref1:$scope.ref1,ref2:$scope.ref2,object:$scope.object,
-                                julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID')});
+       		              $rootScope.y = $window.y;
+       		              $rootScope.r1 = $window.r;
+       		              $rootScope.r2 = $rootScope.r1*2;
+       		              $rootScope.r3 = $rootScope.r1*3;
 
-                $q.all([
-                        $scope.newPhotometry.$promise
-                    ]).then(function(response) {
+   		    NewPhotometry.update({xCoordinate:$rootScope.x,yCoordinate:$rootScope.y,r1:$rootScope.r1,r2:$rootScope.r2,r3:$rootScope.r3,
+                                            julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID'), objectDistance:$scope.object},
+                                            function(response){
        		              $scope.message = response.message;
        		              console.log('response');
-       		              console.log(response.message);
-
+       		              console.log(response);
            		          var globalObject = [];
                           var len = response.length;
+
                           var sumMag = 0;
+                          var counter = 0;
                           console.log('len');
                           console.log(len);
                           for(var i = 0; i < len; i++) {
-                             var newObject = {}
-                             angular.forEach(response[Object.keys(response)[i]], function(value, key){
-                                  console.log(key);
-                                  if(key == 'julianDate' || key == 'mag'){
-                                     newObject[key] = value;
-                                     }
-                              });
-                              console.log(newObject.mag);
-                              sumMag = newObject.mag + sumMag;
-                              globalObject.push(newObject);
+                          var newObject = {}
+                                  angular.forEach(response[Object.keys(response)[i]], function(value, key){
+                                          newObject[key] = value;
+                                          console.log(key);
+                                          console.log(value);
+                                          counter = counter + 1;
+                                   });
+                                   console.log(newObject);
+                                   sumMag = parseFloat(newObject.mag) + parseFloat(sumMag);
+                                   globalObject.push(newObject);
                           }
-                          $rootScope.avgMag = sumMag/len;
+                          $rootScope.avgMag = sumMag/counter;
                           console.log($rootScope.avgMag);
                           $scope.spinneractive = false;
                           usSpinnerService.stop('spinner-1');
                           $rootScope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
                           $rootScope.processFlag = true;
-                          console.log('tutaj');
-                          console.log(globalObject);
-                          $rootScope.order = [ 'mag', 'julianDate' ];
+                          $rootScope.order = [ 'julianDate', 'mag' ];
                           $rootScope.getArray = globalObject
                           console.log($rootScope.getArray);
                        });
