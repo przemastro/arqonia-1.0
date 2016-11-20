@@ -1348,6 +1348,27 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
         cnx.close()
 
 
+
+#--------------------------------------------------delete reduction images----------------------------------------------
+def deleteReductionImages(sessionId, imageType):
+    try:
+        cnx = pyodbc.connect(dbAddress)
+        cursor = cnx.cursor()
+
+        sessionId = str(sessionId)
+        imageType = str(imageType)
+
+        cursor.execute(queries.get('DatabaseQueries', 'database.updateActiveFlagFalse'), (sessionId, imageType))
+        cnx.commit()
+
+        cursor.close()
+
+    except:
+        print 'errors in removeReductionImages function'
+    else:
+        cnx.close()
+
+
 #--------------------------------------------------------reduce data----------------------------------------------------
 def processImages(sessionId, email):
     try:

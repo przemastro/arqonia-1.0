@@ -465,6 +465,21 @@ services.factory('postReductionImages', ['$resource', '$rootScope', 'usSpinnerSe
     });
 }]);
 
+//Add new reduction images
+services.factory('deleteReductionImages', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
+    function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {
+    return $resource(__env.apiUrlService+'/deleteReductionImages', {}, {
+        save: {method:'POST',
+                           interceptor: {
+                              responseError: function(response) {
+                                  console.log('The login has failed: ' + response.loginFailed);
+                                  logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
+                              }
+                           }
+        }
+    });
+}]);
+
 //Reduce images
 services.factory('postProcessImages', ['$resource', '$rootScope', 'usSpinnerService', '$cookies', '$location', '$timeout',
     function ($resource, $scope, usSpinnerService, $cookies, $location, $timeout) {

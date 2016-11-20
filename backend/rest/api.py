@@ -7,7 +7,7 @@ from jsonBuilder import json_data, json_load, json_hrDiagramRange, json_hrdiagra
     personalizedLCDiagram, personalizedLCDiagramRange
 from jsonParser import json_parser, updateObservation, addUser, verifyCredentials, objectDetails, addSubscriber, catalogData, \
     getPassword, updateUser, removeUser, addReductionImages, processImages, authentication, logoutUser, returnZippedImages, \
-    addPhotometryData
+    addPhotometryData, deleteReductionImages
 from procRunner import procRunner, deleteObservation, procPersonalizedRunner
 import os
 import ConfigParser
@@ -567,6 +567,19 @@ class RestReductionImages(Resource):
             return data, 401
 
 #private
+class RestDeleteReductionImages(Resource):
+    def post(self):
+        args = parser.parse_args()
+        auth = basicAuthentication(args['email'], args['sessionId'])
+        if(auth == 'true'):
+            args = parser.parse_args()
+            deleteReductionImages(args['sessionId'], args['imageType'])
+            return 201
+        else:
+            data = []
+            return data, 401
+
+#private
 class RestProcessImages(Resource):
     def post(self):
         args = parser.parse_args()
@@ -652,6 +665,7 @@ api.add_resource(RestStatistics, '/statistics')
 api.add_resource(RestSubscribe, '/subscribe')
 api.add_resource(RestCatalog, '/catalog')
 api.add_resource(RestReductionImages, '/reductionImages')
+api.add_resource(RestDeleteReductionImages, '/deleteReductionImages')
 api.add_resource(RestProcessImages, '/processImages')
 api.add_resource(RestSaveImages, '/saveImages')
 api.add_resource(RestAddPhotometry, '/photometry')

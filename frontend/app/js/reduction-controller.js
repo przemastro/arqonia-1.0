@@ -24,9 +24,9 @@
 
     astroApp.controller("dataReductionCtrl", ['$rootScope', '$scope', '$timeout', '$window', '$sce', '$compile', '$location', '$route',
                                               'multipleFileUpload', '$cookies', '$element', 'postReductionImages', 'usSpinnerService', '$q', 'uibButtonConfig',
-                                              'postProcessImages', 'postSaveImages',
+                                              'postProcessImages', 'postSaveImages', 'deleteReductionImages',
                         (function ($rootScope, $scope, $timeout, $window, $sce, $compile, $location, $route, multipleFileUpload, $cookies,
-                                   $element, ReductionImages, usSpinnerService, $q, buttonConfig, ProcessImages, SaveImages) {
+                                   $element, ReductionImages, usSpinnerService, $q, buttonConfig, ProcessImages, SaveImages, DeleteReductionImages) {
 
         //cookies
         $scope.loggedInUser = $cookies.get('name');
@@ -121,6 +121,25 @@
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
+
+                }
+
+                $scope.deleteFiles = function(){
+                   //Delete Images
+                      		           if (!$scope.spinneractive) {
+                                        usSpinnerService.spin('spinner-1');
+                                      };
+                    $scope.deleteReductionImages = DeleteReductionImages.save({email:$scope.loggedInUserEmail, imageType:$scope.imageType, sessionId:$cookies.get('sessionID')});
+                    $q.all([
+                        $scope.deleteReductionImages.$promise
+                    ]).then(function(response) {
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                       $cookies.put('numberOfDarkFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
+                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       });
                 }
           }
 
@@ -187,6 +206,24 @@
                        $cookies.put('numberOfFlatFilesUploaded', response[Object.keys(response)].fileNames.length);
                        $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded')
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
+                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       });
+                }
+
+                $scope.deleteFiles = function(){
+                   //Delete Images
+                      		           if (!$scope.spinneractive) {
+                                        usSpinnerService.spin('spinner-1');
+                                      };
+                    $scope.deleteReductionImages = DeleteReductionImages.save({email:$scope.loggedInUserEmail, imageType:$scope.imageType, sessionId:$cookies.get('sessionID')});
+                    $q.all([
+                        $scope.deleteReductionImages.$promise
+                    ]).then(function(response) {
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                       $cookies.put('numberOfDarkFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
@@ -258,6 +295,24 @@
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
+
+                $scope.deleteFiles = function(){
+                   //Delete Images
+                      		           if (!$scope.spinneractive) {
+                                        usSpinnerService.spin('spinner-1');
+                                      };
+                    $scope.deleteReductionImages = DeleteReductionImages.save({email:$scope.loggedInUserEmail, imageType:$scope.imageType, sessionId:$cookies.get('sessionID')});
+                    $q.all([
+                        $scope.deleteReductionImages.$promise
+                    ]).then(function(response) {
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                       $cookies.put('numberOfDarkFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
+                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       });
+                }
           }
 
           //Bias Frames
@@ -325,6 +380,24 @@
                        $cookies.put('numberOfBiasFilesUploaded', response[Object.keys(response)].fileNames.length);
                        $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded')
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
+                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       });
+                }
+
+                $scope.deleteFiles = function(){
+                   //Delete Images
+                      		           if (!$scope.spinneractive) {
+                                        usSpinnerService.spin('spinner-1');
+                                      };
+                    $scope.deleteReductionImages = DeleteReductionImages.save({email:$scope.loggedInUserEmail, imageType:$scope.imageType, sessionId:$cookies.get('sessionID')});
+                    $q.all([
+                        $scope.deleteReductionImages.$promise
+                    ]).then(function(response) {
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                       $cookies.put('numberOfDarkFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
                        $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
