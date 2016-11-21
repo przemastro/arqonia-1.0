@@ -1,12 +1,6 @@
 'use strict';
 
 
-    //var __env = {};
-
-    //if(window){
-    //  Object.assign(__env, window.__env);
-    //}
-
  angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngCsv', 'angular-bind-html-compile']);
 

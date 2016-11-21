@@ -212,8 +212,6 @@ def userObservations(email):
                       'objectType': get_objectType, 'objectVerified': str(get_objectVerified)}
 
             controller = str(object) + ',' + controller
-            #print controller
-
 
         controller = ast.literal_eval(controller[:-1])
 
@@ -706,6 +704,5 @@ def verify_hrData(get_FilterObservations, get_FiltersObservationsDifference, get
         if (get_FilterObservations != 'None' and get_FiltersObservationsDifference != 'None' and get_StarNames != 'None'):
             break
         else:
-            #print 'continue'
             looper = looper + 1
             continue

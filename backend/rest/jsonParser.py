@@ -206,7 +206,6 @@ def json_parser(name, startDate, endDate, uFileName, vFileName, bFileName, rFile
         insert_observation = "SET NOCOUNT ON ;with cte (ID,RowId,ObjectName,ObjectType,StartDate,EndDate,uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime," \
                              "bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) as (" + insert_observation + ") INSERT INTO stg.stagingObservations (ID,RowId,ObjectName,ObjectType,StartDate,EndDate," \
                              "uPhotometryTime,uPhotometry,vPhotometryTime,vPhotometry,bPhotometryTime,bPhotometry,rPhotometryTime,rPhotometry,iPhotometryTime,iPhotometry,Status,Active,Verified,OwnerId) select * from cte GO"
-        print insert_observation
 
         cursor.execute(insert_observation)
         cnx.commit()
@@ -1224,8 +1223,6 @@ def catalogData(objectType, abbreviation, email):
 
 
         catalogData = json.loads(controller)
-        print 'Catalogs'
-        print catalogData
         return catalogData
         cursor.close()
     except:
@@ -1267,7 +1264,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
             existsFlag = cursor.execute(queries.get('DatabaseQueries', 'database.getNumberOfImagesInDataImages'), (objectName, sessionId, conversionType, imageType)).fetchone()
 
             if (existsFlag[0] == 0):
-               print 'fits does not exist in DB'
                cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataReductionImagesFITS'), (lastId, email, fileExtension, sessionId, conversionType, imageType, objectName))
                cnx.commit()
                looper=1
@@ -1301,12 +1297,10 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                convertedObjectName = conversionType+"_"+replaceString+".png"
                counter = counter + 1
                lastId = str(counter)
-               print 'png does not exist in DB'
                cursor.execute(queries.get('DatabaseQueries', 'database.insertIntoDataReductionImagesPNG'), (lastId, email, sessionId, conversionType, imageType, convertedObjectName))
                cnx.commit()
 
             else:
-                print 'fits exists in DB'
                 objectName = file
                 specialCharacterPosition = objectName.index('.')
                 replaceString = sessionId+"_"+imageType+"_"+str(objectName[:specialCharacterPosition])
@@ -1323,7 +1317,6 @@ def addReductionImages(sessionId, files, email, conversionType, imageType):
                     if os.path.isfile(backendInputFits+objectName):
                         break
                     else:
-                        print 'continue fits exists in DB'
                         looper = looper + 1
                         continue
 
@@ -1440,9 +1433,6 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
         shift = Decimal(shift)
         julianDate = Decimal(julianDate)
         objectDistance = Decimal(objectDistance)
-        print 'objectDistance'
-        print objectDistance
-        print julianDate
 
         getImagesForPhotometry = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getImagesForPhotometry')), (sessionId)).fetchall()]
 
@@ -1459,16 +1449,13 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
            controller = str({'julianDate': jd, 'mag': mag}) + ',' + controller
            julianDate = julianDate + shift
            i = i + 1
-        print i
         data = ast.literal_eval(controller[:-1])
-        #return json value
 
         if(i==1):
             data = [data]
         elif(i>1):
             data = data
 
-        print data
         return data
         cursor.close()
 

@@ -1,12 +1,6 @@
 'use strict';
 
 
-    //var __env = {};
-
-    //if(window){
-    //  Object.assign(__env, window.__env);
-    //}
-
  angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngCsv',
  'angular-bind-html-compile', 'angularFileUpload']);
@@ -85,7 +79,6 @@
                            for (var i in $scope.files) {
                                names.push($scope.files[i].name);
                            }
-                   console.log($scope.files)
 
                    var uploadUrl = __env.apiUrl+"/inputFits"
                            var fd = new FormData()
@@ -158,7 +151,6 @@
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
-                         console.log('files:', element.files);
                          // Turn the FileList object into an Array
                            $scope.files = []
                            for (var i = 0; i < element.files.length; i++) {
@@ -170,11 +162,8 @@
                 $scope.convert = function(){
                    var names = [];
                            for (var i in $scope.files) {
-                               console.log(i);
-                               console.log($scope.files[i].name);
                                names.push($scope.files[i].name);
                            }
-                   console.log(names);
 
                    var uploadUrl = __env.apiUrl+"/inputFits"
                            var fd = new FormData()
@@ -244,7 +233,6 @@
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
-                         console.log('files:', element.files);
                          // Turn the FileList object into an Array
                            $scope.files = []
                            for (var i = 0; i < element.files.length; i++) {
@@ -256,11 +244,8 @@
                 $scope.convert = function(){
                    var names = [];
                            for (var i in $scope.files) {
-                               console.log(i);
-                               console.log($scope.files[i].name);
                                names.push($scope.files[i].name);
                            }
-                   console.log(names);
 
                    var uploadUrl = __env.apiUrl+"/inputFits"
                            var fd = new FormData()
@@ -330,7 +315,6 @@
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
-                         console.log('files:', element.files);
                          // Turn the FileList object into an Array
                            $scope.files = []
                            for (var i = 0; i < element.files.length; i++) {
@@ -344,11 +328,8 @@
                 $scope.convert = function(){
                    var names = [];
                            for (var i in $scope.files) {
-                               console.log(i);
-                               console.log($scope.files[i].name);
                                names.push($scope.files[i].name);
                            }
-                   console.log(names);
 
                    var uploadUrl = __env.apiUrl+"/inputFits"
                            var fd = new FormData()
@@ -440,7 +421,6 @@
                        });
 
                    $scope.processedFlag = true;
-                   console.log($scope.processedFlag);
                 }
 
                 //Save Data
@@ -472,11 +452,9 @@
 
                                         $(document).ready(function() {
 
-                                           console.log('declaration');
                                            var sync1 = $("#sync1");
                                            var sync2 = $("#sync2");
 
-                                           console.log('options-sync1');
                                            sync1.owlCarousel({
                                              singleItem : true,
                                              slideSpeed : 1000,
@@ -486,7 +464,6 @@
                                              responsiveRefreshRate : 200,
                                            });
 
-                                           console.log('options-sync2');
                                            sync2.owlCarousel({
                                              items : 15,
                                              itemsDesktop      : [1199,10],

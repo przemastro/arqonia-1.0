@@ -83,7 +83,6 @@ def mpc_catalog():
            insert_mpc = "insert into data.MPC values('"+Number+"','"+H+"','"+G+"','"+Epoch+"','"+M+"','"+Perihelion+"'," \
                                                           "'"+Node+"','"+Inclination+"','"+e+"','"+n+"','"+a+"','"+U+"'," \
                                                           "'"+Reference+"','"+Obs+"','"+Opp+"','"+Arc+"','"+rms+"','"+Perts+"','"+Name+"')"
-           print counter
 
            cursor.execute(insert_mpc)
            cnx.commit()
@@ -159,7 +158,6 @@ def comets_catalog():
             insert_comets = "insert into data.comets values('"+Number+"','"+OrbitType+"','"+Designation+"','"+P_Year+"','"+P_Month+"','"+P_Day+"'," \
                                                         "'"+P_Distance+"','"+e+"','"+Perihelion+"','"+Longitude+"','"+Inclination+"'," \
                                                         "'"+E_Year+"','"+E_Month+"','"+E_Day+"', '"+Abs_Mag+"', '"+Name+"')"
-            print counter
 
             cursor.execute(insert_comets)
             cnx.commit()

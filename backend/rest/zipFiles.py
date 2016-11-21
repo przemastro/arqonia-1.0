@@ -35,12 +35,9 @@ modes = { zipfile.ZIP_DEFLATED: 'deflated',
 
 def zipAll(getImages, sessionId):
    try:
-      print 'creating archive'
       zf = zipfile.ZipFile(frontendOutputFits+sessionId+"_ProcessedImages.zip", mode='w')
       List = getImages
       for file in List:
-         print file
-         print 'adding '+file+' with compression mode', modes[compression]
          zf.write(backendOutputFits+"Processed_"+file, basename(backendOutputFits+"Processed_"+file), compress_type=compression)
       zf.close()
    except:

@@ -39,7 +39,6 @@ def photometry(positionX, positionY, radius, radiusInner, radiusOuter, imageForP
           rawflux_table = aperture_photometry(dataList, apertures)
        except(RuntimeError, TypeError, NameError):
           print 'I cannot'
-       print rawflux_table
 
        #backround apertures
        bkgflux_table = aperture_photometry(dataList, annulus_apertures)
@@ -54,16 +53,13 @@ def photometry(positionX, positionY, radius, radiusInner, radiusOuter, imageForP
        phot_table['residual_aperture_sum'] = final_sum
 
        #instrumental magnitude
-       print 'instrumental mag'
        instrumentalMag = -2.5*math.log10((rawflux_table[0][3]-phot_table['residual_aperture_sum'][0]))
-       print instrumentalMag
        return instrumentalMag
     except(RuntimeError, TypeError, NameError):
        print 'error in photometry function'
 
 
 def openFile(fileName):
-    print 'start'
     hdulist = pyfits.open(fileName)
     img_data_raw = hdulist[0].data
     hdulist.close()

@@ -2,7 +2,6 @@
 
 var services = angular.module('astroApp.services', ['ngResource']);
 
-    //services.constant('__env', __env);
 
 //File Upload
 astroApp.service('fileUpload', ['$http', '$cookies', function ($http, $cookies) {
@@ -50,7 +49,6 @@ services.factory('updateProfile', ['$resource', '$rootScope', 'usSpinnerService'
         update: {method:'PUT',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -73,7 +71,6 @@ services.factory('removeAccount', ['$resource', '$rootScope', 'usSpinnerService'
         update: {method:'PUT',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -130,7 +127,6 @@ services.factory('getUserObservations', ['$resource', '$rootScope', 'usSpinnerSe
         update: {method:'PUT', isArray:true,
                    interceptor: {
                       responseError: function(response) {
-                          console.log('The login has failed: ' + response.loginFailed);
                           logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                       }
                    }
@@ -145,7 +141,6 @@ services.factory('getPesronalizedObservationsDiagram', ['$resource', '$rootScope
         update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -160,7 +155,6 @@ services.factory('getPesronalizedObservationsDiagramRange', ['$resource', '$root
         update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -175,7 +169,6 @@ services.factory('getPesronalizedLCDiagram', ['$resource', '$rootScope', 'usSpin
         update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -190,7 +183,6 @@ services.factory('getPesronalizedLCDiagramRange', ['$resource', '$rootScope', 'u
         update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -343,7 +335,6 @@ services.factory('postPhotometry', ['$resource', '$rootScope', 'usSpinnerService
         update: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -358,7 +349,6 @@ services.factory('postObservation', ['$resource', '$rootScope', 'usSpinnerServic
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -373,7 +363,6 @@ services.factory('processData', ['$resource', '$rootScope', 'usSpinnerService', 
         query: {method:'PUT', isArray:true,
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -388,7 +377,6 @@ services.factory('processUserData', ['$resource', '$rootScope', 'usSpinnerServic
         update: {method:'PUT',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -419,7 +407,6 @@ services.factory('removeObservation', ['$resource', '$rootScope', 'usSpinnerServ
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -434,7 +421,6 @@ services.factory('updateObservation', ['$resource', '$rootScope', 'usSpinnerServ
         update: {method:'PUT',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -457,7 +443,6 @@ services.factory('postReductionImages', ['$resource', '$rootScope', 'usSpinnerSe
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -472,7 +457,6 @@ services.factory('deleteReductionImages', ['$resource', '$rootScope', 'usSpinner
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -487,7 +471,6 @@ services.factory('postProcessImages', ['$resource', '$rootScope', 'usSpinnerServ
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }
@@ -502,7 +485,6 @@ services.factory('postSaveImages', ['$resource', '$rootScope', 'usSpinnerService
         save: {method:'POST',
                            interceptor: {
                               responseError: function(response) {
-                                  console.log('The login has failed: ' + response.loginFailed);
                                   logOutUnauthorizedUser($resource, $scope, usSpinnerService, $cookies, $location, $timeout);
                               }
                            }

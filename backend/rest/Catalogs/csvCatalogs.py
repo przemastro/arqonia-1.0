@@ -63,7 +63,6 @@ def gc_catalog():
                              "'"+EpRA+"','"+pmRA+"','"+DE1950+"','"+EpDE+"','"+pmDE+"','"+Remark+"',ltrim(rtrim('"+DM+"')),'"+GLON+"'," \
                          "'"+GLAT+"',ltrim(rtrim('"+HD+"')),'"+m_HD+"','"+e_RA+"','"+e_pmRA+"','"+e_DE+"','"+e_pmDE+"','"+RA_icrs+"','"+DE_icrs+"')"
 
-           print i
            cursor.execute(insert_data)
            cnx.commit()
 
@@ -120,7 +119,6 @@ def hd_catalog():
                                   "'"+q_Ptm+"','"+Ptm+"','"+n_Ptm+"','"+q_Ptg+"','"+Ptg+"','"+n_Ptg+"','"+SpT+"','"+Int+"'," \
                                   "'"+Rem+"','"+RA_icrs+"','"+DE_icrs+"','"+Tycho2+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -187,7 +185,6 @@ def hip_catalog():
                                    "'"+e_pmRA+"','"+pmDE+"','"+e_pmDE+"','"+Ntr+"','"+F2+"','"+F1+"','"+varr+"','"+Hpmag+"'," \
                                    "'"+e_Hpmag+"','"+sHp+"','"+VA+"','"+B_V+"','"+e_B_V+"','"+V_I+"','"+HIP1+"','"+Phot+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -269,7 +266,6 @@ def hr_catalog():
                                    "'"+n_Vmag+"','"+u_Vmag+"','"+B_V+"','"+u_B_V+"','"+U_B+"','"+u_U_B+"','"+R_I+"','"+n_R_I+"','"+SpType+"','"+n_SpType+"','"+pmRA+"','"+pmDE+"'," \
                                    "'"+n_Parallax+"','"+Parallax+"','"+RadVel+"','"+n_RadVel+"','"+l_RotVel+"','"+RotVel+"','"+u_RotVel+"','"+Dmag+"','"+Sep+"','"+MultID+"','"+MultCnt+"','"+NoteFlag+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -297,7 +293,6 @@ def sao_catalog():
         for counter in range(0,saoRange):
             insert_data = ''
             i = counter
-            print i
             GlonJ1950 = str(sao.GlonJ1950[i])
             GlatJ1950 = str(sao.GlatJ1950[i])
             RAJ2000 = str(sao.RAJ2000[i])
@@ -352,7 +347,6 @@ def sao_catalog():
                                    "'"+a_Vmag+"','"+a_Pmag+"','"+r_Cat+"','"+CatNum+"','"+DM+"','"+HD+"','"+m_HD+"','"+GC+"','"+RA2000+"'," \
                                    "'"+pmRA2000+"','"+DE2000+"','"+pmDE2000+"','"+RA_icrs+"','"+DE_icrs+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -428,7 +422,6 @@ def tyc2_catalog():
                                     "'"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"','"+RAdeg+"','"+DEdeg+"'," \
                                     "'"+EpRA1990+"','"+EpDE1990+"','"+e_RAdeg+"','"+e_DEdeg+"','"+posflg+"','"+corr2+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -485,7 +478,6 @@ def tyc2_sup1_catalog():
                                      "'"+RAmdeg+"','"+DEmdeg+"','"+pmRA+"','"+pmDE+"','"+e_RAmdeg+"','"+e_DEmdeg+"','"+e_pmRA+"','"+e_pmDE+"'," \
                                      "'"+BTmag+"','"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -543,7 +535,6 @@ def tyc2_sup2_catalog():
                                     "'"+RAmdeg+"','"+DEmdeg+"','"+pmRA+"','"+pmDE+"','"+e_RAmdeg+"','"+e_DEmdeg+"','"+e_pmRA+"','"+e_pmDE+"'," \
                                     "'"+BTmag+"','"+e_BTmag+"','"+VTmag+"','"+e_VTmag+"','"+prox+"','"+TYC+"',ltrim(rtrim('"+HIP+"')),'"+CCDM+"')"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -576,7 +567,6 @@ def tyc2_hd_catalog():
             insert_data = "INSERT INTO data.tyc2_hd " \
                           " values (ltrim(rtrim('"+TYC1+"')),ltrim(rtrim('"+TYC2+"')),ltrim(rtrim('"+TYC3+"')),ltrim(rtrim('"+HD+"')))"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 
@@ -594,7 +584,6 @@ def hd_name_catalog():
         cursor = cnx.cursor()
         hd_name = pandas.read_csv(catalogsPath+'HD_NAME.csv', header=None, sep=';', low_memory=False)
         hd_nameRange = len(hd_name)
-        print hd_nameRange
         hd_name.columns = ["HD","BFD","NAME"]
         insert_data = ''
         for counter in range(0,hd_nameRange):
@@ -608,7 +597,6 @@ def hd_name_catalog():
             insert_data = "INSERT INTO data.hd_name " \
                           " values (ltrim(rtrim('"+HD+"')),ltrim(rtrim('"+BFD+"')),ltrim(rtrim('"+NAME+"')))"
 
-            print i
             cursor.execute(insert_data)
             cnx.commit()
 

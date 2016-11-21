@@ -1,12 +1,6 @@
 'use strict';
 
 
-    //var __env = {};
-
-    //if(window){
-    //  Object.assign(__env, window.__env);
-    //}
-
  angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngCsv', 'angular-bind-html-compile']);
 
@@ -182,7 +176,6 @@
    		     $rootScope.errorFlag = false;
    		     $rootScope.loggedInUser = $cookies.get('name');
    		     $rootScope.sessionID = $cookies.get('sessionID');
-   		     console.log($rootScope.sessionID);
    		     $location.path("main");
    		     $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
@@ -208,7 +201,6 @@
              usSpinnerService.stop('spinner-1');
              $uibModalInstance.dismiss();
    		     }
-   		     console.log($rootScope.isAdminLoggedIn);
    		  });
       };
 
@@ -247,7 +239,6 @@
                      usSpinnerService.spin('spinner-1');
                    };
    		  Reminder.save({email:$scope.email, sessionId:$cookies.get('sessionID')}, function(response){
-             console.log('get',response)
    		     $rootScope.errorFlag = false
    		     $location.path("login");
 

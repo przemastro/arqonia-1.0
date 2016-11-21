@@ -68,17 +68,14 @@ def plot(fileName, conversionType):
       while(looper<100):
           time.sleep(1)
           if os.path.isfile(frontendInputFits+resultFile+".png"):
-              #print 'png has been created'
               break
           else:
-              #print 'continue'
               looper = looper + 1
               continue
    except(RuntimeError, TypeError, NameError):
        print 'errors in convertPlots function'
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
-    #print "img_scale : power"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:
@@ -131,7 +128,6 @@ def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut
 
 
 def linear(inputArray, scale_min=None, scale_max=None):
-    #print "img_scale : linear"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:

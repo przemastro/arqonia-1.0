@@ -1,12 +1,6 @@
 'use strict';
 
 
-    //var __env = {};
-
-    //if(window){
-    //  Object.assign(__env, window.__env);
-    //}
-
  angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngCsv', 'angular-bind-html-compile']);
 
@@ -45,7 +39,6 @@
                                        };
           $scope.displayedObservations = [];
           $scope.observations = Observations.query();
-          //console.log($scope.undefined);
                                          $scope.spinneractive = false;
                                          usSpinnerService.stop('spinner-1');
        }
@@ -344,7 +337,6 @@
           else {
              var file = 'No file';
              }
-          console.log(file);
 
           var file2 = $scope.myFile2;
           if(file2) {
@@ -391,7 +383,6 @@
    		                     rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
    		                     verified:$scope.radioValue,email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
-   		  console.log(file);
 
                       $scope.spinneractive = false;
                       usSpinnerService.stop('spinner-1');
@@ -463,7 +454,6 @@
            		  $scope.message = response[Object.keys(response)];
                   $rootScope.displayedObservations = [];
                   $rootScope.observations = globalObject;
-                  console.log($rootScope.observations);
                    $scope.spinneractive = false;
                    usSpinnerService.stop('spinner-1');
 
@@ -537,7 +527,6 @@
       $scope.changeEndDate = function() {
          $scope.endDate = this.endDate;
       };
-      console.log($scope.objectValue);
       //This is done to update scope objects to correct value. I compare clicked observation.id with this in scope
       var editPhotometry2 = -1
       		var evaluatedOb = $scope.ob.length;
@@ -715,7 +704,6 @@
                      		  $scope.message = response[Object.keys(response)];
                             $rootScope.displayedObservations = [];
                             $rootScope.observations = globalObject;
-                            console.log($rootScope.observations);
                              $scope.spinneractive = false;
                              usSpinnerService.stop('spinner-1');
                             })
@@ -855,8 +843,6 @@
    		    SearchCatalogData.update({objectType:$scope.objectValue, abbreviation: $scope.abbreviation,
    		                              email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
    		      var globalObject = [];
-       		              console.log('response');
-       		              console.log(response);
 
    		          if(response.length==2) {
    		             var len = 1;
@@ -864,21 +850,16 @@
    		          else {
    		             var len = response.length;
    		          }
-   		                                    console.log('len');
-                                            console.log(len);
                   for(var i = 0; i < len; i++) {
                   var newObject = {}
                           angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                   newObject[key] = value;
-                                  console.log(key);
-                                  console.log(value);
                            });
                            globalObject.push(newObject);
                      }
 
             $scope.loadFlag = true;
             $scope.getArray = globalObject;
-            console.log($scope.getArray);
             //Check what type of object data was returned and generate catalogs headers
             if ($scope.objectValue == "Star" && response != null) {
                 $scope.getHeader = function () {

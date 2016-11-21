@@ -64,42 +64,32 @@ def reduce(getDarkFrames, getBiasFrames, getFlatFields, getRawFrames, sessionId)
               #reference dark frame exists
               dark_corrected_image = 'None'
               if reference_dark_image != 'None':
-                 print 'Dark Frame Correction'
                  dark_corrected_image = dataImage - reference_dark_image
-                 print dark_corrected_image
               #reference dark frame does not exist but reference bias frame exists
               bias_corrected_image = 'None'
               if reference_dark_image == 'None' and reference_bias_image != 'None':
                  bias_corrected_image = dataImage - reference_bias_image
-                 print bias_corrected_image
               #reference dark frame exists and reference bias frame exists
               if reference_dark_image != 'None' and reference_bias_image != 'None':
                  bias_corrected_image = dark_corrected_image - reference_bias_image
-                 print bias_corrected_image
 
               #dark corrected image exists and flat exists
               if dark_corrected_image != 'None' and reference_flat_image != 'None' and bias_corrected_image == 'None':
-                 print 'dark corrected with flat'
                  final_image = dark_corrected_image / reference_flat_image
               #bias corrected image exists and flat exists
               if bias_corrected_image != 'None' and reference_flat_image != 'None':
-                 print 'bias corrected with flat'
                  final_image = bias_corrected_image / reference_flat_image
               #reference flat field does not exist but bias corrected image exists
               if bias_corrected_image != 'None' and reference_flat_image == 'None':
-                  print 'bias corrected without flat'
                   final_image = bias_corrected_image
               #reference flat field does not exist and only dark corrected image exists
               if dark_corrected_image != 'None' and reference_flat_image == 'None' and bias_corrected_image == 'None':
-                  print 'dark corrected without flat'
                   final_image = dark_corrected_image
               #reference flat field exists and raw image exists
               if bias_corrected_image == 'None' and reference_flat_image != 'None' and dark_corrected_image == 'None':
-                  print 'only flat'
                   final_image = dataImage / reference_flat_image
               #reference flat field does not exist and only raw image exists
               if bias_corrected_image == 'None' and reference_flat_image == 'None' and dark_corrected_image == 'None':
-                  print 'only raw'
                   final_image = dataImage
 
               width = float(final_image.shape[1])/100
@@ -178,7 +168,6 @@ def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut
 
 
 def linear(inputArray, scale_min=None, scale_max=None):
-    #print "img_scale : linear"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:
@@ -195,7 +184,6 @@ def linear(inputArray, scale_min=None, scale_max=None):
 
 
 def power(inputArray, power_index=3.0, scale_min=None, scale_max=None):
-    #print "img_scale : power"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:
@@ -247,7 +235,6 @@ def sky_mean_sig_clip(input_arr, sig_fract, percent_fract, max_iter=100, low_cut
 
 
 def linear(inputArray, scale_min=None, scale_max=None):
-    #print "img_scale : linear"
     imageData=numpy.array(inputArray, copy=True)
 
     if scale_min == None:

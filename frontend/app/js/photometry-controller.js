@@ -1,12 +1,5 @@
 'use strict';
 
-
-    //var __env = {};
-
-    //if(window){
-    //  Object.assign(__env, window.__env);
-    //}
-
  angular.module('astroApp.controller', ['ngResource', 'ngAnimate', 'ui.bootstrap', 'smart-table',
  'angularModalService', 'angularSpinner', 'nvd3', 'ngCookies', 'ngAnimate', 'ngSanitize', 'ngCsv',
  'angular-bind-html-compile', 'angularFileUpload']);
@@ -50,7 +43,6 @@
         $rootScope.carouselFlag = false;
 
         $rootScope.selectPhotometryType = function (value) {
-          console.log(value)
           $rootScope.carouselFlag = true;
           $scope.selectedPhotometryType = value;
           $rootScope.helpDescription = "";
@@ -61,7 +53,6 @@
                 $rootScope.selectType = "APERTURE PHOTOMETRY";
 
                 $scope.photometryTypeFlag = true;
-                console.log($scope.photometryTypeFlag);
                 $scope.photometryType = 'Aperture';
                 $rootScope.numberOfFilesUploaded = $cookies.get('numberOfProcessedFiles');
                 if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Images';} else {$scope.imageTypeText = 'Images';}
@@ -69,7 +60,6 @@
 
                       $scope.setFiles = function(element) {
                        $scope.$apply(function($scope) {
-                         console.log('files:', element.files);
                          // Turn the FileList object into an Array
                            $scope.files = []
                            for (var i = 0; i < element.files.length; i++) {
@@ -81,11 +71,8 @@
                 $scope.convert = function(){
                    var names = [];
                            for (var i in $scope.files) {
-                               console.log(i);
-                               console.log($scope.files[i].name);
                                names.push($scope.files[i].name);
                            }
-                   console.log(names);
 
                    var uploadUrl = __env.apiUrl+"/inputFits"
                            var fd = new FormData()
@@ -109,7 +96,6 @@
                         $scope.reductionImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       console.log()
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5; "></div></div></div>';
                        $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
@@ -125,8 +111,6 @@
                 }
 
                  $rootScope.x = $window.x;
-                 console.log('$scope.x');
-                 console.log($rootScope.x);
                  //Measure Photometry Modal
                  $scope.measure = function () {
                       var modalInstance = $uibModal.open({
@@ -243,36 +227,27 @@
                                             julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID'), objectDistance:$scope.object},
                                             function(response){
        		              $scope.message = response.message;
-       		              console.log('response');
-       		              console.log(response);
            		          var globalObject = [];
                           var len = response.length;
 
                           var sumMag = 0;
                           var counter = 0;
-                          console.log('len');
-                          console.log(len);
                           for(var i = 0; i < len; i++) {
                           var newObject = {}
                                   angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                           newObject[key] = value;
-                                          console.log(key);
-                                          console.log(value);
                                           counter = counter + 1;
                                    });
-                                   console.log(newObject);
                                    sumMag = parseFloat(newObject.mag) + parseFloat(sumMag);
                                    globalObject.push(newObject);
                           }
                           $rootScope.avgMag = sumMag/counter;
-                          console.log($rootScope.avgMag);
                           $scope.spinneractive = false;
                           usSpinnerService.stop('spinner-1');
                           $rootScope.helpDescription = "Perfect! Photometry has been calculated. You can now save your results.";
                           $rootScope.processFlag = true;
                           $rootScope.order = [ 'julianDate', 'mag' ];
                           $rootScope.getArray = globalObject
-                          console.log($rootScope.getArray);
                        });
 
 
