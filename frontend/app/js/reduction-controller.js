@@ -103,8 +103,8 @@
                         $scope.reductionImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -131,7 +131,6 @@
                        $cookies.put('numberOfDarkFilesUploaded', 0);
                        $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
                        if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
-                       $scope.helpDescription = "Great! Go ahead and Process your data.";
                        });
                 }
           }
@@ -186,8 +185,8 @@
                         $scope.reductionImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -210,10 +209,9 @@
                     ]).then(function(response) {
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
-                       $cookies.put('numberOfDarkFilesUploaded', 0);
-                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
-                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
-                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       $cookies.put('numberOfFlatFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfFlatFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Flat Field';} else {$scope.imageTypeText = 'Flat Fields';}
                        });
                 }
            }
@@ -268,8 +266,8 @@
                         $scope.reductionImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-60px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -292,10 +290,9 @@
                     ]).then(function(response) {
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
-                       $cookies.put('numberOfDarkFilesUploaded', 0);
-                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
-                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
-                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       $cookies.put('numberOfRawFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfRawFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Raw Image';} else {$scope.imageTypeText = 'Raw Images';}
                        });
                 }
           }
@@ -352,8 +349,8 @@
                         $scope.reductionImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -376,10 +373,9 @@
                     ]).then(function(response) {
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
-                       $cookies.put('numberOfDarkFilesUploaded', 0);
-                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfDarkFilesUploaded')
-                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Dark Frame';} else {$scope.imageTypeText = 'Dark Frames';}
-                       $scope.helpDescription = "Great! Go ahead and Process your data.";
+                       $cookies.put('numberOfBiasFilesUploaded', 0);
+                       $rootScope.numberOfFilesUploaded = $cookies.get('numberOfBiasFilesUploaded')
+                       if($rootScope.numberOfFilesUploaded == 1) {$scope.imageTypeText = 'Bias Frame';} else {$scope.imageTypeText = 'Bias Frames';}
                        });
                 }
           }
@@ -408,8 +404,8 @@
                         $scope.processImages.$promise
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
-                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="70" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:530px;margin: 0px;margin-left:-45px" class="owl-items"><div align="center" style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="auto" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5;"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -455,6 +451,7 @@
                                            var sync1 = $("#sync1");
                                            var sync2 = $("#sync2");
 
+                                           console.log('options-sync1');
                                            sync1.owlCarousel({
                                              singleItem : true,
                                              slideSpeed : 1000,
@@ -464,6 +461,7 @@
                                              responsiveRefreshRate : 200,
                                            });
 
+                                           console.log('options-sync2');
                                            sync2.owlCarousel({
                                              items : 15,
                                              itemsDesktop      : [1199,10],

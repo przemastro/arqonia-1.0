@@ -53,7 +53,7 @@ def photometry(positionX, positionY, radius, radiusInner, radiusOuter, imageForP
        phot_table['residual_aperture_sum'] = final_sum
 
        #instrumental magnitude
-       instrumentalMag = -2.5*math.log10((rawflux_table[0][3]-phot_table['residual_aperture_sum'][0]))
+       instrumentalMag = 2.5*math.log10((rawflux_table[0][3]-phot_table['residual_aperture_sum'][0]))
        return instrumentalMag
     except(RuntimeError, TypeError, NameError):
        print 'error in photometry function'

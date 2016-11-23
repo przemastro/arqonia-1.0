@@ -97,7 +97,7 @@
                     ]).then(function(response) {
                        $rootScope.images = response[Object.keys(response)].fileNames;
                        $rootScope.sync2Content = '<div ng-repeat="image in images"><div style="width:80px;height:81px;margin: 1px auto;" class="owl-items"><div style="padding:1px;padding-right: 1px" class="item"><img width="68" height="80" ng-src="inputFits/{{image}}" style="opacity: 0.5; "></div></div></div>';
-                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:540px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
+                       $rootScope.sync1Content = '<div ng-repeat="image in images"><div style="width:530px;height:532px;margin: 0px;margin-left:-60px" class="owl-items"><div style="padding:0px;padding-right: 0px;width:650px" class="item"><img width="530px" height="540px" ng-src="inputFits/{{image}}"></div></div></div>';
                        $scope.spinneractive = false;
                        usSpinnerService.stop('spinner-1');
                        //Bind Data for Carousel
@@ -228,6 +228,7 @@
                                             function(response){
        		              $scope.message = response.message;
            		          var globalObject = [];
+           		          $rootScope.getArray = [];
                           var len = response.length;
 
                           var sumMag = 0;
@@ -236,9 +237,9 @@
                           var newObject = {}
                                   angular.forEach(response[Object.keys(response)[i]], function(value, key){
                                           newObject[key] = value;
-                                          counter = counter + 1;
                                    });
-                                   sumMag = parseFloat(newObject.mag) + parseFloat(sumMag);
+                                   counter = counter + 1;
+                                   sumMag = parseFloat(newObject.instrumentalMag) + parseFloat(sumMag);
                                    globalObject.push(newObject);
                           }
                           $rootScope.avgMag = sumMag/counter;

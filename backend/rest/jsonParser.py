@@ -1429,10 +1429,12 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
         cnx = pyodbc.connect(dbAddress)
         cursor = cnx.cursor()
         julianDate = str(julianDate)
-        getcontext().prec = 6
+        getcontext().prec = 10
         shift = Decimal(shift)
         julianDate = Decimal(julianDate)
         objectDistance = Decimal(objectDistance)
+        if(objectDistance == 0):
+            objectDistance = 0.1
 
         getImagesForPhotometry = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getImagesForPhotometry')), (sessionId)).fetchall()]
 
@@ -1440,13 +1442,13 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
         controller = ''
         for file in getImagesForPhotometry:
            instrumentalMag = photometry.photometry(xCoordinate, yCoordinate, r1, r2, r3, file, sessionId)
-           getcontext().prec = 6
+           getcontext().prec = 10
            absoluteMag = Decimal(instrumentalMag-5*((math.log10(objectDistance))-1))
-           absoluteMag = round(absoluteMag, 6)
+           absoluteMag = round(absoluteMag, 10)
            absoluteMag = str(absoluteMag)
            mag = str(absoluteMag)
            jd = str(julianDate)
-           controller = str({'julianDate': jd, 'mag': mag}) + ',' + controller
+           controller = str({'julianDate': jd, 'mag': mag, 'instrumentalMag': instrumentalMag}) + ',' + controller
            julianDate = julianDate + shift
            i = i + 1
         data = ast.literal_eval(controller[:-1])
