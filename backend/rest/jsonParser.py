@@ -1433,8 +1433,6 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
         shift = Decimal(shift)
         julianDate = Decimal(julianDate)
         objectDistance = Decimal(objectDistance)
-        if(objectDistance == 0):
-            objectDistance = 0.1
 
         getImagesForPhotometry = [oc[0] for oc in cursor.execute((queries.get('DatabaseQueries', 'database.getImagesForPhotometry')), (sessionId)).fetchall()]
 
@@ -1443,7 +1441,10 @@ def addPhotometryData(xCoordinate, yCoordinate, r1, r2, r3, julianDate, shift, s
         for file in getImagesForPhotometry:
            instrumentalMag = photometry.photometry(xCoordinate, yCoordinate, r1, r2, r3, file, sessionId)
            getcontext().prec = 10
-           absoluteMag = Decimal(instrumentalMag-5*((math.log10(objectDistance))-1))
+           if(objectDistance == 0):
+               absoluteMag = Decimal(instrumentalMag)
+           else:
+              absoluteMag = Decimal(instrumentalMag-5*((math.log10(objectDistance))-1))
            absoluteMag = round(absoluteMag, 10)
            absoluteMag = str(absoluteMag)
            mag = str(absoluteMag)

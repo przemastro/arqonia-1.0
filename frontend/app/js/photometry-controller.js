@@ -223,7 +223,8 @@
        		              $rootScope.r2 = $rootScope.r1*2;
        		              $rootScope.r3 = $rootScope.r1*3;
 
-   		    NewPhotometry.update({xCoordinate:$rootScope.x,yCoordinate:$rootScope.y,r1:$rootScope.r1,r2:$rootScope.r2,r3:$rootScope.r3,
+                     if($rootScope.r2) {
+   		               NewPhotometry.update({xCoordinate:$rootScope.x,yCoordinate:$rootScope.y,r1:$rootScope.r1,r2:$rootScope.r2,r3:$rootScope.r3,
                                             julianDate:$scope.julianDate,shift:$scope.shift,email:$cookies.get('email'), sessionId:$cookies.get('sessionID'), objectDistance:$scope.object},
                                             function(response){
        		              $scope.message = response.message;
@@ -250,8 +251,11 @@
                           $rootScope.order = [ 'julianDate', 'mag' ];
                           $rootScope.getArray = globalObject
                        });
-
-
+                     }
+                     else {
+                       $scope.spinneractive = false;
+                       usSpinnerService.stop('spinner-1');
+                     }
 
        		  //...and close modal
        		  $uibModalInstance.dismiss();
