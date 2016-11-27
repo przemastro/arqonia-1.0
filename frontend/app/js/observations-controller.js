@@ -677,6 +677,11 @@
                             $rootScope.displayedObservations = [];
                             $rootScope.observations = [];
 
+          if (!$scope.spinneractive) {
+               usSpinnerService.spin('spinner-1');
+             };
+                               		     $rootScope.successTextAlert = "Observation has been updated in the staging area.";
+                                           $rootScope.showSuccessAlert = true;
           //Call updateObservation service...
    		  UpdateObservation.update({id:$scope.ob[editPhotometry2].id,name:$scope.name,startDate:$scope.startDate,
    		                            endDate:$scope.endDate,
@@ -684,14 +689,10 @@
    		                            rFileName:file4.name,iFileName:file5.name,objectType:$scope.objectValue,
                                     verified:$scope.radioValue,email:$scope.loggedInUserEmail,sessionId:$cookies.get('sessionID')}, function(response){
    		  $scope.message = response.message;
-   		  });
 
-   		                    if (!$scope.spinneractive) {
-                              usSpinnerService.spin('spinner-1');
-                            };
+
                      		  UserObservations.update({email:$scope.loggedInUserEmail, sessionId:$cookies.get('sessionID')}, function(response){
-                     		     $rootScope.successTextAlert = "Observation has been updated in the staging area.";
-                                 $rootScope.showSuccessAlert = true;
+
                      		     var globalObject = [];
                                var len = response.length;
                                for(var i = 0; i < len; i++) {
@@ -707,7 +708,7 @@
                              $scope.spinneractive = false;
                              usSpinnerService.stop('spinner-1');
                             })
-
+          });
    		  //...and close modal
    		  $uibModalInstance.dismiss();
                // switch flag

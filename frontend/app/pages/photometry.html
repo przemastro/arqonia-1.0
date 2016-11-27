@@ -214,16 +214,22 @@
                             <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100"/>
+                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100" required/>
                                 </p>
+                                <div ng-messages="measurePhotometryForm.julianDate.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
                             <div class="col-md-3" style="padding-left: 10px;">
                                 <p class="input-group myInputLong">
-                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100"/>
+                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100" required/>
                                 </p>
+                                <div ng-messages="measurePhotometryForm.shift.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
                             </div>
                         </div>
                     </div>

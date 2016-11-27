@@ -240,7 +240,7 @@
                    };
    		  Reminder.save({email:$scope.email, sessionId:$cookies.get('sessionID')}, function(response){
    		     $rootScope.errorFlag = false
-   		     $location.path("login");
+   		     $location.path("main");
 
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');
@@ -426,7 +426,7 @@
    		  else {
 
    		     $rootScope.errorFlag = false
-   		     $location.path("login");
+   		     $location.path("main");
 
              $scope.spinneractive = false;
              usSpinnerService.stop('spinner-1');

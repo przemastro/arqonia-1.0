@@ -451,7 +451,6 @@
                                            var sync1 = $("#sync1");
                                            var sync2 = $("#sync2");
 
-                                           console.log('options-sync1');
                                            sync1.owlCarousel({
                                              singleItem : true,
                                              slideSpeed : 1000,
@@ -461,7 +460,6 @@
                                              responsiveRefreshRate : 200,
                                            });
 
-                                           console.log('options-sync2');
                                            sync2.owlCarousel({
                                              items : 15,
                                              itemsDesktop      : [1199,10],
