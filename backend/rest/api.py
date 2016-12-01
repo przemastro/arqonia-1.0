@@ -21,13 +21,19 @@ import logging
 
 app = Flask(__name__)
 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'HRHomeSurvey@gmail.com'
-app.config['MAIL_PASSWORD'] = 'astroApp1234'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+#app.config['MAIL_SERVER']='smtp.gmail.com'
+#app.config['MAIL_PORT'] = 465
+#app.config['MAIL_USERNAME'] = 'HRHomeSurvey@gmail.com'
+#app.config['MAIL_PASSWORD'] = 'astroApp1234'
+#app.config['MAIL_USE_TLS'] = False
+#app.config['MAIL_USE_SSL'] = True
 
+app.config['MAIL_SERVER']='arqonia.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'admin@arqonia.com'
+app.config['MAIL_PASSWORD'] = 'test'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = False
 
 mail = Mail()
 mail.init_app(app)
@@ -79,6 +85,9 @@ ObservationsLCBDiagram = json_lcDiagram.jsonLCBDiagram
 ObservationsLCRDiagram = json_lcDiagram.jsonLCRDiagram
 ObservationsLCIDiagram = json_lcDiagram.jsonLCIDiagram
 
+print Observations
+print Statistics
+
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
         'observationsBVDiagramRange': ObservationsBVDiagramRange,
@@ -101,7 +110,6 @@ REST = {'observations': Observations,
         'observationsLCRDiagram': ObservationsLCRDiagram,
         'observationsLCIDiagram': ObservationsLCIDiagram
         }
-
 
 def abort_if_json_doesnt_exist(rest_id):
     if rest_id not in REST:

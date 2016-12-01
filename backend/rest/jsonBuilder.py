@@ -3,6 +3,7 @@ import pyodbc
 import ast
 import ConfigParser
 import time
+from flask import Flask, jsonify
 
 config = ConfigParser.RawConfigParser()
 config.read('../resources/env.properties')
@@ -110,6 +111,8 @@ def json_data():
            #controller = json.dumps(controller, skipkeys=True)
 
         cursor.close()
+        print 'i'
+        print i
         if(i==1):
            observations = [controller]
         elif(i>1):
