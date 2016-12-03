@@ -19,19 +19,23 @@ import logging
 
 
 
+
 app = Flask(__name__)
+
+config = ConfigParser.RawConfigParser()
+config.read('../resources/env.properties')
 
 #app.config['MAIL_SERVER']='smtp.gmail.com'
 #app.config['MAIL_PORT'] = 465
 #app.config['MAIL_USERNAME'] = 'HRHomeSurvey@gmail.com'
-#app.config['MAIL_PASSWORD'] = 'astroApp1234'
+#app.config['MAIL_PASSWORD'] = config.get('Mail', 'mail.hrhomesurveyPassword');
 #app.config['MAIL_USE_TLS'] = False
 #app.config['MAIL_USE_SSL'] = True
 
 app.config['MAIL_SERVER']='arqonia.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USERNAME'] = 'admin@arqonia.com'
-app.config['MAIL_PASSWORD'] = 'test'
+app.config['MAIL_PASSWORD'] = config.get('Mail', 'mail.arqoniaPassword');
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = False
 
@@ -43,8 +47,7 @@ api = Api(app)
 
 
 
-config = ConfigParser.RawConfigParser()
-config.read('../resources/env.properties')
+
 serverAddress = config.get('Server', 'server.address');
 serverPort = int(config.get('Server', 'server.port'));
 serverService = config.get('Server', 'server.service');
