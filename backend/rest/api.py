@@ -85,9 +85,6 @@ ObservationsLCBDiagram = json_lcDiagram.jsonLCBDiagram
 ObservationsLCRDiagram = json_lcDiagram.jsonLCRDiagram
 ObservationsLCIDiagram = json_lcDiagram.jsonLCIDiagram
 
-print Observations
-print Statistics
-
 REST = {'observations': Observations,
         'lastLoad': LastLoad,
         'observationsBVDiagramRange': ObservationsBVDiagramRange,

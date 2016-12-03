@@ -111,8 +111,6 @@ def json_data():
            #controller = json.dumps(controller, skipkeys=True)
 
         cursor.close()
-        print 'i'
-        print i
         if(i==1):
            observations = [controller]
         elif(i>1):
