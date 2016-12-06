@@ -1,0 +1,1 @@
+update [Astro].[data].[users] set ActiveDate=NULL, SessionID=NULL where datediff(mi,ActiveDate,getdate()) > 10

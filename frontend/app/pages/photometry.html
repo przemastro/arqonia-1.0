@@ -1,0 +1,255 @@
+<body ng-controller = "photometryCtrl" ng-app = "astroApp">
+<div ng-controller = "processPhotometryCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
+    <p style="margin-top:-90px;margin-bottom:30px;text-align: center;color:#4c4c4c;text-decoration: none;font-family: inherit;font-weight: normal;
+              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">PERFORM PHOTOMETRY</p>
+
+    <div style="margin-top: 50px;color:white;" ng-show="!isUserLoggedIn">
+        <table class="menu" style="background-color:white;">
+            <tr>
+                <td>
+                    <div style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                        <div style="padding: 0px 15px;color:white;">
+                            <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                                In order to measure photometry you must firstly  <a href ng-click="loginModal()"
+                                                                                    style="text-decoration: none !important;">Login</a> to the service.
+                                If you are a new user of the service please <a href ng-click="registerModal()"
+                                                                               style="text-decoration: none !important;">Sign up</a></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <canvas ng-show="convertFlag" style="z-index:20;position:absolute;opacity:0.3;margin-top:16px;margin-left:11px" id="canvas" width="532" height="532">
+        Your browser does not support HTML5 Canvas.
+    </canvas>
+    <table style="max-width: 1070px; margin: 10px;padding-top:5px" st-table="displayedObservations" st-safe-src="observations" class="tableList"  ng-show="isUserLoggedIn">
+        <tr>
+            <td style="vertical-align: top;padding:0px;height:535px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px">
+                <div ng-show="!photometryTypeFlag" style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                    <div style="padding: 0px 15px;color:white;">
+                        <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                            You are about to measure photometry. Please remember that system allows only one-dimension FITS files. It means
+                            that all FITS files need to be taken in single (monochromatic) wavelength band. Start with selecting type of photometry
+                            to be performed. Good luck!</p>
+                    </div>
+                </div>
+                <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel" bind-html-compile="sync1Content">
+                </div>
+            </td>
+            <td style="vertical-align: top;padding:0px;height:475px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px;">
+
+                <div class="btn-group dropdown" style="margin-left:25px;position:relative;margin-bottom:-20px">
+                    <div><br></div>
+                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary customHeight customExtremelyLong">{{selectType}}</button>
+                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" style="width:262px">
+                        <li ng-repeat="type in photometryTypes"><a href style="text-align:left;width:300px;" ng-click="selectPhotometryType(type)">{{type}}</a></li>
+                    </ul>
+                </div>
+                <div><br><br></div>
+                <form ng-show="photometryTypeFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
+                    <div class="btn-group dropdown" style="width:100%;position:relative;margin-left:65px">
+                        <input class="btn btn-default customUploadLong" type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)"/>
+                    </div>
+                    <div><br></div>
+                    <div class="btn-group" style="float:left;margin-left:65px;position:relative">
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="&nbsp;Load" class="btn btn-primary sharp btnMarginRight customLong" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Linear'">Linear</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Power'">Power</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Hist'">Hist</label>
+                    </div>
+                    <div><br></div>
+                </form>
+                <div><br><br></div>
+                <div ng-show="convertFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
+                            <div style="float:left;border-top: 0px;padding-left: 0px;">
+                                <input style="background-color: #4d9dc2;border: 0px;" type="button" value="Measure" class="btn btn-primary sharp customHeight customLong" ng-click="measure()"/>
+                            </div>
+                            <div style="float:left;margin-left:9px">
+                                <input type="text" id="r" type="text" class="form-control customHeight customWidth" placeholder="Radius"/>
+                            </div>
+                            <div style="float:left;margin-left:9px">
+                                <input ng-show="processFlag" type="text" class="form-control customHeight customWidth" name="avgMag" ng-model="avgMag" value="{{avgMag}}" ng-maxlength="100"/>
+                            </div>
+                </div>
+
+                <div ng-show="photometryTypeFlag" style="padding: 0px 15px;color:white;margin-top:125px;position:relative;height:40px">
+                    <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                             font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                        {{helpDescription}}</p>
+                </div>
+                <div ng-show="processFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:120px;margin-right:20px">
+                    <input ng-csv="getArray" csv-column-order="order" lazy-load="true" filename="lightCurve_{{ sessionID }}.csv" field-separator="{{separator}}" style="border: 0px"
+                           type="submit" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
+                </div>
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="vertical-align: top;padding:0px;height:86px !important;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;min-width:500px;max-width:500px;">
+                <div style="position:relative;bottom:0px;margin-left:0px;margin-top:-3px;margin-right:0px;margin-bottom:3px"  ng-show="isUserLoggedIn">
+                    <div id="sync2" style="width:100% !important" class="owl-carousel" bind-html-compile="sync2Content">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+<script type="text/javascript">
+   $('input').on('change',function(){
+       r = $(this).val();
+   })
+
+   var canvas;
+   var ctx;
+   var xCoordinate = 75;
+   var yCoordinate = 75;
+   var WIDTH = 532;
+   var HEIGHT = 540;
+   var dragok = false;
+
+   function rect(xCoordinate,yCoordinate,w,h) {
+    ctx.beginPath();
+    ctx.rect(xCoordinate,yCoordinate,w,h);
+    ctx.closePath();
+    ctx.fill();
+   }
+
+   function circ(xCoordinate,yCoordinate,r) {
+      for (var i = 0; i < 4; i++ ) {
+           ctx.beginPath();
+           ctx.arc(xCoordinate, yCoordinate, r*i, 0, 2 * Math.PI, false);
+           ctx.fillStyle = '#0AFA0A';
+           ctx.lineWidth = 3;
+           ctx.strokeStyle = '#0AFA0A';
+           ctx.stroke();
+       }
+   }
+
+   function clear() {
+    ctx.clearRect(0, 0, WIDTH, HEIGHT);   }
+
+   function init() {
+    canvas = document.getElementById("canvas");
+    ctx = canvas.getContext("2d");
+    return setInterval(draw, 10);
+   }
+
+   function draw() {
+    clear();
+    ctx.fillStyle = "black";
+    rect(0,0,WIDTH,HEIGHT);
+    ctx.fillStyle = "green";
+    //rect(xCoordinate - 15, yCoordinate - 15, 30, 30);
+    circ(xCoordinate - 15, yCoordinate - 15, r);
+   }
+
+   function myMove(e){
+    if (dragok){
+     xCoordinate = e.pageX - canvas.offsetLeft;
+     yCoordinate = e.pageY - canvas.offsetTop;
+     //console.log(xCoordinate-15);
+    }
+   }
+
+   function myDown(e){
+    if (e.pageX < xCoordinate + 60 + canvas.offsetLeft && e.pageX > xCoordinate - 60 +
+    canvas.offsetLeft && e.pageY < yCoordinate + 60 + canvas.offsetTop &&
+    e.pageY > yCoordinate - 60 + canvas.offsetTop){
+     xCoordinate = e.pageX - canvas.offsetLeft;
+     yCoordinate = e.pageY - canvas.offsetTop;
+     dragok = true;
+     canvas.onmousemove = myMove;
+    }
+   }
+
+   function myUp(){
+    dragok = false;
+    canvas.onmousemove = null;
+   }
+
+   init();
+   canvas.onmousedown = myDown;
+   canvas.onmouseup = myUp;
+
+</script>
+
+<!--Measure Modal-->
+<script type="text/ng-template" id="measureContent.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 style="font-family: inherit;font-weight: normal;
+                           font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;" class="modal-title">Measure Photometry</h3>
+    </div>
+    <table class="main" style="margin-bottom:30px;">
+        <tr>
+            <td style="width:60%;vertical-align: top;font-family: inherit;font-weight: normal;
+                           font-size: 1.3rem;text-rendering: optimizeLegibility;color: #4c4c4c;border: 0px solid black;">
+                <form name="measurePhotometryForm" class="form-horizontal" role="form" style="width:100%;margin-left:30px" novalidate ng-submit="measurePhotometryForm.$valid && processFiles()">
+                    <div class="modal-body" style="margin-top:-70px;padding-bottom: 7px;">
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" align="right" class="col-md-7 control-label">Distance to Object in Parsecs</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="object" ng-model="object" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.object.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Initial Julian Date</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="julianDate" ng-model="julianDate" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.julianDate.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="text-align: right;margin-left: -75px;white-space: nowrap;" class="col-md-7 control-label">Julian Date Shift</label>
+                            <div class="col-md-3" style="padding-left: 10px;">
+                                <p class="input-group myInputLong">
+                                    <input type="text" class="form-control" name="shift" ng-model="shift" ng-maxlength="100" required/>
+                                </p>
+                                <div ng-messages="measurePhotometryForm.shift.$error" style="color:maroon;width: 140px;padding-left:20px" align="center" role="alert" ng-if='submitted'>
+                                    <div ng-message="required">This field is required</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding-right:100px;border-top: 0px;">
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="Measure" class="btn btn-primary sharp" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <button type="button" ng-click="cancel()" class="btn btn-default sharp" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</script>
+
+<script>
+    $('.fade_hov').hover(function(){
+                    $(this).siblings().addClass('fade');
+            }, function(){
+                    $(this).siblings().removeClass('fade');
+            });
+</script>
+
+
+</body>

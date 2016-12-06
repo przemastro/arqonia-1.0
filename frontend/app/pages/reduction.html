@@ -1,0 +1,112 @@
+<body ng-controller = "reductionCtrl" ng-app = "astroApp">
+<div ng-controller = "dataReductionCtrl" style="max-width: 1100px;height: 650px;margin: 100px auto;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
+    <p style="margin-top:-90px;margin-bottom:30px;text-align: center;color:#4c4c4c;text-decoration: none;font-family: inherit;font-weight: normal;
+              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">APPLY DATA REDUCTION</p>
+
+    <div style="margin-top: 50px;color:white;" ng-show="!isUserLoggedIn">
+        <table class="menu" style="background-color:white;">
+            <tr>
+                <td>
+                    <div style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                        <div style="padding: 0px 15px;color:white;">
+                            <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                                In order to reduce your frames you must firstly  <a href ng-click="loginModal()"
+                                style="text-decoration: none !important;">Login</a> to the service.
+                                If you are a new user of the service please <a href ng-click="registerModal()"
+                                style="text-decoration: none !important;">Sign up</a></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <table style="max-width: 1070px; margin: 10px;padding-top:5px" st-table="displayedObservations" st-safe-src="observations" class="tableList"  ng-show="isUserLoggedIn">
+        <tr>
+            <td style="vertical-align: top;padding:0px;height:535px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px">
+                <div ng-show="!imageTypeFlag" style="margin-left:50px;margin-right:50px;height: 200px;width:1000px;margin-top:230px;background-color:white;">
+                    <div style="padding: 0px 15px;color:white;">
+                        <p style="color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                            You are about to reduce your data. Please remember that system allows only one-dimension FITS files. It means
+                            that all FITS files need to be taken in single (monochromatic) wavelength band. Start with selecting type of images
+                            to be loaded. Good luck!</p>
+                    </div>
+                </div>
+                <div style="max-width:530px;padding:0px;" id="sync1" class="owl-carousel" bind-html-compile="sync1Content">
+                </div>
+            </td>
+            <td style="vertical-align: top;padding:0px;height:475px;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;margin-bottom: 0px;min-width:500px;max-width:500px;">
+
+                <div class="btn-group dropdown" style="margin-left:25px;position:relative;margin-bottom:-20px">
+                    <div><br></div>
+                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary customHeight customVeryLong">{{selectType}}</button>
+                    <button style="background-color: #4d9dc2;border: 0px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="type in imageTypes"><a href style="text-align:left;width:300px;" ng-click="selectImageType(type)">{{type}}</a></li>
+                    </ul>
+                </div>
+                <div><br><br></div>
+                <div ng-show="imageTypeFlag" style="color:white;margin-top:0px;position:relative;height:40px">
+                    <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 0px 0px;font-family: inherit;font-weight: normal;
+                                             font-size: 1.6rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                        {{numberOfFilesUploaded}} {{imageTypeText}} {{textStep}} in this session</p>
+                </div>
+                <form ng-show="imageTypeFlag && formFlag" name="convertForm" class="form-horizontal" role="form" style="width:100%;position:relative" novalidate ng-submit="convert()">
+                    <div class="btn-group dropdown" style="width:100%;position:relative;margin-left:65px">
+                        <input class="btn btn-default customUploadLong" type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)"/>
+                    </div>
+                    <div><br></div>
+                    <div class="btn-group" style="float:left;margin-left:65px;position:relative">
+                        <input style="background-color: #4d9dc2;border: 0px" type="submit" value="&nbsp;Load" class="btn btn-primary sharp btnMarginRight customLong" ng-click="submitted=true" ng-keyup="submitted=false"/>
+                        <label class="btn btn-default pull-left btnMarginLeft btnMarginRight custom" ng-model="objectValue" uib-btn-radio="'Linear'">Linear</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Power'">Power</label>
+                        <label class="btn btn-default pull-left btnMarginRight custom"  ng-model="objectValue" uib-btn-radio="'Hist'">Hist</label>
+                    </div>
+                    <div><br></div>
+                </form>
+                <div><br><br></div>
+                <div ng-show="clickProcessFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
+                    <input style="background-color: #4d9dc2;border: 0px" type="button" value="Process" class="btn btn-primary sharp customHeight customLong" ng-click="processFiles()"/>
+                </div>
+                <div ng-show="imageTypeFlag && formFlag" class="btn-group dropdown" style="float:left;margin-left:65px;position:relative;">
+                    <input type="button" value="Remove" class="btn btn-danger sharp customHeight customLong" ng-click="deleteFiles()"/>
+                </div>
+                <div ng-show="imageTypeFlag" style="padding: 0px 15px;color:white;margin-top:85px;position:relative;height:100px">
+                    <p style="vertical-align: middle !importnant;color:white;text-decoration: none;padding: 10px 12px;font-family: inherit;font-weight: normal;
+                                             font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;">
+                        {{helpDescription}}</p>
+                </div>
+                <div ng-show="processedFlag" class="btn-group dropdown" style="float:right;margin-left:60px;position:relative;margin-top:70px;margin-right:20px">
+                    <input style="border: 0px" type="button" value="Save All" class="btn btn-success sharp customHeight" ng-click="saveFiles()"/>
+                </div>
+                <div><br></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="vertical-align: top;padding:0px;height:86px !important;border-style: solid;border-width: 2px;
+                                   border-color: #e1e1e1;min-width:500px;max-width:500px;">
+                <div style="position:relative;bottom:0px;margin-left:0px;margin-top:-3px;margin-right:0px;margin-bottom:3px"  ng-show="isUserLoggedIn">
+                    <div id="sync2" style="width:100% !important" class="owl-carousel" bind-html-compile="sync2Content">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    $('.fade_hov').hover(function(){
+                    $(this).siblings().addClass('fade');
+            }, function(){
+                    $(this).siblings().removeClass('fade');
+            });
+</script>
+</body>

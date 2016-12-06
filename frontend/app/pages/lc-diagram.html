@@ -1,0 +1,56 @@
+<body ng-controller = "lcDiagramCtrl" ng-app = "astroApp">
+<div style="max-width: 1100px;height: 650px;margin: 100px auto;padding: 20px;border-style: solid;border-width: 1px;border-color: #e1e1e1;background-color:white;width:100%;">
+    <p style="margin-top:-110px;margin-bottom:30px;text-align: center;color:#4c4c4c;text-decoration: none;font-family: inherit;font-weight: normal;
+              font-size: 3.5rem;text-rendering: optimizeLegibility;font-style: bold;">GENERATE LIGHT CURVES DIAGRAMS</p>
+
+    <div class="btn-group dropdown">
+        <button style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary customHeight">Diagram Type</button>
+        <button style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#hr-diagram" style="text-align:left;width:300px;">HR-Diagrams</a></li>
+            <li><a href="#lc-diagram" style="text-align:left;width:300px;">Light Curves</a></li>
+            <!--PRODUCTION-->
+            <!--
+            <li><a href="hr-diagram" style="text-align:left;width:300px;">HR-Diagrams</a></li>
+            <li><a href="lc-diagram" style="text-align:left;width:300px;">Light Curves</a></li>
+            -->
+        </ul>
+    </div>
+    <div class="btn-group dropdown">
+        <button style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary customHeight">Select Filter</button>
+        <button style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li ng-repeat="filter in lcFilters"><a href style="text-align:left;width:300px;" ng-click="selectFilter(filter)">{{filter}}</a></li>
+        </ul>
+    </div>
+    <div class="btn-group dropdown">
+        <button ng-show="selectedFilter==true" style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary customHeight">Select Object</button>
+        <button ng-show="selectedFilter==true" style="background-color: #4d9dc2;border: 0px;margin-top:30px" type="button" class="btn btn-primary dropdown-toggle customHeight" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" style="max-height: 300px;overflow-y: auto;">
+            <li ng-repeat="object in starNamesList track by $index"><a href style="text-align:left;width:300px;" ng-click="selectObject(object)">{{object}}</a></li>
+        </ul>
+    </div>
+
+    <div style="width:710px;" id="chart" align="center" ng-controller="lcCtrl" class="with-3d-shadow with-transitions" ng-class="{disabled: params.disabled}" style="overflow-x:auto;">
+        <div ng-show="LCTitle==true" style="text-align: center;" style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
+             class="title h4">Please select Filter/Object pair from available dropdown lists</div>
+        <div ng-show="LCTitle!=true" style="text-align: center;" style="text-decoration: none;padding: 10px 15px;font-family: inherit;font-weight: normal;
+                                          font-size: 2.1rem;text-rendering: optimizeLegibility;color: #4c4c4c;font-style: bold;"
+             class="title h4">{{starName}}</div>
+        <div class="lc" ng-show="LCTitle!=true" style="margin-left: -100px;padding-right:10px">
+            <nvd3  options="options" data="exampleData"></nvd3>
+        </div>
+    </div>
+    <span style="position:fixed;top:50%;left: 50%;z-index:10000" us-spinner="{left: '50%',top:'125%',length: 7,width: 4,radius:15}" spinner-key="spinner-1"></span>
+</div>
+</body>
