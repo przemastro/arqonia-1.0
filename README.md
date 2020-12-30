@@ -1,5 +1,5 @@
 # Arqonia
-MSSQL Server + Rest API (python) + Client (angular.js)
+MSSQL Server + Rest API (Python27) + Client (angular.js)
 
 This application is a concept application. The puropse is to check ability of rest service to consume big data. It allows user to perform simple data (FITS frames) reduction, measure of stars/planetoids/comets photometry, by means of aperture photometry and plot results.
     
