@@ -2,7 +2,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/issues)
 [![GitHub forks](https://img.shields.io/github/forks/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/network)
 [![GitHub stars](https://img.shields.io/github/stars/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/stargazers)
-[![Python version](https://img.shields.io/badge/Python-2.7.x-%233572A5))](https://github.com/przemastro/arqonia-1.0)
+[![Python version](https://img.shields.io/badge/Python-2.7.x-%233572A5)](https://github.com/przemastro/arqonia-1.0)
 [![npm version](https://img.shields.io/badge/npm-5.0.x-%233572A5)](https://github.com/przemastro/arqonia-1.0)
 [![TSQL version](https://img.shields.io/badge/TSQL-2012-%23ccc)](https://github.com/przemastro/arqonia-1.0)
 
