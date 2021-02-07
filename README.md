@@ -1,8 +1,11 @@
 # Arqonia
-MSSQL Server + Rest API (Python27) + Client (angular.js)
+[![GitHub issues](https://img.shields.io/github/issues/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/issues)
+[![GitHub forks](https://img.shields.io/github/forks/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/network)
+[![GitHub stars](https://img.shields.io/github/stars/przemastro/arqonia-1.0)](https://github.com/przemastro/arqonia-1.0/stargazers)
+[![Python version](https://img.shields.io/badge/Python-2.7.x-%233572A5))](https://github.com/przemastro/arqonia-1.0)
+[![npm version](https://img.shields.io/badge/npm-5.0.x-%233572A5)](https://github.com/przemastro/arqonia-1.0)
+[![TSQL version](https://img.shields.io/badge/TSQL-2012-%23ccc)](https://github.com/przemastro/arqonia-1.0)
 
-This application is a concept application. The puropse is to check ability of rest service to consume big data. It allows user to perform simple data (FITS frames) reduction, measure of stars/planetoids/comets photometry, by means of aperture photometry and plot results.
-    
 ![Dashboard](https://github.com/przemastro/arqonia-1.0/blob/master/arqonia.PNG)
 
 Check this out:
@@ -12,8 +15,158 @@ https://www.youtube.com/watch?v=cXg-WSCZB58
 https://www.youtube.com/watch?v=zcmzlIMfg6E
 
 https://www.youtube.com/watch?v=PRcSHkJYVZY
-  
-  
-More info you can find in Installation.txt.
+
+# Features
+This application is a concept application. The puropse is to check ability of rest service to consume big data. It allows user to perform simple data (FITS frames) reduction, measure of stars/planetoids/comets photometry, by means of aperture photometry and plot results.
+
+# Installation and Run
+
+
+   1. Add following (if not added automatically) to Path system variable:
+   
+      C:\Program Files\nodejs\
+      
+      C:\Program Files\Git\cmd
+      
+      C:\Python27
+      
+      C:\Python27\Scripts
+      
+      C:\Program Files\Git\bin
+      
+      Paths may differ in your case
+
+      Add system variable JAVA_HOME with value: C:\Program Files\Java\jdk1.8.0_91
+      
+      Add system variable VS90COMNTOOLS with value: C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\
+
+   2. DB installation
+   
+      1. Open Management Studio and run DB.sql query provided in db folder. A new "Astro" db will be created
+      
+      2. Next run metadata.sql query in "Astro" db
+      
+      3. You might want to insert test data. These are located in the stars folder. For instance running FullList.sql script
+         will populate stg.stagingObservations table. Then you will need to run exec bi.observationsDelta @observationId=id
+         for each star's id
+
+   3. Create personal config files.
+   
+      1. env.js with following content
+
+            //DEV Environment
+            (function (window) {
+              window.__env = window.__env || {};
+
+              // API url
+              window.__env.apiUrl = 'http://localhost:5001';
+              window.__env.apiUrlService = 'http://localhost\\:5001';
+
+              window.__env.enableDebug = true;
+            }(this));
+
+         and copy to js folder
+         
+      2. env.properties with following content
+
+            [Server]
+            #DEV Environment
+            server.address=localhost
+            server.port=5001
+            server.service=Yes
+
+            [DatabaseConnection]
+            #database.address=Driver={SQL Server};Server=<<Name of Server>>;Database=Astro;Trusted_Connection=yes;uid=<<login>>;pwd=<<password>>
+
+         and copy to resourced folder
+
+   4. Backend installation:
+   
+      1. In cmd in the astroApp folder run "python distribute_setup.py" script
+      
+      2. Run "easy_install pip" in cmd
+      
+      3. Run "pip install flask"
+      
+      4. Run "pip install flask-restful"
+      
+      5. In rest folder run "python api.py" - you will see some errors, it means that several packages need to be installed
+      
+      6. Continue with pip install. For instance you will need to run "pip install simpleJson" package
+      
+      7. The only problem with installation you may encounter while installing pyCrypto package. First of all search for
+         pycrypto-2.7a1.tar. Try to run "python setup.py" inside folder. If error "Unable to find vcvarsall.bat" appears go
+         to C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools and check if file is present, if not it should
+         be located here C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC. Then copy this file to the expected location
+         and run "python setup.py". If error is still present go to C:\Python27\Lib\distutils and open msvc9compiler.py
+         and search for "MANIFESTFILE". Add following ld_args.append('/MANIFEST') below ld_args.append('/MANIFESTFILE:' + temp_manifest).
+         Run again "python setup.py". If problem is still present just google for the solution.
+         
+      8. Assuming that everything is correct with db and backend installation you can verify jsons by hitting
+         http://localhost:5001/observations in the browser.
+
+   5. Frontend installation
+   
+      1. In the app folder in the cmd run "npm start" - many errors might appear, don't worry it will work. npm and bower
+         will install all packages and modules
+         
+      2. Now open in Intellij project and right click on index.html. Select browser and enjoy Arqonia for the first time
+
+II. Windows service (optional) - if server.service=Yes
+
+   1. Download nssm
+   
+   2. In cmd go to nssm32 or nssm64 folder and type "nssm install apipy"
+   
+   3. Provide necessary values and install service
+   
+   4. Open "Services" and try to run apipy service. If you are getting error it means you have to change logon options in properties.
+      Select "This account" and provide correct credentials.
+      
+   5. Start service again
+
+III. Tomcat setup
+
+   1. Lets assume you have downloaded tomcat and copied to C:\tomcat
+   
+   2. Delete tomcat stuff from C:\tomcat\webapps\ROOT and copy there content of app folder
+   
+   3. Go to C:\tomcat\conf and open server.xml.
+   
+      1. First of all add this "<Context  docBase="C:\tomcat\webapps\ROOT\images"   path="/app/images" />" inside <Host></Host>
+         so static content will be visible
+         
+      2. Then update connector to start tomcat on port 80 instead of 8080. Verify if port 80 is available.
+      
+   4. Open web.xml and verify if this
+   
+           <init-param>
+               <param-name>listings</param-name>
+               <param-value>true</param-value>
+           </init-param>
+      is present.
+      
+   5. Start tomcat by double click startup.bat located in bin folder.
+   
+   6. To verify if everything is correct type localhost in browser. You should see Arqonia
+
+IV. Jenkins setup
+
+   1. Execute jenkins.exe. By default jenkins will run on port 8080 after installation. I don't like it.
+   
+   2. In cmd run inside Jenkins folder run:
+   
+      java -jar jenkins.war --httpPort=8090 -Dhudson.util.ProcessTree.disable=true
+      
+   3. Type in the welcome screen Initial Admin Password located in C:\Users\<<user name>>\.jenkins\secrets
+    
+   4. Then follow the instructions. You might need set CATALINA_HOME environment variable
+   
+   5. Last thing I will need to provide you are the fourth scripts located in astroApp folder, called:
+      stop-tomcat.bat, copy-frontend.bat, build-frontend.sh, start-tomcat.sh. When you start creating new job in Jenkins
+      use this order to correctly deploy, build and start Arqonia. Probably you will need to verify some paths in scripts.
+
+
+
 
 
