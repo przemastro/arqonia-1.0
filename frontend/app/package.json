@@ -13,7 +13,7 @@
     "karma-jasmine": "~0.1.0",
     "protractor": "^2.1.0",
     "shelljs": "^0.2.6",
-    "tmp": "0.0.23"
+    "tmp": "0.2.4"
   },
   "scripts": {
     "postinstall": "bower install",
